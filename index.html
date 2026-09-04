@@ -38,6 +38,7 @@
         <a href="#inicio" class="nav-link active">Inicio</a>
         <a href="#catalogo" class="nav-link">Catálogo</a>
         <a href="#mayoristas" class="nav-link nav-link-wholesale">¿Quieres ser mayorista?</a>
+        <a href="#informacion" class="nav-link">Envíos & Políticas</a>
         <a href="#contacto" class="nav-link">Contacto</a>
         
         <div class="mobile-menu-extra">
@@ -89,48 +90,67 @@
           <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20informaci%C3%B3n%20y%20asesor%C3%ADa." target="_blank" class="btn btn-whatsapp">💬 Hablar por WhatsApp</a>
         </div>
       </div>
-      <!-- BEST SELLER HERO SHOWCASE (DONUT 16.000 PUFFS #1 MÁS VENDIDO) -->
+            <!-- BEST SELLER HERO SHOWCASE (BANG LEADER, HUMO AZUL & DONUT) -->
       <div class="hero-image-wrapper">
         <div class="hero-bestseller-card">
           <div class="hero-card-glow-ring"></div>
-          <div class="hero-top-badge">
-            <span>🔥</span>
-            <span>TOP #1 MÁS VENDIDO</span>
+          
+          <div class="hero-showcase-header">
+            <div class="hero-top-badge">
+              <span>🔥</span>
+              <span id="heroTopBadgeText">TOP #1 MÁS VENDIDO</span>
+            </div>
+
+            <!-- Top 3 Selector Tabs -->
+            <div class="hero-showcase-pills">
+              <button type="button" class="hero-pill-btn active" onclick="switchHeroProduct('bang-leader')">
+                Bang Leader
+              </button>
+              <button type="button" class="hero-pill-btn" onclick="switchHeroProduct('humo-azul')">
+                Humo Azul
+              </button>
+              <button type="button" class="hero-pill-btn" onclick="switchHeroProduct('donut')">
+                Donut
+              </button>
+            </div>
           </div>
           
-          <div class="hero-product-img-box">
-            <img src="assets/productos/248.png" alt="DONUT 16.000 Puffs - Más Vendido" class="hero-product-img" id="heroProductImg">
+          <div class="hero-product-img-box" onclick="openHeroProductFlavors()" style="cursor: pointer;" title="Ver sabores">
+            <img src="assets/productos/1.png" alt="Bang Leader - Más Vendido" class="hero-product-img" id="heroProductImg">
           </div>
 
           <div class="hero-product-info">
-            <div class="hero-product-meta">
-              <span class="hero-spec-tag">⚡ 16.000 Puffs</span>
-              <span class="hero-spec-tag">🖥️ Pantalla Digital</span>
-              <span class="hero-spec-tag">🔋 650 mAh</span>
+            <div class="hero-product-meta" id="heroProductMeta">
+              <span class="hero-spec-tag">⚡ 32.000 Puffs</span>
+              <span class="hero-spec-tag">🎨 6 Sabores</span>
+              <span class="hero-spec-tag">🔋 Recargable C</span>
             </div>
-            <h3 class="hero-product-title">DONUT 16.000 PUFFS</h3>
+            
+            <h3 class="hero-product-title" id="heroProductTitle">BANG LEADER 32.000 PUFFS</h3>
+            
             <div class="hero-price-row">
               <div class="hero-price-box">
                 <span class="hero-price-label">Precio Detal</span>
-                <span class="hero-price-val">$65.000</span>
+                <span class="hero-price-val" id="heroRetailPrice">$45.000</span>
               </div>
               <div class="hero-price-box ws-highlight">
                 <span class="hero-price-label">Mayorista desde</span>
-                <span class="hero-price-val">$18.000</span>
+                <span class="hero-price-val" id="heroWholesalePrice">$23.000</span>
               </div>
             </div>
 
             <div class="hero-card-actions">
-              <button type="button" class="btn btn-primary hero-buy-btn" onclick="Cart.addItem('donut', 1)">
+              <button type="button" class="btn btn-primary hero-buy-btn" id="heroAddCartBtn" onclick="addCurrentHeroToCart()">
                 🛒 Agregar al Carrito
               </button>
-              <a href="#catalogo" class="btn btn-secondary hero-view-btn">
+              <button type="button" class="btn btn-secondary hero-view-btn" onclick="openHeroProductFlavors()">
                 Ver Sabores
-              </a>
+              </button>
             </div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   </section>
 
@@ -298,6 +318,219 @@
     </div>
   </section>
 
+  
+  <!-- POLICIES & INFORMATION SECTION (APARTADOS OFICIALES) -->
+  <section id="informacion" class="info-policy-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Información Oficial & Políticas</h2>
+        <p class="section-subtitle">Conoce nuestras políticas de envíos a todo Colombia, garantías oficiales, tratamiento de datos y términos de compra.</p>
+      </div>
+
+      <div class="info-policy-tabs-wrapper">
+        <div class="info-policy-nav-pills">
+          <button type="button" class="info-tab-btn active" onclick="switchPolicyTab('envios')">
+            <span>🚚</span> Envíos & Cobertura
+          </button>
+          <button type="button" class="info-tab-btn" onclick="switchPolicyTab('garantias')">
+            <span>🛡️</span> Garantía de Productos
+          </button>
+          <button type="button" class="info-tab-btn" onclick="switchPolicyTab('datos')">
+            <span>🔒</span> Tratamiento de Datos
+          </button>
+          <button type="button" class="info-tab-btn" onclick="switchPolicyTab('terminos')">
+            <span>📜</span> Términos y Condiciones
+          </button>
+        </div>
+
+        <div class="info-policy-card-box">
+          <!-- TAB 1: ENVÍOS -->
+          <div id="tab-envios" class="policy-tab-pane active">
+            <div class="policy-pane-header">
+              <span class="policy-badge">🚚 LOGÍSTICA & DESPACHOS</span>
+              <h3>Políticas de Envíos en Bogotá & Nacionales</h3>
+            </div>
+            
+            <div class="policy-grid-2">
+              <div class="policy-block">
+                <h4>📍 Bogotá y Alrededores (Envío Normal)</h4>
+                <p>Realizamos envíos el <strong>mismo día</strong> si confirmas tu pedido antes de la <strong>1:30 PM</strong>. El valor del domicilio depende de la zona y se informa antes de despachar. Nuestro equipo valida stock, dirección y cobertura en tiempo real para garantizar una entrega segura.</p>
+              </div>
+
+              <div class="policy-block">
+                <h4>🇨🇴 Envíos Nacionales</h4>
+                <p>Despachamos a todo Colombia mediante empresas de mensajería certificadas. El tiempo estimado de entrega es de <strong>1 a 3 días hábiles</strong> según la ciudad de destino. Una vez enviado el paquete, te compartimos la guía de seguimiento para que estés informado en todo momento.</p>
+              </div>
+            </div>
+
+            <div class="policy-highlight-box express-highlight">
+              <h4>⚡ Envío Express (Bogotá) — Entrega en 1 a 2 Horas</h4>
+              <p>Disponible para compras dentro de Bogotá de <strong>lunes a sábado</strong>.</p>
+              <ul class="policy-list">
+                <li>Se agenda a partir de las <strong>10:00 AM</strong>.</li>
+                <li>Aplica pago anticipado para confirmar y reservar el servicio.</li>
+                <li>El valor del domicilio express se cancela directamente al conductor al momento de la entrega.</li>
+                <li><strong>Tiempo estimado de entrega:</strong> entre 1 y 2 horas después de confirmado el pago, según la localidad.</li>
+              </ul>
+              <p style="margin-top: 8px; font-size: 0.88rem; color: var(--accent-yellow);">👉 Para solicitar envío express, escríbenos por WhatsApp y te indicamos disponibilidad y tarifa exacta.</p>
+            </div>
+
+            <div class="policy-note-box">
+              <strong>⚠️ Puntos Importantes sobre la Entrega:</strong>
+              <ul class="policy-list">
+                <li>El cliente debe ser <strong>mayor de 18 años</strong> y presentar documento de identidad al recibir el pedido.</li>
+                <li>Si no hay alguien que reciba en la dirección suministrada, se reprograma la entrega según cobertura de la transportadora.</li>
+                <li>Los pedidos pagados de forma anticipada tienen <strong>prioridad de despacho</strong>.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- TAB 2: GARANTÍAS -->
+          <div id="tab-garantias" class="policy-tab-pane">
+            <div class="policy-pane-header">
+              <span class="policy-badge guarantee-badge">🛡️ RESPALDO OFICIAL</span>
+              <h3>Garantía de Productos — Capital Vape</h3>
+            </div>
+
+            <div class="policy-alert-gold">
+              <strong>⏱️ Cobertura:</strong> Nuestros productos cuentan con <strong>garantía de 3 días calendario</strong> a partir de la entrega, <em>únicamente por defectos de fábrica</em>.
+            </div>
+
+            <div class="policy-grid-2" style="margin-top: 16px;">
+              <div class="policy-block good-coverage">
+                <h4>✅ ¿Qué cubre la garantía?</h4>
+                <ul class="policy-list">
+                  <li>Dispositivo no enciende o no carga correctamente de fábrica.</li>
+                  <li>Fuga interna de líquido dentro del empaque original sellado.</li>
+                  <li>Rendimiento de puff inferior al 20% del indicado sin uso incorrecto.</li>
+                </ul>
+              </div>
+
+              <div class="policy-block bad-coverage">
+                <h4>❌ ¿Qué NO cubre la garantía?</h4>
+                <ul class="policy-list">
+                  <li>Daños por golpes, caídas, humedad, exposición al calor o mal uso.</li>
+                  <li>Sabor no esperado o percepción personal del producto.</li>
+                  <li>Dispositivos abiertos, manipulados o sin su empaque original.</li>
+                  <li>Desgaste normal derivado del uso continuo.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="policy-steps-box">
+              <h4>📋 Requisitos obligatorios para hacer válida la garantía:</h4>
+              <ol class="policy-ol">
+                <li><strong>Contactarnos por WhatsApp</strong> dentro de los 3 días posteriores a la entrega.</li>
+                <li><strong>Enviar evidencia clara</strong> (foto o video continuo) que demuestre el defecto de fábrica.</li>
+                <li><strong>Conservar el empaque original</strong> y el dispositivo en las mismas condiciones en que fue recibido.</li>
+              </ol>
+              <p style="margin-top: 10px; font-size: 0.88rem; color: var(--text-secondary);">* Si se aprueba la garantía, se coordinará el cambio por un producto igual o similar según disponibilidad de inventario.</p>
+            </div>
+          </div>
+
+          <!-- TAB 3: TRATAMIENTO DE DATOS -->
+          <div id="tab-datos" class="policy-tab-pane">
+            <div class="policy-pane-header">
+              <span class="policy-badge privacy-badge">🔒 HABEAS DATA</span>
+              <h3>Política de Tratamiento de Datos Personales</h3>
+            </div>
+
+            <p class="policy-intro"><strong>Responsable del Tratamiento:</strong> CAPITAL VAPE • <strong>Contacto Oficial:</strong> WhatsApp 3248012914</p>
+            <p>En cumplimiento de la <strong>Ley Estatutaria 1581 de 2012</strong> y sus decretos reglamentarios sobre protección de datos personales, informamos que los datos suministrados por nuestros clientes (nombre, teléfono, dirección, ciudad, etc.) serán utilizados con estricta confidencialidad para:</p>
+
+            <ul class="policy-list" style="margin: 12px 0;">
+              <li>Gestionar pedidos, compras, facturación y coordinar entregas logísticas.</li>
+              <li>Brindar soporte postventa, atención de garantías y servicio al cliente.</li>
+              <li>Compartir información de lanzamientos y promociones exclusivas, <em>únicamente si el cliente lo autoriza expresamente</em>.</li>
+            </ul>
+
+            <div class="policy-grid-2">
+              <div class="policy-block">
+                <h4>👤 Derechos del Titular</h4>
+                <p>Toda persona tiene derecho a <strong>conocer, actualizar, rectificar o suprimir</strong> sus datos personales de nuestras bases de datos, así como a revocar la autorización otorgada. Para ejercer estos derechos, puede escribirnos vía WhatsApp y atenderemos su solicitud en un máximo de <strong>10 días hábiles</strong>.</p>
+              </div>
+
+              <div class="policy-block">
+                <h4>🛡️ Seguridad y Confidencialidad</h4>
+                <p>No compartimos, vendemos ni cedemos datos personales a terceros, salvo a la empresa transportadora encargada de realizar la entrega física de su pedido. Implementamos medidas técnicas y administrativas razonables para salvaguardar la información.</p>
+              </div>
+            </div>
+
+            <div class="policy-note-box" style="margin-top: 16px;">
+              <strong>✍️ Consentimiento:</strong> Al confirmar un pedido en nuestra plataforma, el cliente acepta esta política y autoriza el tratamiento de sus datos para los fines logísticos y comerciales mencionados.
+            </div>
+          </div>
+
+          <!-- TAB 4: TÉRMINOS Y CONDICIONES -->
+          <div id="tab-terminos" class="policy-tab-pane">
+            <div class="policy-pane-header">
+              <span class="policy-badge terms-badge">📜 MARCO LEGAL</span>
+              <h3>Términos y Condiciones Generales de Uso</h3>
+            </div>
+
+            <div class="terms-items-list">
+              <div class="term-item">
+                <span class="term-num">1</span>
+                <div>
+                  <h4>Mayoría de Edad (+18 Años)</h4>
+                  <p>Venta exclusiva para personas mayores de 18 años. Al confirmar cualquier pedido, el cliente declara bajo gravedad de juramento ser mayor de edad y asume la responsabilidad legal de su declaración.</p>
+                </div>
+              </div>
+
+              <div class="term-item">
+                <span class="term-num">2</span>
+                <div>
+                  <h4>Autenticidad de Productos</h4>
+                  <p>Todos nuestros productos son 100% originales, nuevos y se entregan sellados en su empaque de fábrica. Las imágenes digitales son ilustrativas y pueden presentar ligeras variaciones de tonalidad respecto al producto físico.</p>
+                </div>
+              </div>
+
+              <div class="term-item">
+                <span class="term-num">3</span>
+                <div>
+                  <h4>Precios y Medios de Pago</h4>
+                  <p>Los precios están expresados en pesos colombianos (COP) y pueden cambiar sin previo aviso conforme a variaciones del mercado. Aceptamos transferencias (Nequi, Daviplata, Llave) y efectivo contra entrega (según cobertura). El pago anticipado garantiza la reserva prioritaria del inventario.</p>
+                </div>
+              </div>
+
+              <div class="term-item">
+                <span class="term-num">4</span>
+                <div>
+                  <h4>Despachos y Entregas</h4>
+                  <p>Los tiempos de entrega son estimados y pueden verse afectados por factores externos como clima, tráfico o novedades de la transportadora. El cliente es responsable de proporcionar una dirección exacta y estar disponible para recibir.</p>
+                </div>
+              </div>
+
+              <div class="term-item">
+                <span class="term-num">5</span>
+                <div>
+                  <h4>Garantías y Cambios</h4>
+                  <p>Se rigen estrictamente por nuestra política de garantía de 3 días por defectos de fábrica. No se aceptan devoluciones por cambios de opinión o preferencia de sabor una vez abierto el sello de seguridad.</p>
+                </div>
+              </div>
+
+              <div class="term-item">
+                <span class="term-num">6</span>
+                <div>
+                  <h4>Uso Responsable & Advertencia de Nicotina</h4>
+                  <p>Los productos que contienen nicotina son adictivos. No se recomienda su consumo a mujeres embarazadas, personas menores de edad o personas con afecciones cardíacas o respiratorias. CAPITAL VAPE no se hace responsable por el uso indebido de los dispositivos.</p>
+                </div>
+              </div>
+
+              <div class="term-item">
+                <span class="term-num">7</span>
+                <div>
+                  <h4>Jurisdicción Aplicable</h4>
+                  <p>Cualquier controversia o reclamación derivada de compras en esta plataforma se resolverá de conformidad con las leyes vigentes de la República de Colombia.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- CONTACT SECTION -->
   <section id="contacto" class="contact-section">
     <div class="container">
@@ -358,23 +591,24 @@
           <p class="footer-brand-p">Tienda líder en vapeo premium y distribución mayorista en Colombia. Calidad, garantía y atención personalizada.</p>
         </div>
 
-        <div>
+                <div>
           <h4 class="footer-heading">Navegación</h4>
           <ul class="footer-nav-list">
             <li><a href="#inicio">Inicio</a></li>
             <li><a href="#catalogo">Catálogo Detal</a></li>
             <li><a href="#mayoristas">Portal Mayorista</a></li>
+            <li><a href="#informacion">Envíos & Garantías</a></li>
             <li><a href="#contacto">Contacto</a></li>
           </ul>
         </div>
 
         <div>
-          <h4 class="footer-heading">Categorías</h4>
+          <h4 class="footer-heading">Políticas & Legal</h4>
           <ul class="footer-nav-list">
-            <li><a href="#catalogo">Vapes Desechables</a></li>
-            <li><a href="#catalogo">Kits & Baterías</a></li>
-            <li><a href="#catalogo">Pods de Repuesto</a></li>
-            <li><a href="#catalogo">Accesorios</a></li>
+            <li><a href="#informacion" onclick="switchPolicyTab('envios')">🚚 Envíos & Cobertura</a></li>
+            <li><a href="#informacion" onclick="switchPolicyTab('garantias')">🛡️ Garantía de 3 Días</a></li>
+            <li><a href="#informacion" onclick="switchPolicyTab('datos')">🔒 Tratamiento de Datos</a></li>
+            <li><a href="#informacion" onclick="switchPolicyTab('terminos')">📜 Términos y Condiciones (+18)</a></li>
           </ul>
         </div>
 

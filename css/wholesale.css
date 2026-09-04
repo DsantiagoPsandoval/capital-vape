@@ -24,21 +24,43 @@
 
 .wholesale-form {
   display: flex;
-  gap: 10px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
   margin: 24px 0 16px;
+  width: 100%;
 }
 
 .wholesale-input {
-  flex-grow: 1;
+  width: 100%;
   background: var(--bg-surface);
-  border: 1px solid var(--border-color);
+  border: 1.5px solid var(--border-color);
   color: var(--text-primary);
-  padding: 12px 18px;
-  border-radius: var(--radius-full);
-  font-size: 0.95rem;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 700;
   text-align: center;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
+  transition: var(--transition);
+  box-sizing: border-box;
+}
+
+.wholesale-input:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 15px var(--accent-gold-glow);
+}
+
+#btnWholesaleSubmit {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 800;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
 .wholesale-input:focus {

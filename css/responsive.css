@@ -86,12 +86,29 @@ body.menu-open-scroll-lock {
 
   /* ----------------- NAVBAR & MOBILE DRAWER ----------------- */
   .cv-navbar {
-    padding: 8px 0 !important;
-    position: sticky !important;
+    position: fixed !important;
     top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding: 8px 0 !important;
     z-index: 1000 !important;
-    background: rgba(11, 4, 16, 0.96) !important;
-    backdrop-filter: blur(12px) !important;
+    background: rgba(11, 4, 16, 0.98) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7) !important;
+  }
+
+  body {
+    padding-top: 56px !important;
+  }
+
+  section,
+  #inicio,
+  #catalogo,
+  #mayoristas,
+  #contacto {
+    scroll-margin-top: 64px !important;
   }
 
   .nav-container {
@@ -114,7 +131,7 @@ body.menu-open-scroll-lock {
     font-size: 1.05rem !important;
   }
 
-  /* Mobile Drawer Menu (Persistent ☰) */
+  /* Mobile Drawer Menu (Persistent ☰ - Lighter Translucent Glass Background) */
   .nav-menu {
     display: none;
     position: fixed !important;
@@ -124,14 +141,19 @@ body.menu-open-scroll-lock {
     bottom: 0 !important;
     width: 100vw !important;
     height: 100vh !important;
-    background: rgba(11, 4, 16, 0.98) !important;
-    backdrop-filter: blur(20px) !important;
-    padding: 20px !important;
+    background: linear-gradient(180deg, rgba(42, 18, 62, 0.92) 0%, rgba(26, 11, 40, 0.92) 100%) !important;
+    backdrop-filter: blur(25px) !important;
+    -webkit-backdrop-filter: blur(25px) !important;
+    padding: 20px 18px !important;
     flex-direction: column !important;
-    gap: 16px !important;
+    gap: 14px !important;
     z-index: 9999 !important;
     overflow-y: auto !important;
     box-sizing: border-box !important;
+  }
+
+  [data-theme="light"] .nav-menu {
+    background: linear-gradient(180deg, rgba(252, 245, 255, 0.96) 0%, rgba(243, 230, 248, 0.96) 100%) !important;
   }
 
   .nav-menu.open {
@@ -168,14 +190,21 @@ body.menu-open-scroll-lock {
   }
 
   .nav-link {
-    font-size: 1.1rem !important;
+    font-size: 1.05rem !important;
     font-weight: 700 !important;
-    padding: 12px 14px !important;
+    padding: 13px 16px !important;
     border-radius: var(--radius-md) !important;
-    background: var(--bg-card) !important;
-    border: 1px solid rgba(255, 255, 255, 0.06) !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(216, 27, 183, 0.3) !important;
     display: block !important;
     width: 100% !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  [data-theme="light"] .nav-link {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border: 1px solid rgba(179, 13, 150, 0.2) !important;
+    color: #1C0722 !important;
   }
 
   .nav-link.nav-link-wholesale {
@@ -612,3 +641,36 @@ body.menu-open-scroll-lock {
     bottom: 74px !important;
   }
 }
+
+  /* Wholesale Gate Login Form (Button Below Input) */
+  .wholesale-gate-box {
+    padding: 24px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .wholesale-form {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .wholesale-input {
+    width: 100% !important;
+    font-size: 0.95rem !important;
+    padding: 12px 14px !important;
+    text-align: center !important;
+    box-sizing: border-box !important;
+  }
+
+  #btnWholesaleSubmit {
+    width: 100% !important;
+    padding: 13px 16px !important;
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    display: block !important;
+    box-sizing: border-box !important;
+  }

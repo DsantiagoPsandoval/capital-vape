@@ -62,14 +62,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Smooth scroll
+    // Smooth scroll with fixed header offset
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href').substring(1);
       const targetEl = document.getElementById(targetId);
       if (targetEl) {
         e.preventDefault();
-        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const headerOffset = 76;
+        const elementPosition = targetEl.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
       }
     });
   });
@@ -193,3 +199,113 @@ function initWholesaleSection() {
     });
   }
 }
+
+/**
+ * GESTOR DE PESTAÑAS DE POLÍTICAS E INFORMACIÓN
+ */
+function switchPolicyTab(tabId) {
+  document.querySelectorAll('.info-tab-btn').forEach(btn => {
+    const isTarget = btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(tabId);
+    btn.classList.toggle('active', isTarget);
+  });
+
+  document.querySelectorAll('.policy-tab-pane').forEach(pane => {
+    pane.classList.remove('active');
+  });
+
+  const targetPane = document.getElementById('tab-' + tabId);
+  if (targetPane) {
+    targetPane.classList.add('active');
+  }
+}
+window.switchPolicyTab = switchPolicyTab;
+
+
+/**
+ * GESTOR DE PRODUCTO DESTACADO EN HERO (BANG LEADER, HUMO AZUL, DONUT)
+ */
+const HERO_PRODUCTS_CONFIG = {
+  "bang-leader": {
+    badge: "🔥 TOP #1 MÁS VENDIDO",
+    title: "BANG LEADER 32.000 PUFFS",
+    img: "assets/productos/1.png",
+    specs: ["⚡ 32.000 Puffs", "🎨 6 Sabores", "🔋 Recargable C"],
+    retailPrice: "$45.000",
+    wholesalePrice: "$23.000",
+    productId: "bang-leader"
+  },
+  "humo-azul": {
+    badge: "⚡ EDICIÓN ESPECIAL COLORES",
+    title: "HUMO AZUL 15.000 PUFFS",
+    img: "assets/productos/8.png",
+    specs: ["⚡ 15.000 Puffs", "🎨 4 Colores", "🌬️ 23 Sabores"],
+    retailPrice: "$50.000",
+    wholesalePrice: "$23.000",
+    productId: "humo-azul"
+  },
+  "donut": {
+    badge: "🍩 MÁXIMA POTENCIA DIGITAL",
+    title: "DONUT 50.000 PUFFS",
+    img: "assets/productos/248.png",
+    specs: ["⚡ 50.000 Puffs", "🖥️ Pantalla Digital", "🔋 650 mAh"],
+    retailPrice: "$40.000",
+    wholesalePrice: "$18.000",
+    productId: "donut"
+  }
+};
+
+let currentHeroProductId = 'bang-leader';
+
+function switchHeroProduct(prodId) {
+  const cfg = HERO_PRODUCTS_CONFIG[prodId];
+  if (!cfg) return;
+
+  currentHeroProductId = prodId;
+
+  // Update pills
+  document.querySelectorAll('.hero-pill-btn').forEach(btn => {
+    const isMatch = btn.getAttribute('onclick') && btn.getAttribute('onclick').includes(prodId);
+    btn.classList.toggle('active', isMatch);
+  });
+
+  const badgeEl = document.getElementById('heroTopBadgeText');
+  const titleEl = document.getElementById('heroProductTitle');
+  const imgEl = document.getElementById('heroProductImg');
+  const metaEl = document.getElementById('heroProductMeta');
+  const retailEl = document.getElementById('heroRetailPrice');
+  const wsEl = document.getElementById('heroWholesalePrice');
+
+  if (badgeEl) badgeEl.textContent = cfg.badge;
+  if (titleEl) titleEl.textContent = cfg.title;
+  if (retailEl) retailEl.textContent = cfg.retailPrice;
+  if (wsEl) wsEl.textContent = cfg.wholesalePrice;
+
+  if (metaEl) {
+    metaEl.innerHTML = cfg.specs.map(s => `<span class="hero-spec-tag">${s}</span>`).join('');
+  }
+
+  if (imgEl) {
+    imgEl.style.opacity = '0.3';
+    setTimeout(() => {
+      imgEl.src = cfg.img;
+      imgEl.alt = cfg.title;
+      imgEl.style.opacity = '1';
+    }, 120);
+  }
+}
+
+function addCurrentHeroToCart() {
+  if (window.Cart) {
+    Cart.addItem(currentHeroProductId, null, 1);
+  }
+}
+
+function openHeroProductFlavors() {
+  if (window.CatalogController) {
+    CatalogController.openFlavorModal(currentHeroProductId);
+  }
+}
+
+window.switchHeroProduct = switchHeroProduct;
+window.addCurrentHeroToCart = addCurrentHeroToCart;
+window.openHeroProductFlavors = openHeroProductFlavors;

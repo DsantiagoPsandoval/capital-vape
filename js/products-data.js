@@ -1,5 +1,5 @@
 /**
- * CAPITAL VAPE - Base de Datos Centralizada de Productos y Sabores Oficiales
+ * CAPITAL VAPE - Base de Datos Oficial de Productos, Puffs y Precios
  */
 const PRODUCTS_DATA = [
   {
@@ -51,14 +51,82 @@ const PRODUCTS_DATA = [
     ]
   },
   {
+    "id": "hookalit",
+    "nombre": "HOOKALIT",
+    "categoria": "desechables",
+    "subtitulo": "35.000 Puffs • 10 Sabores",
+    "puffs": 35000,
+    "precio": 35000,
+    "precio_promo_2": 58000,
+    "ahorro_2": 12000,
+    "rating": 4.9,
+    "ventas": 4900,
+    "imagen": "assets/productos/214.png",
+    "descripcion": "El gigante del vapeo: 40.000 puffs con tecnología DTL (Direct to Lung), simulador de narguile / shisha con vapor denso.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Amor Mágico",
+        "img": "assets/productos/214.png",
+        "desc": "Mezcla shisha de frutas del bosque y menta."
+      },
+      {
+        "nombre": "Gomita",
+        "img": "assets/productos/215.png",
+        "desc": "Gomitas dulces estilo shisha."
+      },
+      {
+        "nombre": "Menta Helada",
+        "img": "assets/productos/216.png",
+        "desc": "Menta potente con frescura helada."
+      },
+      {
+        "nombre": "Mujer Asesina",
+        "img": "assets/productos/217.png",
+        "desc": "Frutos rojos con toque floral seductor."
+      },
+      {
+        "nombre": "Amor 66",
+        "img": "assets/productos/218.png",
+        "desc": "Sabor legendario de melón, maracuyá y menta."
+      },
+      {
+        "nombre": "Misterio Azul",
+        "img": "assets/productos/219.png",
+        "desc": "Arándano azul con toque secreto de hierbas."
+      },
+      {
+        "nombre": "Doble Manzana",
+        "img": "assets/productos/220.png",
+        "desc": "Clásico sabor a doble manzana de narguile con anís."
+      },
+      {
+        "nombre": "Vainilla Blanca",
+        "img": "assets/productos/221.png",
+        "desc": "Vainilla cremosa y suave."
+      },
+      {
+        "nombre": "Sueño Lúcido",
+        "img": "assets/productos/222.png",
+        "desc": "Mezcla relajante de uvas y bayas dulces."
+      },
+      {
+        "nombre": "Durazno Vainilla",
+        "img": "assets/productos/223.png",
+        "desc": "Durazno maduro con crema de vainilla."
+      }
+    ]
+  },
+  {
     "id": "humo-azul",
     "nombre": "HUMO AZUL",
     "categoria": "desechables",
-    "subtitulo": "6 Sabores por Color",
-    "puffs": 10000,
-    "precio": 45000,
-    "precio_promo_2": 80000,
-    "ahorro_2": 10000,
+    "subtitulo": "15.000 Puffs • 4 Colores",
+    "puffs": 15000,
+    "precio": 50000,
+    "precio_promo_2": 85000,
+    "ahorro_2": 15000,
     "rating": 4.8,
     "ventas": 2890,
     "imagen": "assets/productos/8.png",
@@ -112,14 +180,255 @@ const PRODUCTS_DATA = [
     ]
   },
   {
+    "id": "baddie-bar",
+    "nombre": "BADDIE BAR",
+    "categoria": "desechables",
+    "subtitulo": "15.000 Puffs • 21 Sabores",
+    "puffs": 15000,
+    "precio": 27000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 9000,
+    "rating": 4.9,
+    "ventas": 3650,
+    "imagen": "assets/productos/baddie-1.png",
+    "descripcion": "El Baddie Bar 15.000 Puffs ofrece una experiencia de vapeo premium con 21 sabores intensos, pantalla digital y batería recargable tipo C.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Blue Razz Ice",
+        "img": "assets/productos/baddie-1.png",
+        "desc": "Arándanos azules con frambuesa y golpe helado."
+      },
+      {
+        "nombre": "Watermelon Ice",
+        "img": "assets/productos/baddie-2.png",
+        "desc": "Sandía dulce jugosa con acabado ultra frío."
+      },
+      {
+        "nombre": "Strawberry Kiwi",
+        "img": "assets/productos/baddie-3.png",
+        "desc": "Fresas maduras combinadas con kiwi tropical ácido."
+      },
+      {
+        "nombre": "Cool Mint",
+        "img": "assets/productos/baddie-4.png",
+        "desc": "Menta glacial refrescante de alta pureza."
+      },
+      {
+        "nombre": "Peach Mango",
+        "img": "assets/productos/baddie-5.png",
+        "desc": "Durazno aterciopelado con mango dulce."
+      },
+      {
+        "nombre": "Grape Ice",
+        "img": "assets/productos/baddie-6.png",
+        "desc": "Uvas moradas intensas con toque helado."
+      },
+      {
+        "nombre": "Sour Apple",
+        "img": "assets/productos/baddie-7.png",
+        "desc": "Manzana verde ácida y chispeante."
+      },
+      {
+        "nombre": "Pink Lemonade",
+        "img": "assets/productos/baddie-8.png",
+        "desc": "Limonada rosada refrescante con frutos rojos."
+      },
+      {
+        "nombre": "Cherry Cola",
+        "img": "assets/productos/baddie-9.png",
+        "desc": "Cola clásica burbujeante con cereza dulce."
+      },
+      {
+        "nombre": "Blueberry Raspberry",
+        "img": "assets/productos/baddie-10.png",
+        "desc": "Mezcla de arándanos y frambuesas silvestres."
+      },
+      {
+        "nombre": "Strawberry Banana",
+        "img": "assets/productos/baddie-11.png",
+        "desc": "Batido cremoso de fresa y banano."
+      },
+      {
+        "nombre": "Kiwi Passion Fruit Guava",
+        "img": "assets/productos/baddie-12.png",
+        "desc": "Trilogía tropical de kiwi, maracuyá y guayaba."
+      },
+      {
+        "nombre": "Triple Berry",
+        "img": "assets/productos/baddie-13.png",
+        "desc": "Tres tipos de bayas intensas y jugosas."
+      },
+      {
+        "nombre": "Pineapple Ice",
+        "img": "assets/productos/baddie-14.png",
+        "desc": "Piña dorada tropical con efecto frío."
+      },
+      {
+        "nombre": "Mango Ice",
+        "img": "assets/productos/baddie-15.png",
+        "desc": "Mango maduro caribeño con golpe helado."
+      },
+      {
+        "nombre": "Juicy Peach",
+        "img": "assets/productos/baddie-16.png",
+        "desc": "Melocotón jugoso y dulce de aroma intenso."
+      },
+      {
+        "nombre": "Blackberry Ice",
+        "img": "assets/productos/baddie-17.png",
+        "desc": "Moras negras silvestres con hielo."
+      },
+      {
+        "nombre": "Cotton Candy",
+        "img": "assets/productos/baddie-18.png",
+        "desc": "Algodón de azúcar dulce y nostálgico."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "assets/productos/baddie-19.png",
+        "desc": "Menta suave estilo Miami con notas cítricas."
+      },
+      {
+        "nombre": "Dragon Fruit Banana",
+        "img": "assets/productos/baddie-20.png",
+        "desc": "Pitahaya exótica combinada con banano."
+      },
+      {
+        "nombre": "Energy Bull",
+        "img": "assets/productos/baddie-21.png",
+        "desc": "Sabor energizante con arándanos y toque efervescente."
+      }
+    ]
+  },
+  {
+    "id": "donut",
+    "nombre": "DONUT",
+    "categoria": "desechables",
+    "subtitulo": "50.000 Puffs • 20 Sabores",
+    "puffs": 50000,
+    "precio": 40000,
+    "precio_promo_2": 70000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3950,
+    "imagen": "assets/productos/248.png",
+    "descripcion": "Diseño innovador y divertido con 12.000 caladas de sabor ultra dulce, notas de postre, frutas y gomitas.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Dragon Melón",
+        "img": "assets/productos/248.png",
+        "desc": "Fruta del dragón exótica con melón dulce."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/249.png",
+        "desc": "Dúo fresco y dulce de fresa y sandía."
+      },
+      {
+        "nombre": "Fresa Plátano",
+        "img": "assets/productos/250.png",
+        "desc": "Fresas con plátano cremoso."
+      },
+      {
+        "nombre": "Mora Helada",
+        "img": "assets/productos/251.png",
+        "desc": "Moras silvestres con toque frío."
+      },
+      {
+        "nombre": "Mango Helado",
+        "img": "assets/productos/252.png",
+        "desc": "Mango tropical con frescura helada."
+      },
+      {
+        "nombre": "Gomitas",
+        "img": "assets/productos/253.png",
+        "desc": "Gomitas de osito dulces."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/254.png",
+        "desc": "Menta limpia con frescura duradera."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/255.png",
+        "desc": "Sandía jugosa con golpe de frío."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/256.png",
+        "desc": "Uvas moradas con acabado frío."
+      },
+      {
+        "nombre": "Melocotón Mango",
+        "img": "assets/productos/257.png",
+        "desc": "Durazno sedoso con mango dulce."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/258.png",
+        "desc": "Fresa dulce con kiwi cítrico."
+      },
+      {
+        "nombre": "Piña Helada",
+        "img": "assets/productos/259.png",
+        "desc": "Piña dulce con toque helado."
+      },
+      {
+        "nombre": "Arándano Frambuesa",
+        "img": "assets/productos/260.png",
+        "desc": "Arándanos jugosos y frambuesa ácida."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/261.png",
+        "desc": "Cerezas con frescura intensa."
+      },
+      {
+        "nombre": "Plátano Helado",
+        "img": "assets/productos/262.png",
+        "desc": "Plátano dulce con toque frío."
+      },
+      {
+        "nombre": "Manzana Verde",
+        "img": "assets/productos/263.png",
+        "desc": "Manzana ácida y crujiente."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/264.png",
+        "desc": "Surtido de moras y bayas rojas."
+      },
+      {
+        "nombre": "Algodón Dulce",
+        "img": "assets/productos/265.png",
+        "desc": "Algodón de azúcar dulce de feria."
+      },
+      {
+        "nombre": "Limonada Rosa",
+        "img": "assets/productos/266.png",
+        "desc": "Limonada cítrica con fresas."
+      },
+      {
+        "nombre": "Bebida Energética",
+        "img": "assets/productos/267.png",
+        "desc": "Sabor clásico a bebida energizante."
+      }
+    ]
+  },
+  {
     "id": "solobar-kit",
     "nombre": "SOLOBAR KIT",
     "categoria": "kits",
-    "subtitulo": "10.000 Puffs • Kit Recargable",
-    "puffs": 10000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "subtitulo": "35.000 Puffs • 8 Sabores",
+    "puffs": 35000,
+    "precio": 39000,
+    "precio_promo_2": 70000,
+    "ahorro_2": 8000,
     "rating": 4.8,
     "ventas": 3100,
     "imagen": "assets/productos/12.png",
@@ -173,11 +482,11 @@ const PRODUCTS_DATA = [
     "id": "solobar-pod",
     "nombre": "SOLOBAR POD",
     "categoria": "pods",
-    "subtitulo": "10.000 Puffs • Pod de Repuesto",
-    "puffs": 10000,
-    "precio": 25000,
-    "precio_promo_2": 45000,
-    "ahorro_2": 5000,
+    "subtitulo": "35.000 Puffs • 8 Sabores",
+    "puffs": 35000,
+    "precio": 29000,
+    "precio_promo_2": 50000,
+    "ahorro_2": 8000,
     "rating": 4.8,
     "ventas": 4200,
     "imagen": "assets/productos/20.png",
@@ -231,11 +540,11 @@ const PRODUCTS_DATA = [
     "id": "yocco",
     "nombre": "YOCCO",
     "categoria": "desechables",
-    "subtitulo": "10.000 Puffs • 7 Sabores",
-    "puffs": 10000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "subtitulo": "5.100 Puffs • 7 Sabores",
+    "puffs": 5100,
+    "precio": 14000,
+    "precio_promo_2": 24000,
+    "ahorro_2": 4000,
     "rating": 4.8,
     "ventas": 2100,
     "imagen": "assets/productos/28.png",
@@ -284,11 +593,11 @@ const PRODUCTS_DATA = [
     "id": "death-row",
     "nombre": "DEATH ROW",
     "categoria": "desechables",
-    "subtitulo": "7.000 Puffs • 9 Sabores",
-    "puffs": 7000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "subtitulo": "5.000 Puffs • 9 Sabores",
+    "puffs": 5000,
+    "precio": 15000,
+    "precio_promo_2": 25000,
+    "ahorro_2": 5000,
     "rating": 4.8,
     "ventas": 1950,
     "imagen": "assets/productos/36.png",
@@ -349,9 +658,9 @@ const PRODUCTS_DATA = [
     "categoria": "desechables",
     "subtitulo": "5.000 Puffs • 27 Sabores",
     "puffs": 5000,
-    "precio": 30000,
-    "precio_promo_2": 50000,
-    "ahorro_2": 10000,
+    "precio": 18000,
+    "precio_promo_2": 30000,
+    "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 5120,
     "imagen": "assets/productos/46.png",
@@ -502,9 +811,9 @@ const PRODUCTS_DATA = [
     "categoria": "desechables",
     "subtitulo": "5.000 Puffs • 15 Sabores",
     "puffs": 5000,
-    "precio": 30000,
-    "precio_promo_2": 50000,
-    "ahorro_2": 10000,
+    "precio": 18000,
+    "precio_promo_2": 30000,
+    "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 3890,
     "imagen": "assets/productos/73.png",
@@ -595,9 +904,9 @@ const PRODUCTS_DATA = [
     "categoria": "desechables",
     "subtitulo": "8.000 Puffs • 30 Sabores",
     "puffs": 8000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "precio": 18000,
+    "precio_promo_2": 30000,
+    "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 4600,
     "imagen": "assets/productos/88.png",
@@ -763,9 +1072,9 @@ const PRODUCTS_DATA = [
     "categoria": "desechables",
     "subtitulo": "8.000 Puffs • 20 Sabores",
     "puffs": 8000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "precio": 18000,
+    "precio_promo_2": 30000,
+    "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 3750,
     "imagen": "assets/productos/118.png",
@@ -879,11 +1188,11 @@ const PRODUCTS_DATA = [
     "id": "nicky-jam",
     "nombre": "NICKY JAM",
     "categoria": "desechables",
-    "subtitulo": "10.000 Puffs • 16 Sabores",
-    "puffs": 10000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "subtitulo": "15.000 Puffs • 16 Sabores",
+    "puffs": 15000,
+    "precio": 27000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 9000,
     "rating": 4.8,
     "ventas": 4100,
     "imagen": "assets/productos/138.png",
@@ -977,11 +1286,11 @@ const PRODUCTS_DATA = [
     "id": "beyond",
     "nombre": "BEYOND",
     "categoria": "desechables",
-    "subtitulo": "10.000 Puffs • 5 Sabores",
-    "puffs": 10000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "subtitulo": "12.000 Puffs • 5 Sabores",
+    "puffs": 12000,
+    "precio": 22000,
+    "precio_promo_2": 40000,
+    "ahorro_2": 4000,
     "rating": 4.8,
     "ventas": 2300,
     "imagen": "assets/productos/154.png",
@@ -1020,11 +1329,11 @@ const PRODUCTS_DATA = [
     "id": "bugatti",
     "nombre": "BUGATTI",
     "categoria": "desechables",
-    "subtitulo": "9.000 Puffs • 9 Sabores",
-    "puffs": 9000,
-    "precio": 45000,
-    "precio_promo_2": 80000,
-    "ahorro_2": 10000,
+    "subtitulo": "17.000 Puffs • 9 Sabores",
+    "puffs": 17000,
+    "precio": 27000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 9000,
     "rating": 4.9,
     "ventas": 3800,
     "imagen": "assets/productos/159.png",
@@ -1083,11 +1392,11 @@ const PRODUCTS_DATA = [
     "id": "nimbox-kit",
     "nombre": "NIMBOX KIT",
     "categoria": "kits",
-    "subtitulo": "10.000 Puffs • Kit Recargable",
-    "puffs": 10000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "subtitulo": "25.000 Puffs • 12 Sabores",
+    "puffs": 25000,
+    "precio": 28000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 11000,
     "rating": 4.8,
     "ventas": 2900,
     "imagen": "assets/productos/168.png",
@@ -1161,11 +1470,11 @@ const PRODUCTS_DATA = [
     "id": "nimbox-pod",
     "nombre": "NIMBOX POD",
     "categoria": "pods",
-    "subtitulo": "10.000 Puffs • Pod de Repuesto",
-    "puffs": 10000,
-    "precio": 25000,
-    "precio_promo_2": 45000,
-    "ahorro_2": 5000,
+    "subtitulo": "25.000 Puffs • 12 Sabores",
+    "puffs": 25000,
+    "precio": 22000,
+    "precio_promo_2": 35000,
+    "ahorro_2": 9000,
     "rating": 4.8,
     "ventas": 4100,
     "imagen": "assets/productos/180.png",
@@ -1239,10 +1548,10 @@ const PRODUCTS_DATA = [
     "id": "vera",
     "nombre": "VERA",
     "categoria": "desechables",
-    "subtitulo": "12.000 Puffs • 7 Sabores",
-    "puffs": 12000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
+    "subtitulo": "22.000 Puffs • 7 Sabores",
+    "puffs": 22000,
+    "precio": 30000,
+    "precio_promo_2": 50000,
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 2750,
@@ -1292,11 +1601,11 @@ const PRODUCTS_DATA = [
     "id": "katchmi",
     "nombre": "KATCHMI",
     "categoria": "desechables",
-    "subtitulo": "12.000 Puffs • 8 Sabores",
-    "puffs": 12000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "subtitulo": "24.000 Puffs • 8 Sabores",
+    "puffs": 24000,
+    "precio": 28000,
+    "precio_promo_2": 48000,
+    "ahorro_2": 8000,
     "rating": 4.8,
     "ventas": 3200,
     "imagen": "assets/productos/199.png",
@@ -1350,11 +1659,11 @@ const PRODUCTS_DATA = [
     "id": "fifty-cent",
     "nombre": "FIFTY CENT",
     "categoria": "desechables",
-    "subtitulo": "20.000 Puffs • 7 Sabores",
-    "puffs": 20000,
-    "precio": 45000,
-    "precio_promo_2": 80000,
-    "ahorro_2": 10000,
+    "subtitulo": "30.000 Puffs • 7 Sabores",
+    "puffs": 30000,
+    "precio": 35000,
+    "precio_promo_2": 55000,
+    "ahorro_2": 15000,
     "rating": 4.8,
     "ventas": 3600,
     "imagen": "assets/productos/207.png",
@@ -1400,81 +1709,13 @@ const PRODUCTS_DATA = [
     ]
   },
   {
-    "id": "hookalit",
-    "nombre": "HOOKALIT",
-    "categoria": "desechables",
-    "subtitulo": "40.000 Puffs • 10 Sabores",
-    "puffs": 40000,
-    "precio": 50000,
-    "precio_promo_2": 90000,
-    "ahorro_2": 10000,
-    "rating": 4.9,
-    "ventas": 4900,
-    "imagen": "assets/productos/214.png",
-    "descripcion": "El gigante del vapeo: 40.000 puffs con tecnología DTL (Direct to Lung), simulador de narguile / shisha con vapor denso.",
-    "agotado": false,
-    "tipo_variante": "sabor",
-    "sabores": [
-      {
-        "nombre": "Amor Mágico",
-        "img": "assets/productos/214.png",
-        "desc": "Mezcla shisha de frutas del bosque y menta."
-      },
-      {
-        "nombre": "Gomita",
-        "img": "assets/productos/215.png",
-        "desc": "Gomitas dulces estilo shisha."
-      },
-      {
-        "nombre": "Menta Helada",
-        "img": "assets/productos/216.png",
-        "desc": "Menta potente con frescura helada."
-      },
-      {
-        "nombre": "Mujer Asesina",
-        "img": "assets/productos/217.png",
-        "desc": "Frutos rojos con toque floral seductor."
-      },
-      {
-        "nombre": "Amor 66",
-        "img": "assets/productos/218.png",
-        "desc": "Sabor legendario de melón, maracuyá y menta."
-      },
-      {
-        "nombre": "Misterio Azul",
-        "img": "assets/productos/219.png",
-        "desc": "Arándano azul con toque secreto de hierbas."
-      },
-      {
-        "nombre": "Doble Manzana",
-        "img": "assets/productos/220.png",
-        "desc": "Clásico sabor a doble manzana de narguile con anís."
-      },
-      {
-        "nombre": "Vainilla Blanca",
-        "img": "assets/productos/221.png",
-        "desc": "Vainilla cremosa y suave."
-      },
-      {
-        "nombre": "Sueño Lúcido",
-        "img": "assets/productos/222.png",
-        "desc": "Mezcla relajante de uvas y bayas dulces."
-      },
-      {
-        "nombre": "Durazno Vainilla",
-        "img": "assets/productos/223.png",
-        "desc": "Durazno maduro con crema de vainilla."
-      }
-    ]
-  },
-  {
     "id": "spaceman",
     "nombre": "SPACEMAN",
     "categoria": "desechables",
-    "subtitulo": "20.000 Puffs • 10 Sabores",
-    "puffs": 20000,
-    "precio": 45000,
-    "precio_promo_2": 80000,
+    "subtitulo": "50.000 Puffs • 10 Sabores",
+    "puffs": 50000,
+    "precio": 40000,
+    "precio_promo_2": 70000,
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 3300,
@@ -1539,10 +1780,10 @@ const PRODUCTS_DATA = [
     "id": "dinner-lady",
     "nombre": "DINNER LADY",
     "categoria": "desechables",
-    "subtitulo": "15.000 Puffs • 12 Sabores",
-    "puffs": 15000,
-    "precio": 45000,
-    "precio_promo_2": 80000,
+    "subtitulo": "60.000 Puffs • 12 Sabores",
+    "puffs": 60000,
+    "precio": 40000,
+    "precio_promo_2": 70000,
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 3100,
@@ -1614,131 +1855,13 @@ const PRODUCTS_DATA = [
     ]
   },
   {
-    "id": "donut",
-    "nombre": "DONUT",
-    "categoria": "desechables",
-    "subtitulo": "12.000 Puffs • 20 Sabores",
-    "puffs": 12000,
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
-    "rating": 4.8,
-    "ventas": 3950,
-    "imagen": "assets/productos/248.png",
-    "descripcion": "Diseño innovador y divertido con 12.000 caladas de sabor ultra dulce, notas de postre, frutas y gomitas.",
-    "agotado": false,
-    "tipo_variante": "sabor",
-    "sabores": [
-      {
-        "nombre": "Dragon Melón",
-        "img": "assets/productos/248.png",
-        "desc": "Fruta del dragón exótica con melón dulce."
-      },
-      {
-        "nombre": "Fresa Sandía",
-        "img": "assets/productos/249.png",
-        "desc": "Dúo fresco y dulce de fresa y sandía."
-      },
-      {
-        "nombre": "Fresa Plátano",
-        "img": "assets/productos/250.png",
-        "desc": "Fresas con plátano cremoso."
-      },
-      {
-        "nombre": "Mora Helada",
-        "img": "assets/productos/251.png",
-        "desc": "Moras silvestres con toque frío."
-      },
-      {
-        "nombre": "Mango Helado",
-        "img": "assets/productos/252.png",
-        "desc": "Mango tropical con frescura helada."
-      },
-      {
-        "nombre": "Gomitas",
-        "img": "assets/productos/253.png",
-        "desc": "Gomitas de osito dulces."
-      },
-      {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/254.png",
-        "desc": "Menta limpia con frescura duradera."
-      },
-      {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/255.png",
-        "desc": "Sandía jugosa con golpe de frío."
-      },
-      {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/256.png",
-        "desc": "Uvas moradas con acabado frío."
-      },
-      {
-        "nombre": "Melocotón Mango",
-        "img": "assets/productos/257.png",
-        "desc": "Durazno sedoso con mango dulce."
-      },
-      {
-        "nombre": "Kiwi Fresa",
-        "img": "assets/productos/258.png",
-        "desc": "Fresa dulce con kiwi cítrico."
-      },
-      {
-        "nombre": "Piña Helada",
-        "img": "assets/productos/259.png",
-        "desc": "Piña dulce con toque helado."
-      },
-      {
-        "nombre": "Arándano Frambuesa",
-        "img": "assets/productos/260.png",
-        "desc": "Arándanos jugosos y frambuesa ácida."
-      },
-      {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/261.png",
-        "desc": "Cerezas con frescura intensa."
-      },
-      {
-        "nombre": "Plátano Helado",
-        "img": "assets/productos/262.png",
-        "desc": "Plátano dulce con toque frío."
-      },
-      {
-        "nombre": "Manzana Verde",
-        "img": "assets/productos/263.png",
-        "desc": "Manzana ácida y crujiente."
-      },
-      {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/264.png",
-        "desc": "Surtido de moras y bayas rojas."
-      },
-      {
-        "nombre": "Algodón Dulce",
-        "img": "assets/productos/265.png",
-        "desc": "Algodón de azúcar dulce de feria."
-      },
-      {
-        "nombre": "Limonada Rosa",
-        "img": "assets/productos/266.png",
-        "desc": "Limonada cítrica con fresas."
-      },
-      {
-        "nombre": "Bebida Energética",
-        "img": "assets/productos/267.png",
-        "desc": "Sabor clásico a bebida energizante."
-      }
-    ]
-  },
-  {
     "id": "brass-type-c",
     "nombre": "BRASS TYPE-C",
     "categoria": "baterias",
     "subtitulo": "Batería 510 Rosca Universal",
-    "precio": 25000,
-    "precio_promo_2": 45000,
-    "ahorro_2": 5000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 2100,
     "imagen": "assets/productos/268.png",
@@ -1771,15 +1894,16 @@ const PRODUCTS_DATA = [
         "img": "assets/productos/268.png",
         "desc": "Efecto arcoíris tornasolado brillante."
       }
-    ]
+    ],
+    "puffs": null
   },
   {
     "id": "anv-digital",
     "nombre": "ANV DIGITAL",
     "categoria": "baterias",
     "subtitulo": "Batería 510 con Pantalla Digital",
-    "precio": 35000,
-    "precio_promo_2": 60000,
+    "precio": 40000,
+    "precio_promo_2": 70000,
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 1950,
@@ -1813,16 +1937,17 @@ const PRODUCTS_DATA = [
         "img": "assets/productos/269.png",
         "desc": "Arcoíris camaleónico."
       }
-    ]
+    ],
+    "puffs": null
   },
   {
     "id": "high-pro",
     "nombre": "HIGH PRO",
     "categoria": "baterias",
     "subtitulo": "Batería 510 Oculta",
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "precio": 65000,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 2400,
     "imagen": "assets/productos/270.png",
@@ -1855,16 +1980,17 @@ const PRODUCTS_DATA = [
         "img": "assets/productos/270.png",
         "desc": "Azul cobalto profundo."
       }
-    ]
+    ],
+    "puffs": null
   },
   {
     "id": "secret-pro",
     "nombre": "SECRET PRO",
     "categoria": "baterias",
     "subtitulo": "Batería 510 Ultra Discreta",
-    "precio": 35000,
-    "precio_promo_2": 60000,
-    "ahorro_2": 10000,
+    "precio": 80000,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 2150,
     "imagen": "assets/productos/271.png",
@@ -1887,17 +2013,18 @@ const PRODUCTS_DATA = [
         "img": "assets/productos/271.png",
         "desc": "Azul marino satinado."
       }
-    ]
+    ],
+    "puffs": null
   },
   {
     "id": "waka-solo-2",
     "nombre": "WAKA SOLO 2",
     "categoria": "desechables",
-    "subtitulo": "2.500 Puffs • 10 Sabores",
-    "puffs": 2500,
-    "precio": 25000,
-    "precio_promo_2": 45000,
-    "ahorro_2": 5000,
+    "subtitulo": "3.500 Puffs • 10 Sabores",
+    "puffs": 3500,
+    "precio": 45000,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 3600,
     "imagen": "assets/productos/273.png",
@@ -1962,9 +2089,9 @@ const PRODUCTS_DATA = [
     "nombre": "WAKA CREATOR BATERÍA",
     "categoria": "kits",
     "subtitulo": "Batería Reutilizable Waka",
-    "precio": 20000,
-    "precio_promo_2": 35000,
-    "ahorro_2": 5000,
+    "precio": 35000,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 2100,
     "imagen": "assets/productos/283.png",
@@ -1982,17 +2109,18 @@ const PRODUCTS_DATA = [
         "img": "assets/productos/283.png",
         "desc": "Elegante negro mate."
       }
-    ]
+    ],
+    "puffs": null
   },
   {
     "id": "waka-creator-pod",
     "nombre": "WAKA CREATOR POD",
     "categoria": "pods",
-    "subtitulo": "20.000 Puffs • Pod de Repuesto",
-    "puffs": 20000,
-    "precio": 40000,
-    "precio_promo_2": 70000,
-    "ahorro_2": 10000,
+    "subtitulo": "15.000 Puffs • 7 Sabores",
+    "puffs": 15000,
+    "precio": 50000,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
     "rating": 4.9,
     "ventas": 4300,
     "imagen": "assets/productos/285.png",
@@ -2042,9 +2170,9 @@ const PRODUCTS_DATA = [
     "nombre": "SAMMY 2 BATERÍA",
     "categoria": "kits",
     "subtitulo": "Batería Reutilizable Sammy",
-    "precio": 20000,
-    "precio_promo_2": 35000,
-    "ahorro_2": 5000,
+    "precio": 35000,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 1850,
     "imagen": "assets/productos/292.png",
@@ -2062,17 +2190,18 @@ const PRODUCTS_DATA = [
         "img": "assets/productos/292.png",
         "desc": "Gris espacial satinado."
       }
-    ]
+    ],
+    "puffs": null
   },
   {
     "id": "sami-pod-2",
     "nombre": "SAMMY POD 2",
     "categoria": "pods",
-    "subtitulo": "12.000 Puffs • Pod de Repuesto",
-    "puffs": 12000,
-    "precio": 25000,
-    "precio_promo_2": 45000,
-    "ahorro_2": 5000,
+    "subtitulo": "15.000 Puffs • 13 Sabores",
+    "puffs": 15000,
+    "precio": 50000,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 3700,
     "imagen": "assets/productos/294.png",
@@ -2174,10 +2303,10 @@ const PRODUCTS_DATA = [
     "nombre": "AIRPODS 4",
     "categoria": "accesorios",
     "subtitulo": "Audio Espacial • Cancelación de Ruido",
-    "precio": 85000,
-    "precio_promo_2": 150000,
-    "ahorro_2": 20000,
-    "rating": 5.0,
+    "precio": 69999,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
+    "rating": 5,
     "ventas": 2100,
     "imagen": "assets/productos/airpods-4.png",
     "descripcion": "La última generación de AirPods con ajuste acústico rediseñado, chip H2, aislamiento de voz superior y estuche de carga ultra compacto.",
@@ -2189,7 +2318,8 @@ const PRODUCTS_DATA = [
         "img": "assets/productos/airpods-4.png",
         "desc": "Diseño icónico blanco con estuche USB-C."
       }
-    ]
+    ],
+    "puffs": null
   }
 ];
 

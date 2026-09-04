@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAPITAL VAPE | Catálogo Digital & Venta Mayorista en Colombia</title>
+  <meta name="description" content="Tienda oficial de vapes desechables, kits, pods recargables y baterías 510 en Colombia. Venta al detal y mayorista con atención directa vía WhatsApp.">
+  <meta name="theme-color" content="#070709">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/catalog.css">
+  <link rel="stylesheet" href="css/cart.css">
+  <link rel="stylesheet" href="css/checkout.css">
+  <link rel="stylesheet" href="css/toast.css">
+  <link rel="stylesheet" href="css/wholesale.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="cv-navbar">
+    <div class="container nav-container">
+      <a href="#inicio" class="brand-wrapper">
+        <div class="brand-logo-box">CV</div>
+        <div class="brand-name">CAPITAL<span>VAPE</span></div>
+      </a>
+
+      <nav class="nav-menu" id="navMenu">
+        <a href="#inicio" class="nav-link active">Inicio</a>
+        <a href="#catalogo" class="nav-link">Productos</a>
+        <a href="#mayoristas" class="nav-link">Mayoristas</a>
+        <a href="#contacto" class="nav-link">Contacto</a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Cart Trigger Button -->
+        <button type="button" class="btn btn-secondary open-cart-btn" aria-label="Abrir Carrito">
+          <span>🛒</span>
+          <span class="cart-btn-text">Carrito</span>
+          <span class="cart-count-badge" style="display: none;">0</span>
+        </button>
+        <a href="#mayoristas" class="btn btn-primary" style="padding: 10px 18px; font-size: 0.85rem;">Mayoristas</a>
+        <button type="button" class="mobile-toggle" id="mobileMenuToggle" aria-label="Menú">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- LANDING / HERO SECTION -->
+  <section id="inicio" class="hero-section">
+    <div class="container hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge">⚡ Vapes Premium & Mayorista Oficial</div>
+        <h1 class="hero-title">Tu Experiencia de Vapeo en <span>Bogotá & Colombia</span></h1>
+        <p class="hero-desc">Descubre nuestra exclusiva selección de dispositivos desechables, pods recargables y baterías 510 con máxima potencia y sabores intensos.</p>
+        <div class="hero-cta-group">
+          <a href="#catalogo" class="btn btn-primary">Ver Catálogo de Productos</a>
+          <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20informaci%C3%B3n%20y%20asesor%C3%ADa." target="_blank" class="btn btn-whatsapp">💬 Hablar por WhatsApp</a>
+        </div>
+      </div>
+      <div class="hero-image-wrapper">
+        <div class="hero-image-placeholder-box">
+          <span class="placeholder-main-icon">💨</span>
+          <h3>Espacio de Imagen Principal</h3>
+          <p>Preparado para la imagen de cabecera en la etapa 2</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOG SECTION -->
+  <section id="catalogo" class="catalog-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Catálogo Oficial</h2>
+        <p class="section-subtitle">Selecciona tu producto y sabor favorito para agregarlo a tu pedido.</p>
+      </div>
+
+      <!-- Filters, Sort & Search Toolbar -->
+      <div class="catalog-toolbar">
+        <div class="toolbar-top-row">
+          <div class="category-pills">
+            <button type="button" class="cat-pill-btn active" data-category="todos">Todos (33)</button>
+            <button type="button" class="cat-pill-btn" data-category="desechables">Desechables</button>
+            <button type="button" class="cat-pill-btn" data-category="kits">Kits</button>
+            <button type="button" class="cat-pill-btn" data-category="pods">Pods</button>
+            <button type="button" class="cat-pill-btn" data-category="baterias">Baterías 510</button>
+            <button type="button" class="cat-pill-btn" data-category="accesorios">Accesorios</button>
+          </div>
+          <span class="products-count-label" id="productsCountDisplay">33 productos</span>
+        </div>
+
+        <div class="toolbar-controls-row">
+          <div class="search-box">
+            <input type="text" id="catalogSearch" class="search-input" placeholder="Buscar por nombre, sabor, marca o especificación...">
+          </div>
+
+          <div class="sort-box">
+            <label for="catalogSortSelect" class="sort-label">Ordenar por:</label>
+            <select id="catalogSortSelect" class="sort-select">
+              <option value="relevancia">Relevancia</option>
+              <option value="mas_vendidos">Más Vendidos</option>
+              <option value="precio_asc">Precio: Menor a Mayor</option>
+              <option value="precio_desc">Precio: Mayor a Menor</option>
+              <option value="rating">Mejor Calificados</option>
+              <option value="ofertas">Mejores Ofertas (Dúo)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="catalogGrid">
+        <!-- Dynamic Cards -->
+      </div>
+    </div>
+  </section>
+
+  <!-- WHOLESALE SECTION -->
+  <section id="mayoristas" class="wholesale-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Acceso Exclusivo Mayoristas</h2>
+        <p class="section-subtitle">Consulta tarifas preferenciales y escalas por volumen para distribuidores autorizados.</p>
+      </div>
+
+      <!-- Locked Screen -->
+      <div id="wholesaleLockedView" class="wholesale-gate-box">
+        <div class="gate-icon">🔒</div>
+        <h3>Portal Protegido</h3>
+        <p>Ingresa tu código de distribuidor para desbloquear la lista de precios mayoristas.</p>
+        
+        <form id="wholesaleCodeForm" class="wholesale-form">
+          <input type="text" id="wholesaleCodeInput" class="wholesale-input" placeholder="CÓDIGO DE DISTRIBUIDOR" required>
+          <button type="submit" class="btn btn-primary">Desbloquear</button>
+        </form>
+
+        <div id="wholesaleAlert" class="wholesale-alert"></div>
+
+        <div class="wholesale-no-code-box">
+          <p>¿Aún no tienes código de distribuidor autorizado?</p>
+          <a id="btnRequestWholesaleCode" href="#" target="_blank" class="btn btn-whatsapp">
+            💬 Solicitar Código por WhatsApp
+          </a>
+        </div>
+      </div>
+
+      <!-- Unlocked Screen -->
+      <div id="wholesaleUnlockedView" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+          <div>
+            <h3>✓ Modo Mayorista Desbloqueado</h3>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">Mostrando tarifas por escala (+5, +10, +20, +50, +100 unidades).</p>
+          </div>
+          <button type="button" id="btnExitWholesale" class="btn btn-secondary">Cerrar Sesión Mayorista</button>
+        </div>
+        <div id="wholesaleTableContainer"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section id="contacto" class="contact-section">
+    <div class="container">
+      <div class="contact-card-box">
+        <div>
+          <h2>Atención Directa & Envíos</h2>
+          <p style="color: var(--text-secondary); margin-top: 8px;">Contáctanos para compras al detal, pedidos mayoristas y envíos rápidos en Bogotá y a nivel nacional.</p>
+          
+          <div class="contact-info-list">
+            <div class="contact-item">
+              <span class="contact-item-icon">📍</span>
+              <span>Bogotá D.C., Colombia — Envíos a todo el país</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-item-icon">🕒</span>
+              <span>Lunes a Sábado: 9:00 AM - 8:00 PM</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-item-icon">💬</span>
+              <span>WhatsApp Principal: +57 324 801 2914</span>
+            </div>
+            <div class="contact-item">
+              <span class="contact-item-icon">💬</span>
+              <span>WhatsApp Secundario: +57 313 261 2344</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20deseo%20hacer%20un%20pedido." target="_blank" class="btn btn-whatsapp btn-block" style="padding: 16px 28px; font-size: 1.05rem;">
+            💬 Chatear con Asesor en WhatsApp
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="cv-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand-wrapper" style="margin-bottom: 12px;">
+            <div class="brand-logo-box">CV</div>
+            <div class="brand-name">CAPITAL<span>VAPE</span></div>
+          </div>
+          <p class="footer-brand-p">Tienda líder en vapeo premium y distribución mayorista en Colombia. Calidad, garantía y atención personalizada.</p>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navegación</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#catalogo">Catálogo de Productos</a></li>
+            <li><a href="#mayoristas">Portal Mayorista</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Categorías</h4>
+          <ul class="footer-nav-list">
+            <li><a href="#catalogo">Vapes Desechables</a></li>
+            <li><a href="#catalogo">Kits & Baterías</a></li>
+            <li><a href="#catalogo">Pods de Repuesto</a></li>
+            <li><a href="#catalogo">Accesorios</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Contacto</h4>
+          <ul class="footer-nav-list">
+            <li><a href="https://wa.me/573248012914" target="_blank">+57 324 801 2914</a></li>
+            <li><a href="https://wa.me/573132612344" target="_blank">+57 313 261 2344</a></li>
+            <li><a href="https://www.instagram.com/capitalvap/" target="_blank">Instagram: @capitalvap</a></li>
+            <li><a href="https://www.tiktok.com/@capital..vape" target="_blank">TikTok: @capital..vape</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom-bar">
+        <span>© 2026 CAPITAL VAPE. Todos los derechos reservados. Venta exclusiva para mayores de 18 años.</span>
+        <span>Envíos seguros a toda Colombia.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER -->
+  <div class="cv-cart-overlay" id="cartOverlay"></div>
+  <aside class="cv-cart-drawer" id="cartDrawer">
+    <div class="cv-cart-header">
+      <div class="cv-cart-title"><span>🛒</span> Tu Pedido</div>
+      <button type="button" class="cv-cart-close-btn" id="closeCartBtn">&times;</button>
+    </div>
+    <!-- Free Shipping Progress Meter -->
+    <div id="cartShippingMeter"></div>
+    <!-- Cart Items List -->
+    <div class="cv-cart-body" id="cartDrawerItems"></div>
+    <!-- Cart Summary & Actions Footer -->
+    <div class="cv-cart-footer" id="cartDrawerFooter"></div>
+  </aside>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="cv-modal-overlay" id="checkoutModal">
+    <div class="cv-modal-box">
+      <div class="cv-modal-header">
+        <div class="cv-modal-title">Finalizar Pedido — Capital Vape</div>
+        <button type="button" class="cv-modal-close-btn" onclick="CheckoutController.closeModal()">&times;</button>
+      </div>
+
+      <div class="checkout-grid">
+        <!-- Form -->
+        <form id="checkoutForm" class="checkout-form">
+          <div class="form-group">
+            <label for="checkoutNombre">Nombre Completo *</label>
+            <input type="text" id="checkoutNombre" class="form-input" placeholder="Ej: Carlos Mendoza" required>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="checkoutTelefono">Teléfono / WhatsApp *</label>
+              <input type="tel" id="checkoutTelefono" class="form-input" placeholder="Ej: 300 123 4567" required>
+            </div>
+            <div class="form-group">
+              <label for="checkoutCorreo">Correo Electrónico</label>
+              <input type="email" id="checkoutCorreo" class="form-input" placeholder="correo@ejemplo.com">
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="checkoutDestino">Destino del Envío *</label>
+              <select id="checkoutDestino" class="form-select">
+                <option value="bogota">Bogotá D.C.</option>
+                <option value="nacional">Nacional (Fuera de Bogotá)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="checkoutCiudad">Ciudad / Municipio *</label>
+              <input type="text" id="checkoutCiudad" class="form-input" placeholder="Ej: Bogotá, Medellín, Cali..." required>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="checkoutDepto">Departamento</label>
+              <input type="text" id="checkoutDepto" class="form-input" placeholder="Ej: Cundinamarca, Antioquia...">
+            </div>
+            <div class="form-group">
+              <label for="checkoutDireccion">Dirección de Entrega *</label>
+              <input type="text" id="checkoutDireccion" class="form-input" placeholder="Calle / Cra / Apto / Barrio" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="checkoutNotas">Notas / Indicaciones Adicionales</label>
+            <textarea id="checkoutNotas" class="form-textarea" rows="2" placeholder="Ej: Entregar en portería, timbre 201..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-whatsapp btn-block" style="padding: 16px; font-size: 1.05rem; margin-top: 8px;">
+            <span>💬 Confirmar Pedido por WhatsApp</span>
+          </button>
+        </form>
+
+        <!-- Summary -->
+        <div class="checkout-summary-card">
+          <h4>Resumen de tu Pedido</h4>
+          <div class="checkout-items-list" id="checkoutOrderItems"></div>
+          <div class="checkout-totals-box" id="checkoutTotals"></div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);">
+            🔒 Tu pedido será enviado por WhatsApp para coordinar pago contra entrega o transferencia (Nequi / Daviplata).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOATING WHATSAPP BUTTON -->
+  <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20deseo%20hacer%20una%20consulta." 
+     target="_blank" 
+     class="wa-floating-btn" 
+     aria-label="WhatsApp Oficial">
+    💬
+  </a>
+
+  <!-- FLOATING CART BUTTON -->
+  <button type="button" class="floating-cart-btn open-cart-btn" aria-label="Ver Carrito">
+    <span>🛒</span>
+    <span class="cart-count-badge" style="display: none;">0</span>
+  </button>
+
+  <!-- JAVASCRIPT SCRIPTS -->
+  <script src="js/config.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/products-data.js"></script>
+  <script src="js/wholesale.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+  <script src="js/catalog.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

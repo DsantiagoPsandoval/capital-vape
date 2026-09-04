@@ -850,7 +850,7 @@ const PRODUCTS_DATA = [
     precio_promo_2: 139998,
     ahorro_2: 0,
     descripcion: "Los AirPods 4 ofrecen chip H2, Cancelación Activa de Ruido, Audio Espacial personalizado, Bluetooth 5.3 y estuche con carga USB-C.",
-    imagen: "assets/productos/293.png",
+    imagen: "assets/productos/airpods-4.png",
     tipo_variante: "none",
     precios_mayoristas: { "5": 55000, "10": 45000 },
     agotado: false

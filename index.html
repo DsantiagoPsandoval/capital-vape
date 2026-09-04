@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CAPITAL VAPE | Catálogo Digital & Venta Mayorista en Colombia</title>
   <meta name="description" content="Tienda oficial de vapes desechables, kits, pods recargables y baterías 510 en Colombia. Venta al detal y mayorista con atención directa vía WhatsApp.">
-  <meta name="theme-color" content="#070709">
+  <meta name="theme-color" content="#0A050D">
+  <link rel="icon" type="image/png" href="assets/logo/favicon.png">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="css/main.css">
@@ -23,7 +24,7 @@
   <header class="cv-navbar">
     <div class="container nav-container">
       <a href="#inicio" class="brand-wrapper">
-        <div class="brand-logo-box">CV</div>
+        <img src="assets/logo/logo.png" alt="Capital Vape Logo" class="brand-logo-img">
         <div class="brand-name">CAPITAL<span>VAPE</span></div>
       </a>
 
@@ -35,6 +36,11 @@
       </nav>
 
       <div class="nav-actions">
+        <!-- Theme Toggle Button -->
+        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Cambiar Modo de Color">
+          <span id="themeToggleIcon">☀️</span>
+        </button>
+
         <!-- Retail Cart Button -->
         <button type="button" class="btn btn-secondary open-cart-btn" aria-label="Abrir Carrito">
           <span>🛒</span>
@@ -59,11 +65,46 @@
           <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20informaci%C3%B3n%20y%20asesor%C3%ADa." target="_blank" class="btn btn-whatsapp">💬 Hablar por WhatsApp</a>
         </div>
       </div>
+      <!-- BEST SELLER HERO SHOWCASE (DONUT 16.000 PUFFS #1 MÁS VENDIDO) -->
       <div class="hero-image-wrapper">
-        <div class="hero-image-placeholder-box">
-          <span class="placeholder-main-icon">💨</span>
-          <h3>Espacio de Imagen Principal</h3>
-          <p>Preparado para la imagen de cabecera</p>
+        <div class="hero-bestseller-card">
+          <div class="hero-card-glow-ring"></div>
+          <div class="hero-top-badge">
+            <span>🔥</span>
+            <span>TOP #1 MÁS VENDIDO</span>
+          </div>
+          
+          <div class="hero-product-img-box">
+            <img src="assets/productos/248.png" alt="DONUT 16.000 Puffs - Más Vendido" class="hero-product-img" id="heroProductImg">
+          </div>
+
+          <div class="hero-product-info">
+            <div class="hero-product-meta">
+              <span class="hero-spec-tag">⚡ 16.000 Puffs</span>
+              <span class="hero-spec-tag">🖥️ Pantalla Digital</span>
+              <span class="hero-spec-tag">🔋 650 mAh</span>
+            </div>
+            <h3 class="hero-product-title">DONUT 16.000 PUFFS</h3>
+            <div class="hero-price-row">
+              <div class="hero-price-box">
+                <span class="hero-price-label">Precio Detal</span>
+                <span class="hero-price-val">$65.000</span>
+              </div>
+              <div class="hero-price-box ws-highlight">
+                <span class="hero-price-label">Mayorista desde</span>
+                <span class="hero-price-val">$18.000</span>
+              </div>
+            </div>
+
+            <div class="hero-card-actions">
+              <button type="button" class="btn btn-primary hero-buy-btn" onclick="Cart.addItem('donut', 1)">
+                🛒 Agregar al Carrito
+              </button>
+              <a href="#catalogo" class="btn btn-secondary hero-view-btn">
+                Ver Sabores
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -250,7 +291,7 @@
       <div class="footer-grid">
         <div>
           <div class="brand-wrapper" style="margin-bottom: 12px;">
-            <div class="brand-logo-box">CV</div>
+            <img src="assets/logo/logo.png" alt="Capital Vape Logo" class="brand-logo-img">
             <div class="brand-name">CAPITAL<span>VAPE</span></div>
           </div>
           <p class="footer-brand-p">Tienda líder en vapeo premium y distribución mayorista en Colombia. Calidad, garantía y atención personalizada.</p>

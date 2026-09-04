@@ -2,6 +2,9 @@
  * CAPITAL VAPE - Controlador Principal
  */
 document.addEventListener('DOMContentLoaded', () => {
+  // Inicializar tema (Claro / Oscuro)
+  initThemeManager();
+
   // Inicializar componentes
   if (window.Cart) Cart.init();
   if (window.CatalogController) CatalogController.init();
@@ -41,6 +44,47 @@ document.addEventListener('DOMContentLoaded', () => {
   initWholesaleSection();
 });
 
+/**
+ * GESTOR DE TEMA (CLARO / OSCURO)
+ */
+function initThemeManager() {
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeIcon = document.getElementById('themeToggleIcon');
+
+  const getSavedTheme = () => {
+    return localStorage.getItem('cv_theme') || 'dark';
+  };
+
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('cv_theme', theme);
+    if (themeIcon) {
+      themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+    }
+    if (themeToggleBtn) {
+      themeToggleBtn.setAttribute('title', theme === 'light' ? 'Cambiar a Modo Oscuro' : 'Cambiar a Modo Claro');
+    }
+  };
+
+  // Inicializar con el tema guardado
+  applyTheme(getSavedTheme());
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const nextTheme = current === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      if (window.Toast) {
+        Toast.show(`Modo ${nextTheme === 'light' ? 'Claro ☀️' : 'Oscuro 🌙'} activado`, 'info');
+      }
+    });
+  }
+}
+
+/**
+ * SECCIÓN DE MAYORISTAS
+ */
 function initWholesaleSection() {
   const form = document.getElementById('wholesaleCodeForm');
   const input = document.getElementById('wholesaleCodeInput');
@@ -89,7 +133,7 @@ function initWholesaleSection() {
             alertBox.textContent = '';
           }
           if (input) input.value = '';
-          Toast.show('✓ Acceso mayorista concedido', 'success');
+          if (window.Toast) Toast.show('✓ Acceso mayorista concedido', 'success');
         }, 300);
       } else {
         if (input) {
@@ -113,7 +157,7 @@ function initWholesaleSection() {
         alertBox.style.display = 'none';
         alertBox.textContent = '';
       }
-      Toast.show('Sesión mayorista cerrada.', 'info');
+      if (window.Toast) Toast.show('Sesión mayorista cerrada.', 'info');
     });
   }
 

@@ -575,9 +575,14 @@ const WholesaleCatalog = {
           </div>
 
           <div class="card-body">
+            <div class="card-meta-row">
+              <span class="card-rating-badge"><span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}</span>
+              <span class="card-stock-badge in">🟢 Stock Mayorista</span>
+            </div>
+
             <div class="card-header-info">
               <h3 class="card-title">${product.nombre}</h3>
-              <p class="ws-pricing-headline">Precio mayorista por cantidad:</p>
+              <p class="ws-pricing-headline">Tarifas por paquete de unidades:</p>
             </div>
 
             ${variantsHtml}

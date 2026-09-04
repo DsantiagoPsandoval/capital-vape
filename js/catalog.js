@@ -164,7 +164,7 @@ const CatalogController = {
         variantsHtml = `
           <div class="card-variants-section">
             <div class="variants-header-row">
-              <span class="variants-title">Sabores disponibles (${visibleFlavors.length}):</span>
+              <span class="variants-title">Sabores (${visibleFlavors.length}):</span>
               <span class="selected-flavor-name">${currentSelected}</span>
             </div>
             <div class="variants-pills-list">
@@ -184,7 +184,7 @@ const CatalogController = {
         variantsHtml = `
           <div class="card-variants-section">
             <div class="variants-header-row">
-              <span class="variants-title">Colores disponibles (${product.colores.length}):</span>
+              <span class="variants-title">Colores (${product.colores.length}):</span>
               <span class="selected-flavor-name">${currentSelected}</span>
             </div>
             <div class="variants-pills-list">
@@ -201,49 +201,64 @@ const CatalogController = {
         `;
       }
 
-      // 2 Units saving badge
-      let promoHtml = '';
-      if (product.precio_promo_2 && product.precio_promo_2 < (product.precio * 2)) {
-        promoHtml = `
-          <div class="card-promo-duo">
-            <span>🔥 <strong>2 Unidades:</strong> ${this.formatCOP(product.precio_promo_2)}</span>
-            <span class="save-tag">Ahorras ${this.formatCOP(product.ahorro_2)}</span>
-          </div>
-        `;
-      }
+      const hasDuoPromo = product.precio_promo_2 && product.precio_promo_2 < (product.precio * 2);
+      const ahorroDuo = hasDuoPromo ? (product.ahorro_2 || ((product.precio * 2) - product.precio_promo_2)) : 0;
 
       return `
         <article class="product-card ${product.agotado ? 'is-out' : ''}" id="card-${product.id}" data-category="${product.categoria}">
+          <!-- 1. INDEPENDENT IMAGE CONTAINER -->
           <div class="card-image-wrapper">
             <img src="${currentImage || 'assets/logo/logo.png'}" 
                  alt="${product.nombre}" 
                  class="product-img-real" 
                  loading="lazy" 
-                 onerror="this.style.opacity='0.4';">
-            ${product.rating ? `<span class="card-rating-badge">★ ${product.rating.toFixed(1)}</span>` : ''}
-            ${product.puffs ? `<span class="card-puffs-badge">${product.puffs}</span>` : ''}
-            ${product.agotado ? `<span class="card-stock-badge out">Agotado</span>` : `<span class="card-stock-badge in">Disponible</span>`}
+                 onerror="this.src='assets/logo/logo.png'; this.style.opacity='0.4';">
+            ${product.subtitulo ? `<span class="card-puffs-badge">${product.subtitulo}</span>` : ''}
+            ${(product.ventas && product.ventas > 3000) ? `<span class="card-top-seller-tag">🔥 Más Vendido</span>` : ''}
           </div>
 
+          <!-- 2. INDEPENDENT CARD BODY CONTAINER (TEXT & DATA) -->
           <div class="card-body">
-            <div class="card-header-info">
-              <h3 class="card-title">${product.nombre}</h3>
-              <p class="card-subtitle">${product.subtitulo}</p>
+            <!-- Meta row: Rating and Stock Status (Clear and fully visible) -->
+            <div class="card-meta-row">
+              <span class="card-rating-badge">
+                <span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}
+              </span>
+              ${product.agotado 
+                ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
+                : `<span class="card-stock-badge in">🟢 Disponible</span>`}
             </div>
 
-            <p class="card-desc">${product.descripcion}</p>
+            <div class="card-header-info">
+              <h3 class="card-title">${product.nombre}</h3>
+              <p class="card-desc">${product.descripcion || ''}</p>
+            </div>
 
             ${variantsHtml}
 
-            <div class="card-price-section">
-              <div class="price-row">
-                <span class="price-label">1 Unidad:</span>
-                <span class="price-val">${this.formatCOP(product.precio)}</span>
+            <!-- Organized Pricing: 1 Unit & 2 Units Promo Duo -->
+            <div class="card-pricing-block">
+              <div class="pricing-tier-row">
+                <div class="tier-label-group">
+                  <span class="tier-badge-tag">1 UNIDAD</span>
+                  <span class="tier-name">Precio Regular</span>
+                </div>
+                <div class="tier-price-val">${this.formatCOP(product.precio)}</div>
               </div>
-              ${promoHtml}
+
+              ${hasDuoPromo ? `
+                <div class="pricing-tier-row promo-tier">
+                  <div class="tier-label-group">
+                    <span class="tier-badge-tag duo">2 UNIDADES</span>
+                    <span class="tier-save-tag">Ahorras ${this.formatCOP(ahorroDuo)}</span>
+                  </div>
+                  <div class="tier-price-val promo">${this.formatCOP(product.precio_promo_2)}</div>
+                </div>
+              ` : ''}
             </div>
 
-            <div class="card-actions-grid">
+            <!-- Action Button -->
+            <div class="card-actions-wrapper">
               ${product.agotado ? `
                 <button type="button" class="btn btn-secondary btn-block" disabled>
                   ⚠️ Agotado

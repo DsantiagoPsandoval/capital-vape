@@ -1,22 +1,56 @@
 /* CAPITAL VAPE - Global Design System */
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap');
 
-:root {
-  --bg-dark: #070709;
-  --bg-card: #0F0F14;
-  --bg-card-hover: #161620;
-  --bg-surface: #1B1B26;
-  
+/* ==========================================================================
+   THEME VARIABLES (DARK THEME DEFAULT / LIGHT THEME SUPPORT)
+   Paleta oficial extraída del Logo:
+   - Negro/Onyx profundo (#0A050D)
+   - Morado / Magenta vibrante (#D81BB7, #8E0E78, #3A0835)
+   - Dorado metálico (#E5B700, #D4AF37, #FAD02C)
+   - Amarillo eléctrico / Neón (#FFE600, #F6D850)
+   ========================================================================== */
+
+:root, [data-theme="dark"] {
+  --theme-mode: 'dark';
+
+  --bg-dark: #0A050D;
+  --bg-surface: #14091B;
+  --bg-card: #1A0D23;
+  --bg-card-hover: #241230;
+  --bg-input: #120719;
+
   --text-primary: #FFFFFF;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
+  --text-secondary: #C7B0CC;
+  --text-muted: #85708C;
+
+  /* Logo Palette */
+  --accent-purple: #D81BB7;
+  --accent-purple-deep: #8E0E78;
+  --accent-purple-glow: rgba(216, 27, 183, 0.35);
   
-  --accent-gold: #F59E0B;
-  --accent-gold-glow: rgba(245, 158, 11, 0.25);
-  --accent-magenta: #EC4899;
+  --accent-gold: #E5B700;
+  --accent-gold-hover: #FAD02C;
+  --accent-gold-glow: rgba(229, 183, 0, 0.35);
+  
+  --accent-yellow: #FFE600;
+  --accent-yellow-glow: rgba(255, 230, 0, 0.35);
+
   --accent-green: #10B981;
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(245, 158, 11, 0.5);
+  --accent-red: #EF4444;
+
+  --border-color: rgba(216, 27, 183, 0.2);
+  --border-hover: rgba(229, 183, 0, 0.5);
+  --border-active: rgba(229, 183, 0, 0.7);
+
+  --nav-bg: rgba(10, 5, 13, 0.88);
+  --hero-gradient: radial-gradient(circle at 75% 30%, rgba(216, 27, 183, 0.22) 0%, rgba(229, 183, 0, 0.12) 45%, transparent 70%);
+  --hero-card-glow: 0 0 50px rgba(216, 27, 183, 0.3), 0 0 25px rgba(229, 183, 0, 0.25);
+  --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.6);
+  --shadow-glow: 0 0 25px var(--accent-gold-glow);
+
+  --badge-bg: rgba(216, 27, 183, 0.16);
+  --badge-border: rgba(216, 27, 183, 0.4);
+  --badge-text: #FAD02C;
 
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;
@@ -27,8 +61,50 @@
   --radius-full: 9999px;
 
   --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 25px var(--accent-gold-glow);
+}
+
+/* LIGHT THEME */
+[data-theme="light"] {
+  --theme-mode: 'light';
+
+  --bg-dark: #FAF4FB;
+  --bg-surface: #F2E3F4;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #FFF7FD;
+  --bg-input: #FFFFFF;
+
+  --text-primary: #1C0722;
+  --text-secondary: #5E4167;
+  --text-muted: #8E7197;
+
+  /* Logo Palette adapted for light mode */
+  --accent-purple: #B30D96;
+  --accent-purple-deep: #780565;
+  --accent-purple-glow: rgba(179, 13, 150, 0.18);
+  
+  --accent-gold: #B8860B;
+  --accent-gold-hover: #9E7307;
+  --accent-gold-glow: rgba(184, 134, 11, 0.22);
+  
+  --accent-yellow: #D97706;
+  --accent-yellow-glow: rgba(217, 119, 6, 0.2);
+
+  --accent-green: #059669;
+  --accent-red: #DC2626;
+
+  --border-color: rgba(179, 13, 150, 0.16);
+  --border-hover: rgba(184, 134, 11, 0.45);
+  --border-active: rgba(184, 134, 11, 0.6);
+
+  --nav-bg: rgba(250, 244, 251, 0.94);
+  --hero-gradient: radial-gradient(circle at 75% 30%, rgba(179, 13, 150, 0.14) 0%, rgba(184, 134, 11, 0.1) 45%, transparent 70%);
+  --hero-card-glow: 0 15px 40px rgba(120, 10, 100, 0.12), 0 0 20px rgba(184, 134, 11, 0.12);
+  --shadow-card: 0 8px 30px rgba(70, 10, 60, 0.09);
+  --shadow-glow: 0 4px 20px var(--accent-gold-glow);
+
+  --badge-bg: rgba(179, 13, 150, 0.09);
+  --badge-border: rgba(179, 13, 150, 0.28);
+  --badge-text: #B30D96;
 }
 
 * {
@@ -44,6 +120,7 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -68,7 +145,9 @@ button, input, select {
   font-family: inherit;
 }
 
-/* BUTTONS */
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -85,38 +164,78 @@ button, input, select {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #F59E0B, #D97706);
+  background: linear-gradient(135deg, var(--accent-gold), var(--accent-yellow));
   color: #000000;
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+  box-shadow: 0 4px 18px var(--accent-gold-glow);
+  font-weight: 800;
+  border: none;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5);
+  box-shadow: 0 6px 25px var(--accent-gold-glow), 0 0 15px var(--accent-purple-glow);
+}
+
+.btn-purple {
+  background: linear-gradient(135deg, var(--accent-purple), var(--accent-purple-deep));
+  color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: 0 4px 18px var(--accent-purple-glow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-purple:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px var(--accent-purple-glow), 0 0 15px var(--accent-gold-glow);
 }
 
 .btn-secondary {
   background: var(--bg-surface);
   color: var(--text-primary);
-  border-color: var(--border-color);
+  border: 1px solid var(--border-color);
 }
 
 .btn-secondary:hover {
+  border-color: var(--accent-gold);
   background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--accent-gold);
 }
 
 .btn-whatsapp {
   background: #25D366;
-  color: #000000;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.35);
 }
 
 .btn-whatsapp:hover {
+  background: #20BA5A;
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(37, 211, 102, 0.45);
+  box-shadow: 0 6px 25px rgba(37, 211, 102, 0.5);
 }
 
 .btn-block {
   width: 100%;
+}
+
+/* THEME TOGGLE BUTTON */
+.theme-toggle-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  transform: rotate(15deg) scale(1.05);
 }

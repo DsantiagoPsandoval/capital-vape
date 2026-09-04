@@ -1049,3 +1049,250 @@ section,
 .footer-social-pill:hover .footer-social-icon {
     transform: scale(1.15);
 }
+
+
+/* ==========================================================================
+   FEATURED BRANDS SECTION & MARQUEE STRIP
+   ========================================================================== */
+.featured-brands-section {
+  padding: 40px 0 20px 0;
+  background: transparent;
+  position: relative;
+}
+
+.brands-carousel-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 12px 4px 20px 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 212, 255, 0.3) transparent;
+}
+
+.brands-carousel-wrapper::-webkit-scrollbar {
+  height: 5px;
+}
+.brands-carousel-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+.brands-carousel-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0, 212, 255, 0.3);
+  border-radius: 4px;
+}
+
+.brands-track {
+  display: flex;
+  gap: 14px;
+  width: max-content;
+  margin: 0 auto;
+}
+
+.brand-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 130px;
+  width: 130px;
+  padding: 14px 10px;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  text-align: center;
+  user-select: none;
+  color: inherit;
+  font-family: inherit;
+  position: relative;
+  outline: none;
+}
+
+.brand-card-item:hover {
+  transform: translateY(-4px);
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.2);
+}
+
+.brand-card-item.active {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(15, 23, 42, 0.9));
+  border-color: var(--accent-cyan, #00d4ff);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.35);
+}
+
+.brand-card-item.active::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 0.75rem;
+  color: var(--accent-cyan, #00d4ff);
+  font-weight: 700;
+}
+
+.brand-img-wrap {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.brand-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5));
+}
+
+.brand-card-item:hover .brand-img {
+  transform: scale(1.12);
+}
+
+.brand-name {
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text-main, #ffffff);
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.brand-badge {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent-cyan, #00d4ff);
+  background: rgba(0, 212, 255, 0.1);
+  padding: 2px 6px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   ANIMATED MARQUEE STRIP
+   ========================================================================== */
+.cv-marquee-strip {
+  width: 100%;
+  max-width: 100vw;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(90deg, rgba(8, 12, 22, 0.95), rgba(15, 23, 42, 0.95), rgba(8, 12, 22, 0.95));
+  border-top: 1px solid rgba(0, 212, 255, 0.15);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+  padding: 12px 0;
+  margin: 15px 0 25px 0;
+  display: flex;
+  user-select: none;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.cv-marquee-track {
+  display: flex;
+  width: max-content;
+  animation: cvMarqueeScroll 26s linear infinite;
+  will-change: transform;
+}
+
+.cv-marquee-track:hover {
+  animation-play-state: paused;
+}
+
+.cv-marquee-content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  gap: 20px;
+  padding-right: 20px;
+  font-family: 'Space Grotesk', -apple-system, sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #e2e8f0;
+}
+
+.cv-marquee-bullet {
+  color: var(--accent-cyan, #00d4ff);
+  font-size: 1.1rem;
+  line-height: 1;
+  opacity: 0.9;
+  text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+}
+
+@keyframes cvMarqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Light Theme Support */
+body.light-theme .brand-card-item,
+body.light-mode .brand-card-item {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+body.light-theme .brand-name,
+body.light-mode .brand-name {
+  color: #0f172a;
+}
+body.light-theme .cv-marquee-strip,
+body.light-mode .cv-marquee-strip {
+  background: #f8fafc;
+  border-color: rgba(0, 150, 255, 0.2);
+}
+body.light-theme .cv-marquee-content,
+body.light-mode .cv-marquee-content {
+  color: #1e293b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .featured-brands-section {
+    padding: 24px 0 12px 0;
+  }
+  .brands-track {
+    margin: 0;
+    padding: 0 16px;
+  }
+  .brand-card-item {
+    min-width: 110px;
+    width: 110px;
+    padding: 10px 8px;
+    border-radius: 12px;
+  }
+  .brand-img-wrap {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 6px;
+  }
+  .brand-name {
+    font-size: 0.78rem;
+  }
+  .brand-badge {
+    font-size: 0.62rem;
+    padding: 1px 4px;
+  }
+  .cv-marquee-strip {
+    padding: 10px 0;
+    margin: 10px 0 20px 0;
+  }
+  .cv-marquee-content {
+    font-size: 0.78rem;
+    gap: 14px;
+    padding-right: 14px;
+    letter-spacing: 1.5px;
+  }
+  .cv-marquee-bullet {
+    font-size: 0.95rem;
+  }
+}

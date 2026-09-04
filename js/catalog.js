@@ -9,6 +9,47 @@ const CatalogController = {
   activeModalProductId: null,
   activeModalIsWholesale: false,
 
+  selectedBrand: null,
+
+  filterByBrand(brandName, searchTerm) {
+    const query = (searchTerm || brandName).toLowerCase();
+    
+    // If clicking active brand again, reset filter
+    if (this.selectedBrand === brandName) {
+      this.resetFilters();
+      return;
+    }
+
+    this.selectedBrand = brandName;
+    this.activeCategory = 'todos';
+    this.searchQuery = query;
+
+    const searchInput = document.getElementById('catalogSearch');
+    if (searchInput) searchInput.value = brandName;
+
+    document.querySelectorAll('.cat-pill-btn:not(.ws-cat-pill-btn)').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.category === 'todos');
+    });
+
+    document.querySelectorAll('.brand-card-item').forEach(b => {
+      b.classList.toggle('active', b.dataset.brand === brandName);
+    });
+
+    this.renderCatalog();
+
+    // Smooth scroll to catalog
+    const catalogSection = document.getElementById('catalogo');
+    if (catalogSection) {
+      const navHeight = 75;
+      const elementPosition = catalogSection.getBoundingClientRect().top + window.pageYOffset;
+      window.scrollTo({
+        top: elementPosition - navHeight,
+        behavior: 'smooth'
+      });
+    }
+  },
+
+
   init() {
     this.renderCatalog();
     this.bindEvents();
@@ -464,6 +505,8 @@ const CatalogController = {
   },
 
   resetFilters() {
+    this.selectedBrand = null;
+    document.querySelectorAll('.brand-card-item').forEach(b => b.classList.remove('active'));
     this.activeCategory = 'todos';
     this.searchQuery = '';
     this.sortBy = 'relevancia';

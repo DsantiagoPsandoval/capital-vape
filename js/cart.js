@@ -340,7 +340,7 @@ const Cart = {
       if (this.items.length === 0) {
         itemsContainer.innerHTML = `
           <div class="cart-empty-state">
-            <span class="empty-icon">🛒</span>
+            <img src="assets/icons/carrito.png" class="empty-cart-img" alt="Carrito Vacío">
             <h3>Tu carrito está vacío</h3>
             <p>Explora nuestro catálogo al detal o ingresa a la sección mayorista para armar tu pedido.</p>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">

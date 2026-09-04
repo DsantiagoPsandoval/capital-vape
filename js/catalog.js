@@ -244,7 +244,7 @@ const CatalogController = {
               <button type="button" 
                       class="btn-flavor-add-cart" 
                       onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${item.name}')">
-                🛒 Agregar al Carrito
+                <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito
               </button>
             ` : ''}
           </div>
@@ -453,7 +453,7 @@ const CatalogController = {
                 </button>
               ` : `
                 <button type="button" class="btn btn-primary btn-add-cart" onclick="CatalogController.addProductToCart('${product.id}')">
-                  <span>🛒 Agregar al Carrito</span>
+                  <span><img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito</span>
                 </button>
               `}
             </div>

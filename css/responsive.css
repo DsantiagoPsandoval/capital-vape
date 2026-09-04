@@ -1,318 +1,603 @@
-/* CAPITAL VAPE - Master Responsive Design System (Mobile 2-Columns Optimized) */
+/* CAPITAL VAPE - Comprehensive Mobile & Responsive Engine */
 
 /* ==========================================================================
-   TABLETS & MEDIUM SCREENS (max-width: 1024px)
+   GLOBAL VIEWPORT & OVERFLOW LOCK
+   ========================================================================== */
+html, body {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ==========================================================================
+   TABLET RESPONSIVENESS (max-width: 1024px)
    ========================================================================== */
 @media (max-width: 1024px) {
-  .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 20px;
-  }
-
-  .hero-container {
-    flex-direction: column;
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
     text-align: center;
-    gap: 30px;
   }
 
   .hero-content {
+    align-items: center;
     max-width: 100%;
   }
 
-  .hero-badges-row, .hero-actions {
+  .hero-desc {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hero-cta-group {
     justify-content: center;
   }
 
-  .hero-card-featured {
-    max-width: 400px;
+  .hero-image-wrapper {
+    width: 100%;
+  }
+
+  .hero-bestseller-card {
+    max-width: 440px;
     margin: 0 auto;
+  }
+
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .contact-card-box {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 32px;
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
   }
 }
 
 /* ==========================================================================
-   MOBILE PHONES (max-width: 768px) - 2 COLUMNS LAYOUT
+   MOBILE PHONES (max-width: 768px) - 2 COLUMNS STRICT LAYOUT
    ========================================================================== */
 @media (max-width: 768px) {
+  /* Container Padding */
   .container {
-    padding: 0 10px;
+    padding: 0 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
-  /* Header & Navigation */
-  .navbar-container {
-    padding: 8px 12px;
+  /* ----------------- NAVBAR & MOBILE MENU ----------------- */
+  .cv-navbar {
+    padding: 8px 0;
   }
 
-  .logo-img {
-    height: 38px;
+  .nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
   }
 
-  .nav-actions {
-    gap: 6px;
-  }
-
-  .nav-btn {
-    padding: 6px 10px;
-    font-size: 0.78rem;
-  }
-
-  /* Hero Section */
-  .hero-section {
-    padding: 30px 0 20px 0;
-  }
-
-  .hero-title {
-    font-size: 1.85rem;
-    line-height: 1.18;
-  }
-
-  .hero-subtitle {
-    font-size: 0.88rem;
-  }
-
-  .hero-stats-row {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-
-  .stat-card {
-    padding: 8px 4px;
-  }
-
-  .stat-num {
-    font-size: 1.1rem;
-  }
-
-  .stat-label {
-    font-size: 0.65rem;
-  }
-
-  /* Catalog Toolbar */
-  .catalog-toolbar {
-    padding: 12px 10px;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .toolbar-top-row, .toolbar-controls-row {
-    flex-direction: column;
-    align-items: stretch;
+  .brand-wrapper {
     gap: 8px;
   }
 
-  .category-pills {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-    gap: 6px;
+  .brand-logo-img {
+    width: 36px;
+    height: 36px;
   }
 
-  .category-pills::-webkit-scrollbar {
-    height: 3px;
+  .brand-name {
+    font-size: 1.1rem;
   }
 
-  .category-pills::-webkit-scrollbar-thumb {
-    background: var(--accent-purple);
-    border-radius: 4px;
+  /* Hide desktop menu by default */
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border-active);
+    border-radius: var(--radius-md);
+    padding: 16px 20px;
+    flex-direction: column;
+    gap: 14px;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.85);
+    z-index: 1000;
   }
 
-  .cat-pill-btn {
-    white-space: nowrap;
-    padding: 6px 12px;
-    font-size: 0.76rem;
-    flex-shrink: 0;
+  .nav-menu.open {
+    display: flex !important;
+    animation: menuSlideDown 0.25s ease-out;
   }
 
-  .search-input {
-    padding: 8px 14px;
-    font-size: 0.82rem;
+  @keyframes menuSlideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
-  .sort-select {
-    padding: 6px 10px;
-    font-size: 0.78rem;
+  .nav-link {
+    font-size: 1rem;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    display: block;
     width: 100%;
   }
 
-  /* ==========================================================================
-     CRITICAL: STRICT 2 COLUMNS ON MOBILE
-     ========================================================================== */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-wholesale-btn {
+    display: none !important; /* Access via menu or button */
+  }
+
+  .nav-cart-btn {
+    padding: 7px 10px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .nav-cart-btn span:first-child {
+    display: none; /* Hide text, keep emoji */
+  }
+
+  .nav-cart-btn::before {
+    content: "🛒";
+  }
+
+  .mobile-toggle {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    cursor: pointer;
+  }
+
+  /* ----------------- HERO SECTION ----------------- */
+  .hero-section {
+    padding: 24px 0 20px 0;
+  }
+
+  .hero-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    width: 100% !important;
+  }
+
+  .hero-content {
+    text-align: center;
+    align-items: center;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .hero-badge {
+    font-size: 0.76rem;
+    padding: 6px 12px;
+  }
+
+  .hero-title {
+    font-size: 1.85rem !important;
+    line-height: 1.18 !important;
+  }
+
+  .hero-desc {
+    font-size: 0.88rem !important;
+    line-height: 1.45 !important;
+    max-width: 100% !important;
+  }
+
+  .hero-cta-group {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+
+  .hero-cta-group .btn {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    font-size: 0.9rem !important;
+  }
+
+  .hero-image-wrapper {
+    width: 100% !important;
+  }
+
+  .hero-bestseller-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 18px 14px !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-product-img-box {
+    height: 180px !important;
+  }
+
+  .hero-product-title {
+    font-size: 1.2rem !important;
+  }
+
+  .hero-price-val {
+    font-size: 1.1rem !important;
+  }
+
+  /* ----------------- FREE SHIPPING PROGRESS ----------------- */
+  .shipping-progress-section {
+    padding: 12px 0;
+  }
+
+  .free-shipping-card {
+    padding: 12px 14px;
+  }
+
+  .shipping-text-row {
+    font-size: 0.8rem;
+  }
+
+  /* ----------------- CATALOG TOOLBAR ----------------- */
+  .section-header {
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 1.75rem !important;
+  }
+
+  .section-subtitle {
+    font-size: 0.85rem !important;
+  }
+
+  .catalog-toolbar {
+    padding: 12px 10px !important;
+    gap: 10px !important;
+    margin-bottom: 18px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .toolbar-top-row, .toolbar-controls-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .category-pills {
+    display: flex !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+
+  .cat-pill-btn {
+    white-space: nowrap !important;
+    padding: 6px 12px !important;
+    font-size: 0.76rem !important;
+    flex-shrink: 0 !important;
+  }
+
+  .search-box {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+
+  .search-input {
+    padding: 8px 12px !important;
+    font-size: 0.82rem !important;
+    width: 100% !important;
+  }
+
+  .sort-box {
+    width: 100% !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+  }
+
+  .sort-select {
+    width: 100% !important;
+    padding: 8px 12px !important;
+    font-size: 0.8rem !important;
+  }
+
+  /* ----------------- STRICT 2 COLUMNS PRODUCTS GRID ----------------- */
   .products-grid {
     display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  /* Product Card in 2 Columns */
   .product-card {
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-md) !important;
     display: flex !important;
     flex-direction: column !important;
     height: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .card-image-wrapper {
-    height: 165px !important;
-    padding: 8px !important;
+    height: 160px !important;
+    padding: 6px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .product-img-real {
-    max-height: 135px !important;
+    max-height: 130px !important;
     max-width: 90% !important;
   }
 
   .card-puffs-badge {
-    font-size: 0.62rem !important;
-    padding: 2px 6px !important;
+    font-size: 0.6rem !important;
+    padding: 2px 5px !important;
     top: 6px !important;
     left: 6px !important;
   }
 
   .card-body {
-    padding: 10px 8px !important;
-    gap: 7px !important;
+    padding: 8px 6px !important;
+    gap: 6px !important;
     display: flex !important;
     flex-direction: column !important;
     flex-grow: 1 !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
-  /* Meta Row */
   .card-meta-row {
     display: flex !important;
     flex-wrap: wrap !important;
     align-items: center !important;
     justify-content: space-between !important;
     gap: 3px !important;
+    width: 100% !important;
   }
 
-  .card-rating-badge {
-    font-size: 0.68rem !important;
-    padding: 2px 4px !important;
-  }
-
-  .card-top-seller-pill {
+  .card-rating-badge, .card-top-seller-pill, .card-stock-badge {
     font-size: 0.6rem !important;
     padding: 2px 4px !important;
   }
 
-  .card-stock-badge {
-    font-size: 0.64rem !important;
-    padding: 2px 4px !important;
-  }
-
-  /* Title with uniform 2-line height */
   .card-title {
-    font-size: 0.88rem !important;
+    font-size: 0.85rem !important;
     line-height: 1.2 !important;
-    min-height: 2.15em !important;
+    min-height: 2.1em !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
-    margin-bottom: 2px !important;
   }
 
-  /* Flavor Picker Button */
+  .card-desc {
+    display: none !important;
+  }
+
   .card-flavor-picker-block {
     margin-top: auto !important;
+    width: 100% !important;
   }
 
   .btn-open-flavor-modal {
     padding: 5px 6px !important;
-    font-size: 0.72rem !important;
-    border-radius: var(--radius-sm) !important;
-  }
-
-  .flavor-picker-label {
-    gap: 4px !important;
+    font-size: 0.7rem !important;
+    width: 100% !important;
   }
 
   .flavor-current-tag {
-    max-width: 65px !important;
-    font-size: 0.62rem !important;
-    padding: 1px 4px !important;
+    max-width: 60px !important;
+    font-size: 0.6rem !important;
   }
 
-  /* Pricing Block in 2 Columns */
   .card-pricing-block {
-    padding: 6px !important;
+    padding: 5px 6px !important;
     gap: 3px !important;
-    border-radius: var(--radius-sm) !important;
-  }
-
-  .pricing-tier-row {
-    gap: 4px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .tier-badge-tag {
-    font-size: 0.58rem !important;
+    font-size: 0.55rem !important;
     padding: 1px 3px !important;
   }
 
+  .tier-name {
+    display: none !important;
+  }
+
   .tier-price-val {
-    font-size: 0.88rem !important;
+    font-size: 0.84rem !important;
   }
 
   .tier-save-tag {
     font-size: 0.58rem !important;
   }
 
-  /* Add to Cart Button */
   .card-actions-wrapper {
     margin-top: 2px !important;
+    width: 100% !important;
   }
 
   .btn-add-cart {
-    padding: 8px 4px !important;
-    font-size: 0.74rem !important;
+    padding: 7px 4px !important;
+    font-size: 0.72rem !important;
+    width: 100% !important;
     white-space: nowrap !important;
   }
 
-  /* Bugatti Mobile Balanced */
+  /* Bugatti Mobile */
   .product-card.is-bugatti .card-image-wrapper,
   .product-card[data-product-id="bugatti"] .card-image-wrapper {
-    height: 175px !important;
+    height: 170px !important;
   }
 
   .product-card.is-bugatti .product-img-real,
   .product-card[data-product-id="bugatti"] .product-img-real {
-    max-height: 145px !important;
-    max-width: 90% !important;
-    transform: scale(1.05) !important;
+    max-height: 140px !important;
   }
 
-  /* Wholesale Cards in 2 Columns */
+  /* ----------------- WHOLESALE SECTION IN 2 COLUMNS ----------------- */
+  .wholesale-gate-box {
+    padding: 24px 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .wholesale-form {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .wholesale-input {
+    width: 100% !important;
+    font-size: 0.88rem !important;
+    padding: 10px 14px !important;
+  }
+
+  .ws-unlocked-header {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    padding: 14px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .ws-unlocked-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .ws-unlocked-actions .btn {
+    width: 100% !important;
+  }
+
   .ws-tier-buttons-grid {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr) !important;
     gap: 4px !important;
+    width: 100% !important;
   }
 
   .btn-ws-tier {
     padding: 5px 2px !important;
     font-size: 0.68rem !important;
-    border-radius: 4px !important;
   }
 
   .tier-qty-tag {
-    font-size: 0.68rem !important;
+    font-size: 0.72rem !important;
   }
 
   .tier-unit-price {
-    font-size: 0.66rem !important;
-  }
-
-  .ws-savings-notice {
     font-size: 0.65rem !important;
-    padding: 4px 6px !important;
   }
 
-  /* ==========================================================================
-     MODAL DE SABORES (#flavorModal) EN MÓVIL
-     ========================================================================== */
+  .ws-save-pill {
+    font-size: 0.6rem !important;
+    padding: 1px 4px !important;
+  }
+
+  /* ----------------- CONTACT SECTION ----------------- */
+  .contact-section {
+    padding: 40px 0 !important;
+  }
+
+  .contact-card-box {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 20px 14px !important;
+    gap: 20px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .contact-info-list {
+    width: 100% !important;
+    gap: 12px !important;
+  }
+
+  .contact-item {
+    font-size: 0.85rem !important;
+  }
+
+  .social-buttons-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+
+  .btn-social {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 10px 14px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* ----------------- FOOTER ----------------- */
+  .cv-footer {
+    padding: 36px 0 20px !important;
+  }
+
+  .footer-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    width: 100% !important;
+  }
+
+  .footer-bottom-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    text-align: center !important;
+  }
+
+  /* ----------------- MODAL DE SABORES (#flavorModal) ----------------- */
+  .modal-overlay {
+    padding: 10px !important;
+  }
+
   .flavor-modal-card {
-    width: 96% !important;
+    width: 100% !important;
     max-height: 92vh !important;
     border-radius: var(--radius-md) !important;
   }
@@ -326,13 +611,13 @@
   }
 
   .flavor-modal-product-sub {
-    font-size: 0.75rem !important;
+    font-size: 0.74rem !important;
   }
 
   .flavor-modal-product-desc {
     padding: 8px 10px !important;
-    font-size: 0.78rem !important;
-    line-height: 1.35 !important;
+    font-size: 0.76rem !important;
+    line-height: 1.3 !important;
   }
 
   .flavor-modal-body {
@@ -341,69 +626,66 @@
   }
 
   .flavor-cards-grid {
+    display: grid !important;
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 8px !important;
   }
 
   .flavor-card-item {
-    padding: 8px 6px !important;
-    gap: 6px !important;
+    padding: 6px !important;
+    gap: 4px !important;
   }
 
   .flavor-card-img-wrap {
-    height: 95px !important;
+    height: 85px !important;
   }
 
   .flavor-card-img {
-    max-height: 85px !important;
+    max-height: 75px !important;
   }
 
   .flavor-card-name {
-    font-size: 0.78rem !important;
+    font-size: 0.74rem !important;
     line-height: 1.2 !important;
   }
 
   .flavor-card-desc {
-    font-size: 0.66rem !important;
-    line-height: 1.25 !important;
-    min-height: 28px !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
-    overflow: hidden !important;
+    font-size: 0.64rem !important;
+    line-height: 1.2 !important;
+    min-height: 26px !important;
   }
 
   .btn-flavor-select, .btn-flavor-add-cart {
-    padding: 6px 4px !important;
-    font-size: 0.7rem !important;
+    padding: 5px 3px !important;
+    font-size: 0.68rem !important;
   }
 
-  /* Floating Actions */
+  /* ----------------- CART & CHECKOUT DRAWERS ----------------- */
+  .cart-drawer, .checkout-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Floating Buttons */
   .floating-cart-btn {
-    width: 48px;
-    height: 48px;
-    font-size: 1.25rem;
-    bottom: 16px;
-    right: 16px;
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.25rem !important;
+    bottom: 16px !important;
+    right: 16px !important;
   }
 
   .wa-floating-btn {
-    width: 46px;
-    height: 46px;
-    font-size: 1.2rem;
-    bottom: 74px;
-    right: 16px;
-  }
-
-  /* Cart Drawer Mobile */
-  .cart-drawer {
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 46px !important;
+    height: 46px !important;
+    font-size: 1.2rem !important;
+    bottom: 74px !important;
+    right: 16px !important;
   }
 }
 
 /* ==========================================================================
-   EXTRA SMALL PHONES (max-width: 400px)
+   SMALL PHONES (max-width: 400px)
    ========================================================================== */
 @media (max-width: 400px) {
   .products-grid {
@@ -411,23 +693,23 @@
   }
 
   .card-image-wrapper {
-    height: 148px !important;
+    height: 145px !important;
   }
 
   .product-img-real {
-    max-height: 122px !important;
+    max-height: 118px !important;
   }
 
   .card-title {
-    font-size: 0.82rem !important;
+    font-size: 0.8rem !important;
   }
 
   .tier-price-val {
-    font-size: 0.82rem !important;
+    font-size: 0.78rem !important;
   }
 
   .btn-add-cart {
-    padding: 7px 2px !important;
-    font-size: 0.7rem !important;
+    padding: 6px 2px !important;
+    font-size: 0.68rem !important;
   }
 }

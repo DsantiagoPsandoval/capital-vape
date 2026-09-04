@@ -11,11 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.CheckoutController) CheckoutController.init();
   if (window.WholesaleCart) WholesaleCart.init();
 
-  // Mobile Menu Toggle
-  const mobileToggle = document.getElementById('mobileMenuToggle');
+  // Mobile Menu Toggle (support both IDs)
+  const mobileToggle = document.getElementById('mobileMenuToggle') || document.getElementById('mobileMenuBtn');
   const navMenu = document.getElementById('navMenu');
   if (mobileToggle && navMenu) {
-    mobileToggle.addEventListener('click', () => {
+    mobileToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
       navMenu.classList.toggle('open');
       mobileToggle.textContent = navMenu.classList.contains('open') ? '✕' : '☰';
     });
@@ -25,6 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
         navMenu.classList.remove('open');
         mobileToggle.textContent = '☰';
       });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!navMenu.contains(e.target) && !mobileToggle.contains(e.target) && navMenu.classList.contains('open')) {
+        navMenu.classList.remove('open');
+        mobileToggle.textContent = '☰';
+      }
     });
   }
 

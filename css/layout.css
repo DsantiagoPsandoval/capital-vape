@@ -184,8 +184,8 @@
 
 .hero-card-glow-ring {
   position: absolute;
-  top: -80px;
-  right: -80px;
+  top: 0px;
+  right: 0px;
   width: 220px;
   height: 220px;
   background: radial-gradient(circle, var(--accent-purple) 0%, var(--accent-gold) 60%, transparent 80%);

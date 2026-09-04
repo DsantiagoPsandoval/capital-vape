@@ -1,4 +1,4 @@
-/* CAPITAL VAPE - Wholesale Section & Security */
+/* CAPITAL VAPE - Wholesale Section & Platform */
 
 .wholesale-section {
   padding: 80px 0;
@@ -86,40 +86,273 @@
   color: var(--text-secondary);
 }
 
-/* UNLOCKED TABLE */
-.wholesale-table-wrapper {
-  overflow-x: auto;
+/* UNLOCKED DASHBOARD HEADER */
+.ws-unlocked-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-active);
+  padding: 20px 24px;
   border-radius: var(--radius-md);
-  margin-top: 24px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px var(--accent-gold-glow);
 }
 
-.wholesale-data-table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: left;
-  font-size: 0.9rem;
+.ws-unlocked-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.wholesale-data-table th, .wholesale-data-table td {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--border-color);
+.ws-unlocked-title h3 {
+  font-size: 1.3rem;
+  color: var(--accent-gold);
 }
 
-.wholesale-data-table th {
-  background: var(--bg-surface);
-  color: var(--text-secondary);
+.ws-unlocked-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* WHOLESALE PRODUCT CARDS */
+.ws-product-card {
+  min-height: 520px;
+}
+
+.ws-best-price-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #F59E0B, #D97706);
+  color: #000;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
+}
+
+.ws-pricing-headline {
+  font-size: 0.85rem;
+  color: var(--text-muted);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
 }
 
-.price-strikethrough {
-  text-decoration: line-through;
+.ws-savings-notice {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.ws-savings-notice strong {
+  color: var(--accent-gold);
+}
+
+/* TIER QUANTITY BUTTONS GRID */
+.ws-tier-buttons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.btn-ws-tier {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: var(--transition);
+  color: var(--text-primary);
+}
+
+.btn-ws-tier:hover {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.35);
+}
+
+.btn-ws-tier .tier-qty-tag {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.btn-ws-tier .tier-unit-price {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  transition: color 0.2s ease;
+}
+
+.btn-ws-tier:hover .tier-unit-price {
+  color: #000;
+}
+
+.btn-ws-tier.best-tier {
+  border-color: rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.12);
+}
+
+/* WHOLESALE CART DRAWER */
+.ws-cart-product-group {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ws-cart-prod-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.ws-cart-prod-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  padding: 2px;
+}
+
+.ws-cart-prod-meta {
+  flex: 1;
+}
+
+.ws-cart-prod-title {
+  font-size: 0.95rem;
+}
+
+.ws-cart-total-badge {
+  font-size: 0.75rem;
+  color: var(--accent-gold);
+  font-weight: 700;
+}
+
+.btn-remove-all {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-remove-all:hover {
+  color: #EF4444;
+}
+
+.ws-cart-packs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ws-pack-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-card);
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.ws-pack-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ws-pack-tag {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.ws-pack-flavor {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.ws-pack-unit-rate {
+  font-size: 0.72rem;
   color: var(--text-muted);
 }
 
-.tier-price {
+.ws-pack-price-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ws-pack-subtotal {
+  font-size: 0.9rem;
   color: var(--accent-gold);
+}
+
+.btn-remove-pack {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+.btn-remove-pack:hover {
+  opacity: 1;
+}
+
+.ws-prod-group-total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 8px;
+}
+
+.ws-phone-selector-box {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ws-phone-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.ws-phone-select {
+  padding: 10px;
+  font-size: 0.85rem;
+}
+
+.btn-ws-send {
+  padding: 14px;
+  font-size: 1rem;
 }

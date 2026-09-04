@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (window.Cart) Cart.init();
   if (window.CatalogController) CatalogController.init();
   if (window.CheckoutController) CheckoutController.init();
+  if (window.WholesaleCart) WholesaleCart.init();
 
   // Mobile Menu Toggle
   const mobileToggle = document.getElementById('mobileMenuToggle');
@@ -49,91 +50,91 @@ function initWholesaleSection() {
   const requestBtn = document.getElementById('btnRequestWholesaleCode');
   const logoutBtn = document.getElementById('btnExitWholesale');
 
-  if (requestBtn) {
+  if (requestBtn && window.WholesaleService) {
     requestBtn.href = WholesaleService.getWholesaleWhatsAppUrl();
   }
 
   const updateWholesaleView = () => {
+    if (!window.WholesaleService) return;
     const isAuth = WholesaleService.isUnlocked();
     if (lockedView) lockedView.style.display = isAuth ? 'none' : 'block';
     if (unlockedView) {
       unlockedView.style.display = isAuth ? 'block' : 'none';
-      if (isAuth) renderWholesaleTable();
+      if (isAuth && window.WholesaleCatalog) {
+        WholesaleCatalog.init();
+      }
     }
   };
 
+  // Init initial state
   updateWholesaleView();
 
   if (form) {
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const code = input.value;
-      alertBox.textContent = 'Verificando código...';
-      alertBox.className = 'wholesale-alert info';
-      alertBox.style.display = 'block';
-
-      const res = await WholesaleService.verifyCode(code);
-      if (res.success) {
+      const code = input ? input.value : '';
+      
+      const res = WholesaleService.verifyCode(code);
+      if (alertBox) {
         alertBox.textContent = res.message;
-        alertBox.className = 'wholesale-alert success';
+        alertBox.style.display = 'block';
+        alertBox.className = res.success ? 'wholesale-alert success' : 'wholesale-alert error';
+      }
+
+      if (res.success) {
         setTimeout(() => {
           updateWholesaleView();
-          alertBox.style.display = 'none';
-          input.value = '';
-          Toast.show('✓ Modo Mayorista desbloqueado.', 'success');
-        }, 600);
+          if (alertBox) {
+            alertBox.style.display = 'none';
+            alertBox.textContent = '';
+          }
+          if (input) input.value = '';
+          Toast.show('✓ Acceso mayorista concedido', 'success');
+        }, 300);
       } else {
-        alertBox.textContent = res.message;
-        alertBox.className = 'wholesale-alert error';
+        if (input) {
+          input.focus();
+          input.select();
+        }
       }
     });
   }
 
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-      WholesaleService.lock();
+    logoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      WholesaleService.logout();
       updateWholesaleView();
+      if (input) {
+        input.value = '';
+        input.focus();
+      }
+      if (alertBox) {
+        alertBox.style.display = 'none';
+        alertBox.textContent = '';
+      }
       Toast.show('Sesión mayorista cerrada.', 'info');
     });
   }
-}
 
-function renderWholesaleTable() {
-  const container = document.getElementById('wholesaleTableContainer');
-  if (!container) return;
+  // Wholesale cart trigger events
+  document.querySelectorAll('.open-ws-cart-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (window.WholesaleCart) WholesaleCart.openDrawer();
+    });
+  });
 
-  const formatCOP = (v) => '$' + Number(v || 0).toLocaleString('es-CO');
+  const wsOverlay = document.getElementById('wholesaleCartOverlay');
+  if (wsOverlay) {
+    wsOverlay.addEventListener('click', () => {
+      if (window.WholesaleCart) WholesaleCart.closeDrawer();
+    });
+  }
 
-  container.innerHTML = `
-    <div class="wholesale-table-wrapper">
-      <table class="wholesale-data-table">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Puffs / Capacidad</th>
-            <th>Precio Detal</th>
-            <th>Escala 5+</th>
-            <th>Escala 10+</th>
-            <th>Escala 20+</th>
-            <th>Escala 50+</th>
-            <th>Escala 100+</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${PRODUCTS_DATA.map(p => `
-            <tr>
-              <td><strong>${p.nombre}</strong></td>
-              <td>${p.subtitulo}</td>
-              <td><span class="price-strikethrough">${formatCOP(p.precio)}</span></td>
-              <td><strong class="tier-price">${p.precios_mayoristas['5'] ? formatCOP(p.precios_mayoristas['5']) : '-'}</strong></td>
-              <td><strong class="tier-price">${p.precios_mayoristas['10'] ? formatCOP(p.precios_mayoristas['10']) : '-'}</strong></td>
-              <td><strong class="tier-price">${p.precios_mayoristas['20'] ? formatCOP(p.precios_mayoristas['20']) : '-'}</strong></td>
-              <td><strong class="tier-price">${p.precios_mayoristas['50'] ? formatCOP(p.precios_mayoristas['50']) : '-'}</strong></td>
-              <td><strong class="tier-price">${p.precios_mayoristas['100'] ? formatCOP(p.precios_mayoristas['100']) : '-'}</strong></td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </div>
-  `;
+  const closeWsBtn = document.getElementById('closeWholesaleCartBtn');
+  if (closeWsBtn) {
+    closeWsBtn.addEventListener('click', () => {
+      if (window.WholesaleCart) WholesaleCart.closeDrawer();
+    });
+  }
 }

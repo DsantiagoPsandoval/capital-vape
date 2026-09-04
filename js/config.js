@@ -17,7 +17,8 @@ const CONFIG = {
   STORAGE_KEYS: {
     CART: 'cv_cart_items_v2',
     SHIPPING_DEST: 'cv_shipping_dest_v2',
-    WHOLESALE_AUTH: 'cv_wholesale_unlocked_v2'
+    WHOLESALE_AUTH: 'wholesaleAuthenticated',
+    THEME: 'cv_theme'
   },
   SOCIAL: {
     INSTAGRAM: 'https://www.instagram.com/capitalvap/',

@@ -1,860 +1,2198 @@
 /**
- * CAPITAL VAPE - Base de Datos de Productos Oficial
- * Mapeo completo de imágenes reales por producto y por sabor/variante.
+ * CAPITAL VAPE - Base de Datos Centralizada de Productos y Sabores Oficiales
  */
 const PRODUCTS_DATA = [
   {
-    id: "bang-leader",
-    nombre: "BANG LEADER",
-    subtitulo: "32.000 Puffs • 6 Sabores",
-    puffs: "32.000 Puffs",
-    categoria: "desechables",
-    rating: 4.8,
-    ventas: 3680,
-    precio: 45000,
-    precio_promo_2: 80000,
-    ahorro_2: 10000,
-    descripcion: "El Bang Leader es un vaporizador de alta potencia con 32.000 puffs y doble tanque. Ideal para los que buscan máxima duración y sabor intenso.",
-    imagen: "assets/productos/1.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "redbull-blueberry", nombre: "Red Bull – Blueberry", desc: "Mezcla energética de arándanos con toque ácido.", img: "assets/productos/2.png", visible: true },
-      { id: "lichi-mango", nombre: "Hielo de Lichi – Mango", desc: "Lichi dulce con mango jugoso y golpe helado.", img: "assets/productos/3.png", visible: true },
-      { id: "sandia-arandanos-menta", nombre: "Helado de Sandía – Arándanos & Menta", desc: "Sandía cremosa con arándanos y menta fresca.", img: "assets/productos/4.png", visible: true },
-      { id: "sandia-fresa-mango", nombre: "Helado de Sandía – Fresa & Mango", desc: "Sandía helada con fresa dulce y mango tropical.", img: "assets/productos/5.png", visible: true },
-      { id: "coca-cereza-arandano", nombre: "Coca‑Cola – Cereza & Arándano", desc: "Cola clásica con cereza y toque de arándano.", img: "assets/productos/1.png", visible: true },
-      { id: "sandia-arandano-mango-fresa", nombre: "Sandía de Arándano – Mango de Fresa", desc: "Combinación frutal de sandía, arándano, mango y fresa.", img: "assets/productos/1.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 35000, "10": 26000, "20": 25000, "50": 24000, "100": 23000 },
-    agotado: false
-  },
-  {
-    id: "humo-azul",
-    nombre: "HUMO AZUL",
-    subtitulo: "15.000 Puffs • 4 Colores",
-    puffs: "15.000 Puffs",
-    categoria: "desechables",
-    rating: 4.8,
-    ventas: 2940,
-    precio: 50000,
-    precio_promo_2: 85000,
-    ahorro_2: 15000,
-    descripcion: "Humo Azul ofrece 4 colores vibrantes con 15.000 puffs de sabor intenso y batería recargable.",
-    imagen: "assets/productos/8.png",
-    tipo_variante: "color",
-    colores: [
+    "id": "bang-leader",
+    "nombre": "BANG LEADER",
+    "categoria": "desechables",
+    "subtitulo": "32.000 Puffs • 6 Sabores",
+    "puffs": 32000,
+    "precio": 45000,
+    "precio_promo_2": 80000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3420,
+    "imagen": "assets/productos/1.png",
+    "descripcion": "El Bang Leader es un vape desechable de alto rendimiento diseñado para ofrecer hasta 32.000 caladas de sabor intenso y constante.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
       {
-        nombre: "DORADO",
-        img: "assets/productos/8.png",
-        sabores: ["Fresa frambuesa", "Banano helado", "Toronja limón", "Menta", "Sandía", "Arándano"]
+        "nombre": "Red Bull – Blueberry",
+        "img": "assets/productos/1.png",
+        "desc": "Mezcla energética de arándanos con un toque ácido."
       },
       {
-        nombre: "NEGRO",
-        img: "assets/productos/9.png",
-        sabores: ["Fresa frambuesa", "Gomitas dulces", "Sandía", "Manzana", "Arándano"]
+        "nombre": "Hielo de Lichi – Mango",
+        "img": "assets/productos/2.png",
+        "desc": "Lichi dulce con mango jugoso y un golpe helado."
       },
       {
-        nombre: "ORO ROSA",
-        img: "assets/productos/10.png",
-        sabores: ["Melón", "Toronja limón", "Uva helada", "Banano helado", "Lima limón"]
+        "nombre": "Helado de Sandía – Arándanos & Menta",
+        "img": "assets/productos/3.png",
+        "desc": "Sandía cremosa con arándanos y menta fresca."
       },
       {
-        nombre: "PLATEADO",
-        img: "assets/productos/11.png",
-        sabores: ["Miel durazno", "Uva helada", "Gomita cereza"]
+        "nombre": "Helado de Sandía – Fresa & Mango",
+        "img": "assets/productos/4.png",
+        "desc": "Sandía helada con fresa dulce y mango tropical."
+      },
+      {
+        "nombre": "Coca‑Cola – Cereza & Arándano",
+        "img": "assets/productos/5.png",
+        "desc": "Cola clásica con cereza y un toque de arándano."
+      },
+      {
+        "nombre": "Sandía de Arándano – Mango de Fresa",
+        "img": "assets/productos/6.png",
+        "desc": "Combinación frutal de sandía, arándano, mango y fresa."
       }
-    ],
-    precios_mayoristas: { "5": 35000, "10": 28000, "20": 27000, "50": 26000, "100": 25000 },
-    agotado: false
+    ]
   },
   {
-    id: "donut",
-    nombre: "DONUT",
-    subtitulo: "50.000 Puffs • 20 Sabores",
-    puffs: "50.000 Puffs",
-    categoria: "desechables",
-    rating: 4.5,
-    ventas: 4120,
-    precio: 40000,
-    precio_promo_2: 70000,
-    ahorro_2: 10000,
-    descripcion: "El SUONON Donete 50K combina un diseño compacto con pantalla LED integrada, batería recargable de 900 mAh, Dual Mesh de 0,5 Ω, 22 mL de e-liquid y 3 modos de potencia.",
-    imagen: "assets/productos/248.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "dragon-melon", nombre: "Dragon Melon", desc: "Pitahaya y melón tropical dulce y jugoso.", img: "assets/productos/248.png", visible: true },
-      { id: "sour-chill-apple", nombre: "Sour Chill Apple", desc: "Manzana verde con toque ácido y sensación fría.", img: "assets/productos/249.png", visible: true },
-      { id: "blueberry-watermelon", nombre: "Blueberry Watermelon", desc: "Arándano dulce combinado con sandía jugosa.", img: "assets/productos/250.png", visible: true },
-      { id: "mighty-peach", nombre: "The Mighty Peach", desc: "Durazno maduro suave y afrutado.", img: "assets/productos/251.png", visible: true },
-      { id: "mighty-grape", nombre: "The Mighty Grape", desc: "Uva intensa dulce tipo golosina.", img: "assets/productos/252.png", visible: true },
-      { id: "miami-mint", nombre: "Miami Mint", desc: "Menta fresca limpia y refrescante.", img: "assets/productos/253.png", visible: true },
-      { id: "blue-razz-ice", nombre: "Blue Razz Ice", desc: "Frambuesa azul ácida y dulce con toque frío.", img: "assets/productos/254.png", visible: true },
-      { id: "mighty-mango", nombre: "The Mighty Mango", desc: "Mango maduro tropical y jugoso.", img: "assets/productos/255.png", visible: true },
-      { id: "berry-crush", nombre: "Berry Crush", desc: "Combinación de frutos rojos dulces y ácidos.", img: "assets/productos/256.png", visible: true },
-      { id: "b-burst", nombre: "B Burst", desc: "Mezcla de frutos del bosque intensos tipo golosina.", img: "assets/productos/257.png", visible: true },
-      { id: "watermelon-ice", nombre: "Watermelon Ice", desc: "Sandía jugosa con sensación fría y refrescante.", img: "assets/productos/258.png", visible: true },
-      { id: "fcuking-fab", nombre: "Fcuking Fab", desc: "Mezcla frutal dulce y golosa con notas intensas.", img: "assets/productos/259.png", visible: true },
-      { id: "freezy-banana", nombre: "Freezy Banana", desc: "Banana dulce acompañada de toque frío.", img: "assets/productos/260.png", visible: true },
-      { id: "mighty-straw", nombre: "The Mighty Straw", desc: "Fresa madura dulce, intensa y frutal.", img: "assets/productos/261.png", visible: true },
-      { id: "freezy-pina-colada", nombre: "Freezy Pina Colada", desc: "Piña tropical y coco con frescura helada.", img: "assets/productos/262.png", visible: true },
-      { id: "blackberry-fab", nombre: "Blackberry FAB", desc: "Mora madura intensa, dulce y ácida.", img: "assets/productos/263.png", visible: true },
-      { id: "sour-fab", nombre: "Sour FAB", desc: "Golosina frutal con marcado toque ácido.", img: "assets/productos/264.png", visible: true },
-      { id: "oasis-bliss", nombre: "Oasis Bliss", desc: "Mango y frutas exóticas tropicales.", img: "assets/productos/265.png", visible: true },
-      { id: "dragon-razz", nombre: "Dragon Razz", desc: "Pitahaya con frutos rojos y frambuesa.", img: "assets/productos/266.png", visible: true },
-      { id: "mighty-apple", nombre: "The Mighty Apple", desc: "Manzana verde intensa, dulce y refrescante.", img: "assets/productos/267.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 30000, "10": 24000, "20": 23000, "50": 22000, "100": 21000 },
-    agotado: false
+    "id": "humo-azul",
+    "nombre": "HUMO AZUL",
+    "categoria": "desechables",
+    "subtitulo": "6 Sabores por Color",
+    "puffs": 10000,
+    "precio": 45000,
+    "precio_promo_2": 80000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 2890,
+    "imagen": "assets/productos/8.png",
+    "descripcion": "Dispositivo con variantes por color, cada uno con una selección exclusiva de sabores frutales y refrescantes.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "DORADO",
+        "img": "assets/productos/8.png",
+        "sabores": [
+          "Fresa frambuesa",
+          "Banano helado",
+          "Toronja limón",
+          "Menta",
+          "Sandía",
+          "Arándano"
+        ]
+      },
+      {
+        "nombre": "NEGRO",
+        "img": "assets/productos/9.png",
+        "sabores": [
+          "Fresa frambuesa",
+          "Gomitas dulces",
+          "Sandía",
+          "Manzana",
+          "Arándano"
+        ]
+      },
+      {
+        "nombre": "ORO ROSA",
+        "img": "assets/productos/10.png",
+        "sabores": [
+          "Melón",
+          "Toronja limón",
+          "Uva helada",
+          "Banano helado",
+          "Lima limón"
+        ]
+      },
+      {
+        "nombre": "PLATEADO",
+        "img": "assets/productos/11.png",
+        "sabores": [
+          "Miel durazno",
+          "Uva helada",
+          "Gomita cereza"
+        ]
+      }
+    ]
   },
   {
-    id: "solobar-kit",
-    nombre: "SOLOBAR KIT",
-    subtitulo: "35.000 Puffs • 9 Sabores",
-    puffs: "35.000 Puffs",
-    categoria: "kits",
-    rating: 4.5,
-    ventas: 1890,
-    precio: 39000,
-    precio_promo_2: 70000,
-    ahorro_2: 8000,
-    descripcion: "El Solobar Kit incluye batería de 900mAh y pod de 24ml, alcanzando 35.000 puffs. Perfecto para vapear todo el día con excelente rendimiento.",
-    imagen: "assets/productos/12.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "durazno-morado", nombre: "Durazno morado", desc: "Durazno dulce con un toque de mora.", img: "assets/productos/12.png", visible: true },
-      { id: "manzana-sandia", nombre: "Manzana sandía", desc: "Manzana crujiente con giro refrescante.", img: "assets/productos/13.png", visible: true },
-      { id: "tabaco", nombre: "Tabaco", desc: "Sabor clásico a tabaco suave.", img: "assets/productos/14.png", visible: true },
-      { id: "citricos-refrescantes", nombre: "Cítricos refrescantes", desc: "Mezcla cítrica con final fresco.", img: "assets/productos/15.png", visible: true },
-      { id: "explosion-uva", nombre: "Explosión de uva", desc: "Uva intensa y dulce.", img: "assets/productos/16.png", visible: true },
-      { id: "puro-neutro", nombre: "Puro/neutro", desc: "Sin sabor añadido, solo vapor puro.", img: "assets/productos/17.png", visible: true },
-      { id: "mango-dulce", nombre: "Mango dulce", desc: "Mango tropical maduro y dulce.", img: "assets/productos/18.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa sandía", desc: "Agotado temporalmente.", img: "assets/productos/19.png", visible: false },
-      { id: "menta-intensa", nombre: "Menta intensa", desc: "Agotado temporalmente.", img: "assets/productos/12.png", visible: false }
-    ],
-    precios_mayoristas: { "5": 29000, "10": 24000, "20": 23000, "50": 22000, "100": 21000 },
-    agotado: false
+    "id": "solobar-kit",
+    "nombre": "SOLOBAR KIT",
+    "categoria": "kits",
+    "subtitulo": "10.000 Puffs • Kit Recargable",
+    "puffs": 10000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3100,
+    "imagen": "assets/productos/12.png",
+    "descripcion": "Kit con batería recargable y pods intercambiables de 10.000 puffs, ideal para quienes buscan versatilidad y ahorro continuo.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Arándano Frambuesa",
+        "img": "assets/productos/12.png",
+        "desc": "Arándanos jugosos con frambuesa ácida."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/13.png",
+        "desc": "Menta intensa y refrescante para todo el día."
+      },
+      {
+        "nombre": "Fresa Kiwi",
+        "img": "assets/productos/14.png",
+        "desc": "Fresas dulces combinadas con kiwi tropical ácido."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/15.png",
+        "desc": "Sandía jugosa con un final helado irresistible."
+      },
+      {
+        "nombre": "Mango Melocotón",
+        "img": "assets/productos/16.png",
+        "desc": "Mango maduro con durazno aterciopelado."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/17.png",
+        "desc": "Uvas moradas dulces con golpe frío."
+      },
+      {
+        "nombre": "Manzana Doble",
+        "img": "assets/productos/18.png",
+        "desc": "Mezcla crujiente de manzana roja y verde."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/19.png",
+        "desc": "Explosión de bayas silvestres dulces y ácidas."
+      }
+    ]
   },
   {
-    id: "solobar-pod",
-    nombre: "SOLOBAR POD",
-    subtitulo: "35.000 Puffs • 8 Sabores",
-    puffs: "35.000 Puffs",
-    categoria: "pods",
-    rating: 4.3,
-    ventas: 2150,
-    precio: 29000,
-    precio_promo_2: 50000,
-    ahorro_2: 8000,
-    descripcion: "Pod de repuesto para Solobar Kit. 24ml de líquido, 35.000 puffs, compatible con batería Solobar.",
-    imagen: "assets/productos/20.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "sandia", nombre: "Sandía", desc: "Sandía jugosa y refrescante.", img: "assets/productos/20.png", visible: true },
-      { id: "mango-dulce", nombre: "Mango dulce", desc: "Mango tropical dulce.", img: "assets/productos/21.png", visible: true },
-      { id: "explosion-uva", nombre: "Explosión de uva", desc: "Uva intensa.", img: "assets/productos/22.png", visible: true },
-      { id: "frambuesa-limon", nombre: "Frambuesa con limón", desc: "Frambuesa ácida con toque de limón.", img: "assets/productos/23.png", visible: true },
-      { id: "durazno-pina", nombre: "Durazno piña", desc: "Durazno con piña tropical.", img: "assets/productos/24.png", visible: true },
-      { id: "mora-azul", nombre: "Mora azul", desc: "Mora azul fresca.", img: "assets/productos/25.png", visible: true },
-      { id: "tabaco", nombre: "Tabaco", desc: "Sabor tabaco suave.", img: "assets/productos/26.png", visible: true },
-      { id: "uva-helada", nombre: "Uva helada", desc: "Uva dulce con toque frío.", img: "assets/productos/27.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 21000, "10": 17000, "20": 16000, "50": 15000, "100": 14000 },
-    agotado: false
+    "id": "solobar-pod",
+    "nombre": "SOLOBAR POD",
+    "categoria": "pods",
+    "subtitulo": "10.000 Puffs • Pod de Repuesto",
+    "puffs": 10000,
+    "precio": 25000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 5000,
+    "rating": 4.8,
+    "ventas": 4200,
+    "imagen": "assets/productos/20.png",
+    "descripcion": "Cartucho de repuesto para Solobar Kit con 10.000 caladas de sabor puro y tecnología de resistencia de malla.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Arándano Frambuesa",
+        "img": "assets/productos/20.png",
+        "desc": "Arándanos jugosos con frambuesa ácida."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/21.png",
+        "desc": "Menta intensa y refrescante para todo el día."
+      },
+      {
+        "nombre": "Fresa Kiwi",
+        "img": "assets/productos/22.png",
+        "desc": "Fresas dulces combinadas con kiwi tropical ácido."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/23.png",
+        "desc": "Sandía jugosa con un final helado irresistible."
+      },
+      {
+        "nombre": "Mango Melocotón",
+        "img": "assets/productos/24.png",
+        "desc": "Mango maduro con durazno aterciopelado."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/25.png",
+        "desc": "Uvas moradas dulces con golpe frío."
+      },
+      {
+        "nombre": "Manzana Doble",
+        "img": "assets/productos/26.png",
+        "desc": "Mezcla crujiente de manzana roja y verde."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/27.png",
+        "desc": "Explosión de bayas silvestres dulces y ácidas."
+      }
+    ]
   },
   {
-    id: "yocco",
-    nombre: "YOCCO",
-    subtitulo: "5.100 Puffs • 7 Sabores",
-    puffs: "5.100 Puffs",
-    categoria: "desechables",
-    rating: 4.1,
-    ventas: 1420,
-    precio: 14000,
-    precio_promo_2: 24000,
-    ahorro_2: 4000,
-    descripcion: "Yocco es un desechable compacto con 5.100 puffs y gran variedad de sabores frutales.",
-    imagen: "assets/productos/28.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "fresa-mango", nombre: "Fresa mango", desc: "Fresa con mango tropical.", img: "assets/productos/28.png", visible: true },
-      { id: "mora-azul", nombre: "Mora azul", desc: "Mora azul dulce.", img: "assets/productos/29.png", visible: true },
-      { id: "explosion-tropical", nombre: "Explosión tropical", desc: "Frutas tropicales variadas.", img: "assets/productos/30.png", visible: true },
-      { id: "kiwi-fresa", nombre: "Kiwi Fresa", desc: "Kiwi con fresa dulce.", img: "assets/productos/31.png", visible: true },
-      { id: "maracucha", nombre: "Maracucha", desc: "Maracuyá exótico.", img: "assets/productos/32.png", visible: true },
-      { id: "melocoton-mango", nombre: "Melocotón mango", desc: "Melocotón con mango.", img: "assets/productos/33.png", visible: true },
-      { id: "durazno-helado", nombre: "Durazno helado", desc: "Durazno fresco con hielo.", img: "assets/productos/34.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 11000, "10": 9000, "20": 8500, "50": 8000, "100": 7500 },
-    agotado: false
+    "id": "yocco",
+    "nombre": "YOCCO",
+    "categoria": "desechables",
+    "subtitulo": "10.000 Puffs • 7 Sabores",
+    "puffs": 10000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 2100,
+    "imagen": "assets/productos/28.png",
+    "descripcion": "Vape desechable elegante y compacto con 10.000 puffs de sabores frutales y refrescantes.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Mora Azul",
+        "img": "assets/productos/28.png",
+        "desc": "Arándanos maduros con dulzura natural."
+      },
+      {
+        "nombre": "Helado de Fresa",
+        "img": "assets/productos/29.png",
+        "desc": "Fresa dulce con base cremosa y fría."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/30.png",
+        "desc": "Menta limpia con golpe fresco duradero."
+      },
+      {
+        "nombre": "Helado de Sandía",
+        "img": "assets/productos/31.png",
+        "desc": "Sandía veraniega con toque helado."
+      },
+      {
+        "nombre": "Mango Helado",
+        "img": "assets/productos/32.png",
+        "desc": "Mango tropical maduro con frescura glacial."
+      },
+      {
+        "nombre": "Fresa Kiwi",
+        "img": "assets/productos/33.png",
+        "desc": "Balance frutal de fresa dulce y kiwi ácido."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/34.png",
+        "desc": "Uva morada dulce con acabado refrescante."
+      }
+    ]
   },
   {
-    id: "death-row",
-    nombre: "DEATH ROW",
-    subtitulo: "5.000 Puffs • 9 Sabores",
-    puffs: "5.000 Puffs",
-    categoria: "desechables",
-    rating: 3.9,
-    ventas: 980,
-    precio: 15000,
-    precio_promo_2: 25000,
-    ahorro_2: 5000,
-    descripcion: "Death Row ofrece 5.000 puffs de sabor intenso con un diseño atrevido y calada suave.",
-    imagen: "assets/productos/36.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "fresa-durazno", nombre: "Fresa durazno", desc: "Fresa dulce con durazno.", img: "assets/productos/36.png", visible: true },
-      { id: "explosion-tropical", nombre: "Explosión tropical", desc: "Mix de frutas exóticas.", img: "assets/productos/37.png", visible: true },
-      { id: "menta", nombre: "Menta", desc: "Menta clásica refrescante.", img: "assets/productos/38.png", visible: true },
-      { id: "durazno-uva", nombre: "Durazno uva", desc: "Durazno con uva jugosa.", img: "assets/productos/39.png", visible: true },
-      { id: "dulce", nombre: "Dulce", desc: "Sabor dulce tipo caramelo.", img: "assets/productos/40.png", visible: true },
-      { id: "miel-pina", nombre: "Miel de piña", desc: "Piña dulce con miel.", img: "assets/productos/41.png", visible: true },
-      { id: "mango-uva", nombre: "Mango uva", desc: "Mango y uva dulce.", img: "assets/productos/42.png", visible: true },
-      { id: "fresa-banano", nombre: "Fresa banano", desc: "Clásica fresa con banano.", img: "assets/productos/43.png", visible: true },
-      { id: "kiwi-fresa", nombre: "Kiwi fresa", desc: "Kiwi ácido con fresa dulce.", img: "assets/productos/44.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 12000, "10": 9500, "20": 9000, "50": 8500, "100": 8000 },
-    agotado: false
+    "id": "death-row",
+    "nombre": "DEATH ROW",
+    "categoria": "desechables",
+    "subtitulo": "7.000 Puffs • 9 Sabores",
+    "puffs": 7000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 1950,
+    "imagen": "assets/productos/36.png",
+    "descripcion": "Edición oficial Death Row Records con 7.000 caladas de potencia pura y perfiles de sabor legendarios.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Manzana Dulce",
+        "img": "assets/productos/36.png",
+        "desc": "Manzana dulce tipo caramelo crujiente."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/37.png",
+        "desc": "Cereza madura con golpe helado potente."
+      },
+      {
+        "nombre": "Mora y Fresa",
+        "img": "assets/productos/38.png",
+        "desc": "Dúo clásico de moras y fresas dulces."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/39.png",
+        "desc": "Equilibrio cítrico-dulce entre kiwi y fresa."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/40.png",
+        "desc": "Sandía jugosa con frescura intensa."
+      },
+      {
+        "nombre": "Mango Helado",
+        "img": "assets/productos/41.png",
+        "desc": "Mango exótico maduro con toque frío."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/42.png",
+        "desc": "Uvas oscuras dulces con frescura glacial."
+      },
+      {
+        "nombre": "Menta Salvaje",
+        "img": "assets/productos/43.png",
+        "desc": "Menta herbal fuerte y refrescante."
+      },
+      {
+        "nombre": "Limonada Rosa",
+        "img": "assets/productos/44.png",
+        "desc": "Limonada rosada dulce con toque ácido vibrante."
+      }
+    ]
   },
   {
-    id: "lost-mary-os",
-    nombre: "LOST MARY OS",
-    subtitulo: "5.000 Puffs • 26 Sabores",
-    puffs: "5.000 Puffs",
-    categoria: "desechables",
-    rating: 4.2,
-    ventas: 3100,
-    precio: 18000,
-    precio_promo_2: 30000,
-    ahorro_2: 6000,
-    descripcion: "Lost Mary OS es sinónimo de calidad y variedad: 26 sabores, 5.000 puffs y diseño compacto ergonómico.",
-    imagen: "assets/productos/46.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "fresa-limon", nombre: "Fresa limón", desc: "Fresa dulce con toque de limón.", img: "assets/productos/46.png", visible: true },
-      { id: "limon", nombre: "Limón", desc: "Limón cítrico refrescante.", img: "assets/productos/47.png", visible: true },
-      { id: "uva-durazno", nombre: "Uva durazno", desc: "Uva con durazno jugoso.", img: "assets/productos/48.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 14000, "10": 11000, "20": 10500, "50": 10000, "100": 9500 },
-    agotado: false
+    "id": "lost-mary-os",
+    "nombre": "LOST MARY OS",
+    "categoria": "desechables",
+    "subtitulo": "5.000 Puffs • 27 Sabores",
+    "puffs": 5000,
+    "precio": 30000,
+    "precio_promo_2": 50000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 5120,
+    "imagen": "assets/productos/46.png",
+    "descripcion": "Uno de los vapes desechables más reconocidos a nivel mundial, con diseño ergonómico de superficie planetaria y 5.000 caladas suaves.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Fresa Hielo",
+        "img": "assets/productos/46.png",
+        "desc": "Fresas maduras con toque helado."
+      },
+      {
+        "nombre": "Fresa Mango",
+        "img": "assets/productos/47.png",
+        "desc": "Fresas dulces y mango tropical."
+      },
+      {
+        "nombre": "Arándano Hielo",
+        "img": "assets/productos/48.png",
+        "desc": "Arándano silvestre con golpe frío."
+      },
+      {
+        "nombre": "Sandía Hielo",
+        "img": "assets/productos/49.png",
+        "desc": "Sandía dulce con acabado fresco."
+      },
+      {
+        "nombre": "Algodón de Azúcar",
+        "img": "assets/productos/50.png",
+        "desc": "Algodón de azúcar dulce de feria."
+      },
+      {
+        "nombre": "Hielo Negro",
+        "img": "assets/productos/51.png",
+        "desc": "Moras oscuras con menta helada."
+      },
+      {
+        "nombre": "Menta Verde",
+        "img": "assets/productos/52.png",
+        "desc": "Menta verde herbal clásica."
+      },
+      {
+        "nombre": "Piña Helada",
+        "img": "assets/productos/53.png",
+        "desc": "Piña dulce tropical helada."
+      },
+      {
+        "nombre": "Frutas Tropicales",
+        "img": "assets/productos/54.png",
+        "desc": "Mezcla de frutas exóticas del caribe."
+      },
+      {
+        "nombre": "Frambuesa Fresa",
+        "img": "assets/productos/55.png",
+        "desc": "Frambuesa ácida con fresa suave."
+      },
+      {
+        "nombre": "Melocotón Mango",
+        "img": "assets/productos/56.png",
+        "desc": "Durazno suave con mango aromático."
+      },
+      {
+        "nombre": "Kiwi Maracuyá Guayaba",
+        "img": "assets/productos/57.png",
+        "desc": "Trío tropical cítrico y aromático."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/58.png",
+        "desc": "Cereza dulce con frescura polar."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/59.png",
+        "desc": "Uvas moradas con frío intenso."
+      },
+      {
+        "nombre": "Mango Hielo",
+        "img": "assets/productos/60.png",
+        "desc": "Mango cremoso con toque helado."
+      },
+      {
+        "nombre": "Manzana Melocotón",
+        "img": "assets/productos/61.png",
+        "desc": "Manzana crujiente y durazno suave."
+      },
+      {
+        "nombre": "Limonada Arándano",
+        "img": "assets/productos/62.png",
+        "desc": "Limonada fresca con arándanos."
+      },
+      {
+        "nombre": "Lichi Hielo",
+        "img": "assets/productos/63.png",
+        "desc": "Lichi oriental dulce y frío."
+      },
+      {
+        "nombre": "Maracuyá Naranja",
+        "img": "assets/productos/64.png",
+        "desc": "Maracuyá cítrico con naranja jugosa."
+      },
+      {
+        "nombre": "Coco Melón",
+        "img": "assets/productos/65.png",
+        "desc": "Coco cremoso con melón dulce."
+      },
+      {
+        "nombre": "Baya Mixta",
+        "img": "assets/productos/66.png",
+        "desc": "Surtido de moras y arándanos."
+      },
+      {
+        "nombre": "Plátano Hielo",
+        "img": "assets/productos/67.png",
+        "desc": "Plátano dulce con acabado helado."
+      },
+      {
+        "nombre": "Menta Arándano",
+        "img": "assets/productos/68.png",
+        "desc": "Arándano dulce con menta limpia."
+      },
+      {
+        "nombre": "Gomita Osito",
+        "img": "assets/productos/69.png",
+        "desc": "Gomitas frutales masticables."
+      },
+      {
+        "nombre": "Caramelo Ácido",
+        "img": "assets/productos/70.png",
+        "desc": "Caramelo con toque ácido chispeante."
+      },
+      {
+        "nombre": "Fresa Piña",
+        "img": "assets/productos/71.png",
+        "desc": "Fresa dulce con piña ácida."
+      },
+      {
+        "nombre": "Bebida Energética",
+        "img": "assets/productos/72.png",
+        "desc": "Bebida energética clásica estimulante."
+      }
+    ]
   },
   {
-    id: "lost-mary-mo",
-    nombre: "LOST MARY MO",
-    subtitulo: "5.000 Puffs • 14 Sabores",
-    puffs: "5.000 Puffs",
-    categoria: "desechables",
-    rating: 4.2,
-    ventas: 2890,
-    precio: 18000,
-    precio_promo_2: 30000,
-    ahorro_2: 6000,
-    descripcion: "Lost Mary MO ofrece 14 sabores exóticos y 5.000 puffs de puro placer en un chasis estilizado.",
-    imagen: "assets/productos/73.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "arandano", nombre: "Arándano", desc: "Arándano dulce.", img: "assets/productos/73.png", visible: true },
-      { id: "dulce", nombre: "Dulce", desc: "Caramelo dulce.", img: "assets/productos/74.png", visible: true },
-      { id: "cerveza-jengibre", nombre: "Cerveza de jengibre", desc: "Ginger beer con toque especial.", img: "assets/productos/75.png", visible: true },
-      { id: "sandia", nombre: "Sandía", desc: "Sandía refrescante.", img: "assets/productos/76.png", visible: true },
-      { id: "mango", nombre: "Mango", desc: "Mango maduro.", img: "assets/productos/77.png", visible: true },
-      { id: "menta", nombre: "Menta", desc: "Menta fresca.", img: "assets/productos/78.png", visible: true },
-      { id: "cereza-sandia", nombre: "Cereza sandía", desc: "Cereza con sandía.", img: "assets/productos/79.png", visible: true },
-      { id: "pina-manzana", nombre: "Piña manzana", desc: "Piña con manzana.", img: "assets/productos/80.png", visible: true },
-      { id: "fusion-kiwi", nombre: "Fusión kiwi", desc: "Kiwi exótico.", img: "assets/productos/81.png", visible: true },
-      { id: "limon", nombre: "Limón", desc: "Limón fresco.", img: "assets/productos/82.png", visible: true },
-      { id: "durazno", nombre: "Durazno", desc: "Durazno dulce.", img: "assets/productos/83.png", visible: true },
-      { id: "cereza-limon", nombre: "Cereza limón", desc: "Cereza ácida con limón.", img: "assets/productos/84.png", visible: true },
-      { id: "energizante", nombre: "Energizante", desc: "Sabor bebida energizante.", img: "assets/productos/85.png", visible: true },
-      { id: "uva-dulce", nombre: "Uva dulce", desc: "Uva dulce madura.", img: "assets/productos/86.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 14000, "10": 11000, "20": 10500, "50": 10000, "100": 9500 },
-    agotado: false
+    "id": "lost-mary-mo",
+    "nombre": "LOST MARY MO",
+    "categoria": "desechables",
+    "subtitulo": "5.000 Puffs • 15 Sabores",
+    "puffs": 5000,
+    "precio": 30000,
+    "precio_promo_2": 50000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3890,
+    "imagen": "assets/productos/73.png",
+    "descripcion": "Diseño cilíndrico ultra ergonómico con acabado marmoleado de lujo y tecnología de resistencia de malla para caladas sedosas.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Hielo de Cereza Negra",
+        "img": "assets/productos/73.png",
+        "desc": "Cereza negra intensa con golpe frío."
+      },
+      {
+        "nombre": "Rosa Frutal",
+        "img": "assets/productos/74.png",
+        "desc": "Combinación suave de frutas rosadas."
+      },
+      {
+        "nombre": "Mango Melocotón Sandía",
+        "img": "assets/productos/75.png",
+        "desc": "Trío tropical refrescante y dulce."
+      },
+      {
+        "nombre": "Guayaba Kiwi Maracuyá",
+        "img": "assets/productos/76.png",
+        "desc": "Mezcla exótica cítrica y dulce."
+      },
+      {
+        "nombre": "Fresa Helada",
+        "img": "assets/productos/77.png",
+        "desc": "Fresas dulces con toque helado."
+      },
+      {
+        "nombre": "Mora y Frambuesa",
+        "img": "assets/productos/78.png",
+        "desc": "Bayas silvestres equilibradas."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/79.png",
+        "desc": "Menta limpia con frescura duradera."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/80.png",
+        "desc": "Sandía jugosa con frío polar."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/81.png",
+        "desc": "Uvas moradas con golpe helado."
+      },
+      {
+        "nombre": "Piña Helada",
+        "img": "assets/productos/82.png",
+        "desc": "Piña dulce con toque fresco."
+      },
+      {
+        "nombre": "Manzana Crujiente",
+        "img": "assets/productos/83.png",
+        "desc": "Manzana verde ácida y fresca."
+      },
+      {
+        "nombre": "Limonada Rosa",
+        "img": "assets/productos/84.png",
+        "desc": "Limonada cítrica con toque dulce."
+      },
+      {
+        "nombre": "Plátano Helado",
+        "img": "assets/productos/85.png",
+        "desc": "Plátano cremoso con frío suave."
+      },
+      {
+        "nombre": "Arándano Helado",
+        "img": "assets/productos/86.png",
+        "desc": "Arándano silvestre con frescura."
+      },
+      {
+        "nombre": "Naranja Helada",
+        "img": "assets/productos/87.png",
+        "desc": "Cítrico de naranja con golpe frío."
+      }
+    ]
   },
   {
-    id: "ease",
-    nombre: "EASE",
-    subtitulo: "8.000 Puffs • 30 Sabores",
-    puffs: "8.000 Puffs",
-    categoria: "desechables",
-    rating: 4.0,
-    ventas: 1650,
-    precio: 18000,
-    precio_promo_2: 30000,
-    ahorro_2: 6000,
-    descripcion: "Ease te trae 30 sabores y 8.000 puffs con un diseño ergonómico y batería de 600mAh.",
-    imagen: "assets/productos/88.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "sandia", nombre: "Sandía", desc: "Sandía dulce y jugosa.", img: "assets/productos/88.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 14000, "10": 11000, "20": 10500, "50": 10000, "100": 9500 },
-    agotado: false
+    "id": "ease",
+    "nombre": "EASE",
+    "categoria": "desechables",
+    "subtitulo": "8.000 Puffs • 30 Sabores",
+    "puffs": 8000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 4600,
+    "imagen": "assets/productos/88.png",
+    "descripcion": "El Ease destaca por su boquilla de silicona ergonómica, pantalla LED informativa y 30 opciones de sabor frutal e intenso.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Limonada de Fresa",
+        "img": "assets/productos/88.png",
+        "desc": "Limonada refrescante con fresas maduras."
+      },
+      {
+        "nombre": "Gomitas de Sandía",
+        "img": "assets/productos/89.png",
+        "desc": "Caramelo masticable con sabor a sandía."
+      },
+      {
+        "nombre": "Fresa y Frambuesa",
+        "img": "assets/productos/90.png",
+        "desc": "Dúo frutal rojo dulce y ácido."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/91.png",
+        "desc": "Sandía jugosa con frescura glacial."
+      },
+      {
+        "nombre": "Mora Azul y Arándano",
+        "img": "assets/productos/92.png",
+        "desc": "Combinación rica de bayas azules."
+      },
+      {
+        "nombre": "Kiwi Maracuyá Guayaba",
+        "img": "assets/productos/93.png",
+        "desc": "Trío exótico tropical con notas ácidas."
+      },
+      {
+        "nombre": "Mango y Melocotón",
+        "img": "assets/productos/94.png",
+        "desc": "Mango maduro con durazno suave."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/95.png",
+        "desc": "Menta pura y refrescante."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/96.png",
+        "desc": "Uvas oscuras con golpe frío."
+      },
+      {
+        "nombre": "Piña Colada",
+        "img": "assets/productos/97.png",
+        "desc": "Piña tropical con crema de coco."
+      },
+      {
+        "nombre": "Plátano Helado",
+        "img": "assets/productos/98.png",
+        "desc": "Plátano dulce con acabado frío."
+      },
+      {
+        "nombre": "Manzana Doble",
+        "img": "assets/productos/99.png",
+        "desc": "Manzanas rojas y verdes crujientes."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/100.png",
+        "desc": "Cereza madura con frescura polar."
+      },
+      {
+        "nombre": "Lichi Helado",
+        "img": "assets/productos/101.png",
+        "desc": "Lichi oriental con golpe frío."
+      },
+      {
+        "nombre": "Melón Dulce",
+        "img": "assets/productos/102.png",
+        "desc": "Melón maduro con dulzura natural."
+      },
+      {
+        "nombre": "Frutos del Bosque",
+        "img": "assets/productos/103.png",
+        "desc": "Surtido de frutas silvestres del bosque."
+      },
+      {
+        "nombre": "Algodón de Azúcar",
+        "img": "assets/productos/104.png",
+        "desc": "Algodón de azúcar dulce de feria."
+      },
+      {
+        "nombre": "Bebida Energética",
+        "img": "assets/productos/105.png",
+        "desc": "Sabor vibrante a bebida energizante."
+      },
+      {
+        "nombre": "Cola Helada",
+        "img": "assets/productos/106.png",
+        "desc": "Refresco de cola con hielo."
+      },
+      {
+        "nombre": "Naranja y Mango",
+        "img": "assets/productos/107.png",
+        "desc": "Cítricos de naranja con mango dulce."
+      },
+      {
+        "nombre": "Fresa y Kiwi",
+        "img": "assets/productos/108.png",
+        "desc": "Fresa suave con kiwi ácido."
+      },
+      {
+        "nombre": "Mora Helada",
+        "img": "assets/productos/109.png",
+        "desc": "Moras silvestres con toque frío."
+      },
+      {
+        "nombre": "Durazno Helado",
+        "img": "assets/productos/110.png",
+        "desc": "Duraznos jugosos con acabado helado."
+      },
+      {
+        "nombre": "Pomelo y Frutos",
+        "img": "assets/productos/111.png",
+        "desc": "Toronja amarga-dulce con frutas mixtas."
+      },
+      {
+        "nombre": "Chicle de Fresa",
+        "img": "assets/productos/112.png",
+        "desc": "Chicle dulce de fresa clásica."
+      },
+      {
+        "nombre": "Mango y Piña",
+        "img": "assets/productos/113.png",
+        "desc": "Mango tropical con piña ácida."
+      },
+      {
+        "nombre": "Frambuesa Helada",
+        "img": "assets/productos/114.png",
+        "desc": "Frambuesa silvestre con toque frío."
+      },
+      {
+        "nombre": "Menta y Hierbabuena",
+        "img": "assets/productos/115.png",
+        "desc": "Doble frescura de menta y hierba."
+      },
+      {
+        "nombre": "Fruta de la Pasión",
+        "img": "assets/productos/116.png",
+        "desc": "Maracuyá exótico puro y aromático."
+      },
+      {
+        "nombre": "Hielo Negro Especial",
+        "img": "assets/productos/117.png",
+        "desc": "Moras oscuras con menta polar intensa."
+      }
+    ]
   },
   {
-    id: "dummy",
-    nombre: "DUMMY",
-    subtitulo: "8.000 Puffs • 20 Sabores",
-    puffs: "8.000 Puffs",
-    categoria: "desechables",
-    rating: 4.0,
-    ventas: 1720,
-    precio: 18000,
-    precio_promo_2: 30000,
-    ahorro_2: 6000,
-    descripcion: "Dummy trae 20 sabores atrevidos y 8.000 puffs con mucha personalidad y estilo único.",
-    imagen: "assets/productos/118.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "limon-burbujeante", nombre: "Limón burbujeante", desc: "Limón efervescente.", img: "assets/productos/118.png", visible: true },
-      { id: "explosion-cosmica", nombre: "Explosión cósmica (frambuesa)", desc: "Frambuesa intensa.", img: "assets/productos/119.png", visible: true },
-      { id: "kika-kiwi", nombre: "Kika kiwi", desc: "Kiwi ácido y dulce.", img: "assets/productos/120.png", visible: true },
-      { id: "gomita", nombre: "Gomita", desc: "Sabor golosina de gomita.", img: "assets/productos/121.png", visible: true },
-      { id: "ropero-arcoiris", nombre: "Ropero arcoiris (caramelo)", desc: "Caramelo multicolor.", img: "assets/productos/122.png", visible: true },
-      { id: "acido-retorcido", nombre: "Ácido retorcido (naranja)", desc: "Naranja ácida.", img: "assets/productos/123.png", visible: true },
-      { id: "puro-menta", nombre: "Puro (menta)", desc: "Menta pura y fresca.", img: "assets/productos/124.png", visible: true },
-      { id: "frutos-malos", nombre: "Frutos malos (mora arándano)", desc: "Mora y arándano oscuro.", img: "assets/productos/125.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 14000, "10": 11000, "20": 10500, "50": 10000, "100": 9500 },
-    agotado: false
+    "id": "dummy",
+    "nombre": "DUMMY",
+    "categoria": "desechables",
+    "subtitulo": "8.000 Puffs • 20 Sabores",
+    "puffs": 8000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3750,
+    "imagen": "assets/productos/118.png",
+    "descripcion": "Inspirado en la cultura urbana con pantalla LED que indica batería y líquido, ofreciendo 8.000 caladas de gran densidad.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Fresa Helada",
+        "img": "assets/productos/118.png",
+        "desc": "Fresas dulces con toque polar."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/119.png",
+        "desc": "Menta limpia con frescura duradera."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/120.png",
+        "desc": "Sandía jugosa con acabado frío."
+      },
+      {
+        "nombre": "Mango Helado",
+        "img": "assets/productos/121.png",
+        "desc": "Mango dulce con toque glacial."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/122.png",
+        "desc": "Uvas moradas con frío intenso."
+      },
+      {
+        "nombre": "Arándano Helado",
+        "img": "assets/productos/123.png",
+        "desc": "Arándano con toque refrescante."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/124.png",
+        "desc": "Equilibrio entre fresa y kiwi ácido."
+      },
+      {
+        "nombre": "Piña Helada",
+        "img": "assets/productos/125.png",
+        "desc": "Piña dulce con toque helado."
+      },
+      {
+        "nombre": "Plátano Helado",
+        "img": "assets/productos/126.png",
+        "desc": "Plátano cremoso con acabado frío."
+      },
+      {
+        "nombre": "Manzana Helada",
+        "img": "assets/productos/127.png",
+        "desc": "Manzana crujiente con frescura."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/128.png",
+        "desc": "Cereza dulce con golpe polar."
+      },
+      {
+        "nombre": "Limonada Rosa",
+        "img": "assets/productos/129.png",
+        "desc": "Limonada cítrica con toque dulce."
+      },
+      {
+        "nombre": "Gomitas Dulces",
+        "img": "assets/productos/130.png",
+        "desc": "Gomitas frutales masticables."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/131.png",
+        "desc": "Surtido de moras y fresas."
+      },
+      {
+        "nombre": "Melón Helado",
+        "img": "assets/productos/132.png",
+        "desc": "Melón maduro con toque helado."
+      },
+      {
+        "nombre": "Durazno Helado",
+        "img": "assets/productos/133.png",
+        "desc": "Durazno jugoso con acabado frío."
+      },
+      {
+        "nombre": "Bebida Energética",
+        "img": "assets/productos/134.png",
+        "desc": "Sabor clásico a bebida energizante."
+      },
+      {
+        "nombre": "Algodón de Azúcar",
+        "img": "assets/productos/135.png",
+        "desc": "Algodón de azúcar dulce de feria."
+      },
+      {
+        "nombre": "Cola Helada",
+        "img": "assets/productos/136.png",
+        "desc": "Refresco de cola con hielo."
+      },
+      {
+        "nombre": "Frutas Tropicales",
+        "img": "assets/productos/137.png",
+        "desc": "Mezcla de frutas tropicales exóticas."
+      }
+    ]
   },
   {
-    id: "beyond",
-    nombre: "BEYOND",
-    subtitulo: "12.000 Puffs • 5 Sabores",
-    puffs: "12.000 Puffs",
-    categoria: "desechables",
-    rating: 4.4,
-    ventas: 1950,
-    precio: 22000,
-    precio_promo_2: 40000,
-    ahorro_2: 4000,
-    descripcion: "Beyond ofrece 12.000 puffs con batería de 1750mAh y sabores frutales intensos para vapear sin pausas.",
-    imagen: "assets/productos/154.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "pina-mora-azul", nombre: "Piña mora azul", desc: "Piña con mora azul.", img: "assets/productos/154.png", visible: true },
-      { id: "mora-azul", nombre: "Mora azul", desc: "Mora azul pura.", img: "assets/productos/155.png", visible: true },
-      { id: "cereza-intensa", nombre: "Cereza intensa", desc: "Cereza dulce y marcada.", img: "assets/productos/156.png", visible: true },
-      { id: "cereza-limon", nombre: "Cereza limón", desc: "Cereza ácida con limón.", img: "assets/productos/157.png", visible: true },
-      { id: "melon", nombre: "Melón", desc: "Melón suave y dulce.", img: "assets/productos/158.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 17000, "10": 13000, "20": 12500, "50": 12000, "100": 11500 },
-    agotado: false
+    "id": "nicky-jam",
+    "nombre": "NICKY JAM",
+    "categoria": "desechables",
+    "subtitulo": "10.000 Puffs • 16 Sabores",
+    "puffs": 10000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 4100,
+    "imagen": "assets/productos/138.png",
+    "descripcion": "Edición oficial de Nicky Jam con 10.000 puffs, pantalla digital de batería y líquido, y sabores urbanos irresistibles.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/138.png",
+        "desc": "Fresas dulces combinadas con sandía jugosa."
+      },
+      {
+        "nombre": "Arándano Helado",
+        "img": "assets/productos/139.png",
+        "desc": "Arándanos azules con golpe frío polar."
+      },
+      {
+        "nombre": "Menta Miami",
+        "img": "assets/productos/140.png",
+        "desc": "Menta refrescante con estilo de Miami."
+      },
+      {
+        "nombre": "Mango Melocotón",
+        "img": "assets/productos/141.png",
+        "desc": "Mango tropical con durazno suave."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/142.png",
+        "desc": "Uvas moradas con acabado glacial."
+      },
+      {
+        "nombre": "Kiwi Maracuyá",
+        "img": "assets/productos/143.png",
+        "desc": "Kiwi cítrico con maracuyá aromático."
+      },
+      {
+        "nombre": "Piña Colada",
+        "img": "assets/productos/144.png",
+        "desc": "Piña jugosa con crema de coco."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/145.png",
+        "desc": "Cerezas rojas con golpe frío."
+      },
+      {
+        "nombre": "Manzana Doble",
+        "img": "assets/productos/146.png",
+        "desc": "Manzanas rojas y verdes crujientes."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/147.png",
+        "desc": "Surtido de bayas silvestres dulces."
+      },
+      {
+        "nombre": "Plátano Helado",
+        "img": "assets/productos/148.png",
+        "desc": "Plátano cremoso con toque helado."
+      },
+      {
+        "nombre": "Limonada Rosa",
+        "img": "assets/productos/149.png",
+        "desc": "Limonada fresca con fresas."
+      },
+      {
+        "nombre": "Gomitas de Oso",
+        "img": "assets/productos/150.png",
+        "desc": "Gomitas dulces masticables."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/151.png",
+        "desc": "Sandía pura con frescura intensa."
+      },
+      {
+        "nombre": "Melón Dulce",
+        "img": "assets/productos/152.png",
+        "desc": "Melón maduro con dulzura natural."
+      },
+      {
+        "nombre": "Bebida Energética",
+        "img": "assets/productos/153.png",
+        "desc": "Sabor a bebida energética clásica."
+      }
+    ]
   },
   {
-    id: "bugatti",
-    nombre: "BUGATTI",
-    subtitulo: "17.000 Puffs • 9 Sabores",
-    puffs: "17.000 Puffs",
-    categoria: "desechables",
-    rating: 4.4,
-    ventas: 2450,
-    precio: 27000,
-    precio_promo_2: 45000,
-    ahorro_2: 9000,
-    descripcion: "Diseñado para quienes buscan potencia, sabor y autonomía en formato compacto. Hasta 17.000 Puffs, 17 mL de e-liquid con sales al 5%, batería de 700 mAh USB-C y bobina Mesh.",
-    imagen: "assets/productos/159.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "mora-azul", nombre: "Mora Azul", desc: "Frutos rojos azules dulces con frescura helada.", img: "assets/productos/159.png", visible: true },
-      { id: "menta", nombre: "Menta", desc: "Menta fresca e intensa con sensación limpia.", img: "assets/productos/160.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Fresa dulce con sandía jugosa refrescante.", img: "assets/productos/161.png", visible: true },
-      { id: "mango-melon", nombre: "Mango Melón", desc: "Mango tropical con melón suave.", img: "assets/productos/162.png", visible: true },
-      { id: "fresa-pina-colada", nombre: "Fresa Piña Colada", desc: "Fresa con piña y cremosa nota de coco.", img: "assets/productos/163.png", visible: true },
-      { id: "naranja-coqueta", nombre: "Naranja Coqueta", desc: "Naranja cítrica, jugosa y refrescante.", img: "assets/productos/164.png", visible: true },
-      { id: "helado-banana", nombre: "Helado de Banana", desc: "Banana cremosa con toque frío.", img: "assets/productos/165.png", visible: true },
-      { id: "fruta-dragon", nombre: "Fruta de Dragón", desc: "Kiwi ácido con frutos rojos tropicales.", img: "assets/productos/166.png", visible: true },
-      { id: "uva-deliciosa", nombre: "Uva Deliciosa", desc: "Uva jugosa con toque ligeramente ácido.", img: "assets/productos/167.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 21000, "10": 16000, "20": 15500, "50": 15000, "100": 14500 },
-    agotado: false
+    "id": "beyond",
+    "nombre": "BEYOND",
+    "categoria": "desechables",
+    "subtitulo": "10.000 Puffs • 5 Sabores",
+    "puffs": 10000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 2300,
+    "imagen": "assets/productos/154.png",
+    "descripcion": "Dispositivo premium de 10.000 caladas con diseño futurista y sabores frutales de máxima pureza.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/154.png",
+        "desc": "Fresas dulces y sandía refrescante."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/155.png",
+        "desc": "Menta pura con golpe helado duradero."
+      },
+      {
+        "nombre": "Arándano Helado",
+        "img": "assets/productos/156.png",
+        "desc": "Arándanos silvestres con frescura polar."
+      },
+      {
+        "nombre": "Mango Melocotón",
+        "img": "assets/productos/157.png",
+        "desc": "Mango tropical con durazno suave."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/158.png",
+        "desc": "Uvas dulces con acabado frío."
+      }
+    ]
   },
   {
-    id: "nicky-jam",
-    nombre: "NICKY JAM",
-    subtitulo: "15.000 Puffs • 16 Sabores",
-    puffs: "15.000 Puffs",
-    categoria: "desechables",
-    rating: 4.5,
-    ventas: 2800,
-    precio: 27000,
-    precio_promo_2: 45000,
-    ahorro_2: 9000,
-    descripcion: "Estilo, potencia y comodidad urbana firmada por Nicky Jam. Hasta 15.000 Puffs, 16 mL de sales al 4.5%, batería de 700 mAh USB-C y pantalla LED para nivel de líquido y batería.",
-    imagen: "assets/productos/138.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "sombrero-negro", nombre: "Sombrero negro", desc: "Sabor misterioso y potente.", img: "assets/productos/138.png", visible: true },
-      { id: "gatas-coquetas", nombre: "Gatas coquetas", desc: "Frutas dulces y sensuales.", img: "assets/productos/139.png", visible: true },
-      { id: "69-bananas", nombre: "69 Bananas", desc: "Banana dulce y cremosa.", img: "assets/productos/140.png", visible: true },
-      { id: "ojos-rojos", nombre: "Ojos rojos", desc: "Frutos rojos intensos.", img: "assets/productos/141.png", visible: true },
-      { id: "fantasia-fume", nombre: "Fantasía fume", desc: "Perfil aromático único.", img: "assets/productos/142.png", visible: true },
-      { id: "jugo-calido", nombre: "Jugo cálido", desc: "Jugo de frutas tropicales.", img: "assets/productos/143.png", visible: true },
-      { id: "el-ganador", nombre: "El ganador", desc: "Sabor campeón y refrescante.", img: "assets/productos/144.png", visible: true },
-      { id: "menta-miami", nombre: "Menta de Miami", desc: "Menta estilo Miami fresca.", img: "assets/productos/145.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 21000, "10": 16000, "20": 15500, "50": 15000, "100": 14500 },
-    agotado: false
+    "id": "bugatti",
+    "nombre": "BUGATTI",
+    "categoria": "desechables",
+    "subtitulo": "9.000 Puffs • 9 Sabores",
+    "puffs": 9000,
+    "precio": 45000,
+    "precio_promo_2": 80000,
+    "ahorro_2": 10000,
+    "rating": 4.9,
+    "ventas": 3800,
+    "imagen": "assets/productos/159.png",
+    "descripcion": "El lujo y la potencia automotriz llevados al vapeo: diseño aerodinámico exclusivo, acabados metálicos y 9.000 caladas de máxima intensidad.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Mora Azul y Arándano",
+        "img": "assets/productos/159.png",
+        "desc": "Bayas azules oscuras con toque dulce y frío."
+      },
+      {
+        "nombre": "Fresa Kiwi",
+        "img": "assets/productos/160.png",
+        "desc": "Fresas dulces con kiwi cítrico equilibrado."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/161.png",
+        "desc": "Sandía jugosa con golpe de frío polar."
+      },
+      {
+        "nombre": "Menta de Miami",
+        "img": "assets/productos/162.png",
+        "desc": "Menta fresca y limpia con notas heladas."
+      },
+      {
+        "nombre": "Mango Helado",
+        "img": "assets/productos/163.png",
+        "desc": "Mango tropical maduro con frescura glacial."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/164.png",
+        "desc": "Uvas moradas con frío intenso y dulce."
+      },
+      {
+        "nombre": "Melocotón Mango",
+        "img": "assets/productos/165.png",
+        "desc": "Durazno sedoso con mango dulce."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/166.png",
+        "desc": "Surtido silvestre de frambuesas y moras."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/167.png",
+        "desc": "Cereza madura con frescura extrema."
+      }
+    ]
   },
   {
-    id: "baddie-bar",
-    nombre: "BADDIE BAR",
-    subtitulo: "15.000 Puffs • 21 Sabores",
-    puffs: "15.000 Puffs",
-    categoria: "desechables",
-    rating: 4.3,
-    ventas: 2100,
-    precio: 27000,
-    precio_promo_2: 45000,
-    ahorro_2: 9000,
-    descripcion: "Estilo, potencia y tecnología con acabado de cristales y Baddie Blingstrap. Hasta 15.000 Puffs, 15 mL de líquido al 5%, Dual Mesh y pantalla LED.",
-    imagen: "assets/productos/182.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "cereza-banano", nombre: "Cereza Banano Encima", desc: "Cereza con banana cremosa.", img: "assets/productos/182.png", visible: true },
-      { id: "casa-moneda", nombre: "Casa de la Moneda", desc: "Menta fresca refinada.", img: "assets/productos/183.png", visible: true },
-      { id: "arcoiris-naranja", nombre: "Arcoíris Naranja", desc: "Cítrico multicolor.", img: "assets/productos/184.png", visible: true },
-      { id: "limonada-rosa", nombre: "Limonada Rosa", desc: "Limonada dulce y refrescante.", img: "assets/productos/185.png", visible: true },
-      { id: "princesa-durazno", nombre: "Princesa Durazno", desc: "Durazno delicado y dulce.", img: "assets/productos/186.png", visible: true },
-      { id: "manzana-acida", nombre: "Manzana Ácida", desc: "Manzana verde ácida.", img: "assets/productos/187.png", visible: true },
-      { id: "estrella-pop", nombre: "Estrella del Pop", desc: "Golosina frutal estelar.", img: "assets/productos/188.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 21000, "10": 16000, "20": 15500, "50": 15000, "100": 14500 },
-    agotado: false
+    "id": "nimbox-kit",
+    "nombre": "NIMBOX KIT",
+    "categoria": "kits",
+    "subtitulo": "10.000 Puffs • Kit Recargable",
+    "puffs": 10000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 2900,
+    "imagen": "assets/productos/168.png",
+    "descripcion": "Sistema modular de vapeo con batería recargable tipo C y cartuchos intercambiables de 10.000 puffs.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Banana Ice",
+        "img": "assets/productos/168.png",
+        "desc": "Plátano dulce con toque helado."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/169.png",
+        "desc": "Fresas dulces y sandía jugosa."
+      },
+      {
+        "nombre": "Mango Ice",
+        "img": "assets/productos/170.png",
+        "desc": "Mango tropical con acabado frío."
+      },
+      {
+        "nombre": "Maracuyá",
+        "img": "assets/productos/171.png",
+        "desc": "Maracuyá exótico cítrico aromático."
+      },
+      {
+        "nombre": "Salpicón",
+        "img": "assets/productos/172.png",
+        "desc": "Mezcla tradicional de frutas colombianas."
+      },
+      {
+        "nombre": "Arándano Ice",
+        "img": "assets/productos/173.png",
+        "desc": "Arándano silvestre con golpe helado."
+      },
+      {
+        "nombre": "Energetic Ice",
+        "img": "assets/productos/174.png",
+        "desc": "Bebida energizante con toque frío."
+      },
+      {
+        "nombre": "Frutos Morados",
+        "img": "assets/productos/175.png",
+        "desc": "Uvas y moras oscuras combinadas."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/176.png",
+        "desc": "Fresa dulce con kiwi cítrico."
+      },
+      {
+        "nombre": "Lulo",
+        "img": "assets/productos/177.png",
+        "desc": "Sabor a lulo ácido y refrescante."
+      },
+      {
+        "nombre": "Doble Manzana",
+        "img": "assets/productos/178.png",
+        "desc": "Manzanas crujientes rojas y verdes."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/179.png",
+        "desc": "Menta limpia con frescura prolongada."
+      }
+    ]
   },
   {
-    id: "nimbox-kit",
-    nombre: "NIMBOX KIT",
-    subtitulo: "25.000 Puffs • 12 Sabores",
-    puffs: "25.000 Puffs",
-    categoria: "kits",
-    rating: 4.0,
-    ventas: 1870,
-    precio: 28000,
-    precio_promo_2: 45000,
-    ahorro_2: 11000,
-    descripcion: "Hasta 25.000 Puffs, 16 mL de e-liquid al 5%, batería de 1000 mAh USB-C, Dual Mesh, sistema semi-desechable con cartucho reemplazable y pantalla LED.",
-    imagen: "assets/productos/168.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "menta", nombre: "Menta", desc: "Menta fresca.", img: "assets/productos/168.png", visible: true },
-      { id: "explosion-dulce", nombre: "Explosión Dulce", desc: "Caramelo dulce.", img: "assets/productos/169.png", visible: true },
-      { id: "fresa", nombre: "Fresa", desc: "Fresa pura.", img: "assets/productos/170.png", visible: true },
-      { id: "helado-fresa", nombre: "Helado de Fresa", desc: "Fresa cremosa helada.", img: "assets/productos/171.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Fresa y sandía.", img: "assets/productos/172.png", visible: true },
-      { id: "grosella-negra", nombre: "Grosella Negra", desc: "Grosella oscura intensa.", img: "assets/productos/173.png", visible: true },
-      { id: "frutos-rojos", nombre: "Frutos Rojos", desc: "Mix frutos rojos.", img: "assets/productos/174.png", visible: true },
-      { id: "uva", nombre: "Uva", desc: "Uva madura.", img: "assets/productos/175.png", visible: true },
-      { id: "manzana", nombre: "Manzana", desc: "Manzana verde.", img: "assets/productos/176.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 22000, "10": 17000, "20": 16500, "50": 16000, "100": 15500 },
-    agotado: false
+    "id": "nimbox-pod",
+    "nombre": "NIMBOX POD",
+    "categoria": "pods",
+    "subtitulo": "10.000 Puffs • Pod de Repuesto",
+    "puffs": 10000,
+    "precio": 25000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 5000,
+    "rating": 4.8,
+    "ventas": 4100,
+    "imagen": "assets/productos/180.png",
+    "descripcion": "Pod de repuesto para Nimbox Kit con 10.000 caladas de sabor continuo con resistencia de malla.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Banana Ice",
+        "img": "assets/productos/180.png",
+        "desc": "Plátano dulce con toque helado."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/181.png",
+        "desc": "Fresas dulces y sandía jugosa."
+      },
+      {
+        "nombre": "Mango Ice",
+        "img": "assets/productos/182.png",
+        "desc": "Mango tropical con acabado frío."
+      },
+      {
+        "nombre": "Maracuyá",
+        "img": "assets/productos/183.png",
+        "desc": "Maracuyá exótico cítrico aromático."
+      },
+      {
+        "nombre": "Salpicón",
+        "img": "assets/productos/184.png",
+        "desc": "Mezcla tradicional de frutas colombianas."
+      },
+      {
+        "nombre": "Arándano Ice",
+        "img": "assets/productos/185.png",
+        "desc": "Arándano silvestre con golpe helado."
+      },
+      {
+        "nombre": "Energetic Ice",
+        "img": "assets/productos/186.png",
+        "desc": "Bebida energizante con toque frío."
+      },
+      {
+        "nombre": "Frutos Morados",
+        "img": "assets/productos/187.png",
+        "desc": "Uvas y moras oscuras combinadas."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/188.png",
+        "desc": "Fresa dulce con kiwi cítrico."
+      },
+      {
+        "nombre": "Lulo",
+        "img": "assets/productos/189.png",
+        "desc": "Sabor a lulo ácido y refrescante."
+      },
+      {
+        "nombre": "Doble Manzana",
+        "img": "assets/productos/190.png",
+        "desc": "Manzanas crujientes rojas y verdes."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/191.png",
+        "desc": "Menta limpia con frescura prolongada."
+      }
+    ]
   },
   {
-    id: "nimbox-pod",
-    nombre: "NIMBOX POD",
-    subtitulo: "25.000 Puffs • 12 Sabores",
-    puffs: "25.000 Puffs",
-    categoria: "pods",
-    rating: 4.0,
-    ventas: 1980,
-    precio: 22000,
-    precio_promo_2: 35000,
-    ahorro_2: 9000,
-    descripcion: "Pod de repuesto para Nimbox Kit. 25.000 puffs y 16 ml de e-liquid, compatible con batería Nimbox.",
-    imagen: "assets/productos/180.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "menta", nombre: "Menta", desc: "Menta fresca.", img: "assets/productos/180.png", visible: true },
-      { id: "explosion-dulce", nombre: "Explosión Dulce", desc: "Caramelo dulce.", img: "assets/productos/181.png", visible: true },
-      { id: "fresa", nombre: "Fresa", desc: "Fresa pura.", img: "assets/productos/182.png", visible: true },
-      { id: "helado-fresa", nombre: "Helado de Fresa", desc: "Fresa cremosa helada.", img: "assets/productos/183.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Fresa y sandía.", img: "assets/productos/184.png", visible: true },
-      { id: "grosella-negra", nombre: "Grosella Negra", desc: "Grosella oscura intensa.", img: "assets/productos/185.png", visible: true },
-      { id: "melon", nombre: "Melón", desc: "Melón dulce.", img: "assets/productos/186.png", visible: true },
-      { id: "uva", nombre: "Uva", desc: "Uva madura.", img: "assets/productos/187.png", visible: true },
-      { id: "manzana", nombre: "Manzana", desc: "Manzana verde.", img: "assets/productos/188.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 17000, "10": 13000, "20": 12500, "50": 12000, "100": 11500 },
-    agotado: false
+    "id": "vera",
+    "nombre": "VERA",
+    "categoria": "desechables",
+    "subtitulo": "12.000 Puffs • 7 Sabores",
+    "puffs": 12000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 2750,
+    "imagen": "assets/productos/192.png",
+    "descripcion": "Dispositivo elegante de 12.000 caladas con excelente rendimiento de batería y perfiles frutales de gran intensidad.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/192.png",
+        "desc": "Uvas oscuras con golpe frío polar."
+      },
+      {
+        "nombre": "Cereza Arándano",
+        "img": "assets/productos/193.png",
+        "desc": "Cereza madura con arándano silvestre."
+      },
+      {
+        "nombre": "Menta Helada",
+        "img": "assets/productos/194.png",
+        "desc": "Menta fresca con golpe helado duradero."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "assets/productos/195.png",
+        "desc": "Menta suave y refrescante."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/196.png",
+        "desc": "Fresa dulce con kiwi cítrico."
+      },
+      {
+        "nombre": "Triple Uva",
+        "img": "assets/productos/197.png",
+        "desc": "Intensa combinación de tres variedades de uva."
+      },
+      {
+        "nombre": "Caminante Diurno",
+        "img": "assets/productos/198.png",
+        "desc": "Mezcla misteriosa de frutas energéticas."
+      }
+    ]
   },
   {
-    id: "vera",
-    nombre: "VERA",
-    subtitulo: "22.000 Puffs • 7 Sabores",
-    puffs: "22.000 Puffs",
-    categoria: "desechables",
-    rating: 4.3,
-    ventas: 2100,
-    precio: 30000,
-    precio_promo_2: 50000,
-    ahorro_2: 10000,
-    descripcion: "Hasta 22.000 Puffs, 19 mL de e-liquid al 5%, batería de 1.000 mAh USB-C, pantalla TFT animada, doble Mesh y modos Normal/Boost.",
-    imagen: "assets/productos/192.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "pomelo-rosa", nombre: "Pomelo Rosa", desc: "Pomelo cítrico refrescante.", img: "assets/productos/192.png", visible: true },
-      { id: "explosion-sandia", nombre: "Explosión de Sandía", desc: "Sandía intensa.", img: "assets/productos/193.png", visible: true },
-      { id: "helado-manzana", nombre: "Helado de Manzana", desc: "Manzana con toque frío.", img: "assets/productos/194.png", visible: true },
-      { id: "miami-mint", nombre: "Miami Mint", desc: "Menta estilo Miami.", img: "assets/productos/195.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 23000, "10": 18000, "20": 17500, "50": 17000, "100": 16500 },
-    agotado: false
+    "id": "katchmi",
+    "nombre": "KATCHMI",
+    "categoria": "desechables",
+    "subtitulo": "12.000 Puffs • 8 Sabores",
+    "puffs": 12000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3200,
+    "imagen": "assets/productos/199.png",
+    "descripcion": "Gran capacidad de 12.000 caladas con diseño innovador, flujo de aire regulable y sabores dulces y helados.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Gomita Blanca",
+        "img": "assets/productos/199.png",
+        "desc": "Gomitas dulces blancas con toque de piña."
+      },
+      {
+        "nombre": "Mora Azul",
+        "img": "assets/productos/200.png",
+        "desc": "Arándanos silvestres dulces con frescura."
+      },
+      {
+        "nombre": "Helado de Sandía",
+        "img": "assets/productos/201.png",
+        "desc": "Sandía dulce con acabado cremoso y frío."
+      },
+      {
+        "nombre": "Explosión Arizona",
+        "img": "assets/productos/202.png",
+        "desc": "Té helado frutal con notas de durazno y limón."
+      },
+      {
+        "nombre": "Menta de Miami",
+        "img": "assets/productos/203.png",
+        "desc": "Menta fresca de estilo veraniego."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/204.png",
+        "desc": "Dúo clásico de fresas dulces y sandía."
+      },
+      {
+        "nombre": "Cereza Azul",
+        "img": "assets/productos/205.png",
+        "desc": "Cereza jugosa con toque de mora azul."
+      },
+      {
+        "nombre": "Lágrimas Ácidas",
+        "img": "assets/productos/206.png",
+        "desc": "Caramelo ácido y cítrico electrizante."
+      }
+    ]
   },
   {
-    id: "katchmi",
-    nombre: "KATCHMI",
-    subtitulo: "24.000 Puffs • 8 Sabores",
-    puffs: "24.000 Puffs",
-    categoria: "desechables",
-    rating: 4.7,
-    ventas: 2320,
-    precio: 28000,
-    precio_promo_2: 48000,
-    ahorro_2: 8000,
-    descripcion: "Diseñado para quienes buscan sabores intensos, gran autonomía y una experiencia moderna con nixodine, doble Mesh y pantalla digital.",
-    imagen: "assets/productos/199.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "gomita-blanca", nombre: "Gomita Blanca", desc: "Golosina de osito blanco.", img: "assets/productos/199.png", visible: true },
-      { id: "mora-azul", nombre: "Mora Azul", desc: "Mora azul dulce.", img: "assets/productos/200.png", visible: true },
-      { id: "helado-sandia", nombre: "Helado de Sandía", desc: "Sandía helada.", img: "assets/productos/201.png", visible: true },
-      { id: "explosion-arizona", nombre: "Explosión Arizona", desc: "Té helado frutal.", img: "assets/productos/202.png", visible: true },
-      { id: "menta-miami", nombre: "Menta de Miami", desc: "Menta refrescante.", img: "assets/productos/203.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Fresa con sandía jugosa.", img: "assets/productos/204.png", visible: true },
-      { id: "cereza-azul", nombre: "Cereza Azul", desc: "Cereza con frutos azules.", img: "assets/productos/205.png", visible: true },
-      { id: "lagrimas-acidas", nombre: "Lágrimas Ácidas", desc: "Toque súper ácido refrescante.", img: "assets/productos/206.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 22000, "10": 17000, "20": 16500, "50": 16000, "100": 15500 },
-    agotado: false
+    "id": "fifty-cent",
+    "nombre": "FIFTY CENT",
+    "categoria": "desechables",
+    "subtitulo": "20.000 Puffs • 7 Sabores",
+    "puffs": 20000,
+    "precio": 45000,
+    "precio_promo_2": 80000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3600,
+    "imagen": "assets/productos/207.png",
+    "descripcion": "Edición oficial 50 Cent con 20.000 puffs de duración masiva, pantalla HD y perfiles de sabor explosivos.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Púrpura",
+        "img": "assets/productos/207.png",
+        "desc": "Uvas moradas intensas con toque helado."
+      },
+      {
+        "nombre": "Niebla Azul",
+        "img": "assets/productos/208.png",
+        "desc": "Mora azul misteriosa con frescura polar."
+      },
+      {
+        "nombre": "Fiesta Mango",
+        "img": "assets/productos/209.png",
+        "desc": "Mango tropical dulce y jugoso."
+      },
+      {
+        "nombre": "Coca Cola",
+        "img": "assets/productos/210.png",
+        "desc": "Refresco de cola clásico con hielo."
+      },
+      {
+        "nombre": "Osito de Azúcar",
+        "img": "assets/productos/211.png",
+        "desc": "Gomitas dulces masticables con azúcar."
+      },
+      {
+        "nombre": "Durazno Helado",
+        "img": "assets/productos/212.png",
+        "desc": "Durazno aterciopelado con golpe frío."
+      },
+      {
+        "nombre": "Cereza Uva",
+        "img": "assets/productos/213.png",
+        "desc": "Cereza roja con uvas oscuras."
+      }
+    ]
   },
   {
-    id: "fifty-cent",
-    nombre: "FIFTY CENT",
-    subtitulo: "30.000 Puffs • 7 Sabores",
-    puffs: "30.000 Puffs",
-    categoria: "desechables",
-    rating: 4.2,
-    ventas: 1980,
-    precio: 35000,
-    precio_promo_2: 55000,
-    ahorro_2: 15000,
-    descripcion: "Tecnología y conectividad inteligente al teléfono. Hasta 30.000 Puffs, Dual Neo Mesh, 4 modos de potencia y funciones smart como control de cámara y localizador.",
-    imagen: "assets/productos/207.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "purpura", nombre: "Púrpura", desc: "Uvas moradas intensas.", img: "assets/productos/207.png", visible: true },
-      { id: "niebla-azul", nombre: "Niebla Azul", desc: "Mora azul con frescura.", img: "assets/productos/208.png", visible: true },
-      { id: "fiesta-mango", nombre: "Fiesta Mango", desc: "Mango dulce tropical.", img: "assets/productos/209.png", visible: true },
-      { id: "coca-cola", nombre: "Coca Cola", desc: "Sabor clásico de cola.", img: "assets/productos/210.png", visible: true },
-      { id: "osito-azucar", nombre: "Osito de Azúcar", desc: "Golosinas azucaradas.", img: "assets/productos/211.png", visible: true },
-      { id: "durazno-helado", nombre: "Durazno Helado", desc: "Durazno dulce con hielo.", img: "assets/productos/212.png", visible: true },
-      { id: "cereza-uva", nombre: "Cereza Uva", desc: "Cereza combinada con uva.", img: "assets/productos/213.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 27000, "10": 21000, "20": 20000, "50": 19000, "100": 18000 },
-    agotado: false
+    "id": "hookalit",
+    "nombre": "HOOKALIT",
+    "categoria": "desechables",
+    "subtitulo": "40.000 Puffs • 10 Sabores",
+    "puffs": 40000,
+    "precio": 50000,
+    "precio_promo_2": 90000,
+    "ahorro_2": 10000,
+    "rating": 4.9,
+    "ventas": 4900,
+    "imagen": "assets/productos/214.png",
+    "descripcion": "El gigante del vapeo: 40.000 puffs con tecnología DTL (Direct to Lung), simulador de narguile / shisha con vapor denso.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Amor Mágico",
+        "img": "assets/productos/214.png",
+        "desc": "Mezcla shisha de frutas del bosque y menta."
+      },
+      {
+        "nombre": "Gomita",
+        "img": "assets/productos/215.png",
+        "desc": "Gomitas dulces estilo shisha."
+      },
+      {
+        "nombre": "Menta Helada",
+        "img": "assets/productos/216.png",
+        "desc": "Menta potente con frescura helada."
+      },
+      {
+        "nombre": "Mujer Asesina",
+        "img": "assets/productos/217.png",
+        "desc": "Frutos rojos con toque floral seductor."
+      },
+      {
+        "nombre": "Amor 66",
+        "img": "assets/productos/218.png",
+        "desc": "Sabor legendario de melón, maracuyá y menta."
+      },
+      {
+        "nombre": "Misterio Azul",
+        "img": "assets/productos/219.png",
+        "desc": "Arándano azul con toque secreto de hierbas."
+      },
+      {
+        "nombre": "Doble Manzana",
+        "img": "assets/productos/220.png",
+        "desc": "Clásico sabor a doble manzana de narguile con anís."
+      },
+      {
+        "nombre": "Vainilla Blanca",
+        "img": "assets/productos/221.png",
+        "desc": "Vainilla cremosa y suave."
+      },
+      {
+        "nombre": "Sueño Lúcido",
+        "img": "assets/productos/222.png",
+        "desc": "Mezcla relajante de uvas y bayas dulces."
+      },
+      {
+        "nombre": "Durazno Vainilla",
+        "img": "assets/productos/223.png",
+        "desc": "Durazno maduro con crema de vainilla."
+      }
+    ]
   },
   {
-    id: "hookalit",
-    nombre: "HOOKALIT",
-    subtitulo: "35.000 Puffs • 10 Sabores",
-    puffs: "35.000 Puffs",
-    categoria: "desechables",
-    rating: 4.5,
-    ventas: 2650,
-    precio: 35000,
-    precio_promo_2: 58000,
-    ahorro_2: 12000,
-    descripcion: "Experiencia tipo hookah con 35.000 Puffs en modo MTL y 20.000 en DTL. 30 mL de e-liquid, batería de 800 mAh USB-C y bobina LIT Mesh de 0,5 Ω.",
-    imagen: "assets/productos/214.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "amor-magico", nombre: "Amor Mágico", desc: "Frutas exóticas perfumadas.", img: "assets/productos/214.png", visible: true },
-      { id: "gomita", nombre: "Gomita", desc: "Gomitas dulces.", img: "assets/productos/215.png", visible: true },
-      { id: "menta-helada", nombre: "Menta Helada", desc: "Menta fría estilo shisha.", img: "assets/productos/216.png", visible: true },
-      { id: "mujer-asesina", nombre: "Mujer Asesina", desc: "Mix frutal intenso y atrevido.", img: "assets/productos/217.png", visible: true },
-      { id: "amor-66", nombre: "Amor 66", desc: "Sabor clásico de hookah melón y menta.", img: "assets/productos/218.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 27000, "10": 21000, "20": 20000, "50": 19000, "100": 18000 },
-    agotado: false
+    "id": "spaceman",
+    "nombre": "SPACEMAN",
+    "categoria": "desechables",
+    "subtitulo": "20.000 Puffs • 10 Sabores",
+    "puffs": 20000,
+    "precio": 45000,
+    "precio_promo_2": 80000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3300,
+    "imagen": "assets/productos/224.png",
+    "descripcion": "Diseño espacial con pantalla curva a todo color, múltiples modos de potencia y 20.000 caladas de gran fidelidad.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Uva Verde",
+        "img": "assets/productos/224.png",
+        "desc": "Uvas verdes crujientes y dulces."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/225.png",
+        "desc": "Fresas con sandía veraniega."
+      },
+      {
+        "nombre": "Mango Dulce",
+        "img": "assets/productos/226.png",
+        "desc": "Mango tropical aromático y dulce."
+      },
+      {
+        "nombre": "Sandía Melocotón",
+        "img": "assets/productos/227.png",
+        "desc": "Sandía jugosa combinada con durazno."
+      },
+      {
+        "nombre": "Menta Miami",
+        "img": "assets/productos/228.png",
+        "desc": "Menta pura y refrescante."
+      },
+      {
+        "nombre": "Mora Azul",
+        "img": "assets/productos/229.png",
+        "desc": "Arándano silvestre con dulzura natural."
+      },
+      {
+        "nombre": "Fresa",
+        "img": "assets/productos/230.png",
+        "desc": "Fresa madura dulce."
+      },
+      {
+        "nombre": "Frambuesa Melocotón",
+        "img": "assets/productos/231.png",
+        "desc": "Frambuesa ácida con durazno aterciopelado."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/232.png",
+        "desc": "Surtido de moras y bayas."
+      },
+      {
+        "nombre": "Fresa B-Pop",
+        "img": "assets/productos/233.png",
+        "desc": "Paleta de fresa dulce con centro efervescente."
+      }
+    ]
   },
   {
-    id: "spaceman",
-    nombre: "SPACEMAN",
-    subtitulo: "50.000 Puffs • 10 Sabores",
-    puffs: "50.000 Puffs",
-    categoria: "desechables",
-    rating: 4.6,
-    ventas: 3350,
-    precio: 40000,
-    precio_promo_2: 70000,
-    ahorro_2: 10000,
-    descripcion: "Hasta 50.000 Puffs, 25 mL de e-liquid, batería de 1.000 mAh USB-C, pantalla a color, sistema Dual Mesh y 2 modos de potencia con flujo de aire ajustable.",
-    imagen: "assets/productos/224.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "uva-verde", nombre: "Uva Verde", desc: "Uva verde fresca y ácida.", img: "assets/productos/224.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Fresa dulce con sandía.", img: "assets/productos/225.png", visible: true },
-      { id: "mango-dulce", nombre: "Mango Dulce", desc: "Mango maduro dulce.", img: "assets/productos/226.png", visible: true },
-      { id: "sandia-melocoton", nombre: "Sandía Melocotón", desc: "Sandía con durazno jugoso.", img: "assets/productos/227.png", visible: true },
-      { id: "menta-miami", nombre: "Menta Miami", desc: "Menta fresca limpia.", img: "assets/productos/228.png", visible: true },
-      { id: "mora-azul", nombre: "Mora Azul", desc: "Mora azul clásica.", img: "assets/productos/229.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 30000, "10": 24000, "20": 23000, "50": 22000, "100": 21000 },
-    agotado: false
+    "id": "dinner-lady",
+    "nombre": "DINNER LADY",
+    "categoria": "desechables",
+    "subtitulo": "15.000 Puffs • 12 Sabores",
+    "puffs": 15000,
+    "precio": 45000,
+    "precio_promo_2": 80000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3100,
+    "imagen": "assets/productos/235.png",
+    "descripcion": "Líquidos premium británicos en formato desechable de 15.000 caladas, reconocidos por su complejidad y calidad de sabor inigualable.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Frutos Rojos y Caramelo",
+        "img": "assets/productos/235.png",
+        "desc": "Frutos rojos con toque de caramelo dulce."
+      },
+      {
+        "nombre": "Mora FAB",
+        "img": "assets/productos/236.png",
+        "desc": "Moras azules con toque helado fabuloso."
+      },
+      {
+        "nombre": "Cereza Strazz",
+        "img": "assets/productos/237.png",
+        "desc": "Cereza dulce con fresa silvestre."
+      },
+      {
+        "nombre": "Caramelo de Fresa",
+        "img": "assets/productos/238.png",
+        "desc": "Caramelo suave de fresa dulce."
+      },
+      {
+        "nombre": "Menta Miami",
+        "img": "assets/productos/239.png",
+        "desc": "Menta fresca con golpe glacial."
+      },
+      {
+        "nombre": "Cereza de California",
+        "img": "assets/productos/240.png",
+        "desc": "Cerezas rojas dulces californianas."
+      },
+      {
+        "nombre": "Mango",
+        "img": "assets/productos/241.png",
+        "desc": "Mango tropical maduro."
+      },
+      {
+        "nombre": "Rosa Ácida",
+        "img": "assets/productos/242.png",
+        "desc": "Frutas rosadas con golpe ácido."
+      },
+      {
+        "nombre": "Melón Definitivo",
+        "img": "assets/productos/243.png",
+        "desc": "Mezcla de tres tipos de melón dulce."
+      },
+      {
+        "nombre": "Chicle de Uva",
+        "img": "assets/productos/244.png",
+        "desc": "Chicle masticable de uva morada."
+      },
+      {
+        "nombre": "Fresa B-Pop",
+        "img": "assets/productos/245.png",
+        "desc": "Paleta de fresa con toque burbujeante."
+      },
+      {
+        "nombre": "Manzana Verde",
+        "img": "assets/productos/246.png",
+        "desc": "Manzana verde crujiente y ácida."
+      }
+    ]
   },
   {
-    id: "dinner-lady",
-    nombre: "DINNER LADY",
-    subtitulo: "60.000 Puffs • 12 Sabores",
-    puffs: "60.000 Puffs",
-    categoria: "desechables",
-    rating: 4.6,
-    ventas: 3890,
-    precio: 40000,
-    precio_promo_2: 70000,
-    ahorro_2: 10000,
-    descripcion: "Dinner Lady Galax 60K. Hasta 60.000 Puffs, 25 mL de e-liquid, batería recargable USB-C, pantalla animada, Power Dial regulable y máxima calidad británica.",
-    imagen: "assets/productos/235.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "frutos-rojos-caramelo", nombre: "Frutos Rojos y Caramelo", desc: "Frutos rojos con toque acaramelado.", img: "assets/productos/235.png", visible: true },
-      { id: "mora-fab", nombre: "Mora FAB", desc: "Mora intensa y dulce.", img: "assets/productos/236.png", visible: true },
-      { id: "cereza-strazz", nombre: "Cereza Strazz", desc: "Cereza con fresa ácida.", img: "assets/productos/237.png", visible: true },
-      { id: "caramelo-fresa", nombre: "Caramelo de Fresa", desc: "Fresa con dulce de caramelo.", img: "assets/productos/238.png", visible: true },
-      { id: "menta-miami", nombre: "Menta Miami", desc: "Menta helada refinada.", img: "assets/productos/239.png", visible: true },
-      { id: "cereza-california", nombre: "Cereza de California", desc: "Cereza dulce americana.", img: "assets/productos/240.png", visible: true },
-      { id: "mango", nombre: "Mango", desc: "Mango maduro.", img: "assets/productos/241.png", visible: true },
-      { id: "rosa-acida", nombre: "Rosa Ácida", desc: "Toque frutal ácido floral.", img: "assets/productos/242.png", visible: true },
-      { id: "melon-definitivo", nombre: "Melón Definitivo", desc: "Melón jugoso y dulce.", img: "assets/productos/243.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 30000, "10": 24000, "20": 23000, "50": 22000, "100": 21000 },
-    agotado: false
+    "id": "donut",
+    "nombre": "DONUT",
+    "categoria": "desechables",
+    "subtitulo": "12.000 Puffs • 20 Sabores",
+    "puffs": 12000,
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 3950,
+    "imagen": "assets/productos/248.png",
+    "descripcion": "Diseño innovador y divertido con 12.000 caladas de sabor ultra dulce, notas de postre, frutas y gomitas.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Dragon Melón",
+        "img": "assets/productos/248.png",
+        "desc": "Fruta del dragón exótica con melón dulce."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/249.png",
+        "desc": "Dúo fresco y dulce de fresa y sandía."
+      },
+      {
+        "nombre": "Fresa Plátano",
+        "img": "assets/productos/250.png",
+        "desc": "Fresas con plátano cremoso."
+      },
+      {
+        "nombre": "Mora Helada",
+        "img": "assets/productos/251.png",
+        "desc": "Moras silvestres con toque frío."
+      },
+      {
+        "nombre": "Mango Helado",
+        "img": "assets/productos/252.png",
+        "desc": "Mango tropical con frescura helada."
+      },
+      {
+        "nombre": "Gomitas",
+        "img": "assets/productos/253.png",
+        "desc": "Gomitas de osito dulces."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/254.png",
+        "desc": "Menta limpia con frescura duradera."
+      },
+      {
+        "nombre": "Sandía Helada",
+        "img": "assets/productos/255.png",
+        "desc": "Sandía jugosa con golpe de frío."
+      },
+      {
+        "nombre": "Uva Helada",
+        "img": "assets/productos/256.png",
+        "desc": "Uvas moradas con acabado frío."
+      },
+      {
+        "nombre": "Melocotón Mango",
+        "img": "assets/productos/257.png",
+        "desc": "Durazno sedoso con mango dulce."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/258.png",
+        "desc": "Fresa dulce con kiwi cítrico."
+      },
+      {
+        "nombre": "Piña Helada",
+        "img": "assets/productos/259.png",
+        "desc": "Piña dulce con toque helado."
+      },
+      {
+        "nombre": "Arándano Frambuesa",
+        "img": "assets/productos/260.png",
+        "desc": "Arándanos jugosos y frambuesa ácida."
+      },
+      {
+        "nombre": "Cereza Helada",
+        "img": "assets/productos/261.png",
+        "desc": "Cerezas con frescura intensa."
+      },
+      {
+        "nombre": "Plátano Helado",
+        "img": "assets/productos/262.png",
+        "desc": "Plátano dulce con toque frío."
+      },
+      {
+        "nombre": "Manzana Verde",
+        "img": "assets/productos/263.png",
+        "desc": "Manzana ácida y crujiente."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "assets/productos/264.png",
+        "desc": "Surtido de moras y bayas rojas."
+      },
+      {
+        "nombre": "Algodón Dulce",
+        "img": "assets/productos/265.png",
+        "desc": "Algodón de azúcar dulce de feria."
+      },
+      {
+        "nombre": "Limonada Rosa",
+        "img": "assets/productos/266.png",
+        "desc": "Limonada cítrica con fresas."
+      },
+      {
+        "nombre": "Bebida Energética",
+        "img": "assets/productos/267.png",
+        "desc": "Sabor clásico a bebida energizante."
+      }
+    ]
   },
   {
-    id: "brass-type-c",
-    nombre: "BRASS TYPE-C",
-    subtitulo: "Batería 510 • 900 mAh",
-    puffs: "900 mAh",
-    categoria: "baterias",
-    rating: 4.5,
-    ventas: 1650,
-    precio: 35000,
-    precio_promo_2: 60000,
-    ahorro_2: 10000,
-    descripcion: "Batería Brass Knuckles Type-C para cartuchos de destilados 510. 900 mAh, 3 voltajes ajustables, función de precalentamiento y carga rápida USB-C.",
-    imagen: "assets/productos/268.png",
-    tipo_variante: "color",
-    colores: [
-      { nombre: "Negro", img: "assets/productos/268.png", sabores: [] },
-      { nombre: "Dorado", img: "assets/productos/268.png", sabores: [] },
-      { nombre: "Plateado", img: "assets/productos/268.png", sabores: [] },
-      { nombre: "Madera", img: "assets/productos/268.png", sabores: [] },
-      { nombre: "Tornasol", img: "assets/productos/268.png", sabores: [] }
-    ],
-    precios_mayoristas: { "5": 27000, "10": 20000, "20": 19000, "50": 18000, "100": 17000 },
-    agotado: false
+    "id": "brass-type-c",
+    "nombre": "BRASS TYPE-C",
+    "categoria": "baterias",
+    "subtitulo": "Batería 510 Rosca Universal",
+    "precio": 25000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 5000,
+    "rating": 4.8,
+    "ventas": 2100,
+    "imagen": "assets/productos/268.png",
+    "descripcion": "Batería clásica con rosca 510 universal, voltaje variable, puerto de carga Type-C y cuerpo metálico de alta durabilidad.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Negro",
+        "img": "assets/productos/268.png",
+        "desc": "Elegante acabado negro mate."
+      },
+      {
+        "nombre": "Dorado",
+        "img": "assets/productos/268.png",
+        "desc": "Acabado dorado brillante de lujo."
+      },
+      {
+        "nombre": "Plateado",
+        "img": "assets/productos/268.png",
+        "desc": "Acabado cromo plateado clásico."
+      },
+      {
+        "nombre": "Madera",
+        "img": "assets/productos/268.png",
+        "desc": "Acabado textura madera vintage."
+      },
+      {
+        "nombre": "Tornasol",
+        "img": "assets/productos/268.png",
+        "desc": "Efecto arcoíris tornasolado brillante."
+      }
+    ]
   },
   {
-    id: "anv-digital",
-    nombre: "ANV DIGITAL",
-    subtitulo: "Batería 510 • 650 mAh",
-    puffs: "650 mAh",
-    categoria: "baterias",
-    rating: 4.5,
-    ventas: 1420,
-    precio: 40000,
-    precio_promo_2: 70000,
-    ahorro_2: 10000,
-    descripcion: "Batería 510 Control Digital All In Vapes con pantalla digital integrada. Permite visualizar batería y regular voltaje con rosca universal 510.",
-    imagen: "assets/productos/269.png",
-    tipo_variante: "color",
-    colores: [
-      { nombre: "Negro", img: "assets/productos/269.png", sabores: [] },
-      { nombre: "Dorado", img: "assets/productos/269.png", sabores: [] },
-      { nombre: "Plateado", img: "assets/productos/269.png", sabores: [] },
-      { nombre: "Rojo", img: "assets/productos/269.png", sabores: [] },
-      { nombre: "Tornasol", img: "assets/productos/269.png", sabores: [] }
-    ],
-    precios_mayoristas: { "5": 30000, "10": 24000, "20": 23000, "50": 22000, "100": 21000 },
-    agotado: false
+    "id": "anv-digital",
+    "nombre": "ANV DIGITAL",
+    "categoria": "baterias",
+    "subtitulo": "Batería 510 con Pantalla Digital",
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 1950,
+    "imagen": "assets/productos/269.png",
+    "descripcion": "Batería 510 avanzada con pantalla digital que muestra voltaje exacto y nivel de batería en tiempo real.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Negro",
+        "img": "assets/productos/269.png",
+        "desc": "Acabado negro satinado con pantalla OLED."
+      },
+      {
+        "nombre": "Dorado",
+        "img": "assets/productos/269.png",
+        "desc": "Dorado pulido de lujo."
+      },
+      {
+        "nombre": "Plateado",
+        "img": "assets/productos/269.png",
+        "desc": "Plateado metálico refinado."
+      },
+      {
+        "nombre": "Rojo",
+        "img": "assets/productos/269.png",
+        "desc": "Rojo metálico deportivo."
+      },
+      {
+        "nombre": "Tornasol",
+        "img": "assets/productos/269.png",
+        "desc": "Arcoíris camaleónico."
+      }
+    ]
   },
   {
-    id: "high-pro",
-    nombre: "HIGH PRO",
-    subtitulo: "Batería 510 • 400 mAh",
-    puffs: "400 mAh",
-    categoria: "baterias",
-    rating: 5.0,
-    ventas: 1890,
-    precio: 65000,
-    precio_promo_2: 130000,
-    ahorro_2: 0,
-    descripcion: "La All In Vapes High Pro es una batería recargable compacta con pantalla OLED, voltaje ajustable, contador de puffs y función de precalentamiento.",
-    imagen: "assets/productos/270.png",
-    tipo_variante: "color",
-    colores: [
-      { nombre: "Rosa", img: "assets/productos/270.png", sabores: [] },
-      { nombre: "Verde", img: "assets/productos/270.png", sabores: [] },
-      { nombre: "Negro", img: "assets/productos/270.png", sabores: [] },
-      { nombre: "Amarillo", img: "assets/productos/270.png", sabores: [] },
-      { nombre: "Azul", img: "assets/productos/270.png", sabores: [] }
-    ],
-    precios_mayoristas: { "5": 50000, "10": 42000, "20": 40000, "50": 38000, "100": 36000 },
-    agotado: false
+    "id": "high-pro",
+    "nombre": "HIGH PRO",
+    "categoria": "baterias",
+    "subtitulo": "Batería 510 Oculta",
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 2400,
+    "imagen": "assets/productos/270.png",
+    "descripcion": "Batería de cartucho oculto para máxima discreción, protección contra caídas y precalentamiento rápido.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Rosa",
+        "img": "assets/productos/270.png",
+        "desc": "Tono pastel suave y moderno."
+      },
+      {
+        "nombre": "Verde",
+        "img": "assets/productos/270.png",
+        "desc": "Verde militar mate."
+      },
+      {
+        "nombre": "Negro",
+        "img": "assets/productos/270.png",
+        "desc": "Negro mate discreto y resistente."
+      },
+      {
+        "nombre": "Amarillo",
+        "img": "assets/productos/270.png",
+        "desc": "Amarillo neón vibrante."
+      },
+      {
+        "nombre": "Azul",
+        "img": "assets/productos/270.png",
+        "desc": "Azul cobalto profundo."
+      }
+    ]
   },
   {
-    id: "waka-solo-2",
-    nombre: "WAKA SOLO 2",
-    subtitulo: "3.500 Puffs • 10 Sabores",
-    puffs: "3.500 Puffs",
-    categoria: "desechables",
-    rating: 4.2,
-    ventas: 2150,
-    precio: 45000,
-    precio_promo_2: 90000,
-    ahorro_2: 0,
-    descripcion: "El WAKA Solo 2 es un vape desechable compacto con 3.500 puffs, 6 mL de e-liquid y 11 W de potencia, con activación automática por inhalación.",
-    imagen: "assets/productos/273.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "arandano", nombre: "Arándano", desc: "Arándano dulce frutal.", img: "assets/productos/273.png", visible: true },
-      { id: "cereza", nombre: "Cereza", desc: "Cereza madura jugosa.", img: "assets/productos/274.png", visible: true },
-      { id: "menta", nombre: "Menta", desc: "Menta fresca y limpia.", img: "assets/productos/275.png", visible: true },
-      { id: "pina-colada", nombre: "Piña Colada", desc: "Piña con coco cremoso.", img: "assets/productos/276.png", visible: true },
-      { id: "sandia", nombre: "Sandía", desc: "Sandía jugosa y fresca.", img: "assets/productos/277.png", visible: true },
-      { id: "fresa", nombre: "Fresa", desc: "Fresa madura suave.", img: "assets/productos/278.png", visible: true },
-      { id: "uva", nombre: "Uva", desc: "Uva madura clásica.", img: "assets/productos/279.png", visible: true },
-      { id: "maracuya", nombre: "Maracuyá", desc: "Maracuyá tropical ácido.", img: "assets/productos/280.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Fresa dulce con sandía.", img: "assets/productos/281.png", visible: true },
-      { id: "fresa-uva", nombre: "Fresa Uva", desc: "Fresa con uva intensa.", img: "assets/productos/282.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 35000, "10": 28000, "20": 27000, "50": 26000, "100": 25000 },
-    agotado: false
+    "id": "secret-pro",
+    "nombre": "SECRET PRO",
+    "categoria": "baterias",
+    "subtitulo": "Batería 510 Ultra Discreta",
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.8,
+    "ventas": 2150,
+    "imagen": "assets/productos/271.png",
+    "descripcion": "Batería en formato encendedor / llavero que oculta el cartucho completamente para total privacidad.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Negro",
+        "img": "assets/productos/271.png",
+        "desc": "Acabado negro mate táctico."
+      },
+      {
+        "nombre": "Tornasol",
+        "img": "assets/productos/271.png",
+        "desc": "Tornasol irisado brillante."
+      },
+      {
+        "nombre": "Azul",
+        "img": "assets/productos/271.png",
+        "desc": "Azul marino satinado."
+      }
+    ]
   },
   {
-    id: "waka-creator-bateria",
-    nombre: "WAKA CREATOR BATERÍA",
-    subtitulo: "800 mAh • Batería recargable",
-    puffs: "800 mAh",
-    categoria: "kits",
-    rating: 4.9,
-    ventas: 890,
-    precio: 35000,
-    precio_promo_2: 70000,
-    ahorro_2: 0,
-    descripcion: "La Batería WAKA 800 cuenta con pantalla interactiva de 50+ emojis, 14 W de potencia, conexión magnética para Pods Creator y carga USB-C.",
-    imagen: "assets/productos/283.png",
-    tipo_variante: "none",
-    precios_mayoristas: { "5": 27000, "10": 22000, "20": 21000, "50": 20000, "100": 19000 },
-    agotado: true
+    "id": "waka-solo-2",
+    "nombre": "WAKA SOLO 2",
+    "categoria": "desechables",
+    "subtitulo": "2.500 Puffs • 10 Sabores",
+    "puffs": 2500,
+    "precio": 25000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 5000,
+    "rating": 4.8,
+    "ventas": 3600,
+    "imagen": "assets/productos/273.png",
+    "descripcion": "Dispositivo desechable compacto respaldado por la tecnología de Relx con 2.500 caladas de sabor refinado.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Arándano",
+        "img": "assets/productos/273.png",
+        "desc": "Arándano silvestre puro."
+      },
+      {
+        "nombre": "Cereza",
+        "img": "assets/productos/274.png",
+        "desc": "Cereza dulce y aromática."
+      },
+      {
+        "nombre": "Menta",
+        "img": "assets/productos/275.png",
+        "desc": "Menta fresca intensa."
+      },
+      {
+        "nombre": "Piña Colada",
+        "img": "assets/productos/276.png",
+        "desc": "Piña con coco cremoso."
+      },
+      {
+        "nombre": "Sandía",
+        "img": "assets/productos/277.png",
+        "desc": "Sandía jugosa y refrescante."
+      },
+      {
+        "nombre": "Fresa",
+        "img": "assets/productos/278.png",
+        "desc": "Fresas maduras dulces."
+      },
+      {
+        "nombre": "Uva",
+        "img": "assets/productos/279.png",
+        "desc": "Uvas moradas aromáticas."
+      },
+      {
+        "nombre": "Maracuyá",
+        "img": "assets/productos/280.png",
+        "desc": "Maracuyá cítrico tropical."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/281.png",
+        "desc": "Fresa dulce con sandía fresca."
+      },
+      {
+        "nombre": "Fresa Uva",
+        "img": "assets/productos/282.png",
+        "desc": "Fresa jugosa con uva morada."
+      }
+    ]
   },
   {
-    id: "sami-2-bateria",
-    nombre: "SAMI 2 BATERÍA",
-    subtitulo: "900 mAh • Batería recargable",
-    puffs: "900 mAh",
-    categoria: "kits",
-    rating: 4.9,
-    ventas: 1450,
-    precio: 35000,
-    precio_promo_2: 70000,
-    ahorro_2: 0,
-    descripcion: "La Mijo Sami 2 es una batería recargable con 3 modos de potencia (ECO, Normal, Boost), pantalla digital integrada e iluminación RGB.",
-    imagen: "assets/productos/292.png",
-    tipo_variante: "none",
-    precios_mayoristas: { "5": 27000, "10": 22000, "20": 21000, "50": 20000, "100": 19000 },
-    agotado: false
+    "id": "waka-creator-bateria",
+    "nombre": "WAKA CREATOR BATERÍA",
+    "categoria": "kits",
+    "subtitulo": "Batería Reutilizable Waka",
+    "precio": 20000,
+    "precio_promo_2": 35000,
+    "ahorro_2": 5000,
+    "rating": 4.8,
+    "ventas": 2100,
+    "imagen": "assets/productos/283.png",
+    "descripcion": "Batería recargable reutilizable compatible con todos los pods Waka Creator de 20.000 caladas.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Blanco / Plata",
+        "img": "assets/productos/283.png",
+        "desc": "Acabado minimalista moderno."
+      },
+      {
+        "nombre": "Negro Grafito",
+        "img": "assets/productos/283.png",
+        "desc": "Elegante negro mate."
+      }
+    ]
   },
   {
-    id: "waka-creator-pod",
-    nombre: "WAKA CREATOR POD",
-    subtitulo: "15.000 Puffs • 7 Sabores",
-    puffs: "15.000 Puffs",
-    categoria: "pods",
-    rating: 4.8,
-    ventas: 1200,
-    precio: 50000,
-    precio_promo_2: 100000,
-    ahorro_2: 0,
-    descripcion: "Cartucho intercambiable para batería WAKA Creator 800 mAh. 15.000 Puffs, 14 mL, tecnología Mega Mesh a 14 W.",
-    imagen: "assets/productos/285.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "arandano", nombre: "Arándano", desc: "Agotado", img: "assets/productos/285.png", visible: false },
-      { id: "sandia", nombre: "Sandía", desc: "Agotado", img: "assets/productos/286.png", visible: false },
-      { id: "menta", nombre: "Menta", desc: "Agotado", img: "assets/productos/287.png", visible: false },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Agotado", img: "assets/productos/288.png", visible: false },
-      { id: "cereza", nombre: "Cereza", desc: "Agotado", img: "assets/productos/289.png", visible: false },
-      { id: "fresa", nombre: "Fresa", desc: "Agotado", img: "assets/productos/290.png", visible: false },
-      { id: "uva", nombre: "Uva", desc: "Agotado", img: "assets/productos/291.png", visible: false }
-    ],
-    precios_mayoristas: { "5": 38000, "10": 32000, "20": 30000, "50": 28000, "100": 26000 },
-    agotado: true
+    "id": "waka-creator-pod",
+    "nombre": "WAKA CREATOR POD",
+    "categoria": "pods",
+    "subtitulo": "20.000 Puffs • Pod de Repuesto",
+    "puffs": 20000,
+    "precio": 40000,
+    "precio_promo_2": 70000,
+    "ahorro_2": 10000,
+    "rating": 4.9,
+    "ventas": 4300,
+    "imagen": "assets/productos/285.png",
+    "descripcion": "Cartucho de 20.000 caladas con pantalla digital integrada de nivel de líquido y doble resistencia de malla.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Arándano",
+        "img": "assets/productos/285.png",
+        "desc": "Arándano puro y fresco."
+      },
+      {
+        "nombre": "Sandía",
+        "img": "assets/productos/286.png",
+        "desc": "Sandía dulce con golpe frío."
+      },
+      {
+        "nombre": "Menta",
+        "img": "assets/productos/287.png",
+        "desc": "Menta polar refrescante."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/288.png",
+        "desc": "Fresa dulce combinada con sandía."
+      },
+      {
+        "nombre": "Cereza",
+        "img": "assets/productos/289.png",
+        "desc": "Cereza jugosa intensa."
+      },
+      {
+        "nombre": "Fresa",
+        "img": "assets/productos/290.png",
+        "desc": "Fresa dulce madura."
+      },
+      {
+        "nombre": "Uva",
+        "img": "assets/productos/291.png",
+        "desc": "Uvas moradas aromáticas."
+      }
+    ]
   },
   {
-    id: "sami-pod-2",
-    nombre: "SAMI POD 2",
-    subtitulo: "15.000 Puffs • 14 Sabores",
-    puffs: "15.000 Puffs",
-    categoria: "pods",
-    rating: 4.8,
-    ventas: 2180,
-    precio: 50000,
-    precio_promo_2: 100000,
-    ahorro_2: 0,
-    descripcion: "El Mijo Sami Pod 2 es un cartucho precargado de 20 mL de e-liquid al 5% con hasta 15.000 puffs, compatible con batería Sami 2.",
-    imagen: "assets/productos/294.png",
-    tipo_variante: "sabor",
-    sabores: [
-      { id: "banana-ice", nombre: "Banana Ice", desc: "Banana helada cremosa.", img: "assets/productos/294.png", visible: true },
-      { id: "fresa-sandia", nombre: "Fresa Sandía", desc: "Fresa dulce con sandía.", img: "assets/productos/295.png", visible: true },
-      { id: "mango-ice", nombre: "Mango Ice", desc: "Mango frío tropical.", img: "assets/productos/296.png", visible: true },
-      { id: "maracuya", nombre: "Maracuyá", desc: "Maracuyá ácido intenso.", img: "assets/productos/297.png", visible: true },
-      { id: "salpicon", nombre: "Salpicón", desc: "Mix tropical de frutas colombianas.", img: "assets/productos/298.png", visible: true }
-    ],
-    precios_mayoristas: { "5": 38000, "10": 32000, "20": 30000, "50": 28000, "100": 26000 },
-    agotado: false
+    "id": "sami-2-bateria",
+    "nombre": "SAMMY 2 BATERÍA",
+    "categoria": "kits",
+    "subtitulo": "Batería Reutilizable Sammy",
+    "precio": 20000,
+    "precio_promo_2": 35000,
+    "ahorro_2": 5000,
+    "rating": 4.8,
+    "ventas": 1850,
+    "imagen": "assets/productos/292.png",
+    "descripcion": "Batería de larga duración recargable por USB Tipo-C, diseñada específicamente para el sistema Sammy Pod 2.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Negro",
+        "img": "assets/productos/292.png",
+        "desc": "Negro mate con grip antideslizante."
+      },
+      {
+        "nombre": "Gris Metálico",
+        "img": "assets/productos/292.png",
+        "desc": "Gris espacial satinado."
+      }
+    ]
   },
   {
-    id: "secret-pro",
-    nombre: "SECRET PRO",
-    subtitulo: "Batería 510 • 650 mAh",
-    puffs: "650 mAh",
-    categoria: "baterias",
-    rating: 5.0,
-    ventas: 1120,
-    precio: 80000,
-    precio_promo_2: 160000,
-    ahorro_2: 0,
-    descripcion: "Batería All In Vapes Secret Pro. Diseño ultra discreto y minimalista donde el cartucho queda oculto, pantalla digital y 3 voltajes.",
-    imagen: "assets/productos/271.png",
-    tipo_variante: "color",
-    colores: [
-      { nombre: "Negro", img: "assets/productos/271.png", sabores: [] },
-      { nombre: "Tornasol", img: "assets/productos/271.png", sabores: [] },
-      { nombre: "Azul", img: "assets/productos/271.png", sabores: [] }
-    ],
-    precios_mayoristas: { "5": 62000, "10": 52000, "20": 50000, "50": 48000, "100": 46000 },
-    agotado: false
+    "id": "sami-pod-2",
+    "nombre": "SAMMY POD 2",
+    "categoria": "pods",
+    "subtitulo": "12.000 Puffs • Pod de Repuesto",
+    "puffs": 12000,
+    "precio": 25000,
+    "precio_promo_2": 45000,
+    "ahorro_2": 5000,
+    "rating": 4.8,
+    "ventas": 3700,
+    "imagen": "assets/productos/294.png",
+    "descripcion": "Cartucho desechable de 12.000 caladas para batería Sammy 2 con amplio menú de sabores tropicales colombianos y mentolados.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Banana Ice",
+        "img": "assets/productos/294.png",
+        "desc": "Plátano dulce con toque helado."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "assets/productos/295.png",
+        "desc": "Fresas dulces y sandía jugosa."
+      },
+      {
+        "nombre": "Mango Ice",
+        "img": "assets/productos/296.png",
+        "desc": "Mango tropical con acabado frío."
+      },
+      {
+        "nombre": "Maracuyá",
+        "img": "assets/productos/297.png",
+        "desc": "Maracuyá cítrico aromático."
+      },
+      {
+        "nombre": "Salpicón",
+        "img": "assets/productos/298.png",
+        "desc": "Mezcla tradicional de frutas colombianas."
+      },
+      {
+        "nombre": "Arándano Ice",
+        "img": "assets/productos/299.png",
+        "desc": "Arándano silvestre con golpe helado."
+      },
+      {
+        "nombre": "Energetic Ice",
+        "img": "assets/productos/300.png",
+        "desc": "Bebida energizante con toque frío."
+      },
+      {
+        "nombre": "Frutos Morados",
+        "img": "assets/productos/301.png",
+        "desc": "Uvas y moras oscuras combinadas."
+      },
+      {
+        "nombre": "Kiwi Fresa",
+        "img": "assets/productos/302.png",
+        "desc": "Fresa dulce con kiwi cítrico."
+      },
+      {
+        "nombre": "Lulo",
+        "img": "assets/productos/303.png",
+        "desc": "Sabor a lulo ácido y refrescante."
+      },
+      {
+        "nombre": "Doble Manzana",
+        "img": "assets/productos/304.png",
+        "desc": "Manzanas crujientes rojas y verdes."
+      },
+      {
+        "nombre": "Menta Fresca",
+        "img": "assets/productos/305.png",
+        "desc": "Menta limpia con frescura prolongada."
+      },
+      {
+        "nombre": "Chicle",
+        "img": "assets/productos/306.png",
+        "desc": "Chicle dulce tradicional."
+      }
+    ]
   },
   {
-    id: "airpods-4-anc",
-    nombre: "AIRPODS 4",
-    subtitulo: "Con Cancelación Activa de Ruido (ANC)",
-    puffs: "Audio ANC",
-    categoria: "accesorios",
-    rating: 4.5,
-    ventas: 840,
-    precio: 69999,
-    precio_promo_2: 139998,
-    ahorro_2: 0,
-    descripcion: "Los AirPods 4 ofrecen chip H2, Cancelación Activa de Ruido, Audio Espacial personalizado, Bluetooth 5.3 y estuche con carga USB-C.",
-    imagen: "assets/productos/airpods-4.png",
-    tipo_variante: "none",
-    precios_mayoristas: { "5": 55000, "10": 45000 },
-    agotado: false
+    "id": "airpods-pro-2",
+    "nombre": "AIRPODS PRO 2",
+    "categoria": "accesorios",
+    "subtitulo": "Cancelación Activa de Ruido",
+    "precio": 75000,
+    "precio_promo_2": 130000,
+    "ahorro_2": 20000,
+    "rating": 4.9,
+    "ventas": 1820,
+    "imagen": "assets/productos/311.png",
+    "descripcion": "Audífonos inalámbricos con cancelación activa de ruido, modo ambiente adaptativo, audio espacial y estuche con carga MagSafe y USB-C.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Blanco Estándar",
+        "img": "assets/productos/311.png",
+        "desc": "Color blanco brillante original de Apple."
+      }
+    ]
+  },
+  {
+    "id": "airpods-4-anc",
+    "nombre": "AIRPODS 4",
+    "categoria": "accesorios",
+    "subtitulo": "Audio Espacial • Cancelación de Ruido",
+    "precio": 85000,
+    "precio_promo_2": 150000,
+    "ahorro_2": 20000,
+    "rating": 5.0,
+    "ventas": 2100,
+    "imagen": "assets/productos/airpods-4.png",
+    "descripcion": "La última generación de AirPods con ajuste acústico rediseñado, chip H2, aislamiento de voz superior y estuche de carga ultra compacto.",
+    "agotado": false,
+    "tipo_variante": "color",
+    "colores": [
+      {
+        "nombre": "Blanco",
+        "img": "assets/productos/airpods-4.png",
+        "desc": "Diseño icónico blanco con estuche USB-C."
+      }
+    ]
   }
 ];
 
-window.PRODUCTS_DATA = PRODUCTS_DATA;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { PRODUCTS_DATA };
+}

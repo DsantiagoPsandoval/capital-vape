@@ -1,11 +1,13 @@
 /**
- * CAPITAL VAPE - Controlador de Catálogo con Cambio Dinámico de Imágenes por Sabor
+ * CAPITAL VAPE - Controlador de Catálogo con Modal de Sabores y Cambio Dinámico
  */
 const CatalogController = {
   selectedVariants: {},
   activeCategory: 'todos',
   searchQuery: '',
   sortBy: 'relevancia',
+  activeModalProductId: null,
+  activeModalIsWholesale: false,
 
   init() {
     this.renderCatalog();
@@ -18,41 +20,228 @@ const CatalogController = {
 
   selectVariant(productId, variantName) {
     this.selectedVariants[productId] = variantName;
+
+    // 1. Update standard card
     const card = document.getElementById('card-' + productId);
-    if (!card) return;
+    if (card) {
+      const tag = card.querySelector('.flavor-current-tag');
+      if (tag) tag.textContent = variantName;
 
-    // Toggle active pill
-    card.querySelectorAll('.flavor-pill').forEach(pill => {
-      pill.classList.toggle('active', pill.dataset.variant === variantName);
-    });
+      const product = PRODUCTS_DATA.find(p => p.id === productId);
+      if (product) {
+        let flavorImg = null;
+        if (product.sabores) {
+          const found = product.sabores.find(s => s.nombre === variantName);
+          if (found && found.img) flavorImg = found.img;
+        } else if (product.colores) {
+          const found = product.colores.find(c => c.nombre === variantName);
+          if (found && found.img) flavorImg = found.img;
+        }
 
-    // Update active label indicator
-    const label = card.querySelector('.selected-flavor-name');
-    if (label) label.textContent = variantName;
-
-    // Change image to selected flavor / color image
-    const product = PRODUCTS_DATA.find(p => p.id === productId);
-    if (product) {
-      let flavorImg = null;
-      if (product.sabores) {
-        const found = product.sabores.find(s => s.nombre === variantName);
-        if (found && found.img) flavorImg = found.img;
-      } else if (product.colores) {
-        const found = product.colores.find(c => c.nombre === variantName);
-        if (found && found.img) flavorImg = found.img;
-      }
-
-      if (flavorImg) {
-        const imgEl = card.querySelector('.product-img-real');
-        if (imgEl) {
-          imgEl.style.opacity = '0.3';
-          setTimeout(() => {
-            imgEl.src = flavorImg;
-            imgEl.style.opacity = '1';
-          }, 120);
+        if (flavorImg) {
+          const imgEl = card.querySelector('.product-img-real');
+          if (imgEl) {
+            imgEl.style.opacity = '0.3';
+            setTimeout(() => {
+              imgEl.src = flavorImg;
+              imgEl.style.opacity = '1';
+            }, 120);
+          }
         }
       }
     }
+
+    // 2. Update wholesale card if exists
+    const wsCard = document.getElementById('ws-card-' + productId);
+    if (wsCard) {
+      const tag = wsCard.querySelector('.flavor-current-tag');
+      if (tag) tag.textContent = variantName;
+
+      const product = PRODUCTS_DATA.find(p => p.id === productId);
+      if (product) {
+        let flavorImg = null;
+        if (product.sabores) {
+          const found = product.sabores.find(s => s.nombre === variantName);
+          if (found && found.img) flavorImg = found.img;
+        } else if (product.colores) {
+          const found = product.colores.find(c => c.nombre === variantName);
+          if (found && found.img) flavorImg = found.img;
+        }
+
+        if (flavorImg) {
+          const imgEl = wsCard.querySelector('.product-img-real');
+          if (imgEl) {
+            imgEl.style.opacity = '0.3';
+            setTimeout(() => {
+              imgEl.src = flavorImg;
+              imgEl.style.opacity = '1';
+            }, 120);
+          }
+        }
+      }
+    }
+
+    // Update modal items active state if open
+    const modal = document.getElementById('flavorModal');
+    if (modal && modal.style.display !== 'none') {
+      modal.querySelectorAll('.flavor-card-item').forEach(item => {
+        const isMatch = item.dataset.variantName === variantName;
+        item.classList.toggle('is-selected', isMatch);
+        const selBtn = item.querySelector('.btn-flavor-select');
+        if (selBtn) {
+          selBtn.textContent = isMatch ? '✓ Seleccionado' : 'Seleccionar este sabor';
+        }
+      });
+    }
+  },
+
+  openFlavorModal(productId, isWholesale = false) {
+    const product = PRODUCTS_DATA.find(p => p.id === productId);
+    if (!product) return;
+
+    this.activeModalProductId = productId;
+    this.activeModalIsWholesale = isWholesale;
+
+    const modal = document.getElementById('flavorModal');
+    if (!modal) return;
+
+    const nameEl = document.getElementById('flavorModalProductName');
+    const subEl = document.getElementById('flavorModalSubtitle');
+    const puffsEl = document.getElementById('flavorModalPuffs');
+    const catEl = document.getElementById('flavorModalCategory');
+    const searchInput = document.getElementById('flavorSearchInput');
+
+    if (nameEl) nameEl.textContent = product.nombre;
+    if (subEl) subEl.textContent = product.subtitulo || 'Selecciona tu sabor o variante';
+
+    const descEl = document.getElementById('flavorModalProductDesc');
+    if (descEl) {
+      if (product.descripcion) {
+        descEl.textContent = product.descripcion;
+        descEl.style.display = 'block';
+      } else {
+        descEl.style.display = 'none';
+      }
+    }
+    if (puffsEl) {
+      if (product.puffs) {
+        puffsEl.textContent = `${Number(product.puffs).toLocaleString('es-CO')} Puffs`;
+        puffsEl.style.display = 'inline-block';
+      } else {
+        puffsEl.style.display = 'none';
+      }
+    }
+    if (catEl) catEl.textContent = product.categoria.toUpperCase();
+    if (searchInput) searchInput.value = '';
+
+    this.renderModalFlavors('');
+
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  },
+
+  closeFlavorModal() {
+    const modal = document.getElementById('flavorModal');
+    if (modal) {
+      modal.style.display = 'none';
+      document.body.style.overflow = '';
+    }
+    this.activeModalProductId = null;
+  },
+
+  filterModalFlavors(query) {
+    this.renderModalFlavors(query.trim().toLowerCase());
+  },
+
+  renderModalFlavors(filterText = '') {
+    const grid = document.getElementById('flavorModalGrid');
+    if (!grid || !this.activeModalProductId) return;
+
+    const product = PRODUCTS_DATA.find(p => p.id === this.activeModalProductId);
+    if (!product) return;
+
+    const currentSelected = this.selectedVariants[product.id] || (
+      product.sabores && product.sabores.length > 0 ? product.sabores[0].nombre :
+      (product.colores && product.colores.length > 0 ? product.colores[0].nombre : '')
+    );
+
+    let items = [];
+    if (product.sabores && product.sabores.length > 0) {
+      items = product.sabores.filter(s => s.visible !== false).map(s => ({
+        name: s.nombre,
+        desc: s.desc || '',
+        img: s.img || product.imagen,
+        type: 'sabor'
+      }));
+    } else if (product.colores && product.colores.length > 0) {
+      items = product.colores.map(c => ({
+        name: c.nombre,
+        desc: c.sabores ? `Incluye: ${c.sabores.join(', ')}` : '',
+        img: c.img || product.imagen,
+        type: 'color'
+      }));
+    }
+
+    if (filterText) {
+      items = items.filter(i => 
+        i.name.toLowerCase().includes(filterText) || 
+        i.desc.toLowerCase().includes(filterText)
+      );
+    }
+
+    if (items.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: var(--text-muted);">
+          🔍 No se encontraron sabores que coincidan con "${filterText}".
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = items.map(item => {
+      const isSelected = item.name === currentSelected;
+      return `
+        <div class="flavor-card-item ${product.id === 'bugatti' ? 'is-bugatti-flavor' : ''} ${isSelected ? 'is-selected' : ''}" data-variant-name="${item.name}">
+          <div class="flavor-card-img-wrap" onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')">
+            <img src="${item.img || 'assets/logo/logo.png'}" 
+                 alt="${item.name}" 
+                 class="flavor-card-img"
+                 loading="lazy"
+                 onerror="this.src='assets/logo/logo.png';">
+          </div>
+          <div class="flavor-card-name">${item.name}</div>
+          <div class="flavor-card-desc">${item.desc || 'Sabor premium exclusivo de Capital Vape.'}</div>
+          <div class="flavor-card-actions">
+            <button type="button" 
+                    class="btn-flavor-select" 
+                    onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')">
+              ${isSelected ? '✓ Seleccionado' : 'Seleccionar sabor'}
+            </button>
+            ${!this.activeModalIsWholesale && !product.agotado ? `
+              <button type="button" 
+                      class="btn-flavor-add-cart" 
+                      onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${item.name}')">
+                🛒 Agregar al Carrito
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  },
+
+  selectAndApplyVariant(productId, variantName) {
+    this.selectVariant(productId, variantName);
+    Toast.show(`Sabor "${variantName}" seleccionado`, 'success');
+  },
+
+  addFlavorDirectToCart(productId, variantName) {
+    this.selectVariant(productId, variantName);
+    const product = PRODUCTS_DATA.find(p => p.id === productId);
+    if (!product || product.agotado) return;
+
+    Cart.addItem(product, variantName, 1);
+    this.closeFlavorModal();
   },
 
   addProductToCart(productId) {
@@ -157,73 +346,34 @@ const CatalogController = {
         if (found && found.img) currentImage = found.img;
       }
 
-      // Variants / Flavors list
-      let variantsHtml = '';
-      if (product.tipo_variante === 'sabor' && product.sabores) {
-        const visibleFlavors = product.sabores.filter(s => s.visible !== false);
-        variantsHtml = `
-          <div class="card-variants-section">
-            <div class="variants-header-row">
-              <span class="variants-title">Sabores (${visibleFlavors.length}):</span>
-              <span class="selected-flavor-name">${currentSelected}</span>
-            </div>
-            <div class="variants-pills-list">
-              ${visibleFlavors.map(s => `
-                <button type="button" 
-                  class="flavor-pill ${s.nombre === currentSelected ? 'active' : ''}" 
-                  data-variant="${s.nombre}"
-                  onclick="CatalogController.selectVariant('${product.id}', '${s.nombre}')"
-                  title="${s.desc || s.nombre}">
-                  ${s.nombre}
-                </button>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      } else if (product.tipo_variante === 'color' && product.colores) {
-        variantsHtml = `
-          <div class="card-variants-section">
-            <div class="variants-header-row">
-              <span class="variants-title">Colores (${product.colores.length}):</span>
-              <span class="selected-flavor-name">${currentSelected}</span>
-            </div>
-            <div class="variants-pills-list">
-              ${product.colores.map(c => `
-                <button type="button" 
-                  class="flavor-pill ${c.nombre === currentSelected ? 'active' : ''}" 
-                  data-variant="${c.nombre}"
-                  onclick="CatalogController.selectVariant('${product.id}', '${c.nombre}')">
-                  ${c.nombre}
-                </button>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      }
+      // Count variants
+      const totalVariants = product.sabores ? product.sabores.filter(s => s.visible !== false).length :
+                            (product.colores ? product.colores.length : 0);
+      const isColor = product.tipo_variante === 'color';
 
       const hasDuoPromo = product.precio_promo_2 && product.precio_promo_2 < (product.precio * 2);
       const ahorroDuo = hasDuoPromo ? (product.ahorro_2 || ((product.precio * 2) - product.precio_promo_2)) : 0;
 
       return `
-        <article class="product-card ${product.agotado ? 'is-out' : ''}" id="card-${product.id}" data-category="${product.categoria}">
-          <!-- 1. INDEPENDENT IMAGE CONTAINER -->
-          <div class="card-image-wrapper">
+        <article class="product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.agotado ? 'is-out' : ''}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
+          <!-- 1. INDEPENDENT ENLARGED IMAGE -->
+          <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}')" title="Ver sabores y detalles">
             <img src="${currentImage || 'assets/logo/logo.png'}" 
                  alt="${product.nombre}" 
                  class="product-img-real" 
                  loading="lazy" 
-                 onerror="this.src='assets/logo/logo.png'; this.style.opacity='0.4';">
+                 onerror="this.src='assets/logo/logo.png';">
             ${product.subtitulo ? `<span class="card-puffs-badge">${product.subtitulo}</span>` : ''}
-            ${(product.ventas && product.ventas > 3000) ? `<span class="card-top-seller-tag">🔥 Más Vendido</span>` : ''}
+            
           </div>
 
-          <!-- 2. INDEPENDENT CARD BODY CONTAINER (TEXT & DATA) -->
+          <!-- 2. CARD BODY -->
           <div class="card-body">
-            <!-- Meta row: Rating and Stock Status (Clear and fully visible) -->
             <div class="card-meta-row">
               <span class="card-rating-badge">
                 <span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}
               </span>
+              ${(product.ventas && product.ventas > 3000) ? `<span class="card-top-seller-pill">🔥 Top Ventas</span>` : ''}
               ${product.agotado 
                 ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
                 : `<span class="card-stock-badge in">🟢 Disponible</span>`}
@@ -231,12 +381,23 @@ const CatalogController = {
 
             <div class="card-header-info">
               <h3 class="card-title">${product.nombre}</h3>
-              <p class="card-desc">${product.descripcion || ''}</p>
             </div>
 
-            ${variantsHtml}
+            <!-- FLAVOR PICKER BUTTON -->
+            ${totalVariants > 0 ? `
+              <div class="card-flavor-picker-block">
+                <button type="button" 
+                        class="btn-open-flavor-modal" 
+                        onclick="CatalogController.openFlavorModal('${product.id}')">
+                  <span class="flavor-picker-label">
+                    <span>${isColor ? '🎨' : '⚡'} ${isColor ? 'Colores' : 'Sabores'} (${totalVariants})</span>
+                  </span>
+                  <span class="flavor-current-tag">${currentSelected}</span>
+                </button>
+              </div>
+            ` : ''}
 
-            <!-- Organized Pricing: 1 Unit & 2 Units Promo Duo -->
+            <!-- Organized Pricing -->
             <div class="card-pricing-block">
               <div class="pricing-tier-row">
                 <div class="tier-label-group">
@@ -294,9 +455,9 @@ const CatalogController = {
   },
 
   bindEvents() {
-    document.querySelectorAll('.cat-pill-btn').forEach(btn => {
+    document.querySelectorAll('.cat-pill-btn:not(.ws-cat-pill-btn)').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.cat-pill-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.cat-pill-btn:not(.ws-cat-pill-btn)').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         this.activeCategory = btn.dataset.category || 'todos';
         this.renderCatalog();
@@ -320,6 +481,16 @@ const CatalogController = {
       sortSelect.addEventListener('change', (e) => {
         this.sortBy = e.target.value;
         this.renderCatalog();
+      });
+    }
+
+    // Close modal on overlay click
+    const modal = document.getElementById('flavorModal');
+    if (modal) {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          this.closeFlavorModal();
+        }
       });
     }
   }

@@ -1,126 +1,433 @@
-/* CAPITAL VAPE - Responsive Rules (Desktop, Tablet, Mobile) */
+/* CAPITAL VAPE - Master Responsive Design System (Mobile 2-Columns Optimized) */
 
+/* ==========================================================================
+   TABLETS & MEDIUM SCREENS (max-width: 1024px)
+   ========================================================================== */
 @media (max-width: 1024px) {
-  .hero-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
-
   .products-grid {
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 20px;
   }
-}
 
-@media (max-width: 900px) {
-  .hero-grid {
-    grid-template-columns: 1fr;
+  .hero-container {
+    flex-direction: column;
     text-align: center;
-    gap: 40px;
+    gap: 30px;
   }
 
   .hero-content {
-    align-items: center;
-  }
-
-  .hero-cta-group {
-    justify-content: center;
-  }
-
-  .contact-card-box {
-    grid-template-columns: 1fr;
-    padding: 32px 24px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-  }
-}
-
-@media (max-width: 768px) {
-  .mobile-toggle {
-    display: block;
-  }
-
-  .nav-menu {
-    position: fixed;
-    top: 72px;
-    left: 0;
-    right: 0;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
-    flex-direction: column;
-    padding: 24px;
-    gap: 18px;
-    transform: translateY(-150%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
-  }
-
-  .nav-menu.open {
-    transform: translateY(0);
-  }
-
-  .hero-title {
-    font-size: 2.2rem;
-  }
-
-  .hero-desc {
-    font-size: 1rem;
-  }
-
-  .products-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .card-image-wrapper {
-    height: 220px;
-  }
-
-  .product-img-real {
-    max-height: 180px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-
-  .footer-bottom-bar {
-    flex-direction: column;
-    gap: 12px;
-    text-align: center;
-  }
-
-  .cv-cart-drawer {
     max-width: 100%;
   }
 
-  .checkout-grid {
-    grid-template-columns: 1fr;
+  .hero-badges-row, .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-card-featured {
+    max-width: 400px;
+    margin: 0 auto;
   }
 }
 
-@media (max-width: 480px) {
+/* ==========================================================================
+   MOBILE PHONES (max-width: 768px) - 2 COLUMNS LAYOUT
+   ========================================================================== */
+@media (max-width: 768px) {
   .container {
-    padding: 0 16px;
+    padding: 0 10px;
+  }
+
+  /* Header & Navigation */
+  .navbar-container {
+    padding: 8px 12px;
+  }
+
+  .logo-img {
+    height: 38px;
+  }
+
+  .nav-actions {
+    gap: 6px;
+  }
+
+  .nav-btn {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 30px 0 20px 0;
   }
 
   .hero-title {
     font-size: 1.85rem;
+    line-height: 1.18;
   }
 
-  .hero-bestseller-card {
-    padding: 20px 16px;
+  .hero-subtitle {
+    font-size: 0.88rem;
+  }
+
+  .hero-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .stat-card {
+    padding: 8px 4px;
+  }
+
+  .stat-num {
+    font-size: 1.1rem;
+  }
+
+  .stat-label {
+    font-size: 0.65rem;
+  }
+
+  /* Catalog Toolbar */
+  .catalog-toolbar {
+    padding: 12px 10px;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .toolbar-top-row, .toolbar-controls-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .category-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    gap: 6px;
+  }
+
+  .category-pills::-webkit-scrollbar {
+    height: 3px;
+  }
+
+  .category-pills::-webkit-scrollbar-thumb {
+    background: var(--accent-purple);
+    border-radius: 4px;
+  }
+
+  .cat-pill-btn {
+    white-space: nowrap;
+    padding: 6px 12px;
+    font-size: 0.76rem;
+    flex-shrink: 0;
+  }
+
+  .search-input {
+    padding: 8px 14px;
+    font-size: 0.82rem;
+  }
+
+  .sort-select {
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    width: 100%;
+  }
+
+  /* ==========================================================================
+     CRITICAL: STRICT 2 COLUMNS ON MOBILE
+     ========================================================================== */
+  .products-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  /* Product Card in 2 Columns */
+  .product-card {
+    border-radius: var(--radius-md);
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+  }
+
+  .card-image-wrapper {
+    height: 165px !important;
+    padding: 8px !important;
+  }
+
+  .product-img-real {
+    max-height: 135px !important;
+    max-width: 90% !important;
+  }
+
+  .card-puffs-badge {
+    font-size: 0.62rem !important;
+    padding: 2px 6px !important;
+    top: 6px !important;
+    left: 6px !important;
   }
 
   .card-body {
-    padding: 16px;
+    padding: 10px 8px !important;
+    gap: 7px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+  }
+
+  /* Meta Row */
+  .card-meta-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 3px !important;
+  }
+
+  .card-rating-badge {
+    font-size: 0.68rem !important;
+    padding: 2px 4px !important;
+  }
+
+  .card-top-seller-pill {
+    font-size: 0.6rem !important;
+    padding: 2px 4px !important;
+  }
+
+  .card-stock-badge {
+    font-size: 0.64rem !important;
+    padding: 2px 4px !important;
+  }
+
+  /* Title with uniform 2-line height */
+  .card-title {
+    font-size: 0.88rem !important;
+    line-height: 1.2 !important;
+    min-height: 2.15em !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    margin-bottom: 2px !important;
+  }
+
+  /* Flavor Picker Button */
+  .card-flavor-picker-block {
+    margin-top: auto !important;
+  }
+
+  .btn-open-flavor-modal {
+    padding: 5px 6px !important;
+    font-size: 0.72rem !important;
+    border-radius: var(--radius-sm) !important;
+  }
+
+  .flavor-picker-label {
+    gap: 4px !important;
+  }
+
+  .flavor-current-tag {
+    max-width: 65px !important;
+    font-size: 0.62rem !important;
+    padding: 1px 4px !important;
+  }
+
+  /* Pricing Block in 2 Columns */
+  .card-pricing-block {
+    padding: 6px !important;
+    gap: 3px !important;
+    border-radius: var(--radius-sm) !important;
   }
 
   .pricing-tier-row {
-    flex-direction: row;
+    gap: 4px !important;
+  }
+
+  .tier-badge-tag {
+    font-size: 0.58rem !important;
+    padding: 1px 3px !important;
+  }
+
+  .tier-price-val {
+    font-size: 0.88rem !important;
+  }
+
+  .tier-save-tag {
+    font-size: 0.58rem !important;
+  }
+
+  /* Add to Cart Button */
+  .card-actions-wrapper {
+    margin-top: 2px !important;
+  }
+
+  .btn-add-cart {
+    padding: 8px 4px !important;
+    font-size: 0.74rem !important;
+    white-space: nowrap !important;
+  }
+
+  /* Bugatti Mobile Balanced */
+  .product-card.is-bugatti .card-image-wrapper,
+  .product-card[data-product-id="bugatti"] .card-image-wrapper {
+    height: 175px !important;
+  }
+
+  .product-card.is-bugatti .product-img-real,
+  .product-card[data-product-id="bugatti"] .product-img-real {
+    max-height: 145px !important;
+    max-width: 90% !important;
+    transform: scale(1.05) !important;
+  }
+
+  /* Wholesale Cards in 2 Columns */
+  .ws-tier-buttons-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 4px !important;
+  }
+
+  .btn-ws-tier {
+    padding: 5px 2px !important;
+    font-size: 0.68rem !important;
+    border-radius: 4px !important;
+  }
+
+  .tier-qty-tag {
+    font-size: 0.68rem !important;
+  }
+
+  .tier-unit-price {
+    font-size: 0.66rem !important;
+  }
+
+  .ws-savings-notice {
+    font-size: 0.65rem !important;
+    padding: 4px 6px !important;
+  }
+
+  /* ==========================================================================
+     MODAL DE SABORES (#flavorModal) EN MÓVIL
+     ========================================================================== */
+  .flavor-modal-card {
+    width: 96% !important;
+    max-height: 92vh !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .flavor-modal-header {
+    padding: 12px 14px !important;
+  }
+
+  .flavor-modal-product-title {
+    font-size: 1.15rem !important;
+  }
+
+  .flavor-modal-product-sub {
+    font-size: 0.75rem !important;
+  }
+
+  .flavor-modal-product-desc {
+    padding: 8px 10px !important;
+    font-size: 0.78rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .flavor-modal-body {
+    padding: 10px 12px !important;
+    gap: 10px !important;
+  }
+
+  .flavor-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 8px !important;
+  }
+
+  .flavor-card-item {
+    padding: 8px 6px !important;
+    gap: 6px !important;
+  }
+
+  .flavor-card-img-wrap {
+    height: 95px !important;
+  }
+
+  .flavor-card-img {
+    max-height: 85px !important;
+  }
+
+  .flavor-card-name {
+    font-size: 0.78rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .flavor-card-desc {
+    font-size: 0.66rem !important;
+    line-height: 1.25 !important;
+    min-height: 28px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .btn-flavor-select, .btn-flavor-add-cart {
+    padding: 6px 4px !important;
+    font-size: 0.7rem !important;
+  }
+
+  /* Floating Actions */
+  .floating-cart-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .wa-floating-btn {
+    width: 46px;
+    height: 46px;
+    font-size: 1.2rem;
+    bottom: 74px;
+    right: 16px;
+  }
+
+  /* Cart Drawer Mobile */
+  .cart-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/* ==========================================================================
+   EXTRA SMALL PHONES (max-width: 400px)
+   ========================================================================== */
+@media (max-width: 400px) {
+  .products-grid {
+    gap: 6px !important;
+  }
+
+  .card-image-wrapper {
+    height: 148px !important;
+  }
+
+  .product-img-real {
+    max-height: 122px !important;
+  }
+
+  .card-title {
+    font-size: 0.82rem !important;
+  }
+
+  .tier-price-val {
+    font-size: 0.82rem !important;
+  }
+
+  .btn-add-cart {
+    padding: 7px 2px !important;
+    font-size: 0.7rem !important;
   }
 }

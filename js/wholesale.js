@@ -523,76 +523,50 @@ const WholesaleCatalog = {
         if (found && found.img) currentImage = found.img;
       }
 
-      // Variant pills
+      // Variants / Flavors Button for Modal
+      const totalVariants = product.sabores ? product.sabores.filter(s => s.visible !== false).length :
+                            (product.colores ? product.colores.length : 0);
+      const isColor = product.tipo_variante === 'color';
       let variantsHtml = '';
-      if (product.tipo_variante === 'sabor' && product.sabores) {
-        const visible = product.sabores.filter(s => s.visible !== false);
+      if (totalVariants > 0) {
         variantsHtml = `
-          <div class="card-variants-section">
-            <div class="variants-header-row">
-              <span class="variants-title">Sabores:</span>
-              <span class="selected-flavor-name">${currentSelected}</span>
-            </div>
-            <div class="variants-pills-list">
-              ${visible.map(s => `
-                <button type="button" 
-                  class="flavor-pill ${s.nombre === currentSelected ? 'active' : ''}" 
-                  data-variant="${s.nombre}"
-                  onclick="WholesaleCatalog.selectVariant('${product.id}', '${s.nombre}')">
-                  ${s.nombre}
-                </button>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      } else if (product.tipo_variante === 'color' && product.colores) {
-        variantsHtml = `
-          <div class="card-variants-section">
-            <div class="variants-header-row">
-              <span class="variants-title">Colores:</span>
-              <span class="selected-flavor-name">${currentSelected}</span>
-            </div>
-            <div class="variants-pills-list">
-              ${product.colores.map(c => `
-                <button type="button" 
-                  class="flavor-pill ${c.nombre === currentSelected ? 'active' : ''}" 
-                  data-variant="${c.nombre}"
-                  onclick="WholesaleCatalog.selectVariant('${product.id}', '${c.nombre}')">
-                  ${c.nombre}
-                </button>
-              `).join('')}
-            </div>
+          <div class="card-flavor-picker-block">
+            <button type="button" 
+                    class="btn-open-flavor-modal" 
+                    onclick="CatalogController.openFlavorModal('${product.id}', true)"
+                    title="Ver sabores y detalles">
+              <span class="flavor-picker-label">
+                <span>${isColor ? '🎨' : '⚡'} ${isColor ? 'Colores' : 'Sabores'} (${totalVariants})</span>
+              </span>
+              <span class="flavor-current-tag">${currentSelected}</span>
+            </button>
           </div>
         `;
       }
 
+      const puffsBadgeText = product.puffs 
+        ? `${Number(product.puffs).toLocaleString('es-CO')} Puffs` 
+        : (product.categoria === 'accesorios' ? 'Original' : 'Batería 510');
+
       return `
-        <article class="product-card ws-product-card" id="ws-card-${product.id}">
-          <div class="card-image-wrapper">
+        <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''}" id="ws-card-${product.id}" data-product-id="${product.id}">
+          <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}', true)" title="Ver sabores y detalles">
             <img src="${currentImage || 'assets/logo/logo.png'}" alt="${product.nombre}" class="product-img-real" loading="lazy">
-            <span class="card-puffs-badge">${product.subtitulo}</span>
-            ${savingPerUnit > 0 ? `<span class="ws-best-price-badge">MAYOR AHORRO: ${WholesaleService.formatCOP(priceAtMax)} c/u</span>` : ''}
+            <span class="card-puffs-badge">${puffsBadgeText}</span>
           </div>
 
           <div class="card-body">
             <div class="card-meta-row">
               <span class="card-rating-badge"><span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}</span>
-              <span class="card-stock-badge in">🟢 Stock Mayorista</span>
+              ${savingPerUnit > 0 ? `<span class="ws-save-pill">Ahorro ${WholesaleService.formatCOP(savingPerUnit)}/u</span>` : ''}
+              <span class="card-stock-badge in">🟢 Mayorista</span>
             </div>
 
             <div class="card-header-info">
               <h3 class="card-title">${product.nombre}</h3>
-              <p class="ws-pricing-headline">Tarifas por paquete de unidades:</p>
             </div>
 
             ${variantsHtml}
-
-            <!-- Saving highlight -->
-            ${savingPerUnit > 0 ? `
-              <div class="ws-savings-notice">
-                💡 Ahorras <strong>${WholesaleService.formatCOP(savingPerUnit)}</strong> por unidad comprando ${maxTier} unidades (+${maxTier}).
-              </div>
-            ` : ''}
 
             <!-- Specific Tier Quantity Buttons -->
             <div class="ws-tier-buttons-grid">

@@ -356,3 +356,18 @@
   padding: 14px;
   font-size: 1rem;
 }
+
+/* Clean Wholesale Savings Pill in Meta Row */
+.ws-save-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: var(--accent-gold);
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}

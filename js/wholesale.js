@@ -1,11 +1,10 @@
 /**
  * CAPITAL VAPE - Módulo Oficial de Venta Mayorista
- * Acceso con clave CV-MAYORISTA-2026, paquetes +5, +10, +20, +50, +100 y Carrito Mayorista específico.
+ * Acceso seguro con clave CV-MAYORISTA-2026, sesión persistente y catálogo independiente.
  */
 const WHOLESALE_PASSWORD = "CV-MAYORISTA-2026";
 
 const WholesaleService = {
-  // Lista oficial de precios mayoristas por unidad en COP
   PRICES: {
     "bang-leader": { "5": 35000, "10": 26000, "20": 25000, "50": 24000, "100": 23000 },
     "humo-azul": { "5": 35000, "10": 27000, "20": 25500, "50": 24000, "100": 23000 },
@@ -43,7 +42,7 @@ const WholesaleService = {
   },
 
   isUnlocked() {
-    return localStorage.getItem("wholesaleAuthenticated") === "true" || localStorage.getItem("cv_wholesale_auth_session") === "true";
+    return localStorage.getItem("cv_wholesale_auth") === "true" || localStorage.getItem("wholesaleAuthenticated") === "true";
   },
 
   verifyCode(inputCode) {
@@ -56,20 +55,22 @@ const WholesaleService = {
     }
 
     if (clean.toUpperCase() === WHOLESALE_PASSWORD) {
+      localStorage.setItem("cv_wholesale_auth", "true");
       localStorage.setItem("wholesaleAuthenticated", "true");
       return {
         success: true,
-        message: "✓ Acceso mayorista concedido"
+        message: "✓ ¡Acceso mayorista concedido con éxito!"
       };
     }
 
     return {
       success: false,
-      message: "❌ Clave incorrecta. Verifica la clave e inténtalo nuevamente."
+      message: "❌ Clave incorrecta. Solicítala vía WhatsApp o verifica e inténtalo nuevamente."
     };
   },
 
   logout() {
+    localStorage.removeItem("cv_wholesale_auth");
     localStorage.removeItem("wholesaleAuthenticated");
     localStorage.removeItem("cv_wholesale_auth_session");
   },
@@ -79,348 +80,70 @@ const WholesaleService = {
   },
 
   getWholesaleWhatsAppUrl() {
-    const text = encodeURIComponent('Hola Capital Vape, soy comerciante/distribuidor y solicito la clave para acceder a la sección de pedidos mayoristas.');
+    const text = encodeURIComponent('Hola Capital Vape, soy comerciante/distribuidor y solicito la clave para acceder al portal mayorista.');
     return `https://wa.me/573248012914?text=${text}`;
   }
 };
 
 /**
- * CARRITO EXCLUSIVO MAYORISTA
+ * Proxy para compatibilidad total con llamadas a WholesaleCart
  */
 const WholesaleCart = {
-  items: [], // Array of packs: { id, productId, nombre, imagen, flavor, packQty, unitPrice, subtotal }
-  selectedPhone: '573248012914', // '573248012914' | '573132612344'
-
-  init() {
-    try {
-      const saved = localStorage.getItem('wholesaleCartItems') || localStorage.getItem('cv_wholesale_cart_items');
-      this.items = saved ? JSON.parse(saved) : [];
-    } catch (e) {
-      this.items = [];
-    }
-    this.updateUI();
-  },
-
-  save() {
-    localStorage.setItem('wholesaleCartItems', JSON.stringify(this.items));
-    localStorage.setItem('cv_wholesale_cart_items', JSON.stringify(this.items));
-    this.updateUI();
-  },
-
   addPack(productId, packQty) {
-    const product = PRODUCTS_DATA.find(p => p.id === productId);
-    if (!product) return;
-
-    const prices = WholesaleService.PRICES[productId] || product.precios_mayoristas;
-    if (!prices || !prices[String(packQty)]) {
-      Toast.show(`No hay precio configurado para +${packQty} uds de este producto.`, 'error');
-      return;
-    }
-
-    const unitPrice = prices[String(packQty)];
-    const subtotal = unitPrice * packQty;
-    const flavor = WholesaleCatalog.selectedVariants[productId] || 'Surtido / A convenir';
-
-    // Image for flavor if available
-    let img = product.imagen;
-    if (product.sabores) {
-      const f = product.sabores.find(s => s.nombre === flavor);
-      if (f && f.img) img = f.img;
-    } else if (product.colores) {
-      const c = product.colores.find(c => c.nombre === flavor);
-      if (c && c.img) img = c.img;
-    }
-
-    const packItem = {
-      packId: `${productId}__${Date.now()}__${Math.random().toString(36).substr(2, 4)}`,
-      productId: product.id,
-      nombre: product.nombre,
-      subtitulo: product.subtitulo,
-      imagen: img,
-      flavor: flavor,
-      packQty: packQty,
-      unitPrice: unitPrice,
-      subtotal: subtotal
-    };
-
-    this.items.push(packItem);
-    this.save();
-
-    Toast.show(`✓ ¡Agregado paquete de +${packQty} uds de ${product.nombre}!`, 'success');
-    this.openDrawer();
+    Cart.addWholesalePack(productId, packQty);
   },
-
-  removePack(packId) {
-    this.items = this.items.filter(i => i.packId !== packId);
-    this.save();
-    Toast.show('Paquete eliminado del pedido mayorista.', 'info');
-  },
-
-  removeProduct(productId) {
-    this.items = this.items.filter(i => i.productId !== productId);
-    this.save();
-    Toast.show('Producto eliminado del pedido.', 'info');
-  },
-
-  clearCart() {
-    if (this.items.length === 0) return;
-    if (confirm('¿Deseas vaciar todos los productos del pedido mayorista?')) {
-      this.items = [];
-      this.save();
-      Toast.show('Pedido mayorista vaciado.', 'info');
-    }
-  },
-
-  getTotalUnits() {
-    return this.items.reduce((sum, item) => sum + item.packQty, 0);
-  },
-
-  getTotalAmount() {
-    return this.items.reduce((sum, item) => sum + item.subtotal, 0);
-  },
-
   openDrawer() {
-    const drawer = document.getElementById('wholesaleCartDrawer');
-    const overlay = document.getElementById('wholesaleCartOverlay');
-    if (drawer && overlay) {
-      drawer.classList.add('open');
-      overlay.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    }
+    Cart.openDrawer();
   },
-
   closeDrawer() {
-    const drawer = document.getElementById('wholesaleCartDrawer');
-    const overlay = document.getElementById('wholesaleCartOverlay');
-    if (drawer && overlay) {
-      drawer.classList.remove('open');
-      overlay.classList.remove('open');
-      document.body.style.overflow = '';
-    }
+    Cart.closeDrawer();
   },
-
-  updateUI() {
-    const countBadge = document.querySelectorAll('.wholesale-cart-count-badge');
-    const totalUnits = this.getTotalUnits();
-    const totalAmount = this.getTotalAmount();
-
-    countBadge.forEach(b => {
-      b.textContent = totalUnits;
-      b.style.display = totalUnits > 0 ? 'inline-flex' : 'none';
-    });
-
-    const itemsContainer = document.getElementById('wholesaleCartItems');
-    const footerContainer = document.getElementById('wholesaleCartFooter');
-
-    if (itemsContainer) {
-      if (this.items.length === 0) {
-        itemsContainer.innerHTML = `
-          <div class="cart-empty-state">
-            <span class="empty-icon">📦</span>
-            <h3>Tu pedido mayorista está vacío</h3>
-            <p>Selecciona paquetes de +5, +10, +20, +50 o +100 unidades en el catálogo mayorista.</p>
-            <button type="button" class="btn btn-primary" onclick="WholesaleCart.closeDrawer()">
-              Ver Productos Mayoristas
-            </button>
-          </div>
-        `;
-      } else {
-        // Group by product to show clearly
-        const grouped = {};
-        this.items.forEach(item => {
-          if (!grouped[item.productId]) {
-            grouped[item.productId] = {
-              productId: item.productId,
-              nombre: item.nombre,
-              imagen: item.imagen,
-              totalUnits: 0,
-              totalSubtotal: 0,
-              packs: []
-            };
-          }
-          grouped[item.productId].totalUnits += item.packQty;
-          grouped[item.productId].totalSubtotal += item.subtotal;
-          grouped[item.productId].packs.push(item);
-        });
-
-        itemsContainer.innerHTML = Object.values(grouped).map(g => `
-          <div class="ws-cart-product-group">
-            <div class="ws-cart-prod-header">
-              <img src="${g.imagen || 'assets/logo/logo.png'}" alt="${g.nombre}" class="ws-cart-prod-img">
-              <div class="ws-cart-prod-meta">
-                <h4 class="ws-cart-prod-title">${g.nombre}</h4>
-                <span class="ws-cart-total-badge">${g.totalUnits} unidades en total</span>
-              </div>
-              <button type="button" class="btn-remove-all" onclick="WholesaleCart.removeProduct('${g.productId}')" title="Eliminar todo">✕</button>
-            </div>
-
-            <div class="ws-cart-packs-list">
-              ${g.packs.map(p => `
-                <div class="ws-pack-item-row">
-                  <div class="ws-pack-info">
-                    <span class="ws-pack-tag">Paquete +${p.packQty} uds</span>
-                    <span class="ws-pack-flavor">Sabor: ${p.flavor}</span>
-                    <span class="ws-pack-unit-rate">${WholesaleService.formatCOP(p.unitPrice)} c/u</span>
-                  </div>
-                  <div class="ws-pack-price-col">
-                    <strong class="ws-pack-subtotal">${WholesaleService.formatCOP(p.subtotal)}</strong>
-                    <button type="button" class="btn-remove-pack" onclick="WholesaleCart.removePack('${p.packId}')" title="Eliminar paquete">🗑️</button>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-
-            <div class="ws-prod-group-total">
-              <span>Subtotal ${g.nombre}:</span>
-              <strong>${WholesaleService.formatCOP(g.totalSubtotal)}</strong>
-            </div>
-          </div>
-        `).join('');
-      }
-    }
-
-    if (footerContainer) {
-      if (this.items.length === 0) {
-        footerContainer.innerHTML = '';
-      } else {
-        footerContainer.innerHTML = `
-          <div class="ws-cart-summary">
-            <div class="summary-line">
-              <span>Total Unidades:</span>
-              <strong>${totalUnits} uds</strong>
-            </div>
-            <div class="summary-line total-line">
-              <span>TOTAL GENERAL:</span>
-              <strong class="total-amount">${WholesaleService.formatCOP(totalAmount)}</strong>
-            </div>
-
-            <!-- Phone Selector -->
-            <div class="ws-phone-selector-box">
-              <label for="wsPhoneSelect" class="ws-phone-label">📲 Enviar pedido mayorista a:</label>
-              <select id="wsPhoneSelect" class="form-select ws-phone-select" onchange="WholesaleCart.selectedPhone = this.value">
-                <option value="573248012914" ${this.selectedPhone === '573248012914' ? 'selected' : ''}>WhatsApp Principal: +57 324 801 2914</option>
-                <option value="573132612344" ${this.selectedPhone === '573132612344' ? 'selected' : ''}>WhatsApp Secundario: +57 313 261 2344</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="cart-footer-btns">
-            <button type="button" class="btn btn-whatsapp btn-block btn-ws-send" onclick="WholesaleCart.sendOrderWhatsApp()">
-              <span>💬 Enviar Pedido por WhatsApp</span>
-            </button>
-            <div class="cart-secondary-actions">
-              <button type="button" class="btn-link" onclick="WholesaleCart.closeDrawer()">Continuar Comprando</button>
-              <button type="button" class="btn-link text-muted" onclick="WholesaleCart.clearCart()">Vaciar Pedido</button>
-            </div>
-          </div>
-        `;
-      }
-    }
-  },
-
-  sendOrderWhatsApp() {
-    if (this.items.length === 0) {
-      Toast.show('No tienes productos en el pedido mayorista.', 'error');
-      return;
-    }
-
-    const totalAmount = this.getTotalAmount();
-    const phone = this.selectedPhone || '573248012914';
-
-    // Group items
-    const grouped = {};
-    this.items.forEach(item => {
-      const key = `${item.nombre}__${item.flavor}__${item.unitPrice}`;
-      if (!grouped[key]) {
-        grouped[key] = {
-          nombre: item.nombre,
-          flavor: item.flavor,
-          qty: 0,
-          unitPrice: item.unitPrice,
-          subtotal: 0
-        };
-      }
-      grouped[key].qty += item.packQty;
-      grouped[key].subtotal += item.subtotal;
-    });
-
-    let msg = `Hola, quiero realizar un pedido mayorista en Capital Vape.
-
-`;
-    msg += `📦 *PRODUCTOS:*
-`;
-
-    Object.values(grouped).forEach(g => {
-      msg += `- *${g.nombre}* x${g.qty}`;
-      if (g.flavor && g.flavor !== 'Surtido / A convenir') {
-        msg += ` (${g.flavor})`;
-      }
-      msg += ` — ${WholesaleService.formatCOP(g.unitPrice)} c/u — ${WholesaleService.formatCOP(g.subtotal)}
-`;
-    });
-
-    msg += `
-💰 *TOTAL MAYORISTA: ${WholesaleService.formatCOP(totalAmount)}*
-
-`;
-    msg += `Quedo atento para coordinar despacho y medio de pago.`;
-
-    const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-    window.open(waUrl, '_blank');
-    Toast.show('¡Redirigiendo a WhatsApp para enviar tu pedido mayorista!', 'success');
+  init() {
+    // Uses global Cart
   }
 };
 
 /**
- * CONTROLADOR DE CATÁLOGO MAYORISTA
+ * CATÁLOGO INDEPENDIENTE MAYORISTA
  */
 const WholesaleCatalog = {
   selectedVariants: {},
-  eventsBound: false,
   activeCategory: 'todos',
   searchQuery: '',
   sortBy: 'relevancia',
 
   init() {
     this.renderCatalog();
-    if (!this.eventsBound) {
-      this.bindEvents();
-      this.eventsBound = true;
-    }
+    this.bindEvents();
   },
 
   selectVariant(productId, variantName) {
     this.selectedVariants[productId] = variantName;
     const card = document.getElementById('ws-card-' + productId);
-    if (!card) return;
+    if (card) {
+      const tag = card.querySelector('.flavor-current-tag');
+      if (tag) tag.textContent = variantName;
 
-    card.querySelectorAll('.flavor-pill').forEach(p => {
-      p.classList.toggle('active', p.dataset.variant === variantName);
-    });
+      const product = PRODUCTS_DATA.find(p => p.id === productId);
+      if (product) {
+        let flavorImg = null;
+        if (product.sabores) {
+          const found = product.sabores.find(s => s.nombre === variantName);
+          if (found && found.img) flavorImg = found.img;
+        } else if (product.colores) {
+          const found = product.colores.find(c => c.nombre === variantName);
+          if (found && found.img) flavorImg = found.img;
+        }
 
-    const label = card.querySelector('.selected-flavor-name');
-    if (label) label.textContent = variantName;
-
-    // Update real flavor image
-    const product = PRODUCTS_DATA.find(p => p.id === productId);
-    if (product) {
-      let flavorImg = null;
-      if (product.sabores) {
-        const found = product.sabores.find(s => s.nombre === variantName);
-        if (found && found.img) flavorImg = found.img;
-      } else if (product.colores) {
-        const found = product.colores.find(c => c.nombre === variantName);
-        if (found && found.img) flavorImg = found.img;
-      }
-
-      if (flavorImg) {
-        const imgEl = card.querySelector('.product-img-real');
-        if (imgEl) {
-          imgEl.style.opacity = '0.3';
-          setTimeout(() => {
-            imgEl.src = flavorImg;
-            imgEl.style.opacity = '1';
-          }, 120);
+        if (flavorImg) {
+          const imgEl = card.querySelector('.product-img-real');
+          if (imgEl) {
+            imgEl.style.opacity = '0.3';
+            setTimeout(() => {
+              imgEl.src = flavorImg;
+              imgEl.style.opacity = '1';
+            }, 120);
+          }
         }
       }
     }
@@ -438,8 +161,9 @@ const WholesaleCatalog = {
       list = list.filter(p => {
         const text = (
           p.nombre + ' ' + 
-          p.subtitulo + ' ' + 
-          (p.sabores ? p.sabores.map(s => s.nombre).join(' ') : '')
+          (p.subtitulo || '') + ' ' + 
+          (p.sabores ? p.sabores.map(s => s.nombre).join(' ') : '') + ' ' +
+          (p.colores ? p.colores.map(c => c.nombre).join(' ') : '')
         ).toLowerCase();
         return text.includes(q);
       });
@@ -513,7 +237,6 @@ const WholesaleCatalog = {
 
       const currentSelected = this.selectedVariants[product.id] || defaultVariant || '';
 
-      // Image for default variant
       let currentImage = product.imagen;
       if (product.sabores) {
         const found = product.sabores.find(s => s.nombre === currentSelected);
@@ -523,7 +246,6 @@ const WholesaleCatalog = {
         if (found && found.img) currentImage = found.img;
       }
 
-      // Variants / Flavors Button for Modal
       const totalVariants = product.sabores ? product.sabores.filter(s => s.visible !== false).length :
                             (product.colores ? product.colores.length : 0);
       const isColor = product.tipo_variante === 'color';
@@ -552,7 +274,6 @@ const WholesaleCatalog = {
         <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''}" id="ws-card-${product.id}" data-product-id="${product.id}">
           <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}', true)" title="Ver sabores y detalles">
             <img src="${currentImage || 'assets/logo/logo.png'}" alt="${product.nombre}" class="product-img-real" loading="lazy">
-            <span class="card-puffs-badge">${puffsBadgeText}</span>
           </div>
 
           <div class="card-body">
@@ -564,22 +285,25 @@ const WholesaleCatalog = {
 
             <div class="card-header-info">
               <h3 class="card-title">${product.nombre}</h3>
+              <div class="card-puffs-tag">⚡ ${puffsBadgeText}</div>
             </div>
 
             ${variantsHtml}
 
-            <!-- Specific Tier Quantity Buttons -->
+            <!-- Specific Tier Quantity Buttons with Pack Subtotals -->
             <div class="ws-tier-buttons-grid">
               ${tierKeys.map(tier => {
                 const pUnit = prices[String(tier)];
+                const packSubtotal = pUnit * tier;
                 const isBest = (tier === maxTier && savingPerUnit > 0);
                 return `
                   <button type="button" 
                     class="btn-ws-tier ${isBest ? 'best-tier' : ''}" 
-                    onclick="WholesaleCart.addPack('${product.id}', ${tier})"
-                    title="Agregar paquete de ${tier} unidades de ${product.nombre}">
-                    <span class="tier-qty-tag">+${tier}</span>
-                    <span class="tier-unit-price">${WholesaleService.formatCOP(pUnit)}</span>
+                    onclick="Cart.addWholesalePack('${product.id}', ${tier})"
+                    title="Agregar paquete de ${tier} unidades de ${product.nombre} (Total: ${WholesaleService.formatCOP(packSubtotal)})">
+                    <span class="tier-qty-tag">+${tier} UDS</span>
+                    <span class="tier-unit-price">${WholesaleService.formatCOP(pUnit)} c/u</span>
+                    <span class="tier-pack-subtotal">Subtotal: ${WholesaleService.formatCOP(packSubtotal)}</span>
                   </button>
                 `;
               }).join('')}
@@ -592,7 +316,6 @@ const WholesaleCatalog = {
   },
 
   bindEvents() {
-    // Categories
     document.querySelectorAll('.ws-cat-pill-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.ws-cat-pill-btn').forEach(b => b.classList.remove('active'));
@@ -602,7 +325,6 @@ const WholesaleCatalog = {
       });
     });
 
-    // Search
     const searchInput = document.getElementById('wsCatalogSearch');
     if (searchInput) {
       let debounce;
@@ -615,7 +337,6 @@ const WholesaleCatalog = {
       });
     }
 
-    // Sort
     const sortSelect = document.getElementById('wsCatalogSortSelect');
     if (sortSelect) {
       sortSelect.addEventListener('change', (e) => {

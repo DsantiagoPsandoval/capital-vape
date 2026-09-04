@@ -1,5 +1,5 @@
 /**
- * CAPITAL VAPE - Controlador de Checkout & Pedido a WhatsApp
+ * CAPITAL VAPE - Controlador de Checkout & Pedido Unificado a WhatsApp
  */
 const CheckoutController = {
   init() {
@@ -33,25 +33,61 @@ const CheckoutController = {
     const summaryContainer = document.getElementById('checkoutTotals');
     if (!container || !summaryContainer) return;
 
-    const subtotal = Cart.getSubtotal();
+    const detalItems = Cart.getDetalItems();
+    const wsItems = Cart.getWholesaleItems();
+    const detalSubtotal = Cart.getDetalSubtotal();
+    const wsSubtotal = Cart.getWholesaleSubtotal();
+    const totalSubtotal = Cart.getSubtotal();
     const shipping = Cart.getShippingInfo();
     const total = Cart.getTotal();
 
-    container.innerHTML = Cart.items.map(item => `
-      <div class="checkout-item-line">
-        <div>
-          <strong>${item.nombre}</strong> (x${item.qty})
-          ${item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant}</small>` : ''}
+    let itemsHtml = '';
+
+    if (detalItems.length > 0) {
+      itemsHtml += `
+        <div class="checkout-sec-divider">🛒 PRODUCTOS AL DETAL</div>
+      `;
+      itemsHtml += detalItems.map(item => `
+        <div class="checkout-item-line">
+          <div>
+            <strong>${item.nombre}</strong> (x${item.qty})
+            ${item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant}</small>` : ''}
+          </div>
+          <div>${Cart.formatCOP(item.precio * item.qty)}</div>
         </div>
-        <div>${Cart.formatCOP(item.precio * item.qty)}</div>
-      </div>
-    `).join('');
+      `).join('');
+    }
+
+    if (wsItems.length > 0) {
+      itemsHtml += `
+        <div class="checkout-sec-divider ws-divider">📦 PAQUETES MAYORISTAS</div>
+      `;
+      itemsHtml += wsItems.map(item => `
+        <div class="checkout-item-line ws-checkout-line">
+          <div>
+            <strong>${item.nombre}</strong> (+${item.packQty} uds)
+            ${item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant} • ${Cart.formatCOP(item.unitPrice)} c/u</small>` : ''}
+          </div>
+          <div>${Cart.formatCOP(item.subtotal)}</div>
+        </div>
+      `).join('');
+    }
+
+    container.innerHTML = itemsHtml;
 
     summaryContainer.innerHTML = `
-      <div class="summary-line">
-        <span>Subtotal:</span>
-        <span>${Cart.formatCOP(subtotal)}</span>
-      </div>
+      ${detalItems.length > 0 ? `
+        <div class="summary-line">
+          <span>Subtotal Detal:</span>
+          <span>${Cart.formatCOP(detalSubtotal)}</span>
+        </div>
+      ` : ''}
+      ${wsItems.length > 0 ? `
+        <div class="summary-line">
+          <span>Subtotal Mayorista:</span>
+          <span>${Cart.formatCOP(wsSubtotal)}</span>
+        </div>
+      ` : ''}
       <div class="summary-line">
         <span>Envío (${shipping.isBogota ? 'Bogotá' : 'Nacional'}):</span>
         <span>${shipping.isFree ? '<strong class="text-green">GRATIS</strong>' : Cart.formatCOP(shipping.cost)}</span>
@@ -98,56 +134,55 @@ const CheckoutController = {
       return;
     }
 
-    const subtotal = Cart.getSubtotal();
+    const detalItems = Cart.getDetalItems();
+    const wsItems = Cart.getWholesaleItems();
+    const detalSubtotal = Cart.getDetalSubtotal();
+    const wsSubtotal = Cart.getWholesaleSubtotal();
     const shipping = Cart.getShippingInfo();
     const total = Cart.getTotal();
 
-    // Build structured WhatsApp message
-    let msg = `⚡ *NUEVO PEDIDO - CAPITAL VAPE* ⚡
+    let msg = `⚡ *NUEVO PEDIDO - CAPITAL VAPE* ⚡\n\n`;
+    msg += `👤 *Cliente:* ${nombre}\n`;
+    msg += `📱 *Teléfono:* ${telefono}\n`;
+    if (correo) msg += `✉️ *Correo:* ${correo}\n`;
+    msg += `📍 *Dirección:* ${direccion}\n`;
+    msg += `🏙️ *Ciudad:* ${ciudad} (${destino === 'bogota' ? 'Bogotá' : (depto || 'Nacional')})\n`;
+    if (notas) msg += `📝 *Notas de Entrega:* ${notas}\n`;
+    msg += `\n`;
 
-`;
-    msg += `👤 *Cliente:* ${nombre}
-`;
-    msg += `📱 *Teléfono:* ${telefono}
-`;
-    if (correo) msg += `✉️ *Correo:* ${correo}
-`;
-    msg += `📍 *Dirección:* ${direccion}
-`;
-    msg += `🏙️ *Ciudad:* ${ciudad} (${destino === 'bogota' ? 'Bogotá' : (depto || 'Nacional')})
-`;
-    if (notas) msg += `📝 *Notas de Entrega:* ${notas}
+    if (detalItems.length > 0) {
+      msg += `🛒 *PRODUCTOS AL DETAL:*\n`;
+      detalItems.forEach((item, idx) => {
+        msg += `${idx + 1}. *${item.nombre}* x${item.qty}\n`;
+        if (item.variant) msg += `   - Sabor/Color: ${item.variant}\n`;
+        msg += `   - Subtotal: ${Cart.formatCOP(item.precio * item.qty)}\n`;
+      });
+      msg += `*Subtotal Detal: ${Cart.formatCOP(detalSubtotal)}*\n\n`;
+    }
 
-`;
+    if (wsItems.length > 0) {
+      msg += `📦 *PAQUETES MAYORISTAS:*\n`;
+      wsItems.forEach((item, idx) => {
+        msg += `${idx + 1}. *${item.nombre}* (+${item.packQty} uds)\n`;
+        if (item.variant) msg += `   - Sabor/Color: ${item.variant}\n`;
+        msg += `   - Tarifa: ${Cart.formatCOP(item.unitPrice)} c/u\n`;
+        msg += `   - Subtotal Paquete: ${Cart.formatCOP(item.subtotal)}\n`;
+      });
+      msg += `*Subtotal Mayorista: ${Cart.formatCOP(wsSubtotal)}*\n\n`;
+    }
 
-    msg += `🛒 *DETALLE DEL PEDIDO:*
-`;
-    Cart.items.forEach((item, idx) => {
-      msg += `${idx + 1}. *${item.nombre}* x${item.qty}
-`;
-      if (item.variant) msg += `   - Sabor/Color: ${item.variant}
-`;
-      msg += `   - Subtotal: ${Cart.formatCOP(item.precio * item.qty)}
-`;
-    });
+    msg += `💰 *RESUMEN DE PAGO:*\n`;
+    if (detalItems.length > 0 && wsItems.length > 0) {
+      msg += `• Subtotal Detal: ${Cart.formatCOP(detalSubtotal)}\n`;
+      msg += `• Subtotal Mayorista: ${Cart.formatCOP(wsSubtotal)}\n`;
+    }
+    msg += `• Envío: ${shipping.isFree ? 'GRATIS 🎉' : Cart.formatCOP(shipping.cost)}\n`;
+    msg += `• *TOTAL FINAL A PAGAR: ${Cart.formatCOP(total)}*\n\n`;
+    msg += `Deseo coordinar el despacho y acordar medio de pago (Transferencia / Contra entrega).`;
 
-    msg += `
-💰 *RESUMEN DE PAGO:*
-`;
-    msg += `• Subtotal: ${Cart.formatCOP(subtotal)}
-`;
-    msg += `• Envío: ${shipping.isFree ? 'GRATIS 🎉' : Cart.formatCOP(shipping.cost)}
-`;
-    msg += `• *TOTAL A PAGAR: ${Cart.formatCOP(total)}*
+    const waUrl = `https://wa.me/${(typeof CONFIG !== 'undefined' && CONFIG.WHATSAPP_PRIMARY) || '573248012914'}?text=${encodeURIComponent(msg)}`;
 
-`;
-    msg += `Quiero confirmar la disponibilidad y método de pago (Nequi / Daviplata / Contra Entrega).`;
-
-    const waUrl = `https://wa.me/${CONFIG.WHATSAPP_PRIMARY}?text=${encodeURIComponent(msg)}`;
-
-    // Open WhatsApp in new tab
     window.open(waUrl, '_blank');
-
     Toast.show('¡Pedido preparado! Te hemos redirigido a WhatsApp para confirmarlo.', 'success');
     this.closeModal();
   }

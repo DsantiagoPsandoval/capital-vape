@@ -116,8 +116,31 @@ const CatalogController = {
 
     const descEl = document.getElementById('flavorModalProductDesc');
     if (descEl) {
-      if (product.descripcion) {
-        descEl.textContent = product.descripcion;
+      let descContent = product.descripcion || '';
+      
+      // If modal opened from Wholesale portal, display wholesale tiers & subtotals breakdown
+      if (isWholesale && typeof WholesaleService !== 'undefined' && WholesaleService.PRICES[product.id]) {
+        const wPrices = WholesaleService.PRICES[product.id];
+        const tierRows = Object.keys(wPrices).map(Number).sort((a,b)=>a-b).map(t => {
+          const pu = wPrices[String(t)];
+          return `<li><strong>+${t} unidades:</strong> ${WholesaleService.formatCOP(pu)} c/u (Subtotal: <strong>${WholesaleService.formatCOP(pu * t)}</strong>)</li>`;
+        }).join('');
+
+        descContent = `
+          <div class="ws-modal-desc-box">
+            <p style="margin-bottom: 8px;">${product.descripcion || ''}</p>
+            <div class="ws-modal-rates-card">
+              <span class="ws-modal-rates-title">📦 Tarifas Mayoristas & Subtotales por Paquete:</span>
+              <ul class="ws-modal-rates-list">
+                ${tierRows}
+              </ul>
+            </div>
+          </div>
+        `;
+        descEl.innerHTML = descContent;
+        descEl.style.display = 'block';
+      } else if (product.descripcion) {
+        descEl.innerHTML = `<p>${product.descripcion}</p>`;
         descEl.style.display = 'block';
       } else {
         descEl.style.display = 'none';
@@ -300,7 +323,7 @@ const CatalogController = {
     return list;
   },
 
-  renderCatalog() {
+    renderCatalog() {
     const container = document.getElementById('catalogGrid');
     const countDisplay = document.getElementById('productsCountDisplay');
     if (!container) return;
@@ -354,17 +377,19 @@ const CatalogController = {
       const hasDuoPromo = product.precio_promo_2 && product.precio_promo_2 < (product.precio * 2);
       const ahorroDuo = hasDuoPromo ? (product.ahorro_2 || ((product.precio * 2) - product.precio_promo_2)) : 0;
 
+      const puffsText = product.puffs 
+        ? `${Number(product.puffs).toLocaleString('es-CO')} Puffs` 
+        : (product.categoria === 'accesorios' ? 'Original' : 'Batería 510');
+
       return `
         <article class="product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.agotado ? 'is-out' : ''}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
-          <!-- 1. INDEPENDENT ENLARGED IMAGE -->
+          <!-- 1. INDEPENDENT IMAGE -->
           <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}')" title="Ver sabores y detalles">
             <img src="${currentImage || 'assets/logo/logo.png'}" 
                  alt="${product.nombre}" 
                  class="product-img-real" 
                  loading="lazy" 
                  onerror="this.src='assets/logo/logo.png';">
-            ${product.subtitulo ? `<span class="card-puffs-badge">${product.subtitulo}</span>` : ''}
-            
           </div>
 
           <!-- 2. CARD BODY -->
@@ -379,8 +404,10 @@ const CatalogController = {
                 : `<span class="card-stock-badge in">🟢 Disponible</span>`}
             </div>
 
+            <!-- Title & Puffs Tag Below Title -->
             <div class="card-header-info">
               <h3 class="card-title">${product.nombre}</h3>
+              <div class="card-puffs-tag">⚡ ${puffsText}</div>
             </div>
 
             <!-- FLAVOR PICKER BUTTON -->

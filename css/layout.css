@@ -7,11 +7,11 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: var(--nav-bg);
+  background: rgba(11, 4, 16, 0.96);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border-color);
-  padding: 14px 0;
+  padding: 12px 0;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
@@ -484,4 +484,109 @@
   border-color: var(--accent-purple);
   color: var(--accent-purple);
   transform: translateX(4px);
+}
+
+/* ==========================================================================
+   WHOLESALE PROMO BANNER SECTION
+   ========================================================================== */
+.wholesale-promo-banner-section {
+  padding: 24px 0;
+  margin: 10px 0 20px 0;
+}
+
+.wholesale-promo-card {
+  background: linear-gradient(135deg, rgba(20, 8, 33, 0.95), rgba(45, 10, 60, 0.95));
+  border: 1.5px solid var(--accent-gold);
+  border-radius: var(--radius-lg);
+  padding: 32px 36px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 25px rgba(229, 183, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.ws-promo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.2), rgba(216, 27, 183, 0.2));
+  border: 1px solid var(--accent-gold);
+  color: var(--accent-yellow);
+  font-size: 0.76rem;
+  font-weight: 800;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ws-promo-title {
+  font-size: 1.95rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.ws-promo-desc {
+  font-size: 0.98rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 800px;
+}
+
+.ws-promo-desc strong {
+  color: var(--accent-gold);
+}
+
+.ws-promo-perks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.ws-perk-pill {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+}
+
+.ws-promo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 6px;
+}
+
+.ws-promo-btn-enter {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 800;
+}
+
+.ws-promo-btn-wa {
+  padding: 12px 24px;
+  font-size: 0.95rem;
+}
+
+.optional-tag {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--text-muted);
+}
+
+/* Mobile elements hidden on desktop */
+.mobile-menu-header,
+.mobile-menu-extra {
+  display: none;
 }

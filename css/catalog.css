@@ -738,3 +738,19 @@
 .product-card[data-category="accesorios"] .product-img-real {
   filter: drop-shadow(0 8px 24px rgba(255, 255, 255, 0.25)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7));
 }
+
+/* Card Puffs Tag below Product Name */
+.card-puffs-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(229, 183, 0, 0.12);
+  border: 1px solid rgba(229, 183, 0, 0.35);
+  color: var(--accent-yellow);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+  margin-top: 2px;
+}

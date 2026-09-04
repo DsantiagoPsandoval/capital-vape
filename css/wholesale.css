@@ -371,3 +371,45 @@
   border-radius: var(--radius-sm);
   white-space: nowrap;
 }
+
+/* Tier Pack Subtotal */
+.tier-pack-subtotal {
+  font-size: 0.62rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  margin-top: 1px;
+}
+
+.btn-ws-tier:hover .tier-pack-subtotal {
+  color: #000;
+}
+
+/* Wholesale Modal Rates Box */
+.ws-modal-rates-card {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-active);
+  border-radius: var(--radius-sm);
+}
+
+.ws-modal-rates-title {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+}
+
+.ws-modal-rates-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.ws-modal-rates-list li strong {
+  color: var(--text-primary);
+}

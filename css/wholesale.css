@@ -435,3 +435,245 @@
 .ws-modal-rates-list li strong {
   color: var(--text-primary);
 }
+
+/* ==========================================================================
+   WHOLESALE "MI PRESUPUESTO" CALCULATOR & PRODUCT CARDS
+   ========================================================================== */
+
+.ws-budget-bar-card {
+  background: linear-gradient(135deg, rgba(26, 11, 44, 0.95), rgba(42, 18, 62, 0.9));
+  border: 1.5px solid var(--accent-gold);
+  border-radius: var(--radius-md);
+  padding: 18px 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45), 0 0 20px var(--accent-gold-glow);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ws-budget-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ws-budget-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ws-budget-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.ws-budget-form-inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ws-budget-input-group {
+  display: flex;
+  align-items: center;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 2px 12px;
+  flex: 1;
+  min-width: 220px;
+  max-width: 380px;
+  transition: var(--transition);
+}
+
+.ws-budget-input-group:focus-within {
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 12px var(--accent-gold-glow);
+}
+
+.ws-budget-currency-symbol {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin-right: 6px;
+}
+
+.ws-budget-input-field {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 700;
+  width: 100%;
+  padding: 10px 0;
+  font-family: inherit;
+}
+
+.ws-budget-input-field::placeholder {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.ws-budget-calc-btn {
+  padding: 10px 22px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  box-shadow: 0 4px 15px var(--accent-gold-glow);
+}
+
+.ws-budget-clear-btn {
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.ws-budget-clear-btn:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.ws-budget-active-alert {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  background: rgba(229, 183, 0, 0.1);
+  border-left: 3px solid var(--accent-gold);
+  border-radius: 4px;
+}
+
+.ws-budget-active-alert strong {
+  color: var(--accent-gold);
+}
+
+/* Product Card Budget Box */
+.ws-card-budget-box {
+  background: linear-gradient(135deg, rgba(36, 14, 62, 0.95), rgba(20, 8, 33, 0.95));
+  border: 1.5px solid var(--accent-gold);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  margin: 10px 0 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 0 12px rgba(229, 183, 0, 0.08);
+  animation: fadeInBudget 0.3s ease-in-out;
+}
+
+@keyframes fadeInBudget {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ws-budget-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.76rem;
+  border-bottom: 1px dashed rgba(229, 183, 0, 0.25);
+  padding-bottom: 6px;
+}
+
+.ws-budget-badge-title {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.ws-budget-badge-val {
+  color: var(--accent-gold);
+  font-weight: 800;
+}
+
+.ws-budget-can-buy {
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+
+.ws-highlight-qty {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  background: rgba(229, 183, 0, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.ws-budget-breakdown {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 8px;
+  border-radius: 4px;
+}
+
+.ws-budget-breakdown strong {
+  color: var(--text-primary);
+}
+
+.btn-ws-add-budget {
+  background: linear-gradient(135deg, var(--accent-gold), #D4AF37);
+  color: #000000;
+  border: none;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(229, 183, 0, 0.35);
+}
+
+.btn-ws-add-budget:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(229, 183, 0, 0.5);
+  background: linear-gradient(135deg, #FFE600, var(--accent-gold));
+}
+
+/* Insufficient Budget State */
+.ws-card-budget-box.is-insufficient {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.08);
+  box-shadow: none;
+}
+
+.ws-budget-insufficient-msg {
+  font-size: 0.8rem;
+  color: #FCA5A5;
+  line-height: 1.35;
+}
+
+.ws-budget-min-note {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+

@@ -629,18 +629,55 @@ body.menu-open-scroll-lock {
     gap: 10px !important;
   }
 
-  /* ----------------- FLOATING BUTTONS ----------------- */
-  .wa-floating-btn, .floating-cart-btn {
-    width: 48px !important;
-    height: 48px !important;
-    font-size: 1.3rem !important;
-    bottom: 16px !important;
+  /* ----------------- FLOATING PILL BUTTONS ----------------- */
+  .cv-floating-actions-container {
+    bottom: 14px !important;
+    right: 12px !important;
+    gap: 8px !important;
   }
 
-  .floating-cart-btn {
-    bottom: 74px !important;
+  .cv-float-pill {
+    padding: 8px 14px !important;
+    font-size: 0.82rem !important;
+    gap: 8px !important;
+  }
+
+  .wa-float-icon, .float-cart-img {
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  .float-cart-badge {
+    min-width: 18px !important;
+    height: 18px !important;
+    font-size: 0.68rem !important;
+    padding: 0 4px !important;
+  }
+
+  /* ----------------- WHOLESALE BUDGET BAR MOBILE ----------------- */
+  .ws-budget-bar-card {
+    padding: 14px 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .ws-budget-form-inline {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+  }
+
+  .ws-budget-input-group {
+    max-width: 100% !important;
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .ws-budget-calc-btn, .ws-budget-clear-btn {
+    width: 100% !important;
+    text-align: center !important;
   }
 }
+
 
   /* Wholesale Gate Login Form (Button Below Input) */
   .wholesale-gate-box {

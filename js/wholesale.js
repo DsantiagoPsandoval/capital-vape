@@ -237,8 +237,141 @@ const WholesaleService = {
     "airpods-4-anc": {
         "5": 45000,
         "10": 40000
+    },
+    "airpods-pro-2": {
+        "5": 50000,
+        "10": 45000
     }
-},
+  },
+
+  /**
+   * Obtiene el rango / tier mayorista según la cantidad TOTAL de unidades en el carrito:
+   * - 5 a 9 unidades: 5
+   * - 10 a 19 unidades: 10
+   * - 20 a 49 unidades: 20
+   * - 50 a 99 unidades: 50
+   * - 100 unidades en adelante: 100
+   */
+  getWholesaleTier(totalUnits) {
+    const qty = Number(totalUnits) || 0;
+    if (qty >= 100) return 100;
+    if (qty >= 50) return 50;
+    if (qty >= 20) return 20;
+    if (qty >= 10) return 10;
+    if (qty >= 5) return 5;
+    return 5; // Mínimo mayorista por defecto
+  },
+
+  /**
+   * Obtiene el precio unitario de un producto según la cantidad TOTAL de unidades mayoristas
+   */
+  getProductWholesaleUnitPrice(productId, totalWholesaleQty) {
+    const prices = this.PRICES[productId] || (typeof PRODUCTS_DATA !== 'undefined' ? (PRODUCTS_DATA.find(p => p.id === productId)?.precios_mayoristas) : null);
+    if (!prices) {
+      const p = typeof PRODUCTS_DATA !== 'undefined' ? PRODUCTS_DATA.find(x => x.id === productId) : null;
+      return p ? p.precio : 0;
+    }
+    const tier = this.getWholesaleTier(totalWholesaleQty);
+    if (prices[String(tier)]) {
+      return prices[String(tier)];
+    }
+    // Fallback al tier disponible más cercano menor o igual
+    const availableTiers = Object.keys(prices).map(Number).sort((a, b) => a - b);
+    const eligible = availableTiers.filter(t => t <= tier);
+    if (eligible.length > 0) {
+      return prices[String(eligible[eligible.length - 1])];
+    }
+    return prices[String(availableTiers[0])];
+  },
+
+  /**
+   * Obtiene información del siguiente rango mayorista para motivar al comprador
+   */
+  getNextTierInfo(totalUnits) {
+    const qty = Number(totalUnits) || 0;
+    if (qty < 5) return { nextTier: 5, needed: 5 - qty, currentTier: 5 };
+    if (qty < 10) return { nextTier: 10, needed: 10 - qty, currentTier: 5 };
+    if (qty < 20) return { nextTier: 20, needed: 20 - qty, currentTier: 10 };
+    if (qty < 50) return { nextTier: 50, needed: 50 - qty, currentTier: 20 };
+    if (qty < 100) return { nextTier: 100, needed: 100 - qty, currentTier: 50 };
+    return { nextTier: null, needed: 0, currentTier: 100 };
+  },
+
+  /**
+   * FUNCIÓN "MI PRESUPUESTO":
+   * Calcula la mayor cantidad de unidades que se pueden comprar con un presupuesto dado,
+   * respetando rigurosamente los rangos de precios mayoristas:
+   * 5–9   -> precio de 5 unidades.
+   * 10–19 -> precio de 10 unidades.
+   * 20–49 -> precio de 20 unidades.
+   * 50–99 -> precio de 50 unidades.
+   * 100+  -> precio de 100 unidades.
+   */
+  calculateMaxUnitsForBudget(productId, budget) {
+    const b = Number(budget) || 0;
+    if (b <= 0) return null;
+
+    const prices = this.PRICES[productId] || (typeof PRODUCTS_DATA !== 'undefined' ? PRODUCTS_DATA.find(p => p.id === productId)?.precios_mayoristas : null);
+    if (!prices) return null;
+
+    const minTierPrice = prices['5'] || Object.values(prices)[0];
+    if (b < 5 * minTierPrice) {
+      return {
+        canAfford: false,
+        minRequired: 5 * minTierPrice,
+        budget: b
+      };
+    }
+
+    const tiers = [
+      { tier: 100, min: 100, max: Infinity },
+      { tier: 50, min: 50, max: 99 },
+      { tier: 20, min: 20, max: 49 },
+      { tier: 10, min: 10, max: 19 },
+      { tier: 5, min: 5, max: 9 }
+    ];
+
+    let bestQty = 0;
+    let bestUnitPrice = 0;
+    let bestTier = 5;
+
+    for (const t of tiers) {
+      const unitPrice = this.getProductWholesaleUnitPrice(productId, t.min);
+      if (!unitPrice) continue;
+      const minCostForTier = t.min * unitPrice;
+      if (b >= minCostForTier) {
+        const maxAffordableAtPrice = Math.floor(b / unitPrice);
+        const qtyInBracket = Math.min(t.max, maxAffordableAtPrice);
+        if (qtyInBracket >= t.min) {
+          bestQty = qtyInBracket;
+          bestUnitPrice = unitPrice;
+          bestTier = this.getWholesaleTier(bestQty);
+          break;
+        }
+      }
+    }
+
+    if (bestQty < 5) {
+      return {
+        canAfford: false,
+        minRequired: 5 * minTierPrice,
+        budget: b
+      };
+    }
+
+    const totalCost = bestQty * bestUnitPrice;
+    const remainder = b - totalCost;
+
+    return {
+      canAfford: true,
+      budget: b,
+      maxUnits: bestQty,
+      unitPrice: bestUnitPrice,
+      tier: bestTier,
+      totalCost: totalCost,
+      remainder: remainder
+    };
+  },
 
   isUnlocked() {
     return localStorage.getItem("cv_wholesale_auth") === "true" || localStorage.getItem("wholesaleAuthenticated") === "true";
@@ -301,19 +434,80 @@ const WholesaleCart = {
     // Uses global Cart
   }
 };
-
-/**
- * CATÁLOGO INDEPENDIENTE MAYORISTA
- */
 const WholesaleCatalog = {
   selectedVariants: {},
   activeCategory: 'todos',
   searchQuery: '',
   sortBy: 'relevancia',
+  currentBudget: null,
 
   init() {
     this.renderCatalog();
     this.bindEvents();
+    this.initBudgetUI();
+  },
+
+  setBudget(val) {
+    const clean = String(val || '').replace(/[^0-9]/g, '');
+    const num = Number(clean) || 0;
+    if (num > 0) {
+      this.currentBudget = num;
+      this.renderCatalog();
+      this.updateBudgetNotice();
+      Toast.show(`✓ Presupuesto de ${WholesaleService.formatCOP(num)} aplicado al catálogo mayorista.`, 'success');
+    } else {
+      this.clearBudget();
+    }
+  },
+
+  clearBudget() {
+    this.currentBudget = null;
+    const input = document.getElementById('wsBudgetInput');
+    if (input) input.value = '';
+    this.updateBudgetNotice();
+    this.renderCatalog();
+    Toast.show('Filtro de presupuesto restablecido.', 'info');
+  },
+
+  updateBudgetNotice() {
+    const notice = document.getElementById('wsBudgetActiveNotice');
+    const amountEl = document.getElementById('wsBudgetActiveAmount');
+    const clearBtn = document.getElementById('wsBudgetClearBtn');
+    if (this.currentBudget && this.currentBudget > 0) {
+      if (notice) notice.style.display = 'flex';
+      if (amountEl) amountEl.textContent = WholesaleService.formatCOP(this.currentBudget);
+      if (clearBtn) clearBtn.style.display = 'inline-flex';
+    } else {
+      if (notice) notice.style.display = 'none';
+      if (clearBtn) clearBtn.style.display = 'none';
+    }
+  },
+
+  initBudgetUI() {
+    const form = document.getElementById('wsBudgetForm');
+    const input = document.getElementById('wsBudgetInput');
+    if (input) {
+      input.addEventListener('input', (e) => {
+        const raw = e.target.value.replace(/[^0-9]/g, '');
+        if (raw) {
+          e.target.value = Number(raw).toLocaleString('es-CO');
+        } else {
+          e.target.value = '';
+        }
+      });
+    }
+    if (form && input) {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const raw = input.value.replace(/[^0-9]/g, '');
+        const num = Number(raw) || 0;
+        if (num <= 0) {
+          Toast.show('Por favor ingresa un monto válido para tu presupuesto.', 'error');
+          return;
+        }
+        this.setBudget(num);
+      });
+    }
   },
 
   selectVariant(productId, variantName) {
@@ -469,6 +663,48 @@ const WholesaleCatalog = {
         ? `${Number(product.puffs).toLocaleString('es-CO')} Puffs` 
         : (product.categoria === 'accesorios' ? 'Original' : 'Batería 510');
 
+      // 💰 MI PRESUPUESTO CALCULATION RESULT FOR THIS CARD
+      let budgetHtml = '';
+      if (this.currentBudget && this.currentBudget > 0) {
+        const bRes = WholesaleService.calculateMaxUnitsForBudget(product.id, this.currentBudget);
+        if (bRes && bRes.canAfford) {
+          budgetHtml = `
+            <div class="ws-card-budget-box">
+              <div class="ws-budget-badge-row">
+                <span class="ws-budget-calc-tag">💰 Tu presupuesto: <strong>${WholesaleService.formatCOP(bRes.budget)}</strong></span>
+              </div>
+              <div class="ws-budget-result-main">
+                <div class="ws-budget-can-buy">
+                  Puedes comprar hasta <strong class="ws-highlight-qty">${bRes.maxUnits} unidades</strong>
+                </div>
+                <div class="ws-budget-breakdown">
+                  <div>• Tarifa aplicada: <strong>${WholesaleService.formatCOP(bRes.unitPrice)} c/u</strong> (Rango +${bRes.tier})</div>
+                  <div>• Total: <strong>${WholesaleService.formatCOP(bRes.totalCost)}</strong></div>
+                  ${bRes.remainder > 0 ? `<div class="ws-budget-remainder">• Te sobran: <strong>${WholesaleService.formatCOP(bRes.remainder)}</strong></div>` : ''}
+                </div>
+              </div>
+              <button type="button" 
+                      class="btn btn-primary btn-block btn-ws-add-budget" 
+                      onclick="Cart.addWholesalePack('${product.id}', ${bRes.maxUnits})"
+                      title="Agregar ${bRes.maxUnits} unidades de ${product.nombre} al pedido">
+                🛒 AGREGAR ESTA CANTIDAD AL CARRITO (${bRes.maxUnits} UDS)
+              </button>
+            </div>
+          `;
+        } else if (bRes && !bRes.canAfford) {
+          budgetHtml = `
+            <div class="ws-card-budget-box is-insufficient">
+              <div class="ws-budget-badge-row">
+                <span class="ws-budget-calc-tag">💰 Presupuesto: <strong>${WholesaleService.formatCOP(bRes.budget)}</strong></span>
+              </div>
+              <div class="ws-budget-insufficient-msg">
+                ⚠️ Tu presupuesto no alcanza todavía para el mínimo mayorista de este producto (mínimo ${WholesaleService.formatCOP(bRes.minRequired)} para 5 unidades).
+              </div>
+            </div>
+          `;
+        }
+      }
+
       return `
         <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''}" id="ws-card-${product.id}" data-product-id="${product.id}">
           <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}', true)" title="Ver sabores y detalles">
@@ -488,6 +724,8 @@ const WholesaleCatalog = {
             </div>
 
             ${variantsHtml}
+
+            ${budgetHtml}
 
             <!-- Specific Tier Quantity Buttons with Pack Subtotals -->
             <div class="ws-tier-buttons-grid">

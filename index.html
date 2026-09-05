@@ -436,7 +436,7 @@
           </div>
         </div>
 
-        <!-- Wholesale Filters & Search -->
+        <!-- Wholesale Filters, Budget & Search -->
         <div class="catalog-toolbar">
           <div class="toolbar-top-row">
             <div class="category-pills">
@@ -447,6 +447,33 @@
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="baterias">Baterías 510</button>
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="accesorios">Accesorios</button>
             </div>
+          </div>
+
+          <!-- 💰 MI PRESUPUESTO CALCULATOR -->
+          <div class="ws-budget-bar-card">
+            <div class="ws-budget-bar-left">
+              <span class="ws-budget-main-icon">💰</span>
+              <div class="ws-budget-bar-info">
+                <span class="ws-budget-title">Mi Presupuesto</span>
+                <span class="ws-budget-subtitle">Ingresa tu capital disponible y calculamos cuántas unidades puedes comprar de cada producto:</span>
+              </div>
+            </div>
+            <form id="wsBudgetForm" class="ws-budget-form-inline">
+              <div class="ws-budget-input-group">
+                <span class="ws-budget-currency-symbol">$</span>
+                <input type="text" id="wsBudgetInput" class="ws-budget-input-field" placeholder="Ej: 2.000.000" inputmode="numeric" autocomplete="off">
+              </div>
+              <button type="submit" class="btn btn-primary ws-budget-calc-btn">
+                <span>CALCULAR</span>
+              </button>
+              <button type="button" id="wsBudgetClearBtn" class="btn btn-secondary ws-budget-clear-btn" style="display: none;" onclick="WholesaleCatalog.clearBudget()">
+                <span>✕ Quitar</span>
+              </button>
+            </form>
+          </div>
+          <div id="wsBudgetActiveNotice" class="ws-budget-active-alert" style="display: none;">
+            <span>💰 Calculando capacidad de compra para un presupuesto de <strong id="wsBudgetActiveAmount">$0</strong></span>
+            <button type="button" class="ws-budget-clear-link" onclick="WholesaleCatalog.clearBudget()">Quitar Filtro de Presupuesto ✕</button>
           </div>
 
           <div class="toolbar-controls-row">
@@ -909,16 +936,21 @@
     </div>
   </div>
 
-  <!-- FLOATING WHATSAPP BUTTON -->
-  <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20asesor%C3%ADa%20sobre%20sus%20productos." target="_blank" rel="noopener noreferrer" class="wa-floating-btn" aria-label="WhatsApp Oficial">
-    <img src="assets/icons/whatsapp.png" class="wa-float-icon" alt="WhatsApp Oficial">
-  </a>
+  <!-- FLOATING ACTION BUTTONS (INDEPENDENT WHATSAPP & CART) -->
+  <div class="cv-floating-actions-container">
+    <!-- FLOATING WHATSAPP BUTTON -->
+    <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20asesor%C3%ADa%20sobre%20sus%20productos." target="_blank" rel="noopener noreferrer" class="cv-float-pill wa-floating-pill" aria-label="💬 ¿Necesitas ayuda? WhatsApp Oficial">
+      <img src="assets/icons/whatsapp.png" class="wa-float-icon" alt="WhatsApp">
+      <span class="float-btn-label">💬 ¿Necesitas ayuda?</span>
+    </a>
 
-  <!-- FLOATING CART BUTTON -->
-  <button type="button" class="floating-cart-btn open-cart-btn" aria-label="Ver Carrito Detal">
-    <img src="assets/icons/carrito.png" class="float-cart-img" alt="Carrito">
-    <span class="cart-count-badge" style="display: none;">0</span>
-  </button>
+    <!-- FLOATING CART BUTTON -->
+    <button type="button" class="cv-float-pill cart-floating-pill open-cart-btn" aria-label="🛒 Carrito de compras">
+      <img src="assets/icons/carrito.png" class="float-cart-img" alt="Carrito">
+      <span class="float-btn-label">🛒 Carrito de compras</span>
+      <span class="cart-count-badge float-cart-badge" style="display: none;">0</span>
+    </button>
+  </div>
 
   <!-- JAVASCRIPT SCRIPTS -->
   <script src="js/config.js"></script>

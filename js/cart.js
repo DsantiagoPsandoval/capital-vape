@@ -1,9 +1,10 @@
 /**
  * CAPITAL VAPE - Carrito Global Unificado (Detal + Mayorista)
- * Maneja persistencia en localStorage, cálculo de subtotales independientes y total general.
+ * Maneja persistencia en localStorage, cálculo dinámico de precios mayoristas por volumen total,
+ * subtotales independientes y total general.
  */
 const Cart = {
-  items: [], // [{ key, type: 'detal'|'mayorista', productId, nombre, subtitulo, imagen, variant, qty, packQty, unitPrice, subtotal, precio, precio_promo_2 }]
+  items: [], // [{ key, type: 'detal'|'mayorista', productId, nombre, subtitulo, imagen, variant, qty, unitPrice, subtotal, precio, precio_promo_2, activeTier }]
   destination: 'bogota', // 'bogota' | 'nacional'
 
   init() {
@@ -15,10 +16,61 @@ const Cart = {
   loadFromStorage() {
     try {
       const saved = localStorage.getItem('cv_cart_unified') || localStorage.getItem('cv_cart_items') || localStorage.getItem('capital_vape_cart');
-      this.items = saved ? JSON.parse(saved) : [];
+      const rawItems = saved ? JSON.parse(saved) : [];
+      
+      // Normalizar items y compatibilidad con versiones previas
+      const normalized = [];
+      rawItems.forEach(item => {
+        if (!item || !item.productId) return;
+        
+        if (item.type === 'mayorista') {
+          const qty = Number(item.qty || item.packQty || 1);
+          const key = `mayorista__${item.productId}__${item.variant || 'default'}`;
+          const existing = normalized.find(n => n.key === key);
+          if (existing) {
+            existing.qty += qty;
+          } else {
+            normalized.push({
+              key: key,
+              type: 'mayorista',
+              productId: item.productId,
+              nombre: item.nombre,
+              subtitulo: item.subtitulo || '',
+              imagen: item.imagen,
+              variant: item.variant || 'Surtido / A convenir',
+              qty: qty
+            });
+          }
+        } else {
+          const qty = Number(item.qty || 1);
+          const key = item.key || `detal__${item.productId}__${item.variant || 'default'}`;
+          const existing = normalized.find(n => n.key === key);
+          if (existing) {
+            existing.qty += qty;
+          } else {
+            normalized.push({
+              key: key,
+              type: 'detal',
+              productId: item.productId,
+              nombre: item.nombre,
+              subtitulo: item.subtitulo || '',
+              imagen: item.imagen,
+              precio: item.precio,
+              precio_promo_2: item.precio_promo_2,
+              variant: item.variant || '',
+              qty: qty
+            });
+          }
+        }
+      });
+      this.items = normalized;
+
       const savedDest = localStorage.getItem('cv_shipping_dest');
       if (savedDest) this.destination = savedDest;
+
+      this.recalculateWholesalePrices();
     } catch (e) {
+      console.error('Error loading cart:', e);
       this.items = [];
     }
   },
@@ -34,6 +86,43 @@ const Cart = {
     this.destination = dest;
     this.saveToStorage();
     this.updateUI();
+  },
+
+  /**
+   * REGLA FUNDAMENTAL DE PRECIOS MAYORISTAS:
+   * 1. Cantidad TOTAL de unidades mayoristas en el carrito
+   * 2. Identificar el rango correspondiente:
+   *    - 5 a 9 unidades   -> Rango 5
+   *    - 10 a 19 unidades -> Rango 10
+   *    - 20 a 49 unidades -> Rango 20
+   *    - 50 a 99 unidades -> Rango 50
+   *    - 100+ unidades    -> Rango 100
+   * 3. Obtener el precio unitario del rango para cada producto
+   * 4. Multiplicar todas las unidades de cada producto por ese precio unitario
+   */
+  recalculateWholesalePrices() {
+    const wsItems = this.getWholesaleItems();
+    if (wsItems.length === 0) return;
+
+    const totalWsQty = this.getWholesaleTotalQty();
+    const activeTier = typeof WholesaleService !== 'undefined' 
+      ? WholesaleService.getWholesaleTier(totalWsQty) 
+      : (totalWsQty >= 100 ? 100 : (totalWsQty >= 50 ? 50 : (totalWsQty >= 20 ? 20 : (totalWsQty >= 10 ? 10 : 5))));
+
+    wsItems.forEach(item => {
+      let unitPrice = 0;
+      if (typeof WholesaleService !== 'undefined') {
+        unitPrice = WholesaleService.getProductWholesaleUnitPrice(item.productId, totalWsQty);
+      } else {
+        const prod = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
+        const prices = prod?.precios_mayoristas;
+        unitPrice = prices ? (prices[String(activeTier)] || prices['5'] || prod.precio) : (prod ? prod.precio : 0);
+      }
+
+      item.unitPrice = unitPrice;
+      item.subtotal = item.qty * unitPrice;
+      item.activeTier = activeTier;
+    });
   },
 
   // 1. Agregar Producto al Detal
@@ -56,6 +145,7 @@ const Cart = {
         productId: product.id,
         nombre: product.nombre,
         subtitulo: product.subtitulo || '',
+        imagen: product.imagen,
         precio: product.precio,
         precio_promo_2: product.precio_promo_2,
         variant: variant || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : '')),
@@ -69,19 +159,12 @@ const Cart = {
     this.pulseCartBadge();
   },
 
-  // 2. Agregar Paquete Mayorista
+  // 2. Agregar Paquete/Unidades Mayoristas
   addWholesalePack(productId, packQty) {
     const product = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === productId) : null;
     if (!product) return;
 
-    const prices = (typeof WholesaleService !== 'undefined' && WholesaleService.PRICES[productId]) || product.precios_mayoristas;
-    if (!prices || !prices[String(packQty)]) {
-      Toast.show(`No hay tarifa configurada para +${packQty} uds de este producto.`, 'error');
-      return;
-    }
-
-    const unitPrice = prices[String(packQty)];
-    const subtotal = unitPrice * packQty;
+    const qtyToAdd = Number(packQty) || 5;
     const flavor = (typeof WholesaleCatalog !== 'undefined' && WholesaleCatalog.selectedVariants[productId]) 
       || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : 'Surtido / A convenir'));
 
@@ -95,30 +178,39 @@ const Cart = {
       if (c && c.img) img = c.img;
     }
 
-    const packId = `ws__${productId}__${Date.now()}__${Math.random().toString(36).substr(2, 4)}`;
+    const itemKey = `mayorista__${product.id}__${flavor || 'default'}`;
+    const existing = this.items.find(i => i.key === itemKey);
 
-    this.items.push({
-      key: packId,
-      type: 'mayorista',
-      packId: packId,
-      productId: product.id,
-      nombre: product.nombre,
-      subtitulo: product.subtitulo || '',
-      imagen: img,
-      variant: flavor,
-      packQty: packQty,
-      unitPrice: unitPrice,
-      subtotal: subtotal
-    });
+    if (existing) {
+      existing.qty += qtyToAdd;
+    } else {
+      this.items.push({
+        key: itemKey,
+        type: 'mayorista',
+        productId: product.id,
+        nombre: product.nombre,
+        subtitulo: product.subtitulo || '',
+        imagen: img,
+        variant: flavor,
+        qty: qtyToAdd,
+        unitPrice: 0,
+        subtotal: 0
+      });
+    }
 
+    // Recalcular dinámicamente todos los precios del carrito con el nuevo volumen total
+    this.recalculateWholesalePrices();
     this.saveToStorage();
     this.updateUI();
-    Toast.show(`✓ ¡Paquete de +${packQty} uds de "${product.nombre}" (${flavor}) agregado al pedido!`, 'success');
+    
+    const totalWs = this.getWholesaleTotalQty();
+    const tier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(totalWs) : 5;
+    Toast.show(`✓ ¡+${qtyToAdd} uds de "${product.nombre}" (${flavor}) agregadas! Rango actual: +${tier} uds (${totalWs} totales).`, 'success');
     this.pulseCartBadge();
   },
 
   pulseCartBadge() {
-    const badges = document.querySelectorAll('.cart-count-badge');
+    const badges = document.querySelectorAll('.cart-count-badge, .wholesale-cart-count-badge');
     badges.forEach(b => {
       b.classList.remove('pulse-anim');
       void b.offsetWidth;
@@ -130,18 +222,14 @@ const Cart = {
     const item = this.items.find(i => i.key === itemKey);
     if (!item) return;
 
-    if (item.type === 'mayorista') {
-      // Wholesale items are pack based; delta < 0 removes it
-      if (delta < 0) {
-        this.removeItem(itemKey);
-      }
-      return;
-    }
-
     item.qty += delta;
     if (item.qty <= 0) {
       this.removeItem(itemKey);
       return;
+    }
+
+    if (item.type === 'mayorista') {
+      this.recalculateWholesalePrices();
     }
 
     this.saveToStorage();
@@ -152,18 +240,30 @@ const Cart = {
     const item = this.items.find(i => i.key === itemKey);
     if (!item || item.variant === newVariant) return;
 
-    if (item.type === 'mayorista') {
-      item.variant = newVariant;
-      const product = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
-      if (product) {
-        if (product.sabores) {
-          const f = product.sabores.find(s => s.nombre === newVariant);
-          if (f && f.img) item.imagen = f.img;
-        } else if (product.colores) {
-          const c = product.colores.find(c => c.nombre === newVariant);
-          if (c && c.img) item.imagen = c.img;
-        }
+    const product = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
+    let newImg = item.imagen;
+    if (product) {
+      if (product.sabores) {
+        const f = product.sabores.find(s => s.nombre === newVariant);
+        if (f && f.img) newImg = f.img;
+      } else if (product.colores) {
+        const c = product.colores.find(c => c.nombre === newVariant);
+        if (c && c.img) newImg = c.img;
       }
+    }
+
+    if (item.type === 'mayorista') {
+      const newKey = `mayorista__${item.productId}__${newVariant || 'default'}`;
+      const existingTarget = this.items.find(i => i.key === newKey && i.key !== itemKey);
+      if (existingTarget) {
+        existingTarget.qty += item.qty;
+        this.items = this.items.filter(i => i.key !== itemKey);
+      } else {
+        item.key = newKey;
+        item.variant = newVariant;
+        item.imagen = newImg;
+      }
+      this.recalculateWholesalePrices();
     } else {
       const newKey = `detal__${item.productId}__${newVariant || 'default'}`;
       const existingTarget = this.items.find(i => i.key === newKey && i.key !== itemKey);
@@ -173,6 +273,7 @@ const Cart = {
       } else {
         item.key = newKey;
         item.variant = newVariant;
+        item.imagen = newImg;
       }
     }
 
@@ -184,6 +285,8 @@ const Cart = {
   removeItem(itemKey) {
     const item = this.items.find(i => i.key === itemKey);
     this.items = this.items.filter(i => i.key !== itemKey);
+    
+    this.recalculateWholesalePrices();
     this.saveToStorage();
     this.updateUI();
     if (item) {
@@ -209,6 +312,10 @@ const Cart = {
     return this.items.filter(i => i.type === 'mayorista');
   },
 
+  getWholesaleTotalQty() {
+    return this.getWholesaleItems().reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
+  },
+
   getDetalSubtotal() {
     return this.getDetalItems().reduce((sum, item) => {
       let itemTotal = 0;
@@ -224,7 +331,8 @@ const Cart = {
   },
 
   getWholesaleSubtotal() {
-    return this.getWholesaleItems().reduce((sum, item) => sum + (item.subtotal || (item.unitPrice * item.packQty)), 0);
+    this.recalculateWholesalePrices();
+    return this.getWholesaleItems().reduce((sum, item) => sum + (Number(item.subtotal) || (Number(item.qty || 0) * Number(item.unitPrice || 0))), 0);
   },
 
   getSubtotal() {
@@ -232,8 +340,8 @@ const Cart = {
   },
 
   getTotalCount() {
-    const detalCount = this.getDetalItems().reduce((sum, item) => sum + item.qty, 0);
-    const wsCount = this.getWholesaleItems().reduce((sum, item) => sum + item.packQty, 0);
+    const detalCount = this.getDetalItems().reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
+    const wsCount = this.getWholesaleTotalQty();
     return detalCount + wsCount;
   },
 
@@ -310,6 +418,9 @@ const Cart = {
     const totalSubtotal = this.getSubtotal();
     const shipping = this.getShippingInfo();
     const totalGeneral = this.getTotal();
+    const totalWsQty = this.getWholesaleTotalQty();
+    const activeTier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(totalWsQty) : 5;
+    const tierInfo = typeof WholesaleService !== 'undefined' ? WholesaleService.getNextTierInfo(totalWsQty) : null;
 
     // Free Shipping Progress Meter
     if (meterContainer) {
@@ -359,7 +470,7 @@ const Cart = {
         // SECTION 1: DETAL ITEMS
         if (detalItems.length > 0) {
           html += `
-            <div class="cart-section-block">
+            <div class="cart-section-block detal-block">
               <div class="cart-section-header">
                 <span class="cart-sec-tag">DETAL</span>
                 <span class="cart-sec-subtotal">Subtotal: ${this.formatCOP(detalSubtotal)}</span>
@@ -396,27 +507,29 @@ const Cart = {
                   </div>
                 `;
               } else if (item.variant) {
-                variantOptionsHtml = `<span class="item-variant">Sabor: <strong>${item.variant}</strong></span>`;
+                variantOptionsHtml = `<div class="item-variant-line"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
               }
             } else if (item.variant) {
-              variantOptionsHtml = `<span class="item-variant">Sabor: <strong>${item.variant}</strong></span>`;
+              variantOptionsHtml = `<div class="item-variant-line"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
             }
 
             return `
-              <div class="cart-item-row" id="cart-row-${item.key}">
-                <div class="item-info">
+              <div class="cart-item-row detal-item-row" id="cart-row-${item.key}">
+                <div class="detal-item-header">
                   <h4 class="item-title">${item.nombre}</h4>
-                  ${variantOptionsHtml}
-                  <div class="item-unit-price">${this.formatCOP(item.precio)} c/u ${promoNote}</div>
+                  <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar del carrito">🗑️</button>
                 </div>
-                <div class="item-actions-col">
+                ${variantOptionsHtml}
+                <div class="detal-item-footer">
                   <div class="item-qty-selector">
-                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', -1)">−</button>
+                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', -1)" title="Restar 1">−</button>
                     <span class="qty-num">${item.qty}</span>
-                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', 1)">+</button>
+                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', 1)" title="Sumar 1">+</button>
                   </div>
-                  <div class="item-total-price">${this.formatCOP(linePrice)}</div>
-                  <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar">🗑️</button>
+                  <div class="item-subtotal-block">
+                    <div class="item-unit-price">${this.formatCOP(item.precio)} c/u ${promoNote}</div>
+                    <div class="item-total-price">${this.formatCOP(linePrice)}</div>
+                  </div>
                 </div>
               </div>
             `;
@@ -430,12 +543,35 @@ const Cart = {
 
         // SECTION 2: MAYORISTA ITEMS
         if (wsItems.length > 0) {
+          let tierProgressBannerHtml = '';
+          if (tierInfo && tierInfo.nextTier) {
+            tierProgressBannerHtml = `
+              <div class="ws-tier-progress-banner">
+                <span class="ws-tier-progress-icon">💡</span>
+                <span>Agrega <strong>${tierInfo.needed} uds más</strong> para desbloquear la tarifa de <strong>+${tierInfo.nextTier} unidades</strong>.</span>
+              </div>
+            `;
+          } else {
+            tierProgressBannerHtml = `
+              <div class="ws-tier-progress-banner max-tier">
+                <span class="ws-tier-progress-icon">🎉</span>
+                <span>¡Tienes activa la <strong>tarifa máxima mayorista (+100 uds)</strong> en todo tu pedido!</span>
+              </div>
+            `;
+          }
+
           html += `
             <div class="cart-section-block wholesale-block">
               <div class="cart-section-header wholesale-header">
-                <span class="cart-sec-tag wholesale-tag">📦 MAYORISTA</span>
+                <div class="ws-header-tag-wrap">
+                  <span class="cart-sec-tag wholesale-tag">📦 MAYORISTA</span>
+                  <span class="ws-header-tier-pill">Rango +${activeTier} (${totalWsQty} uds)</span>
+                </div>
                 <span class="cart-sec-subtotal">Subtotal: ${this.formatCOP(wsSubtotal)}</span>
               </div>
+              
+              ${tierProgressBannerHtml}
+
               <div class="cart-items-group">
           `;
 
@@ -459,23 +595,38 @@ const Cart = {
                   </div>
                 `;
               } else if (item.variant) {
-                variantOptionsHtml = `<span class="item-variant">Sabor: <strong>${item.variant}</strong></span>`;
+                variantOptionsHtml = `<div class="item-variant-line"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
               }
             } else if (item.variant) {
-              variantOptionsHtml = `<span class="item-variant">Sabor: <strong>${item.variant}</strong></span>`;
+              variantOptionsHtml = `<div class="item-variant-line"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
             }
 
             return `
               <div class="cart-item-row ws-item-row" id="cart-row-${item.key}">
-                <div class="item-info">
-                  <div class="ws-pack-badge">+${item.packQty} UNIDADES</div>
+                <div class="ws-item-header">
+                  <div class="ws-pack-badge">⚡ ${item.qty} UDS • TARIFA +${activeTier}</div>
+                  <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar del pedido mayorista">🗑️</button>
+                </div>
+
+                <div class="ws-item-main">
                   <h4 class="item-title">${item.nombre}</h4>
                   ${variantOptionsHtml}
-                  <div class="item-unit-price">${this.formatCOP(item.unitPrice)} c/u</div>
+                  <div class="item-unit-price">
+                    <span class="unit-price-label">Precio Rango:</span>
+                    <strong class="unit-price-val">${this.formatCOP(item.unitPrice)}</strong> c/u
+                  </div>
                 </div>
-                <div class="item-actions-col">
-                  <div class="item-total-price ws-total">${this.formatCOP(item.subtotal)}</div>
-                  <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar paquete">🗑️</button>
+
+                <div class="ws-item-footer">
+                  <div class="item-qty-selector ws-qty-selector">
+                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', -1)" title="Restar 1 unidad">−</button>
+                    <span class="qty-num">${item.qty} uds</span>
+                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', 1)" title="Sumar 1 unidad">+</button>
+                  </div>
+                  <div class="item-subtotal-block">
+                    <span class="subtotal-label">Subtotal:</span>
+                    <span class="item-total-price ws-total">${this.formatCOP(item.subtotal)}</span>
+                  </div>
                 </div>
               </div>
             `;
@@ -505,8 +656,8 @@ const Cart = {
               </div>
             ` : ''}
             ${wsItems.length > 0 ? `
-              <div class="summary-line">
-                <span>Subtotal Mayorista (${wsItems.reduce((s,i)=>s+i.packQty, 0)} uds):</span>
+              <div class="summary-line ws-summary-line">
+                <span>Subtotal Mayorista (${totalWsQty} uds • Rango +${activeTier}):</span>
                 <span>${this.formatCOP(wsSubtotal)}</span>
               </div>
             ` : ''}

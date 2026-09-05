@@ -59,14 +59,16 @@ const CheckoutController = {
     }
 
     if (wsItems.length > 0) {
+      const totalWsQty = Cart.getWholesaleTotalQty();
+      const activeTier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(totalWsQty) : 5;
       itemsHtml += `
-        <div class="checkout-sec-divider ws-divider">📦 PAQUETES MAYORISTAS</div>
+        <div class="checkout-sec-divider ws-divider">📦 PRODUCTOS MAYORISTAS (Rango +${activeTier} • ${totalWsQty} uds)</div>
       `;
       itemsHtml += wsItems.map(item => `
         <div class="checkout-item-line ws-checkout-line">
           <div>
-            <strong>${item.nombre}</strong> (+${item.packQty} uds)
-            ${item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant} • ${Cart.formatCOP(item.unitPrice)} c/u</small>` : ''}
+            <strong>${item.nombre}</strong> (x${item.qty} uds)
+            ${item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant} • ${Cart.formatCOP(item.unitPrice)} c/u [Tarifa +${activeTier} uds]</small>` : ''}
           </div>
           <div>${Cart.formatCOP(item.subtotal)}</div>
         </div>
@@ -74,6 +76,9 @@ const CheckoutController = {
     }
 
     container.innerHTML = itemsHtml;
+
+    const totalWsQty = Cart.getWholesaleTotalQty();
+    const activeTier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(totalWsQty) : 5;
 
     summaryContainer.innerHTML = `
       ${detalItems.length > 0 ? `
@@ -84,7 +89,7 @@ const CheckoutController = {
       ` : ''}
       ${wsItems.length > 0 ? `
         <div class="summary-line">
-          <span>Subtotal Mayorista:</span>
+          <span>Subtotal Mayorista (${totalWsQty} uds • +${activeTier} uds):</span>
           <span>${Cart.formatCOP(wsSubtotal)}</span>
         </div>
       ` : ''}
@@ -138,6 +143,8 @@ const CheckoutController = {
     const wsItems = Cart.getWholesaleItems();
     const detalSubtotal = Cart.getDetalSubtotal();
     const wsSubtotal = Cart.getWholesaleSubtotal();
+    const totalWsQty = Cart.getWholesaleTotalQty();
+    const activeTier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(totalWsQty) : 5;
     const shipping = Cart.getShippingInfo();
     const total = Cart.getTotal();
 
@@ -161,12 +168,12 @@ const CheckoutController = {
     }
 
     if (wsItems.length > 0) {
-      msg += `📦 *PAQUETES MAYORISTAS:*\n`;
+      msg += `📦 *PRODUCTOS MAYORISTAS (Rango Total: +${activeTier} uds • ${totalWsQty} unidades):*\n`;
       wsItems.forEach((item, idx) => {
-        msg += `${idx + 1}. *${item.nombre}* (+${item.packQty} uds)\n`;
+        msg += `${idx + 1}. *${item.nombre}* x${item.qty} uds\n`;
         if (item.variant) msg += `   - Sabor/Color: ${item.variant}\n`;
-        msg += `   - Tarifa: ${Cart.formatCOP(item.unitPrice)} c/u\n`;
-        msg += `   - Subtotal Paquete: ${Cart.formatCOP(item.subtotal)}\n`;
+        msg += `   - Tarifa Aplicada (+${activeTier} uds): ${Cart.formatCOP(item.unitPrice)} c/u\n`;
+        msg += `   - Subtotal: ${Cart.formatCOP(item.subtotal)}\n`;
       });
       msg += `*Subtotal Mayorista: ${Cart.formatCOP(wsSubtotal)}*\n\n`;
     }

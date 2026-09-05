@@ -629,30 +629,37 @@ body.menu-open-scroll-lock {
     gap: 10px !important;
   }
 
-  /* ----------------- FLOATING PILL BUTTONS ----------------- */
-  .cv-floating-actions-container {
-    bottom: 14px !important;
-    right: 12px !important;
+  /* ----------------- BOTTOM FIXED ACTION BAR MOBILE ----------------- */
+  body {
+    padding-bottom: 70px !important;
+  }
+
+  .cv-bottom-bar-container {
+    padding: 8px 10px !important;
+  }
+
+  .cv-bottom-bar-inner {
     gap: 8px !important;
   }
 
-  .cv-float-pill {
-    padding: 8px 14px !important;
-    font-size: 0.82rem !important;
-    gap: 8px !important;
+  .cv-bottom-btn {
+    padding: 10px 8px !important;
+    font-size: 0.8rem !important;
+    gap: 6px !important;
   }
 
-  .wa-float-icon, .float-cart-img {
-    width: 18px !important;
-    height: 18px !important;
+  .bottom-btn-icon {
+    width: 17px !important;
+    height: 17px !important;
   }
 
-  .float-cart-badge {
-    min-width: 18px !important;
-    height: 18px !important;
-    font-size: 0.68rem !important;
-    padding: 0 4px !important;
+  .bottom-cart-badge {
+    min-width: 17px !important;
+    height: 17px !important;
+    font-size: 0.65rem !important;
+    padding: 0 3px !important;
   }
+
 
   /* ----------------- WHOLESALE BUDGET BAR MOBILE ----------------- */
   .ws-budget-bar-card {
@@ -711,3 +718,29 @@ body.menu-open-scroll-lock {
     display: block !important;
     box-sizing: border-box !important;
   }
+
+/* Small mobile devices */
+@media (max-width: 380px) {
+  .cv-bottom-bar-container {
+    padding: 6px 8px !important;
+  }
+
+  .cv-bottom-btn {
+    padding: 8px 6px !important;
+    font-size: 0.72rem !important;
+    gap: 4px !important;
+  }
+
+  .bottom-btn-icon {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+  .bottom-cart-badge {
+    min-width: 15px !important;
+    height: 15px !important;
+    font-size: 0.6rem !important;
+    padding: 0 2px !important;
+  }
+}
+

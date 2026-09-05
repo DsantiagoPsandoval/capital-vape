@@ -215,115 +215,135 @@ button {
 }
 
 /* ==========================================================================
-   FLOATING ACTION BUTTONS (INDEPENDENT WHATSAPP & CART)
+   BOTTOM FIXED ACTION BAR (WHATSAPP AGENDAR PEDIDO & CART WITH SUBTOTAL)
    ========================================================================== */
-.cv-floating-actions-container {
-  position: fixed;
-  bottom: 22px;
-  right: 22px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
-  z-index: 1500;
-  pointer-events: none;
+body {
+  padding-bottom: 74px;
 }
 
-.cv-float-pill {
-  pointer-events: auto;
+.cv-bottom-bar-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 16px;
+  background: rgba(11, 4, 16, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(216, 27, 183, 0.28);
+  box-shadow: 0 -6px 28px rgba(0, 0, 0, 0.75);
+}
+
+.cv-bottom-bar-inner {
+  max-width: 680px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cv-bottom-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 18px;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
   border-radius: var(--radius-full);
   font-family: var(--font-body);
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.88rem;
+  font-weight: 800;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.22s cubic-bezier(0.4, 0, 0.2, 1), background 0.22s ease;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background 0.2s ease, border-color 0.2s ease;
   user-select: none;
   border: none;
   outline: none;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
-.cv-float-pill:hover {
-  transform: translateY(-3px) scale(1.03);
+.cv-bottom-btn:hover {
+  transform: translateY(-2px);
 }
 
-.cv-float-pill:active {
-  transform: translateY(-1px) scale(0.98);
+.cv-bottom-btn:active {
+  transform: translateY(0) scale(0.98);
 }
 
-/* WhatsApp Floating Pill */
-.wa-floating-pill {
-  background: linear-gradient(135deg, #25D366, #128C7E);
-  color: #FFFFFF;
-  box-shadow: 0 6px 22px rgba(37, 211, 102, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-}
-
-.wa-floating-pill:hover {
-  background: linear-gradient(135deg, #2ae771, #16a392);
-  box-shadow: 0 8px 28px rgba(37, 211, 102, 0.6);
-  color: #FFFFFF;
-}
-
-.wa-float-icon {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-/* Cart Floating Pill */
-.cart-floating-pill {
-  background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
-  color: #FFFFFF;
-  border: 1.5px solid var(--accent-gold);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65), 0 0 16px var(--accent-gold-glow);
-  position: relative;
-}
-
-.cart-floating-pill:hover {
-  background: linear-gradient(135deg, var(--bg-card-hover), var(--bg-card));
-  border-color: #FFE600;
-  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.75), 0 0 24px rgba(255, 230, 0, 0.5);
-}
-
-.float-cart-img {
+.bottom-btn-icon {
   width: 20px;
   height: 20px;
   object-fit: contain;
   flex-shrink: 0;
 }
 
-.float-btn-label {
-  white-space: nowrap;
-  font-weight: 700;
+.bottom-btn-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   letter-spacing: 0.02em;
 }
 
-/* Floating Cart Badge */
-.float-cart-badge {
+/* WhatsApp Agendar Pedido Button */
+.wa-bottom-btn {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  color: #FFFFFF;
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.wa-bottom-btn:hover {
+  background: linear-gradient(135deg, #2ae771, #16a392);
+  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.65);
+  color: #FFFFFF;
+}
+
+/* Cart with Subtotal Button */
+.cart-bottom-btn {
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
+  color: #FFFFFF;
+  border: 1.5px solid var(--accent-gold);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6), 0 0 14px var(--accent-gold-glow);
+  position: relative;
+}
+
+.cart-bottom-btn:hover {
+  background: linear-gradient(135deg, var(--bg-card-hover), var(--bg-card));
+  border-color: #FFE600;
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 0.75), 0 0 20px rgba(255, 230, 0, 0.5);
+}
+
+.cart-bottom-btn #bottomCartSubtotal {
+  color: var(--accent-gold);
+  font-weight: 800;
+}
+
+/* Badge for Cart count */
+.bottom-cart-badge {
   background: var(--accent-gold);
   color: #000000;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 5px;
   border-radius: var(--radius-full);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
   margin-left: 2px;
   flex-shrink: 0;
 }
 
 /* Legacy support if old classes are referenced */
-.floating-cart-btn, .wa-floating-btn {
+.floating-cart-btn, .wa-floating-btn, .cv-floating-actions-container {
   display: none;
 }
+
 

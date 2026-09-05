@@ -936,20 +936,22 @@
     </div>
   </div>
 
-  <!-- FLOATING ACTION BUTTONS (INDEPENDENT WHATSAPP & CART) -->
-  <div class="cv-floating-actions-container">
-    <!-- FLOATING WHATSAPP BUTTON -->
-    <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20asesor%C3%ADa%20sobre%20sus%20productos." target="_blank" rel="noopener noreferrer" class="cv-float-pill wa-floating-pill" aria-label="💬 ¿Necesitas ayuda? WhatsApp Oficial">
-      <img src="assets/icons/whatsapp.png" class="wa-float-icon" alt="WhatsApp">
-      <span class="float-btn-label">💬 ¿Necesitas ayuda?</span>
-    </a>
+  <!-- BOTTOM FIXED ACTION BAR (WHATSAPP AGENDAR PEDIDO & CART WITH SUBTOTAL) -->
+  <div class="cv-bottom-bar-container">
+    <div class="cv-bottom-bar-inner">
+      <!-- WHATSAPP AGENDAR PEDIDO BUTTON -->
+      <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20agendar%20un%20pedido." target="_blank" rel="noopener noreferrer" class="cv-bottom-btn wa-bottom-btn" aria-label="📲 AGENDAR PEDIDO WhatsApp Oficial">
+        <img src="assets/icons/whatsapp.png" class="bottom-btn-icon" alt="WhatsApp">
+        <span class="bottom-btn-label">AGENDAR PEDIDO</span>
+      </a>
 
-    <!-- FLOATING CART BUTTON -->
-    <button type="button" class="cv-float-pill cart-floating-pill open-cart-btn" aria-label="🛒 Carrito de compras">
-      <img src="assets/icons/carrito.png" class="float-cart-img" alt="Carrito">
-      <span class="float-btn-label">🛒 Carrito de compras</span>
-      <span class="cart-count-badge float-cart-badge" style="display: none;">0</span>
-    </button>
+      <!-- CART WITH SUBTOTAL BUTTON -->
+      <button type="button" class="cv-bottom-btn cart-bottom-btn open-cart-btn" aria-label="🛒 Ver Carrito de compras">
+        <img src="assets/icons/carrito.png" class="bottom-btn-icon" alt="Carrito">
+        <span class="bottom-btn-label">Carrito: <strong id="bottomCartSubtotal">$0</strong></span>
+        <span class="cart-count-badge bottom-cart-badge" style="display: none;">0</span>
+      </button>
+    </div>
   </div>
 
   <!-- JAVASCRIPT SCRIPTS -->

@@ -406,6 +406,18 @@ const Cart = {
       badge.style.display = totalCount > 0 ? 'inline-flex' : 'none';
     });
 
+    // 1.1 Update Bottom Bar Cart Subtotal
+    const totalSubtotal = this.getSubtotal();
+    const formattedSubtotal = this.formatCOP(totalSubtotal);
+    const bottomCartSubtotalEl = document.getElementById('bottomCartSubtotal');
+    if (bottomCartSubtotalEl) {
+      bottomCartSubtotalEl.textContent = formattedSubtotal;
+    }
+    const floatCartSubtotalEl = document.getElementById('floatCartSubtotal');
+    if (floatCartSubtotalEl) {
+      floatCartSubtotalEl.textContent = formattedSubtotal;
+    }
+
     // 2. Render Drawer Content
     const itemsContainer = document.getElementById('cartDrawerItems');
     const meterContainer = document.getElementById('cartShippingMeter');
@@ -415,7 +427,6 @@ const Cart = {
     const wsItems = this.getWholesaleItems();
     const detalSubtotal = this.getDetalSubtotal();
     const wsSubtotal = this.getWholesaleSubtotal();
-    const totalSubtotal = this.getSubtotal();
     const shipping = this.getShippingInfo();
     const totalGeneral = this.getTotal();
     const totalWsQty = this.getWholesaleTotalQty();

@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/checkout.css">
   <link rel="stylesheet" href="css/toast.css">
   <link rel="stylesheet" href="css/wholesale.css">
+  <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
@@ -816,6 +817,7 @@
       <div class="footer-bottom-bar">
         <span>© 2026 CAPITAL VAPE. Todos los derechos reservados. Venta exclusiva para mayores de 18 años.</span>
         <span>Envíos seguros a toda Colombia.</span>
+        <a href="#admin" onclick="AdminService.open(); return false;" class="admin-access-link" title="Panel de Administración para Propietario">🔐 Acceso Admin</a>
       </div>
     </div>
   </footer>
@@ -954,14 +956,80 @@
     </div>
   </div>
 
+  <!-- ADMIN LOGIN MODAL -->
+  <div id="adminLoginModal" class="admin-modal-overlay" style="display: none;">
+    <div class="admin-login-card">
+      <button type="button" class="modal-close-btn" onclick="AdminService.closeLoginModal()">&times;</button>
+      <div class="admin-login-header">
+        <div style="font-size: 2.2rem; margin-bottom: 6px;">🔐</div>
+        <h3 class="admin-login-title">Panel de Administración</h3>
+        <p class="admin-login-sub">Ingresa tus credenciales para gestionar stock y precios en la nube</p>
+      </div>
+
+      <div id="adminLoginAlert" class="admin-alert-box" style="display: none;"></div>
+
+      <form onsubmit="AdminService.login(event)">
+        <div class="admin-form-group">
+          <label for="adminUserInput">Usuario:</label>
+          <input type="text" id="adminUserInput" class="admin-input-text" placeholder="admin" required autocomplete="username">
+        </div>
+        <div class="admin-form-group">
+          <label for="adminPassInput">Contraseña:</label>
+          <input type="password" id="adminPassInput" class="admin-input-text" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 18px; padding: 12px;">
+          Ingresar al Panel
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ADMIN DASHBOARD MODAL -->
+  <div id="adminDashboardModal" class="admin-modal-overlay" style="display: none;">
+    <div class="admin-dashboard-card">
+      <div class="admin-dash-header">
+        <div class="admin-dash-title-box">
+          <h3 class="admin-dash-title">🛡️ Panel de Control • Capital Vape</h3>
+          <span id="adminSyncStatusBadge" class="sync-badge synced">🟢 Conectado a la Nube (Activo para todos)</span>
+        </div>
+
+        <div class="admin-dash-actions">
+          <button type="button" 
+                  id="btnAdminSaveCloud" 
+                  class="btn-admin-save-cloud" 
+                  onclick="AdminService.saveAllChanges()">
+            ☁️ GUARDAR CAMBIOS PARA TODOS
+          </button>
+          <button type="button" class="btn-admin-secondary" onclick="AdminService.exportJSON()" title="Copiar respaldo JSON">
+            📋 Copiar JSON
+          </button>
+          <button type="button" class="btn-admin-secondary" onclick="AdminService.resetDefaults()" title="Restablecer valores de fábrica">
+            🔄 Restablecer
+          </button>
+          <button type="button" class="btn-admin-logout" onclick="AdminService.logout()">
+            🚪 Cerrar Sesión
+          </button>
+          <button type="button" class="modal-close-btn" onclick="AdminService.closeDashboard()">&times;</button>
+        </div>
+      </div>
+
+      <div class="admin-dashboard-body" id="adminDashboardBody">
+        <!-- Rendered dynamically by AdminService -->
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT SCRIPTS -->
   <script src="js/config.js"></script>
   <script src="js/toast.js"></script>
   <script src="js/products-data.js"></script>
   <script src="js/wholesale.js"></script>
+  <script src="js/cloud-sync.js"></script>
+  <script src="js/admin.js"></script>
   <script src="js/cart.js"></script>
   <script src="js/checkout.js"></script>
   <script src="js/catalog.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>
+

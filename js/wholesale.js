@@ -706,8 +706,9 @@ const WholesaleCatalog = {
       }
 
       return `
-        <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''}" id="ws-card-${product.id}" data-product-id="${product.id}">
+        <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.agotado ? 'is-product-agotado' : ''}" id="ws-card-${product.id}" data-product-id="${product.id}">
           <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}', true)" title="Ver sabores y detalles">
+            ${product.agotado ? `<span class="product-agotado-badge">AGOTADO</span>` : ''}
             <img src="${currentImage || 'assets/logo/logo.png'}" alt="${product.nombre}" class="product-img-real" loading="lazy">
           </div>
 
@@ -715,7 +716,9 @@ const WholesaleCatalog = {
             <div class="card-meta-row">
               <span class="card-rating-badge"><span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}</span>
               ${savingPerUnit > 0 ? `<span class="ws-save-pill">Ahorro ${WholesaleService.formatCOP(savingPerUnit)}/u</span>` : ''}
-              <span class="card-stock-badge in">🟢 Mayorista</span>
+              ${product.agotado 
+                ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
+                : `<span class="card-stock-badge in">🟢 Mayorista</span>`}
             </div>
 
             <div class="card-header-info">
@@ -725,26 +728,34 @@ const WholesaleCatalog = {
 
             ${variantsHtml}
 
-            ${budgetHtml}
+            ${product.agotado ? `
+              <div style="padding: 16px 0; text-align: center;">
+                <button type="button" class="btn btn-secondary btn-block" disabled style="opacity: 0.6; cursor: not-allowed;">
+                  ⚠️ Producto Agotado
+                </button>
+              </div>
+            ` : `
+              ${budgetHtml}
 
-            <!-- Specific Tier Quantity Buttons with Pack Subtotals -->
-            <div class="ws-tier-buttons-grid">
-              ${tierKeys.map(tier => {
-                const pUnit = prices[String(tier)];
-                const packSubtotal = pUnit * tier;
-                const isBest = (tier === maxTier && savingPerUnit > 0);
-                return `
-                  <button type="button" 
-                    class="btn-ws-tier ${isBest ? 'best-tier' : ''}" 
-                    onclick="Cart.addWholesalePack('${product.id}', ${tier})"
-                    title="Agregar paquete de ${tier} unidades de ${product.nombre} (Total: ${WholesaleService.formatCOP(packSubtotal)})">
-                    <span class="tier-qty-tag">+${tier} UDS</span>
-                    <span class="tier-unit-price">${WholesaleService.formatCOP(pUnit)} c/u</span>
-                    <span class="tier-pack-subtotal">Subtotal: ${WholesaleService.formatCOP(packSubtotal)}</span>
-                  </button>
-                `;
-              }).join('')}
-            </div>
+              <!-- Specific Tier Quantity Buttons with Pack Subtotals -->
+              <div class="ws-tier-buttons-grid">
+                ${tierKeys.map(tier => {
+                  const pUnit = prices[String(tier)];
+                  const packSubtotal = pUnit * tier;
+                  const isBest = (tier === maxTier && savingPerUnit > 0);
+                  return `
+                    <button type="button" 
+                      class="btn-ws-tier ${isBest ? 'best-tier' : ''}" 
+                      onclick="Cart.addWholesalePack('${product.id}', ${tier})"
+                      title="Agregar paquete de ${tier} unidades de ${product.nombre} (Total: ${WholesaleService.formatCOP(packSubtotal)})">
+                      <span class="tier-qty-tag">+${tier} UDS</span>
+                      <span class="tier-unit-price">${WholesaleService.formatCOP(pUnit)} c/u</span>
+                      <span class="tier-pack-subtotal">Subtotal: ${WholesaleService.formatCOP(packSubtotal)}</span>
+                    </button>
+                  `;
+                }).join('')}
+              </div>
+            `}
 
           </div>
         </article>

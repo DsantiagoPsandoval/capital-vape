@@ -1,0 +1,580 @@
+/* ==========================================================================
+   CAPITAL VAPE - PANEL DE ADMINISTRACIÓN (ADMIN STYLES)
+   ========================================================================== */
+
+/* Link in Footer */
+.admin-access-link {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  text-decoration: none;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-access-link:hover {
+  color: var(--accent-gold);
+  text-decoration: underline;
+}
+
+/* Modal Overlays */
+.admin-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(8, 3, 14, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Login Card */
+.admin-login-card {
+  width: 100%;
+  max-width: 420px;
+  background: linear-gradient(135deg, #1A0B2C, #140821);
+  border: 1.5px solid var(--accent-gold);
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 25px var(--accent-gold-glow);
+  position: relative;
+  box-sizing: border-box;
+}
+
+.admin-login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.admin-login-title {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin: 0 0 6px;
+}
+
+.admin-login-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.admin-form-group {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-form-group label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.admin-input-text {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: var(--transition);
+}
+
+.admin-input-text:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+  box-shadow: 0 0 12px var(--accent-gold-glow);
+}
+
+.admin-alert-box {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #FCA5A5;
+  padding: 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+/* Dashboard Container (Large Modal) */
+.admin-dashboard-card {
+  width: 100%;
+  max-width: 960px;
+  max-height: 90vh;
+  background: var(--bg-dark);
+  border: 1.5px solid var(--border-active);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 50px rgba(0, 0, 0, 0.9), 0 0 35px var(--accent-purple-glow);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.admin-dash-header {
+  padding: 18px 24px;
+  background: linear-gradient(135deg, var(--bg-card), var(--bg-surface));
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.admin-dash-title-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-dash-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin: 0;
+}
+
+.sync-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sync-badge.synced {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+}
+
+.sync-badge.syncing {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent-gold);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.admin-dash-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-admin-save-cloud {
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+  border: none;
+  padding: 9px 18px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+  transition: var(--transition);
+}
+
+.btn-admin-save-cloud:hover {
+  background: linear-gradient(135deg, #34D399, #10B981);
+  transform: translateY(-1px);
+}
+
+.btn-admin-secondary {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-admin-secondary:hover {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+}
+
+.btn-admin-logout {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #EF4444;
+  padding: 8px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-admin-logout:hover {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+/* Dashboard Body Scrollable */
+.admin-dashboard-body {
+  padding: 20px 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Toolbar & Filters */
+.admin-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.admin-search-box {
+  flex: 1;
+  min-width: 240px;
+}
+
+.admin-input-search {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.admin-category-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.admin-filter-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-filter-pill.active, .admin-filter-pill:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  background: rgba(229, 183, 0, 0.12);
+}
+
+/* Stats Bar */
+.admin-stats-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.stat-badge {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+}
+
+.stat-badge strong {
+  color: var(--text-primary);
+}
+
+.stat-badge.in-stock strong {
+  color: var(--accent-green);
+}
+
+.stat-badge.out-stock strong {
+  color: var(--accent-red);
+}
+
+/* Product Cards List */
+.admin-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-product-card {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: var(--transition);
+}
+
+.admin-product-card.is-out-of-stock {
+  border-color: rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.admin-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.admin-prod-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.admin-prod-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+
+.admin-prod-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.admin-prod-sub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* Stock Toggle Button */
+.admin-stock-toggle-btn {
+  padding: 8px 14px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+
+.admin-stock-toggle-btn.state-disponible {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--accent-green);
+  border: 1.5px solid var(--accent-green);
+}
+
+.admin-stock-toggle-btn.state-disponible:hover {
+  background: var(--accent-green);
+  color: #000000;
+}
+
+.admin-stock-toggle-btn.state-agotado {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--accent-red);
+  border: 1.5px solid var(--accent-red);
+}
+
+.admin-stock-toggle-btn.state-agotado:hover {
+  background: var(--accent-red);
+  color: #FFFFFF;
+}
+
+/* Price Inputs Grid */
+.admin-price-fields-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.admin-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-input-group label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.admin-input-num {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.admin-input-num:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+/* Accordions */
+.admin-accordion-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-admin-expand {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--accent-gold);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-admin-expand:hover {
+  background: rgba(229, 183, 0, 0.15);
+  border-color: var(--accent-gold);
+}
+
+.admin-collapsible-box {
+  margin-top: 12px;
+  padding: 12px;
+  background: var(--bg-surface);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-color);
+}
+
+.admin-section-subtitle {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: var(--accent-gold);
+  margin-bottom: 8px;
+}
+
+.admin-ws-tiers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+/* Flavors Grid */
+.admin-flavors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.admin-flavor-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.admin-flavor-item.is-out {
+  opacity: 0.6;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.admin-flavor-name {
+  font-size: 0.76rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
+}
+
+.admin-flavor-toggle-btn {
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
+}
+
+.admin-flavor-toggle-btn.state-disponible {
+  background: rgba(16, 185, 129, 0.2);
+  color: var(--accent-green);
+}
+
+.admin-flavor-toggle-btn.state-agotado {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--accent-red);
+}
+
+/* Visual Product Card Disabled State on Public Catalog */
+.product-card.is-product-agotado, .ws-product-card.is-product-agotado {
+  opacity: 0.72;
+  filter: grayscale(0.25);
+  position: relative;
+}
+
+.product-agotado-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #EF4444;
+  color: #FFFFFF;
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  z-index: 10;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.6);
+  letter-spacing: 0.04em;
+}
+
+.flavor-card-item.is-flavor-agotado {
+  opacity: 0.55;
+  filter: grayscale(0.6);
+  pointer-events: none;
+}
+
+.flavor-agotado-tag {
+  background: rgba(239, 68, 68, 0.25);
+  color: #FCA5A5;
+  border: 1px solid #EF4444;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 4px;
+}

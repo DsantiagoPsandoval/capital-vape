@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Inicializar tema
   initThemeManager();
 
+  // 1.5 Inicializar sincronización en la nube (Precios y Stock Globales)
+  if (window.CloudSyncService) CloudSyncService.init();
+
   // 2. Inicializar Carrito y Catálogos
   if (window.Cart) Cart.init();
   if (window.CatalogController) CatalogController.init();

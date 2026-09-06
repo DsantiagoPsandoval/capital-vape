@@ -232,17 +232,19 @@ const CatalogController = {
     let items = [];
     if (product.sabores && product.sabores.length > 0) {
       items = product.sabores.filter(s => s.visible !== false).map(s => ({
-        name: s.nombre,
+        name: typeof s === 'string' ? s : s.nombre,
         desc: s.desc || '',
         img: s.img || product.imagen,
-        type: 'sabor'
+        type: 'sabor',
+        agotado: !!s.agotado
       }));
     } else if (product.colores && product.colores.length > 0) {
       items = product.colores.map(c => ({
-        name: c.nombre,
+        name: typeof c === 'string' ? c : c.nombre,
         desc: c.sabores ? `Incluye: ${c.sabores.join(', ')}` : '',
         img: c.img || product.imagen,
-        type: 'color'
+        type: 'color',
+        agotado: !!c.agotado
       }));
     }
 
@@ -264,9 +266,10 @@ const CatalogController = {
 
     grid.innerHTML = items.map(item => {
       const isSelected = item.name === currentSelected;
+      const isAgotado = item.agotado || product.agotado;
       return `
-        <div class="flavor-card-item ${product.id === 'bugatti' ? 'is-bugatti-flavor' : ''} ${isSelected ? 'is-selected' : ''}" data-variant-name="${item.name}">
-          <div class="flavor-card-img-wrap" onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')">
+        <div class="flavor-card-item ${product.id === 'bugatti' ? 'is-bugatti-flavor' : ''} ${isSelected ? 'is-selected' : ''} ${isAgotado ? 'is-flavor-agotado' : ''}" data-variant-name="${item.name}">
+          <div class="flavor-card-img-wrap" ${!isAgotado ? `onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')"` : ''}>
             <img src="${item.img || 'assets/logo/logo.png'}" 
                  alt="${item.name}" 
                  class="flavor-card-img"
@@ -275,19 +278,26 @@ const CatalogController = {
           </div>
           <div class="flavor-card-name">${item.name}</div>
           <div class="flavor-card-desc">${item.desc || 'Sabor premium exclusivo de Capital Vape.'}</div>
+          ${isAgotado ? `<span class="flavor-agotado-tag">❌ AGOTADO</span>` : ''}
           <div class="flavor-card-actions">
-            <button type="button" 
-                    class="btn-flavor-select" 
-                    onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')">
-              ${isSelected ? '✓ Seleccionado' : 'Seleccionar sabor'}
-            </button>
-            ${!this.activeModalIsWholesale && !product.agotado ? `
-              <button type="button" 
-                      class="btn-flavor-add-cart" 
-                      onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${item.name}')">
-                <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito
+            ${isAgotado ? `
+              <button type="button" class="btn-flavor-select" disabled style="opacity: 0.5; cursor: not-allowed;">
+                Agotado
               </button>
-            ` : ''}
+            ` : `
+              <button type="button" 
+                      class="btn-flavor-select" 
+                      onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')">
+                ${isSelected ? '✓ Seleccionado' : 'Seleccionar sabor'}
+              </button>
+              ${!this.activeModalIsWholesale && !product.agotado ? `
+                <button type="button" 
+                        class="btn-flavor-add-cart" 
+                        onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${item.name}')">
+                  <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito
+                </button>
+              ` : ''}
+            `}
           </div>
         </div>
       `;

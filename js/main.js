@@ -293,6 +293,8 @@ function switchHeroProduct(prodId) {
   }
 
   if (imgEl) {
+    const box = imgEl.closest('.hero-product-img-box');
+    if (box) box.setAttribute('data-product-id', prodId);
     imgEl.style.opacity = '0.3';
     setTimeout(() => {
       imgEl.src = cfg.img;

@@ -268,7 +268,7 @@ const CatalogController = {
       const isSelected = item.name === currentSelected;
       const isAgotado = item.agotado || product.agotado;
       return `
-        <div class="flavor-card-item ${product.id === 'bugatti' ? 'is-bugatti-flavor' : ''} ${isSelected ? 'is-selected' : ''} ${isAgotado ? 'is-flavor-agotado' : ''}" data-variant-name="${item.name}">
+        <div class="flavor-card-item ${isSelected ? 'is-selected' : ''} ${isAgotado ? 'is-flavor-agotado' : ''}" data-product-id="${product.id}" data-variant-name="${item.name}">
           <div class="flavor-card-img-wrap" ${!isAgotado ? `onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')"` : ''}>
             <img src="${item.img || 'assets/logo/logo.png'}" 
                  alt="${item.name}" 

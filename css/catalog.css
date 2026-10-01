@@ -164,12 +164,12 @@
   box-shadow: 0 12px 35px var(--accent-purple-glow), 0 0 20px var(--accent-gold-glow);
 }
 
-/* 1. INDEPENDENT IMAGE CONTAINER (ENLARGED & CENTERED) */
+/* 1. INDEPENDENT IMAGE CONTAINER (UNIFORM, SYMMETRICAL & CENTERED) */
 .card-image-wrapper {
   position: relative;
   width: 100%;
-  height: 260px;
-  background: radial-gradient(circle at center, rgba(216, 27, 183, 0.14) 0%, rgba(20, 8, 33, 0.95) 75%);
+  height: 250px;
+  background: radial-gradient(circle at center, rgba(216, 27, 183, 0.12) 0%, rgba(20, 8, 33, 0.95) 75%);
   padding: 16px;
   display: flex;
   align-items: center;
@@ -177,21 +177,31 @@
   overflow: hidden;
   border-bottom: 1px solid var(--border-color);
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .product-img-real {
-  max-width: 90%;
-  max-height: 220px;
+  max-width: 86%;
+  max-height: 210px;
   width: auto;
   height: auto;
   object-fit: contain;
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.45));
+  margin: auto;
+  display: block;
+  transform-origin: center center;
+  transform: translateZ(0) scale(var(--product-scale, 1));
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.35s ease, opacity 0.25s ease;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  z-index: 1;
 }
 
 .product-card:hover .product-img-real {
-  transform: scale(1.08) translateY(-3px);
-  filter: drop-shadow(0 12px 24px rgba(216, 27, 183, 0.3));
+  transform: translateZ(0) scale(calc(var(--product-scale, 1) * 1.07)) translateY(-3px);
+  filter: drop-shadow(0 14px 26px rgba(216, 27, 183, 0.35)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65));
 }
 
 /* Image Badges */
@@ -583,23 +593,39 @@
 
 .flavor-card-img-wrap {
   width: 100%;
-  height: 140px;
+  height: 145px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, rgba(216, 27, 183, 0.15) 0%, transparent 70%);
+  overflow: hidden;
+  position: relative;
+  background: radial-gradient(circle at center, rgba(216, 27, 183, 0.12) 0%, rgba(20, 8, 33, 0.75) 75%);
+  border-radius: var(--radius-sm);
+  padding: 10px;
+  box-sizing: border-box;
 }
 
 .flavor-card-img {
   max-width: 85%;
-  max-height: 130px;
+  max-height: 125px;
+  width: auto;
+  height: auto;
   object-fit: contain;
-  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.5));
-  transition: transform 0.25s ease;
+  margin: auto;
+  display: block;
+  transform-origin: center center;
+  transform: translateZ(0) scale(var(--product-scale, 1));
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.55));
+  transition: transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.28s ease;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 .flavor-card-item:hover .flavor-card-img {
-  transform: scale(1.08);
+  transform: translateZ(0) scale(calc(var(--product-scale, 1) * 1.08));
+  filter: drop-shadow(0 10px 20px rgba(216, 27, 183, 0.35)) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
 }
 
 .flavor-card-name {
@@ -668,39 +694,52 @@
 }
 
 /* ==========================================================================
-   BUGATTI BALANCED IMAGE STYLING (EQUILIBRADO)
+   NORMALIZACIÓN DE TAMAÑO VISUAL Y SIMETRÍA PERFECTA (TODAS LAS REFERENCIAS)
+   Compensación precisa de transparencias para que todas ocupen ~78% del contenedor
    ========================================================================== */
-.product-card.is-bugatti .card-image-wrapper,
-.product-card[data-product-id="bugatti"] .card-image-wrapper {
-  height: 268px;
-  background: radial-gradient(circle at center, rgba(229, 183, 0, 0.18) 0%, rgba(20, 8, 33, 0.98) 75%);
+.product-card,
+.flavor-card-item,
+.hero-product-img-box {
+  --product-scale: 1;
 }
 
-.product-card.is-bugatti .product-img-real,
-.product-card[data-product-id="bugatti"] .product-img-real {
-  max-height: 232px;
-  max-width: 88%;
-  transform: scale(1.06);
-  filter: drop-shadow(0 8px 18px rgba(229, 183, 0, 0.3));
-}
-
-.product-card.is-bugatti:hover .product-img-real,
-.product-card[data-product-id="bugatti"]:hover .product-img-real {
-  transform: scale(1.12) translateY(-3px);
-  filter: drop-shadow(0 12px 24px rgba(229, 183, 0, 0.45));
-}
-
-.flavor-card-item.is-bugatti-flavor .flavor-card-img-wrap {
-  height: 145px;
-  background: radial-gradient(circle at center, rgba(229, 183, 0, 0.15) 0%, transparent 70%);
-}
-
-.flavor-card-item.is-bugatti-flavor .flavor-card-img {
-  max-height: 135px;
-  max-width: 90%;
-  transform: scale(1.06);
-  filter: drop-shadow(0 6px 14px rgba(229, 183, 0, 0.25));
-}
+/* Escalas calibradas milimétricamente según el área útil visible de cada producto */
+[data-product-id="bang-leader"] { --product-scale: 1.66; }
+[data-product-id="dojo"] { --product-scale: 0.85; }
+[data-product-id="hookalit"] { --product-scale: 1.75; }
+[data-product-id="humo-azul"] { --product-scale: 0.97; }
+[data-product-id="baddie-bar"] { --product-scale: 0.82; }
+[data-product-id="donut"] { --product-scale: 1.27; }
+[data-product-id="solobar-kit"] { --product-scale: 0.93; }
+[data-product-id="solobar-pod"] { --product-scale: 1.06; }
+[data-product-id="yocco"] { --product-scale: 0.93; }
+[data-product-id="death-row"] { --product-scale: 0.98; }
+[data-product-id="lost-mary-os"] { --product-scale: 0.98; }
+[data-product-id="lost-mary-mo"] { --product-scale: 1.06; }
+[data-product-id="ease"] { --product-scale: 0.99; }
+[data-product-id="dummy"] { --product-scale: 1.05; }
+[data-product-id="nicky-jam"] { --product-scale: 1.77; }
+[data-product-id="beyond"] { --product-scale: 1.77; }
+[data-product-id="bugatti"] { --product-scale: 2.45; }
+[data-product-id="nimbox-kit"] { --product-scale: 1.40; }
+[data-product-id="nimbox-pod"] { --product-scale: 1.36; }
+[data-product-id="vera"] { --product-scale: 1.67; }
+[data-product-id="katchmi"] { --product-scale: 1.51; }
+[data-product-id="fifty-cent"] { --product-scale: 1.56; }
+[data-product-id="spaceman"] { --product-scale: 1.51; }
+[data-product-id="dinner-lady"] { --product-scale: 1.74; }
+[data-product-id="brass-type-c"] { --product-scale: 1.97; }
+[data-product-id="anv-digital"] { --product-scale: 1.37; }
+[data-product-id="high-pro"] { --product-scale: 1.02; }
+[data-product-id="secret-pro"] { --product-scale: 1.39; }
+[data-product-id="waka-solo-2"] { --product-scale: 1.37; }
+[data-product-id="waka-creator-bateria"] { --product-scale: 1.84; }
+[data-product-id="waka-creator-pod"] { --product-scale: 1.64; }
+[data-product-id="sami-2-bateria"] { --product-scale: 1.46; }
+[data-product-id="sami-pod-2"] { --product-scale: 2.20; }
+[data-product-id="airpods-pro-2"] { --product-scale: 0.82; }
+[data-product-id="airpods-4-anc"] { --product-scale: 0.82; }
+[data-product-id="en-create"] { --product-scale: 0.82; }
 
 /* Product description inside modal */
 .flavor-modal-product-desc {

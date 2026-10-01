@@ -432,15 +432,46 @@ body.menu-open-scroll-lock {
   }
 
   .card-image-wrapper {
-    height: 145px !important;
-    padding: 6px !important;
+    height: 165px !important;
+    padding: 10px !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
   }
 
   .product-img-real {
-    max-height: 125px !important;
-    max-width: 90% !important;
+    max-height: 135px !important;
+    max-width: 86% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin: auto !important;
+    display: block !important;
+    transform: translateZ(0) scale(var(--product-scale, 1)) !important;
+    transition: transform 0.35s ease, filter 0.35s ease !important;
+  }
+
+  .flavor-card-img-wrap {
+    height: 125px !important;
+    padding: 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow: hidden !important;
+  }
+
+  .flavor-card-img {
+    max-height: 105px !important;
+    max-width: 85% !important;
+    width: auto !important;
+    height: auto !important;
+    object-fit: contain !important;
+    margin: auto !important;
+    display: block !important;
+    transform: translateZ(0) scale(var(--product-scale, 1)) !important;
   }
 
   .card-body {

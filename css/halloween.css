@@ -235,39 +235,78 @@
 }
 
 /* ==========================================================================
-   TELARAÑAS ORGÁNICAS REALISTAS (ESQUINAS DE PANTALLA)
+   TELARAÑAS SUTILES, DELICADAS Y ANIMADAS (ESQUINAS DE PANTALLA)
+   Reducidas, elegantes, con balanceo suave y elasticidad viva al aire
    ========================================================================== */
 .tela-halloween {
   position: fixed;
-  width: 150px;
-  height: 150px;
+  width: 90px;
+  height: 90px;
   z-index: 25;
   pointer-events: none;
-  filter: drop-shadow(0 0 4px rgba(168, 85, 247, 0.35));
+  opacity: 0.65;
+  filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.25));
+  transition: opacity 0.4s ease;
 }
 
 .tela-halloween svg {
   width: 100%;
   height: 100%;
   fill: none;
+  overflow: visible;
+  display: block;
+  transform-origin: 0 0;
+  animation: brisaTelarana 9s ease-in-out infinite alternate;
 }
 
+/* Desfase de animación entre esquinas para movimiento asíncrono y orgánico */
+.tela-halloween.arriba-izquierda svg {
+  animation-delay: 0s;
+}
+
+.tela-halloween.arriba-derecha svg {
+  animation-delay: -2.4s;
+  animation-duration: 9.6s;
+}
+
+.tela-halloween.abajo-izquierda svg {
+  animation-delay: -4.8s;
+  animation-duration: 8.7s;
+}
+
+.tela-halloween.abajo-derecha svg {
+  animation-delay: -7.1s;
+  animation-duration: 10.2s;
+}
+
+/* Hilos principales de soporte (finitos, elegantes y translúcidos) */
 .tela-halloween path.hilo-principal {
-  stroke: rgba(235, 228, 250, 0.72);
-  stroke-width: 1.8;
-  vector-effect: non-scaling-stroke;
-}
-
-.tela-halloween path.hilo-espiral {
-  stroke: rgba(201, 191, 224, 0.55);
+  stroke: rgba(235, 228, 250, 0.58);
   stroke-width: 1.1;
   vector-effect: non-scaling-stroke;
 }
 
-.tela-halloween circle.nodo-rocio {
-  fill: rgba(255, 248, 214, 0.75);
+/* Hilos espirales colgantes con elasticidad reactiva al viento */
+.tela-halloween path.hilo-espiral {
+  stroke: rgba(201, 191, 224, 0.45);
+  stroke-width: 0.85;
+  vector-effect: non-scaling-stroke;
+  transform-origin: 0 0;
+  animation: elasticidadHilos 7s ease-in-out infinite alternate;
 }
 
+/* Hilos pares con desfase de elasticidad para evitar movimiento en bloque rígido */
+.tela-halloween path.hilo-espiral:nth-of-type(2n) {
+  animation: elasticidadHilosSecundarios 8.5s ease-in-out infinite alternate -2.5s;
+}
+
+/* Gotas de rocío sutiles en las intersecciones con leve destello */
+.tela-halloween circle.nodo-rocio {
+  fill: rgba(255, 248, 214, 0.6);
+  animation: rocioBrisa 5.5s ease-in-out infinite alternate;
+}
+
+/* Ubicación anclada a cada esquina de la pantalla */
 .tela-halloween.arriba-izquierda {
   top: 0;
   left: 0;
@@ -289,6 +328,72 @@
   bottom: 74px; /* Por encima de la barra de acciones fija */
   right: 0;
   transform: scale(-1);
+}
+
+/* ==========================================================================
+   ANIMACIONES DE BALANCEO SUAVE Y ELASTICIDAD DE TELARAÑAS
+   ========================================================================== */
+/* Balanceo pendular sutil desde el vértice de la esquina */
+@keyframes brisaTelarana {
+  0% {
+    transform: rotate(0deg) skewX(0deg);
+  }
+  25% {
+    transform: rotate(0.85deg) skewX(0.4deg);
+  }
+  50% {
+    transform: rotate(-0.6deg) skewX(-0.3deg);
+  }
+  75% {
+    transform: rotate(1.1deg) skewX(0.55deg);
+  }
+  100% {
+    transform: rotate(-0.35deg) skewX(-0.2deg);
+  }
+}
+
+/* Micro-elasticidad de los arcos de hilo (reacción natural al aire) */
+@keyframes elasticidadHilos {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  35% {
+    transform: scale(1.025, 1.018) translate(0.3px, 0.4px);
+  }
+  70% {
+    transform: scale(0.985, 0.99) translate(-0.3px, -0.2px);
+  }
+  100% {
+    transform: scale(1.015, 1.01) translate(0.2px, 0.3px);
+  }
+}
+
+/* Elasticidad desfasada para los hilos alternos */
+@keyframes elasticidadHilosSecundarios {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+  40% {
+    transform: scale(0.988, 1.022) translate(-0.25px, 0.35px);
+  }
+  80% {
+    transform: scale(1.018, 0.985) translate(0.35px, -0.25px);
+  }
+  100% {
+    transform: scale(1.005, 1.008) translate(0.1px, 0.2px);
+  }
+}
+
+/* Leve destello y vibración en los puntos de rocío */
+@keyframes rocioBrisa {
+  0%, 100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.15);
+  }
 }
 
 /* ==========================================================================
@@ -450,8 +555,9 @@
   }
 
   .tela-halloween {
-    width: 115px;
-    height: 115px;
+    width: 72px;
+    height: 72px;
+    opacity: 0.6;
   }
 
   .tela-halloween.abajo-izquierda,
@@ -494,9 +600,9 @@
   }
 
   .tela-halloween {
-    width: 76px;
-    height: 76px;
-    opacity: 0.45;
+    width: 48px;
+    height: 48px;
+    opacity: 0.5;
   }
 
   .tela-halloween.abajo-izquierda,
@@ -533,9 +639,9 @@
   }
 
   .tela-halloween {
-    width: 58px;
-    height: 58px;
-    opacity: 0.35;
+    width: 38px;
+    height: 38px;
+    opacity: 0.42;
   }
 
   .tela-halloween.abajo-izquierda,
@@ -557,7 +663,10 @@
   .calabaza-halloween,
   .hw-fog-layer-1,
   .hw-fog-layer-2,
-  .tela-halloween {
+  .tela-halloween,
+  .tela-halloween svg,
+  .tela-halloween path.hilo-espiral,
+  .tela-halloween circle.nodo-rocio {
     animation: none !important;
   }
 

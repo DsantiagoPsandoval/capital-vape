@@ -319,45 +319,9 @@ window.addCurrentHeroToCart = addCurrentHeroToCart;
 window.openHeroProductFlavors = openHeroProductFlavors;
 
 /* ==========================================================================
-   HALLOWEEN - ANIMACIÓN DINÁMICA DE MURCIÉLAGOS
+   HALLOWEEN - AMBIENTACIÓN DINÁMICA 3D
+   ==========================================================================
+   La ambientación avanzada de murciélagos 3D en Three.js, aleteo orgánico,
+   partículas y telarañas dinámicas está gestionada por js/halloween.js.
    ========================================================================== */
-function crearMurcielagoHalloween() {
-  const murcielago = document.createElement("div");
-
-  murcielago.className = "murcielago-halloween";
-
-  murcielago.innerHTML = `
-    <svg viewBox="0 0 100 60" aria-hidden="true">
-      <path
-        d="M50 30
-        C40 10 25 5 5 10
-        C15 20 20 30 5 40
-        C25 35 35 35 50 45
-        C65 35 75 35 95 40
-        C80 30 85 20 95 10
-        C75 5 60 10 50 30Z"
-      />
-    </svg>
-  `;
-
-  murcielago.style.top =
-    Math.floor(Math.random() * 70 + 5) + "vh";
-
-  murcielago.style.animationDelay =
-    "-" + Math.floor(Math.random() * 10) + "s";
-
-  document.body.appendChild(murcielago);
-}
-
-if (document.body) {
-  for (let i = 0; i < 5; i++) {
-    crearMurcielagoHalloween();
-  }
-} else {
-  document.addEventListener("DOMContentLoaded", () => {
-    for (let i = 0; i < 5; i++) {
-      crearMurcielagoHalloween();
-    }
-  });
-}
 

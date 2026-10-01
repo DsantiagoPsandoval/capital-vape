@@ -23,51 +23,105 @@
 <body>
 
   <!-- ==========================================================================
-       CAPA VISUAL DECORATIVA HALLOWEEN (NO INTRUSIVA)
+       CAPA VISUAL DECORATIVA HALLOWEEN (NO INTRUSIVA & 3D WEBGL)
        ========================================================================== -->
+  <!-- Canvas 3D Three.js para murciélagos 3D semirrealistas y partículas espectrales -->
+  <canvas id="halloweenCanvas" class="halloween-three-canvas" aria-hidden="true"></canvas>
+
   <div class="luna"></div>
 
   <div class="calabaza-halloween">
     🎃
   </div>
 
-  <div class="tela-halloween arriba-izquierda">
-    <svg viewBox="0 0 150 150">
-      <path d="M0 0 Q75 25 150 0" />
-      <path d="M0 0 Q25 75 0 150" />
-      <path class="hilo" d="M20 0 Q35 35 0 20" />
-      <path class="hilo" d="M45 0 Q65 55 0 45" />
-      <path class="hilo" d="M70 0 Q90 75 0 70" />
+  <!-- Bruma y niebla nocturna de fondo -->
+  <div class="hw-fog-container" aria-hidden="true">
+    <div class="hw-fog-layer-1"></div>
+    <div class="hw-fog-layer-2"></div>
+  </div>
+
+  <!-- Telarañas orgánicas hiperrealistas en las esquinas -->
+  <div class="tela-halloween arriba-izquierda" aria-hidden="true">
+    <svg viewBox="0 0 160 160">
+      <path class="hilo-principal" d="M0 0 L160 0" />
+      <path class="hilo-principal" d="M0 0 L154 44" />
+      <path class="hilo-principal" d="M0 0 L138 82" />
+      <path class="hilo-principal" d="M0 0 L113 113" />
+      <path class="hilo-principal" d="M0 0 L82 138" />
+      <path class="hilo-principal" d="M0 0 L44 154" />
+      <path class="hilo-principal" d="M0 0 L0 160" />
+      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
+      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
+      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
+      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
+      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
+      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
+      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
+      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
+      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
     </svg>
   </div>
 
-  <div class="tela-halloween arriba-derecha">
-    <svg viewBox="0 0 150 150">
-      <path d="M0 0 Q75 25 150 0" />
-      <path d="M0 0 Q25 75 0 150" />
-      <path class="hilo" d="M20 0 Q35 35 0 20" />
-      <path class="hilo" d="M45 0 Q65 55 0 45" />
-      <path class="hilo" d="M70 0 Q90 75 0 70" />
+  <div class="tela-halloween arriba-derecha" aria-hidden="true">
+    <svg viewBox="0 0 160 160">
+      <path class="hilo-principal" d="M0 0 L160 0" />
+      <path class="hilo-principal" d="M0 0 L154 44" />
+      <path class="hilo-principal" d="M0 0 L138 82" />
+      <path class="hilo-principal" d="M0 0 L113 113" />
+      <path class="hilo-principal" d="M0 0 L82 138" />
+      <path class="hilo-principal" d="M0 0 L44 154" />
+      <path class="hilo-principal" d="M0 0 L0 160" />
+      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
+      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
+      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
+      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
+      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
+      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
+      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
+      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
+      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
     </svg>
   </div>
 
-  <div class="tela-halloween abajo-izquierda">
-    <svg viewBox="0 0 150 150">
-      <path d="M0 0 Q75 25 150 0" />
-      <path d="M0 0 Q25 75 0 150" />
-      <path class="hilo" d="M20 0 Q35 35 0 20" />
-      <path class="hilo" d="M45 0 Q65 55 0 45" />
-      <path class="hilo" d="M70 0 Q90 75 0 70" />
+  <div class="tela-halloween abajo-izquierda" aria-hidden="true">
+    <svg viewBox="0 0 160 160">
+      <path class="hilo-principal" d="M0 0 L160 0" />
+      <path class="hilo-principal" d="M0 0 L154 44" />
+      <path class="hilo-principal" d="M0 0 L138 82" />
+      <path class="hilo-principal" d="M0 0 L113 113" />
+      <path class="hilo-principal" d="M0 0 L82 138" />
+      <path class="hilo-principal" d="M0 0 L44 154" />
+      <path class="hilo-principal" d="M0 0 L0 160" />
+      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
+      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
+      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
+      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
+      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
+      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
+      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
+      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
+      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
     </svg>
   </div>
 
-  <div class="tela-halloween abajo-derecha">
-    <svg viewBox="0 0 150 150">
-      <path d="M0 0 Q75 25 150 0" />
-      <path d="M0 0 Q25 75 0 150" />
-      <path class="hilo" d="M20 0 Q35 35 0 20" />
-      <path class="hilo" d="M45 0 Q65 55 0 45" />
-      <path class="hilo" d="M70 0 Q90 75 0 70" />
+  <div class="tela-halloween abajo-derecha" aria-hidden="true">
+    <svg viewBox="0 0 160 160">
+      <path class="hilo-principal" d="M0 0 L160 0" />
+      <path class="hilo-principal" d="M0 0 L154 44" />
+      <path class="hilo-principal" d="M0 0 L138 82" />
+      <path class="hilo-principal" d="M0 0 L113 113" />
+      <path class="hilo-principal" d="M0 0 L82 138" />
+      <path class="hilo-principal" d="M0 0 L44 154" />
+      <path class="hilo-principal" d="M0 0 L0 160" />
+      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
+      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
+      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
+      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
+      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
+      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
+      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
+      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
+      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
     </svg>
   </div>
 
@@ -1127,16 +1181,18 @@
   </div>
 
   <!-- JAVASCRIPT SCRIPTS -->
-  <script src="js/config.js?v=20261001_3"></script>
-  <script src="js/toast.js?v=20261001_3"></script>
-  <script src="js/products-data.js?v=20261001_3"></script>
-  <script src="js/wholesale.js?v=20261001_3"></script>
-  <script src="js/cloud-sync.js?v=20261001_3"></script>
-  <script src="js/admin.js?v=20261001_3"></script>
-  <script src="js/cart.js?v=20261001_3"></script>
-  <script src="js/checkout.js?v=20261001_3"></script>
-  <script src="js/catalog.js?v=20261001_3"></script>
-  <script src="js/main.js?v=20261001_3"></script>
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/config.js?v=20261001_4"></script>
+  <script src="js/toast.js?v=20261001_4"></script>
+  <script src="js/products-data.js?v=20261001_4"></script>
+  <script src="js/wholesale.js?v=20261001_4"></script>
+  <script src="js/cloud-sync.js?v=20261001_4"></script>
+  <script src="js/admin.js?v=20261001_4"></script>
+  <script src="js/cart.js?v=20261001_4"></script>
+  <script src="js/checkout.js?v=20261001_4"></script>
+  <script src="js/catalog.js?v=20261001_4"></script>
+  <script src="js/halloween.js?v=20261001_4"></script>
+  <script src="js/main.js?v=20261001_4"></script>
 </body>
 </html>
 

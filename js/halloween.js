@@ -2,17 +2,18 @@
  * CAPITAL VAPE - AMBIENTACIÓN DE HALLOWEEN 3D PROFESIONAL
  * Three.js WebGL Engine:
  * - Murciélagos 3D semirrealistas con aleteo biológico multicapa y vuelo orgánico en X/Y/Z
- * - Tres planos de profundidad (fondo, medio, primer plano)
- * - Iluminación atmosférica nocturna (luna + resplandor de calabaza)
- * - Partículas espectrales y ascuas flotantes con movimiento procedural
+ * - Cinemática robusta: velocidades y objetivos garantizados desde la inicialización (sin estados estáticos)
+ * - Loop de animación único y resiliente ante recargas de página, cambios de pestaña y redimensionamiento
+ * - Gestión completa del ciclo de vida y Visibility API (reactivación automática hidden -> visible)
+ * - Tres planos de profundidad (fondo, medio, primer plano) con materiales y geometrías 100% compartidos
+ * - Optimización inteligente y adaptativa de partículas y efectos entre PC, Tablet y Celular
  * - Telarañas sutiles distribuidas en esquinas y tarjetas selectas del catálogo
- * - Optimizado para 60 FPS, responsive y respetuoso con prefers-reduced-motion
  */
 
 (function () {
   'use strict';
 
-  // Verificar soporte de WebGL
+  // Verificar soporte de WebGL de forma segura
   function isWebGLSupported() {
     try {
       const canvas = document.createElement('canvas');
@@ -30,13 +31,15 @@
   });
 
   /* ==========================================================================
-     GEOMETRÍAS COMPARTIDAS PARA MURCIÉLAGOS (MÁXIMA EFICIENCIA DE GPU)
+     GEOMETRÍAS Y MATERIALES COMPARTIDOS (MÁXIMA EFICIENCIA DE GPU)
      ========================================================================== */
   let torsoGeom, headGeom, earGeom;
   let leftInnerGeom, leftOuterGeom, rightInnerGeom, rightOuterGeom;
+  let sharedMaterials = null;
+  let cachedParticleTexture = null;
 
   function initSharedGeometries() {
-    if (torsoGeom) return; // Ya inicializadas
+    if (torsoGeom) return;
 
     torsoGeom = new THREE.ConeGeometry(2.3, 11, 7);
     torsoGeom.rotateX(-Math.PI / 2); // Orientar cuerpo hacia +Z
@@ -82,10 +85,71 @@
     rightOuterGeom = new THREE.ShapeGeometry(rightOuterShape);
   }
 
+  function initSharedMaterials() {
+    if (sharedMaterials) return;
+
+    // Compartir materiales por cada plano de profundidad (evita recompilar shaders o fragmentar draw calls)
+    sharedMaterials = {
+      far: {
+        body: new THREE.MeshStandardMaterial({
+          color: 0x140b22,
+          roughness: 0.65,
+          metalness: 0.15,
+          transparent: true,
+          opacity: 0.52
+        }),
+        wing: new THREE.MeshStandardMaterial({
+          color: 0x190d2e,
+          roughness: 0.6,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.52
+        })
+      },
+      mid: {
+        body: new THREE.MeshStandardMaterial({
+          color: 0x140b22,
+          roughness: 0.65,
+          metalness: 0.15,
+          transparent: true,
+          opacity: 0.85
+        }),
+        wing: new THREE.MeshStandardMaterial({
+          color: 0x190d2e,
+          roughness: 0.6,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.85
+        })
+      },
+      close: {
+        body: new THREE.MeshStandardMaterial({
+          color: 0x140b22,
+          roughness: 0.65,
+          metalness: 0.15,
+          transparent: true,
+          opacity: 0.98
+        }),
+        wing: new THREE.MeshStandardMaterial({
+          color: 0x190d2e,
+          roughness: 0.6,
+          metalness: 0.1,
+          side: THREE.DoubleSide,
+          transparent: true,
+          opacity: 0.98
+        })
+      }
+    };
+  }
+
   /* ==========================================================================
-     TEXTURA PROCEDURAL DE PARTÍCULAS ESPECTRALES
+     TEXTURA PROCEDURAL DE PARTÍCULAS ESPECTRALES (CACHEADA)
      ========================================================================== */
-  function createParticleTexture() {
+  function getParticleTexture() {
+    if (cachedParticleTexture) return cachedParticleTexture;
+
     const canvas = document.createElement('canvas');
     canvas.width = 64;
     canvas.height = 64;
@@ -97,7 +161,8 @@
     grad.addColorStop(1, 'rgba(10, 5, 20, 0)');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 64, 64);
-    return new THREE.CanvasTexture(canvas);
+    cachedParticleTexture = new THREE.CanvasTexture(canvas);
+    return cachedParticleTexture;
   }
 
   /* ==========================================================================
@@ -106,26 +171,22 @@
   class Bat3D {
     constructor(scene, depthTier, screenBounds) {
       this.scene = scene;
-      this.depthTier = depthTier; // 'far', 'mid', 'close'
-      this.screenBounds = screenBounds;
+      this.depthTier = depthTier || 'mid';
+      this.screenBounds = screenBounds || { width: 1200, height: 800 };
 
-      // Parámetros según nivel de profundidad
-      let opacity, baseScale, zRange, speedRange;
-      if (depthTier === 'far') {
-        opacity = 0.52;
+      // Parámetros según plano de profundidad
+      let baseScale, zRange, speedRange;
+      if (this.depthTier === 'far') {
         baseScale = 0.65;
         zRange = [-340, -150];
-        speedRange = [1.8, 2.6];
+        speedRange = [1.9, 2.7];
         this.flapFreq = 10.5 + Math.random() * 2.5;
-      } else if (depthTier === 'close') {
-        opacity = 0.98;
+      } else if (this.depthTier === 'close') {
         baseScale = 1.35;
         zRange = [130, 260];
         speedRange = [3.8, 5.0];
         this.flapFreq = 15.0 + Math.random() * 3.5;
       } else {
-        // 'mid'
-        opacity = 0.85;
         baseScale = 0.95;
         zRange = [-140, 120];
         speedRange = [2.6, 3.8];
@@ -134,27 +195,14 @@
 
       this.scale = baseScale * (0.88 + Math.random() * 0.24);
       this.maxSpeed = speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]);
-      this.minSpeed = this.maxSpeed * 0.55;
+      this.minSpeed = Math.max(1.2, this.maxSpeed * 0.55);
       this.turnSpeed = 0.045 + Math.random() * 0.035;
       this.zRange = zRange;
 
-      // Materiales con soporte para iluminación nocturna
-      this.bodyMat = new THREE.MeshStandardMaterial({
-        color: 0x140b22,
-        roughness: 0.65,
-        metalness: 0.15,
-        transparent: true,
-        opacity: opacity
-      });
-
-      this.wingMat = new THREE.MeshStandardMaterial({
-        color: 0x190d2e,
-        roughness: 0.6,
-        metalness: 0.1,
-        side: THREE.DoubleSide,
-        transparent: true,
-        opacity: opacity
-      });
+      // Materiales compartidos
+      const mats = sharedMaterials[this.depthTier] || sharedMaterials.mid;
+      this.bodyMat = mats.body;
+      this.wingMat = mats.wing;
 
       // Jerarquía 3D
       this.root = new THREE.Group();
@@ -210,13 +258,13 @@
       this.root.scale.setScalar(this.scale);
       this.scene.add(this.root);
 
-      // Estado de cinemática
+      // Cinemática garantizada (nunca vectores nulos)
       this.position = new THREE.Vector3();
       this.velocity = new THREE.Vector3();
       this.target = new THREE.Vector3();
-      this.targetTimer = 0;
+      this.targetTimer = 3.0 + Math.random() * 4.0;
 
-      // Variaciones individuales
+      // Variaciones y dinámicas individuales
       this.wingPhase = Math.random() * Math.PI * 2;
       this.asymmetry = (Math.random() - 0.5) * 0.08;
       this.noiseSeedX = Math.random() * 100;
@@ -226,110 +274,132 @@
       this.glideDuration = 0;
       this.bankAngle = 0;
 
-      // Inicializar posición
+      // Generar posición y trayectoria inicial
       this.spawn(true);
     }
 
+    pickNewTarget() {
+      const b = this.screenBounds || { width: 1200, height: 800 };
+      const w = Math.max(b.width || 0, 400);
+      const h = Math.max(b.height || 0, 300);
+
+      let attempts = 0;
+      do {
+        this.target.set(
+          (Math.random() - 0.5) * w * 0.92,
+          (Math.random() - 0.5) * h * 0.85,
+          this.zRange[0] + Math.random() * (this.zRange[1] - this.zRange[0])
+        );
+        attempts++;
+      } while (this.target.distanceTo(this.position) < 120 && attempts < 5);
+
+      this.targetTimer = 3.5 + Math.random() * 4.0;
+
+      // Ocasionalmente planear en ráfagas de aire
+      if (Math.random() < 0.32) {
+        this.glideDuration = 0.8 + Math.random() * 1.0;
+        this.glideTimer = this.glideDuration;
+      }
+    }
+
     spawn(initial = false) {
-      const b = this.screenBounds;
+      const b = this.screenBounds || { width: 1200, height: 800 };
+      const w = Math.max(b.width || 0, 400);
+      const h = Math.max(b.height || 0, 300);
       const z = this.zRange[0] + Math.random() * (this.zRange[1] - this.zRange[0]);
 
       if (initial) {
-        // En arranque: repartir por toda la pantalla
+        // En arranque: repartir armónicamente por el volumen visible
         this.position.set(
-          (Math.random() - 0.5) * b.width * 1.1,
-          (Math.random() - 0.5) * b.height * 0.9,
+          (Math.random() - 0.5) * w * 0.95,
+          (Math.random() - 0.5) * h * 0.85,
           z
         );
       } else {
-        // En reaparición: entrar desde bordes aleatorios (izquierda, derecha, arriba, abajo, fondo)
+        // En reaparición: ingresar desde un extremo exterior
         const edge = Math.floor(Math.random() * 5);
         const margin = 80;
         if (edge === 0) {
-          // Entrar por izquierda
-          this.position.set(-b.width * 0.55 - margin, (Math.random() - 0.5) * b.height * 0.8, z);
+          this.position.set(-w * 0.55 - margin, (Math.random() - 0.5) * h * 0.8, z);
         } else if (edge === 1) {
-          // Entrar por derecha
-          this.position.set(b.width * 0.55 + margin, (Math.random() - 0.5) * b.height * 0.8, z);
+          this.position.set(w * 0.55 + margin, (Math.random() - 0.5) * h * 0.8, z);
         } else if (edge === 2) {
-          // Entrar por arriba
-          this.position.set((Math.random() - 0.5) * b.width * 0.8, b.height * 0.55 + margin, z);
+          this.position.set((Math.random() - 0.5) * w * 0.8, h * 0.55 + margin, z);
         } else if (edge === 3) {
-          // Entrar por abajo
-          this.position.set((Math.random() - 0.5) * b.width * 0.8, -b.height * 0.55 - margin, z);
+          this.position.set((Math.random() - 0.5) * w * 0.8, -h * 0.55 - margin, z);
         } else {
-          // Entrar desde el fondo profundo Z
-          this.position.set((Math.random() - 0.5) * b.width * 0.7, (Math.random() - 0.5) * b.height * 0.7, this.zRange[0] - 80);
+          this.position.set((Math.random() - 0.5) * w * 0.7, (Math.random() - 0.5) * h * 0.7, this.zRange[0] - 80);
         }
       }
 
       this.root.position.copy(this.position);
       this.pickNewTarget();
 
-      // Velocidad inicial hacia el objetivo
-      this.velocity.subVectors(this.target, this.position).normalize().multiplyScalar(this.maxSpeed * 0.8);
-      this.root.lookAt(this.position.clone().add(this.velocity));
-    }
-
-    pickNewTarget() {
-      const b = this.screenBounds;
-      // Generar objetivo dentro del volumen visible de vuelo
-      this.target.set(
-        (Math.random() - 0.5) * b.width * 0.95,
-        (Math.random() - 0.5) * b.height * 0.85,
-        this.zRange[0] + Math.random() * (this.zRange[1] - this.zRange[0])
-      );
-      this.targetTimer = 3.5 + Math.random() * 4.0;
-
-      // Ocasionalmente entrar en planeo (glide)
-      if (Math.random() < 0.35) {
-        this.glideDuration = 0.8 + Math.random() * 1.0;
-        this.glideTimer = this.glideDuration;
+      // Dirección y velocidad inicial garantizadas (vx, vy, vz siempre activas)
+      const dir = new THREE.Vector3().subVectors(this.target, this.position);
+      if (dir.lengthSq() < 0.001) {
+        dir.set(Math.random() - 0.5, (Math.random() - 0.5) * 0.3, Math.random() - 0.5);
       }
+      dir.normalize().multiplyScalar(this.maxSpeed * 0.85);
+      this.velocity.copy(dir);
+
+      // Orientación inicial hacia su trayectoria
+      const lookPos = this.position.clone().add(this.velocity);
+      this.root.lookAt(lookPos);
     }
 
     update(dt, time, mouseWorld) {
-      if (isReducedMotion) {
-        return;
-      }
+      // Salvaguardar dt para prevenir que sea 0, NaN o negativo
+      if (!dt || isNaN(dt) || dt <= 0) dt = 0.016;
+      dt = Math.min(dt, 0.05);
 
-      const b = this.screenBounds;
+      // Si hay reducción de movimiento activada por accesibilidad, ralentizar suavemente sin detener
+      const speedMultiplier = isReducedMotion ? 0.35 : 1.0;
+
+      const b = this.screenBounds || { width: 1200, height: 800 };
+      const w = Math.max(b.width || 0, 400);
+      const h = Math.max(b.height || 0, 300);
       const margin = 140;
 
-      // 1. Verificar si salió de los límites de pantalla
+      // 1. Reaparición si sale del volumen de pantalla
       if (
-        this.position.x < -b.width * 0.6 - margin ||
-        this.position.x > b.width * 0.6 + margin ||
-        this.position.y < -b.height * 0.6 - margin ||
-        this.position.y > b.height * 0.6 + margin ||
-        this.position.z < this.zRange[0] - 120 ||
-        this.position.z > this.zRange[1] + 120
+        this.position.x < -w * 0.6 - margin ||
+        this.position.x > w * 0.6 + margin ||
+        this.position.y < -h * 0.6 - margin ||
+        this.position.y > h * 0.6 + margin ||
+        this.position.z < this.zRange[0] - 130 ||
+        this.position.z > this.zRange[1] + 130
       ) {
         this.spawn(false);
         return;
       }
 
-      // 2. Temporizador de objetivo
+      // 2. Temporizador y objetivo de vuelo
       this.targetTimer -= dt;
       if (this.targetTimer <= 0 || this.position.distanceTo(this.target) < 60) {
         this.pickNewTarget();
       }
 
-      // 3. Vector de aceleración / dirección hacia el objetivo
-      const desired = new THREE.Vector3().subVectors(this.target, this.position).normalize().multiplyScalar(this.maxSpeed);
+      // 3. Dirección deseada y aceleración hacia el objetivo
+      const desired = new THREE.Vector3().subVectors(this.target, this.position);
+      if (desired.lengthSq() < 0.001) {
+        desired.set(Math.random() - 0.5, (Math.random() - 0.5) * 0.2, Math.random() - 0.5);
+      }
+      desired.normalize().multiplyScalar(this.maxSpeed * speedMultiplier);
+
       const steer = new THREE.Vector3().subVectors(desired, this.velocity);
       steer.clampLength(0, this.turnSpeed * this.maxSpeed);
       this.velocity.add(steer);
 
-      // 4. Turbulencia procedural continua (viento y corrientes térmicas)
+      // 4. Turbulencia atmosférica continua (corrientes de aire)
       const turbX = Math.sin(time * 1.8 + this.noiseSeedX) * 0.35;
       const turbY = Math.cos(time * 2.2 + this.noiseSeedY) * 0.45;
       const turbZ = Math.sin(time * 1.4 + this.noiseSeedZ) * 0.25;
-      this.velocity.x += turbX * dt * 30;
-      this.velocity.y += turbY * dt * 30;
-      this.velocity.z += turbZ * dt * 30;
+      this.velocity.x += turbX * dt * 25;
+      this.velocity.y += turbY * dt * 25;
+      this.velocity.z += turbZ * dt * 25;
 
-      // 5. Interacción sutil con el cursor del mouse (evasión ambiental)
+      // 5. Interacción ambiental reactiva al cursor
       if (mouseWorld) {
         const distToMouse = Math.hypot(this.position.x - mouseWorld.x, this.position.y - mouseWorld.y);
         if (distToMouse < 150) {
@@ -337,95 +407,102 @@
           const repelDir = new THREE.Vector3(
             this.position.x - mouseWorld.x,
             this.position.y - mouseWorld.y,
-            (Math.random() - 0.5) * 40
+            (Math.random() - 0.5) * 35
           ).normalize().multiplyScalar(repelForce);
           this.velocity.add(repelDir);
         }
       }
 
-      // Limitar velocidad
-      this.velocity.clampLength(this.minSpeed, this.maxSpeed);
+      // 6. Salvaguarda crítica: asegurar que la velocidad nunca sea cero permanente
+      if (this.velocity.lengthSq() < 0.0001) {
+        const angle = Math.random() * Math.PI * 2;
+        this.velocity.set(
+          Math.cos(angle) * this.maxSpeed * 0.8,
+          (Math.random() - 0.5) * 0.3 * this.maxSpeed,
+          Math.sin(angle) * this.maxSpeed * 0.8
+        );
+      }
 
-      // 6. Aplicar movimiento
+      // Limitar velocidad entre mínimo y máximo configurados
+      this.velocity.clampLength(this.minSpeed * speedMultiplier, this.maxSpeed * speedMultiplier);
+
+      // 7. Aplicar desplazamiento en el espacio 3D
       this.position.addScaledVector(this.velocity, dt * 60);
       this.root.position.copy(this.position);
 
-      // 7. Orientación 3D (mirar en la dirección del vector de velocidad)
+      // 8. Orientación tridimensional hacia el vector de velocidad
       const forwardTarget = this.position.clone().add(this.velocity);
       this.root.lookAt(forwardTarget);
 
-      // 8. Inclinación y alabeo (Banking) orgánico en las curvas
+      // 9. Alabeo orgánico (banking) en giros y curvas
       const lateralTurn = steer.x;
       const targetBank = -lateralTurn * 1.8;
       this.bankAngle += (targetBank - this.bankAngle) * (dt * 6.0);
       this.bodyGroup.rotation.z = Math.max(-0.85, Math.min(0.85, this.bankAngle));
 
-      // 9. Aleteo biológico y planeo
+      // 10. Aleteo biológico multicapa y planeo
       let flapFactor = 1.0;
       if (this.glideTimer > 0) {
         this.glideTimer -= dt;
-        flapFactor = 0.15; // Mantener alas semi-extendidas en planeo
+        flapFactor = 0.16; // Mantener alas extendidas en planeo
       } else {
-        this.wingPhase += this.flapFreq * dt;
+        this.wingPhase += this.flapFreq * dt * (isReducedMotion ? 0.4 : 1.0);
       }
 
       const flap = Math.sin(this.wingPhase) * flapFactor;
-      // Desfase para propagación de onda en la articulación externa del ala
       const outerFlap = Math.sin(this.wingPhase - 0.48) * flapFactor;
       const rightFlap = Math.sin(this.wingPhase + this.asymmetry) * flapFactor;
       const rightOuterFlap = Math.sin(this.wingPhase + this.asymmetry - 0.48) * flapFactor;
 
-      // Rotación de hombros (alas interiores)
-      const maxInnerAngle = 0.72; // ~41 grados
+      const maxInnerAngle = 0.72;
       this.leftWingPivot.rotation.z = flap * maxInnerAngle;
       this.leftWingPivot.rotation.x = Math.cos(this.wingPhase) * 0.14 * flapFactor;
 
       this.rightWingPivot.rotation.z = -rightFlap * maxInnerAngle;
       this.rightWingPivot.rotation.x = Math.cos(this.wingPhase + this.asymmetry) * 0.14 * flapFactor;
 
-      // Articulación de codos (puntas exteriores festoneadas)
-      const maxOuterAngle = 0.88; // ~50 grados
+      const maxOuterAngle = 0.88;
       this.leftOuterPivot.rotation.z = outerFlap * maxOuterAngle;
       this.rightOuterPivot.rotation.z = -rightOuterFlap * maxOuterAngle;
 
-      // Elevación dinámica del cuerpo (Lift aerodinámico: el cuerpo sube ligeramente al bajar las alas)
       this.bodyGroup.position.y = -flap * 1.35 * flapFactor;
       this.bodyGroup.rotation.x = Math.cos(this.wingPhase) * 0.08 * flapFactor;
     }
 
     dispose() {
-      this.scene.remove(this.root);
-      this.bodyMat.dispose();
-      this.wingMat.dispose();
+      if (this.root && this.root.parent) {
+        this.root.parent.remove(this.root);
+      }
     }
   }
 
   /* ==========================================================================
-     SISTEMA DE PARTÍCULAS ESPECTRALES (ASCUAS Y POLVO NOCTURNO)
+     SISTEMA DE PARTÍCULAS ESPECTRALES (LIGERO Y REUTILIZABLE)
      ========================================================================== */
   class SpectralParticles {
     constructor(scene, count, screenBounds) {
       this.scene = scene;
       this.count = count;
-      this.screenBounds = screenBounds;
+      this.screenBounds = screenBounds || { width: 1200, height: 800 };
 
       const positions = new Float32Array(count * 3);
       const colors = new Float32Array(count * 3);
-      const sizes = new Float32Array(count);
       this.speeds = new Float32Array(count);
       this.phases = new Float32Array(count);
 
-      // Colores de la paleta: Naranja calabaza, Violeta místico y Oro lunar
       const palette = [
-        new THREE.Color(0xff7a1a), // Naranja
-        new THREE.Color(0xa855f7), // Violeta
+        new THREE.Color(0xff7a1a), // Naranja calabaza
+        new THREE.Color(0xa855f7), // Violeta místico
         new THREE.Color(0xffe89c), // Oro lunar
         new THREE.Color(0xe07a5f)  // Terracota
       ];
 
+      const w = Math.max(this.screenBounds.width || 0, 400);
+      const h = Math.max(this.screenBounds.height || 0, 300);
+
       for (let i = 0; i < count; i++) {
-        positions[i * 3 + 0] = (Math.random() - 0.5) * screenBounds.width * 1.2;
-        positions[i * 3 + 1] = (Math.random() - 0.5) * screenBounds.height * 1.2;
+        positions[i * 3 + 0] = (Math.random() - 0.5) * w * 1.2;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * h * 1.2;
         positions[i * 3 + 2] = -280 + Math.random() * 520;
 
         const col = palette[Math.floor(Math.random() * palette.length)];
@@ -433,7 +510,6 @@
         colors[i * 3 + 1] = col.g;
         colors[i * 3 + 2] = col.b;
 
-        sizes[i] = 12 + Math.random() * 20;
         this.speeds[i] = 0.25 + Math.random() * 0.75;
         this.phases[i] = Math.random() * Math.PI * 2;
       }
@@ -443,11 +519,11 @@
       this.geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
       this.material = new THREE.PointsMaterial({
-        size: 16,
+        size: 15,
         vertexColors: true,
-        map: createParticleTexture(),
+        map: getParticleTexture(),
         transparent: true,
-        opacity: 0.72,
+        opacity: 0.70,
         blending: THREE.AdditiveBlending,
         depthWrite: false
       });
@@ -457,41 +533,50 @@
     }
 
     update(dt, time) {
-      if (isReducedMotion) return;
+      if (!this.geometry || !this.geometry.attributes.position) return;
+      if (!dt || isNaN(dt) || dt <= 0) dt = 0.016;
+      dt = Math.min(dt, 0.05);
 
       const positions = this.geometry.attributes.position.array;
-      const b = this.screenBounds;
-      const halfH = b.height * 0.65;
+      const b = this.screenBounds || { width: 1200, height: 800 };
+      const halfH = Math.max(b.height || 0, 300) * 0.65;
+      const w = Math.max(b.width || 0, 400);
 
       for (let i = 0; i < this.count; i++) {
         const i3 = i * 3;
-        // Ascenso vertical suave
-        positions[i3 + 1] += this.speeds[i] * dt * 45;
+        positions[i3 + 1] += this.speeds[i] * dt * 42;
+        positions[i3 + 0] += Math.sin(time * 1.1 + this.phases[i]) * 0.40;
 
-        // Balanceo sinusoidal horizontal
-        positions[i3 + 0] += Math.sin(time * 1.1 + this.phases[i]) * 0.45;
-
-        // Reciclar si sale por arriba
         if (positions[i3 + 1] > halfH) {
           positions[i3 + 1] = -halfH;
-          positions[i3 + 0] = (Math.random() - 0.5) * b.width * 1.2;
+          positions[i3 + 0] = (Math.random() - 0.5) * w * 1.2;
         }
       }
       this.geometry.attributes.position.needsUpdate = true;
     }
 
     dispose() {
-      this.scene.remove(this.points);
-      this.geometry.dispose();
-      this.material.dispose();
+      if (this.points && this.points.parent) {
+        this.points.parent.remove(this.points);
+      }
+      if (this.geometry) this.geometry.dispose();
+      if (this.material) this.material.dispose();
     }
   }
 
   /* ==========================================================================
-     ESCENA PRINCIPAL DE HALLOWEEN (THREE.JS RUNTIME)
+     ESCENA PRINCIPAL DE HALLOWEEN (THREE.JS RUNTIME DE ALTO RENDIMIENTO)
      ========================================================================== */
   class HalloweenScene {
     constructor() {
+      // Destruir instancia previa si existía para prevenir duplicidad de loops
+      if (window.__HALLOWEEN_INSTANCE__) {
+        try {
+          window.__HALLOWEEN_INSTANCE__.dispose();
+        } catch (e) {}
+      }
+      window.__HALLOWEEN_INSTANCE__ = this;
+
       this.canvas = document.getElementById('halloweenCanvas');
       if (!this.canvas) {
         this.canvas = document.createElement('canvas');
@@ -501,83 +586,110 @@
         document.body.prepend(this.canvas);
       }
 
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
-
-      // Inicializar geometrías compartidas
+      // Inicializar recursos compartidos
       initSharedGeometries();
+      initSharedMaterials();
 
       // Renderer WebGL con fondo 100% transparente
       this.renderer = new THREE.WebGLRenderer({
         canvas: this.canvas,
         alpha: true,
-        antialias: true,
+        antialias: window.innerWidth > 768, // Antialias solo en tablet/desktop para máxima velocidad en celular
         powerPreference: 'high-performance'
       });
       this.renderer.setClearColor(0x000000, 0);
-      this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-      this.renderer.setSize(this.width, this.height);
 
       // Escena y Cámara de Perspectiva
       this.scene = new THREE.Scene();
-      this.camera = new THREE.PerspectiveCamera(50, this.width / this.height, 1, 3000);
+      this.camera = new THREE.PerspectiveCamera(50, 1, 1, 3000);
       this.camera.position.set(0, 0, 600);
       this.camera.lookAt(0, 0, 0);
 
-      this.calcScreenBounds();
+      // Dimensiones iniciales y screenBounds seguros
+      this.updateDimensions();
 
       // Iluminación nocturna
       this.setupLights();
 
-      // Murciélagos y partículas
+      // Entidades: murciélagos y partículas
       this.bats = [];
       this.particles = null;
       this.initEntities();
 
-      // Interacción con ratón
+      // Interacción sutil de ratón (solo si existe dispositivo apuntador)
       this.mouseWorld = null;
       this.setupMouseEvents();
+
+      // Ciclo de vida y visibilidad de pestaña
+      this.setupVisibilityEvents();
 
       // Resize
       this.onResize = this.onResize.bind(this);
       window.addEventListener('resize', this.onResize, { passive: true });
 
-      // Loop principal
-      this.lastTime = performance.now();
-      this.clock = new THREE.Clock();
+      // Loop principal único
+      this.clock = new THREE.Clock(true);
+      this.isRunning = false;
+      this.rafId = null;
+      this.lastFrameTime = performance.now();
       this.animate = this.animate.bind(this);
-      this.rafId = requestAnimationFrame(this.animate);
 
-      // Monitoreo de FPS para rendimiento adaptativo
-      this.fpsDropCount = 0;
-      this.lastFpsCheck = performance.now();
-      this.frameCount = 0;
+      // Iniciar el loop inmediatamente
+      this.startLoop();
+    }
+
+    updateDimensions() {
+      const w = Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0, 320);
+      const h = Math.max(window.innerHeight || 0, document.documentElement.clientHeight || 0, 320);
+      this.width = w;
+      this.height = h;
+
+      if (this.camera) {
+        this.camera.aspect = w / h;
+        this.camera.updateProjectionMatrix();
+      }
+
+      // Optimización inteligente de DPR por tipo de pantalla
+      const isMobile = w < 768;
+      const isTablet = w < 1024;
+      const maxDpr = isMobile ? 1.0 : (isTablet ? 1.2 : 1.5);
+      const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
+
+      if (this.renderer) {
+        this.renderer.setPixelRatio(dpr);
+        this.renderer.setSize(w, h, false);
+      }
+
+      this.calcScreenBounds();
     }
 
     calcScreenBounds() {
       const vFov = (this.camera.fov * Math.PI) / 180;
       const heightAtZero = 2 * Math.tan(vFov / 2) * this.camera.position.z;
-      const widthAtZero = heightAtZero * this.camera.aspect;
-      this.screenBounds = { width: widthAtZero, height: heightAtZero };
+      const widthAtZero = heightAtZero * (this.camera.aspect || 1);
+      this.screenBounds = {
+        width: Math.max(widthAtZero, 400),
+        height: Math.max(heightAtZero, 300)
+      };
 
       if (this.pumpkinLight) {
-        const halfW = widthAtZero / 2;
-        const halfH = heightAtZero / 2;
+        const halfW = this.screenBounds.width / 2;
+        const halfH = this.screenBounds.height / 2;
         this.pumpkinLight.position.set(halfW * 0.72, -halfH * 0.72, 130);
       }
     }
 
     setupLights() {
-      // Luz crepuscular ambiental violeta
+      // Luz ambiental violeta nocturna
       this.ambientLight = new THREE.AmbientLight(0x281842, 1.4);
       this.scene.add(this.ambientLight);
 
-      // Luz direccional de luna (proyectada desde esquina superior derecha)
+      // Luz direccional de luna
       this.moonLight = new THREE.DirectionalLight(0xfff6db, 1.7);
       this.moonLight.position.set(340, 320, 220);
       this.scene.add(this.moonLight);
 
-      // Luz puntual de la calabaza (cálida y sincronizada con el ciclo de los ojos)
+      // Luz puntual sincronizada con la calabaza
       this.pumpkinLight = new THREE.PointLight(0xff7a1a, 1.3, 850);
       const halfW = this.screenBounds ? this.screenBounds.width / 2 : 280;
       const halfH = this.screenBounds ? this.screenBounds.height / 2 : 320;
@@ -586,23 +698,35 @@
     }
 
     getBatCount() {
-      const w = window.innerWidth;
-      if (w < 768) return 4;        // Móvil
-      if (w < 1024) return 7;       // Tablet
-      return 11;                    // Desktop
+      const w = this.width || window.innerWidth || 1200;
+      if (w < 480) return 3;         // Celular compacto
+      if (w < 768) return 4;         // Celular estándar
+      if (w < 1024) return 6;        // Tablet / iPad
+      return 10;                     // PC / Escritorio completo
+    }
+
+    getParticleCount() {
+      const w = this.width || window.innerWidth || 1200;
+      if (w < 480) return 18;        // Pocas partículas en celular pequeño para evitar lag
+      if (w < 768) return 24;        // Celular: ligero y fluido
+      if (w < 1024) return 40;       // Tablet
+      return 70;                     // PC: ambientación completa
     }
 
     initEntities() {
-      // Limpiar anteriores si existían
+      // Limpiar murciélagos previos
       this.bats.forEach(b => b.dispose());
       this.bats = [];
+
+      // Limpiar partículas previas
       if (this.particles) {
         this.particles.dispose();
+        this.particles = null;
       }
 
+      // Crear murciélagos con distribución de planos de profundidad
       const totalBats = this.getBatCount();
       for (let i = 0; i < totalBats; i++) {
-        // Distribución equilibrada entre profundidad lejana, media y cercana
         let tier = 'mid';
         if (i % 3 === 0) tier = 'far';
         else if (i % 3 === 2) tier = 'close';
@@ -610,18 +734,16 @@
         this.bats.push(new Bat3D(this.scene, tier, this.screenBounds));
       }
 
-      // Partículas espectrales
-      const particleCount = window.innerWidth < 768 ? 45 : 85;
+      // Crear partículas espectrales adaptadas
+      const particleCount = this.getParticleCount();
       this.particles = new SpectralParticles(this.scene, particleCount, this.screenBounds);
     }
 
     setupMouseEvents() {
       window.addEventListener('mousemove', (e) => {
-        // Convertir posición de ratón a coordenadas normalizadas
-        const ndcX = (e.clientX / window.innerWidth) * 2 - 1;
-        const ndcY = -(e.clientY / window.innerHeight) * 2 + 1;
+        const ndcX = (e.clientX / (this.width || window.innerWidth)) * 2 - 1;
+        const ndcY = -(e.clientY / (this.height || window.innerHeight)) * 2 + 1;
 
-        // Proyectar al plano central Z=0
         this.mouseWorld = new THREE.Vector3(
           ndcX * (this.screenBounds.width * 0.5),
           ndcY * (this.screenBounds.height * 0.5),
@@ -630,15 +752,38 @@
       }, { passive: true });
     }
 
-    onResize() {
-      this.width = window.innerWidth;
-      this.height = window.innerHeight;
-      this.camera.aspect = this.width / this.height;
-      this.camera.updateProjectionMatrix();
-      this.renderer.setSize(this.width, this.height);
-      this.calcScreenBounds();
+    setupVisibilityEvents() {
+      // Visibility API: reactivar inmediatamente al volver a la pestaña
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          this.lastFrameTime = performance.now();
+          if (this.clock) {
+            this.clock.start();
+          }
+          if (!this.isRunning) {
+            this.startLoop();
+          }
+        }
+      });
 
-      // Ajustar cantidad si hubo cambio drástico de dispositivo
+      // Eventos adicionales de restauración de ventana / foco
+      window.addEventListener('focus', () => {
+        if (!this.isRunning) {
+          this.startLoop();
+        }
+      });
+
+      window.addEventListener('pageshow', () => {
+        if (!this.isRunning) {
+          this.startLoop();
+        }
+      });
+    }
+
+    onResize() {
+      this.updateDimensions();
+
+      // Ajustar cantidad solo si cambió de categoría de dispositivo
       const expectedBats = this.getBatCount();
       if (this.bats.length !== expectedBats) {
         this.initEntities();
@@ -646,12 +791,47 @@
         this.bats.forEach(b => { b.screenBounds = this.screenBounds; });
         if (this.particles) this.particles.screenBounds = this.screenBounds;
       }
+
+      // Garantizar que el loop siga activo tras redimensionar
+      if (!this.isRunning) {
+        this.startLoop();
+      }
     }
 
-    animate() {
+    startLoop() {
+      if (this.isRunning) return;
+      this.isRunning = true;
+      this.lastFrameTime = performance.now();
+      if (this.clock && !this.clock.running) {
+        this.clock.start();
+      }
+      if (this.rafId) {
+        cancelAnimationFrame(this.rafId);
+      }
+      this.rafId = requestAnimationFrame(this.animate);
+    }
+
+    stopLoop() {
+      this.isRunning = false;
+      if (this.rafId) {
+        cancelAnimationFrame(this.rafId);
+        this.rafId = null;
+      }
+    }
+
+    animate(currentTime) {
+      if (!this.isRunning) return;
       this.rafId = requestAnimationFrame(this.animate);
 
-      const dt = Math.min(this.clock.getDelta(), 0.08); // Limitar deltaTime para prevenir saltos
+      // Cálculo de deltaTime 100% inmune a pausas, saltos o reloj en 0
+      let dt = this.clock.getDelta();
+      if (!dt || isNaN(dt) || dt <= 0 || dt > 0.2) {
+        const now = currentTime || performance.now();
+        const rawDelta = (now - (this.lastFrameTime || now)) / 1000;
+        dt = (rawDelta > 0.001 && rawDelta < 0.1) ? rawDelta : 0.016;
+      }
+      this.lastFrameTime = currentTime || performance.now();
+
       const time = this.clock.getElapsedTime();
 
       // Sincronización de luz puntual con el ciclo de los ojos de la calabaza (6 segundos)
@@ -659,45 +839,42 @@
         const cycleProgress = (time % 6.0) / 6.0;
         let pIntensity = 0.04;
         if (cycleProgress >= 0.22 && cycleProgress < 0.34) {
-          // Encendido gradual
           const t = (cycleProgress - 0.22) / 0.12;
           pIntensity = 0.04 + t * 1.35;
         } else if (cycleProgress >= 0.34 && cycleProgress <= 0.68) {
-          // Iluminación viva con parpadeo de vela
           const flicker = Math.sin(time * 11.5) * 0.18 + Math.cos(time * 18.2) * 0.12;
           pIntensity = 1.35 + flicker;
         } else if (cycleProgress > 0.68 && cycleProgress <= 0.80) {
-          // Apagado gradual (deja de iluminar)
           const t = (cycleProgress - 0.68) / 0.12;
           pIntensity = 1.35 * (1.0 - t) + 0.04;
         }
         this.pumpkinLight.intensity = Math.max(0.02, pIntensity);
       }
 
-      // Actualizar murciélagos 3D
+      // Actualizar y volar cada murciélago 3D
       for (let i = 0; i < this.bats.length; i++) {
         this.bats[i].update(dt, time, this.mouseWorld);
       }
 
-      // Actualizar partículas
+      // Actualizar partículas espectrales
       if (this.particles) {
         this.particles.update(dt, time);
       }
 
       this.renderer.render(this.scene, this.camera);
+    }
 
-      // Monitoreo adaptativo de rendimiento
-      this.frameCount++;
-      const now = performance.now();
-      if (now - this.lastFpsCheck > 2000) {
-        const fps = (this.frameCount * 1000) / (now - this.lastFpsCheck);
-        if (fps < 30 && this.bats.length > 4) {
-          // Si cae el rendimiento sostenidamente, retirar 2 murciélagos para mantener 60 FPS
-          const removed = this.bats.splice(this.bats.length - 2, 2);
-          removed.forEach(b => b.dispose());
-        }
-        this.frameCount = 0;
-        this.lastFpsCheck = now;
+    dispose() {
+      this.stopLoop();
+      window.removeEventListener('resize', this.onResize);
+      this.bats.forEach(b => b.dispose());
+      this.bats = [];
+      if (this.particles) {
+        this.particles.dispose();
+        this.particles = null;
+      }
+      if (this.renderer) {
+        this.renderer.dispose();
       }
     }
   }
@@ -724,11 +901,10 @@
     if (!cards || cards.length === 0) return;
 
     cards.forEach((card, index) => {
-      // Eliminar telaraña previa si existe para evitar duplicados
       const existing = card.querySelector('.hw-card-cobweb');
       if (existing) existing.remove();
 
-      // Aplicar sutilmente a solo ~25% de las tarjetas (por ejemplo índices 0, 3, 7, 11, 15...)
+      // Aplicar sutilmente a ~25% de las tarjetas para equilibrio estético
       if (index % 4 === 0) {
         const cobwebEl = document.createElement('div');
         cobwebEl.className = 'hw-card-cobweb';
@@ -740,11 +916,17 @@
   }
 
   /* ==========================================================================
-     ARRANQUE E INTEGRACIÓN
+     ARRANQUE E INTEGRACIÓN ROBUSTA (A PRUEBA DE RECARGAS Y EVENTOS)
      ========================================================================== */
   function initHalloween() {
+    // Si ya existe una escena activa y corriendo, no reinstanciar innecesariamente
+    if (window.Halloween && window.Halloween.scene && window.Halloween.scene.isRunning) {
+      return;
+    }
+
     let halloweenScene = null;
     let initError = null;
+
     if (isWebGLSupported() && typeof THREE !== 'undefined') {
       try {
         halloweenScene = new HalloweenScene();
@@ -791,14 +973,10 @@
       grids.forEach(grid => observer.observe(grid, { childList: true }));
     }
 
-    // Re-aplicar tras carga de ventanas o eventos de catálogo
-    window.addEventListener('load', () => {
-      hookCatalogRenderers();
-      setTimeout(aplicarTelaranasEnTarjetas, 100);
-    });
+    // Re-aplicar tras eventos futuros de catálogo
     document.addEventListener('catalogRendered', aplicarTelaranasEnTarjetas);
 
-    // Exponer API global de depuración / inspección
+    // Exponer API global
     window.Halloween = {
       scene: halloweenScene,
       _initError: initError,
@@ -806,9 +984,25 @@
     };
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initHalloween);
-  } else {
+  function boot() {
+    if (window.Halloween && window.Halloween.scene) {
+      if (!window.Halloween.scene.isRunning) {
+        window.Halloween.scene.startLoop();
+      }
+      return;
+    }
     initHalloween();
   }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot, { once: true });
+  } else {
+    boot();
+  }
+
+  // Respaldo de seguridad en evento load para asegurar que la escena arranque siempre
+  window.addEventListener('load', () => {
+    boot();
+  }, { once: true });
+
 })();

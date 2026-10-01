@@ -583,6 +583,12 @@
     height: 50px;
     top: 64px;
     right: 16px;
+    /* Optimización móvil: brillo estático nítido para evitar repintado continuo de box-shadow */
+    animation: none !important;
+    box-shadow:
+      0 0 18px rgba(255, 248, 214, 0.8),
+      0 0 45px rgba(168, 85, 247, 0.32),
+      0 0 75px rgba(255, 122, 26, 0.18) !important;
   }
 
   .luna::before {
@@ -597,12 +603,21 @@
     height: 51px;
     bottom: 78px;
     right: 14px;
+    /* Mantener respiración fluida en transform y omitir animación pesada de drop-shadow exterior */
+    animation: calabazaRespiracion 5s ease-in-out infinite !important;
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.75)) !important;
   }
 
+  /* Telarañas en celular: mantienen balanceo orgánico al viento en el SVG sin sobrecargar microhilos */
   .tela-halloween {
     width: 48px;
     height: 48px;
-    opacity: 0.5;
+    opacity: 0.52;
+  }
+
+  .tela-halloween path.hilo-espiral,
+  .tela-halloween circle.nodo-rocio {
+    animation: none !important; /* El SVG principal sigue balanceándose fluidamente */
   }
 
   .tela-halloween.abajo-izquierda,
@@ -616,9 +631,18 @@
     opacity: 0.25;
   }
 
+  /* Niebla ligera en móvil: una sola capa optimizada */
   .hw-fog-container {
     height: 95px;
     bottom: 62px;
+  }
+
+  .hw-fog-layer-1 {
+    filter: blur(6px) !important;
+  }
+
+  .hw-fog-layer-2 {
+    display: none !important;
   }
 }
 
@@ -641,7 +665,7 @@
   .tela-halloween {
     width: 38px;
     height: 38px;
-    opacity: 0.42;
+    opacity: 0.45;
   }
 
   .tela-halloween.abajo-izquierda,
@@ -650,7 +674,7 @@
   }
 
   .hw-fog-container {
-    height: 75px;
+    height: 70px;
     bottom: 56px;
   }
 }

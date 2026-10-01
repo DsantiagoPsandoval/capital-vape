@@ -728,18 +728,49 @@
 [data-product-id="fifty-cent"] { --product-scale: 1.56; }
 [data-product-id="spaceman"] { --product-scale: 1.51; }
 [data-product-id="dinner-lady"] { --product-scale: 1.74; }
-[data-product-id="brass-type-c"] { --product-scale: 1.97; }
-[data-product-id="anv-digital"] { --product-scale: 1.37; }
+[data-product-id="brass-type-c"] { --product-scale: 0.92; }
+[data-product-id="anv-digital"] { --product-scale: 0.85; }
 [data-product-id="high-pro"] { --product-scale: 1.02; }
-[data-product-id="secret-pro"] { --product-scale: 1.39; }
+[data-product-id="secret-pro"] { --product-scale: 0.88; }
 [data-product-id="waka-solo-2"] { --product-scale: 1.37; }
-[data-product-id="waka-creator-bateria"] { --product-scale: 1.84; }
+[data-product-id="waka-creator-bateria"] { --product-scale: 0.91; }
 [data-product-id="waka-creator-pod"] { --product-scale: 1.64; }
-[data-product-id="sami-2-bateria"] { --product-scale: 1.46; }
+[data-product-id="sami-2-bateria"] { --product-scale: 0.89; }
 [data-product-id="sami-pod-2"] { --product-scale: 2.20; }
 [data-product-id="airpods-pro-2"] { --product-scale: 0.82; }
 [data-product-id="airpods-4-anc"] { --product-scale: 0.82; }
 [data-product-id="en-create"] { --product-scale: 0.82; }
+
+/* Presentación equilibrada, natural y nítida para referencias de alta luminosidad (baterías y dispositivos) */
+[data-product-id="waka-creator-bateria"] .product-img-real,
+[data-product-id="sami-2-bateria"] .product-img-real,
+[data-product-id="brass-type-c"] .product-img-real,
+[data-product-id="anv-digital"] .product-img-real,
+[data-product-id="secret-pro"] .product-img-real,
+[data-product-id="waka-creator-bateria"] .flavor-card-img,
+[data-product-id="sami-2-bateria"] .flavor-card-img,
+[data-product-id="brass-type-c"] .flavor-card-img,
+[data-product-id="anv-digital"] .flavor-card-img,
+[data-product-id="secret-pro"] .flavor-card-img {
+  image-rendering: auto !important;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.58)) brightness(0.96) contrast(1.02);
+}
+
+[data-product-id="waka-creator-bateria"]:hover .product-img-real,
+[data-product-id="sami-2-bateria"]:hover .product-img-real,
+[data-product-id="brass-type-c"]:hover .product-img-real,
+[data-product-id="anv-digital"]:hover .product-img-real,
+[data-product-id="secret-pro"]:hover .product-img-real {
+  filter: drop-shadow(0 12px 24px rgba(216, 27, 183, 0.28)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.65)) brightness(0.97) contrast(1.02);
+}
+
+[data-product-id="waka-creator-bateria"] .card-image-wrapper,
+[data-product-id="sami-2-bateria"] .card-image-wrapper,
+[data-product-id="brass-type-c"] .card-image-wrapper,
+[data-product-id="anv-digital"] .card-image-wrapper,
+[data-product-id="secret-pro"] .card-image-wrapper {
+  background: radial-gradient(circle at center, rgba(216, 27, 183, 0.08) 0%, rgba(18, 7, 28, 0.96) 75%);
+}
 
 /* Product description inside modal */
 .flavor-modal-product-desc {

@@ -559,6 +559,12 @@
       const heightAtZero = 2 * Math.tan(vFov / 2) * this.camera.position.z;
       const widthAtZero = heightAtZero * this.camera.aspect;
       this.screenBounds = { width: widthAtZero, height: heightAtZero };
+
+      if (this.pumpkinLight) {
+        const halfW = widthAtZero / 2;
+        const halfH = heightAtZero / 2;
+        this.pumpkinLight.position.set(halfW * 0.72, -halfH * 0.72, 130);
+      }
     }
 
     setupLights() {
@@ -571,9 +577,11 @@
       this.moonLight.position.set(340, 320, 220);
       this.scene.add(this.moonLight);
 
-      // Luz puntual tenue de la calabaza (cálida y parpadeante desde abajo a la derecha)
+      // Luz puntual de la calabaza (cálida y sincronizada con el ciclo de los ojos)
       this.pumpkinLight = new THREE.PointLight(0xff7a1a, 1.3, 850);
-      this.pumpkinLight.position.set(280, -320, 160);
+      const halfW = this.screenBounds ? this.screenBounds.width / 2 : 280;
+      const halfH = this.screenBounds ? this.screenBounds.height / 2 : 320;
+      this.pumpkinLight.position.set(halfW * 0.72, -halfH * 0.72, 130);
       this.scene.add(this.pumpkinLight);
     }
 
@@ -646,9 +654,24 @@
       const dt = Math.min(this.clock.getDelta(), 0.08); // Limitar deltaTime para prevenir saltos
       const time = this.clock.getElapsedTime();
 
-      // Parpadeo sutil de la luz de la calabaza
+      // Sincronización de luz puntual con el ciclo de los ojos de la calabaza (6 segundos)
       if (this.pumpkinLight) {
-        this.pumpkinLight.intensity = 1.2 + Math.sin(time * 5.2) * 0.2 + Math.cos(time * 8.7) * 0.15;
+        const cycleProgress = (time % 6.0) / 6.0;
+        let pIntensity = 0.04;
+        if (cycleProgress >= 0.22 && cycleProgress < 0.34) {
+          // Encendido gradual
+          const t = (cycleProgress - 0.22) / 0.12;
+          pIntensity = 0.04 + t * 1.35;
+        } else if (cycleProgress >= 0.34 && cycleProgress <= 0.68) {
+          // Iluminación viva con parpadeo de vela
+          const flicker = Math.sin(time * 11.5) * 0.18 + Math.cos(time * 18.2) * 0.12;
+          pIntensity = 1.35 + flicker;
+        } else if (cycleProgress > 0.68 && cycleProgress <= 0.80) {
+          // Apagado gradual (deja de iluminar)
+          const t = (cycleProgress - 0.68) / 0.12;
+          pIntensity = 1.35 * (1.0 - t) + 0.04;
+        }
+        this.pumpkinLight.intensity = Math.max(0.02, pIntensity);
       }
 
       // Actualizar murciélagos 3D

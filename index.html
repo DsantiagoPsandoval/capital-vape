@@ -30,8 +30,69 @@
 
   <div class="luna"></div>
 
-  <div class="calabaza-halloween">
-    🎃
+  <div class="calabaza-halloween" aria-label="Calabaza de Halloween con ojos iluminados">
+    <svg class="calabaza-svg" viewBox="0 0 100 95" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <!-- Gradiente del tallo superior -->
+        <linearGradient id="calabazaTalloGrad" x1="48" y1="2" x2="56" y2="20" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#4E7028"/>
+          <stop offset="60%" stop-color="#2D4616"/>
+          <stop offset="100%" stop-color="#1E320D"/>
+        </linearGradient>
+
+        <!-- Gradiente tridimensional del cuerpo de la calabaza -->
+        <radialGradient id="calabazaCuerpoGrad" cx="50" cy="55" r="46" fx="42" fy="42" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#FFA726"/>
+          <stop offset="40%" stop-color="#FB8C00"/>
+          <stop offset="75%" stop-color="#E65100"/>
+          <stop offset="100%" stop-color="#BF360C"/>
+        </radialGradient>
+
+        <!-- Gradiente de fuego ardiente para los ojos, nariz y boca -->
+        <radialGradient id="calabazaFuegoGrad" cx="50" cy="52" r="38" fx="50" fy="46" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#FFFFFF"/>
+          <stop offset="25%" stop-color="#FFFF72"/>
+          <stop offset="55%" stop-color="#FFB300"/>
+          <stop offset="85%" stop-color="#FF6D00"/>
+          <stop offset="100%" stop-color="#DD2C00"/>
+        </radialGradient>
+
+        <!-- Filtro de resplandor para los ojos encendidos -->
+        <filter id="fuegoGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.5" result="glow"/>
+          <feMerge>
+            <feMergeNode in="glow"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+
+      <!-- Tallo superior -->
+      <path d="M48 18 C46 12 48 4 58 2 C58 6 57 11 53 14 C51 16 50 18 48 18 Z" fill="url(#calabazaTalloGrad)"/>
+
+      <!-- Cuerpo completo de la calabaza con costillas 3D -->
+      <path d="M50 16 C30 16 10 28 8 54 C6 74 24 92 50 92 C76 92 94 74 92 54 C90 28 70 16 50 16 Z" fill="url(#calabazaCuerpoGrad)"/>
+      <path d="M50 16 C35 16 20 29 18 54 C16 73 32 90 50 92 C32 90 22 73 24 54 C26 31 38 18 50 16 Z" fill="#992A00" opacity="0.32"/>
+      <path d="M50 16 C65 16 80 29 82 54 C84 73 68 90 50 92 C68 90 78 73 76 54 C74 31 62 18 50 16 Z" fill="#992A00" opacity="0.32"/>
+      <path d="M50 16 C42 16 35 30 35 55 C35 74 42 90 50 92 C43 90 38 74 38 55 C38 31 43 18 50 16 Z" fill="#992A00" opacity="0.22"/>
+      <path d="M50 16 C58 16 65 30 65 55 C65 74 58 90 50 92 C57 90 62 74 62 55 C62 31 57 18 50 16 Z" fill="#992A00" opacity="0.22"/>
+
+      <!-- Cavidad interior oscura (cuando la llama está apagada) -->
+      <g class="rasgos-interior-oscuro">
+        <polygon points="30,42 43,46 36,34" fill="#240D02"/>
+        <polygon points="70,42 57,46 64,34" fill="#240D02"/>
+        <polygon points="50,47 45,54 55,54" fill="#240D02"/>
+        <path d="M26 62 Q50 78 74 62 Q71 67 66 65 Q65 71 59 69 Q55 74 50 71 Q45 74 41 69 Q35 71 34 65 Q29 67 26 62 Z" fill="#240D02"/>
+      </g>
+
+      <!-- CAPA DE FUEGO ILUMINADA: SE ILUMINAN LOS OJOS Y DEJAN DE ILUMINAR -->
+      <g class="rasgos-fuego-luz">
+        <polygon class="rasgo-ojo rasgo-ojo-izq" points="30,42 43,46 36,34" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
+        <polygon class="rasgo-ojo rasgo-ojo-der" points="70,42 57,46 64,34" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
+        <polygon class="rasgo-nariz" points="50,47 45,54 55,54" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
+        <path class="rasgo-boca" d="M26 62 Q50 78 74 62 Q71 67 66 65 Q65 71 59 69 Q55 74 50 71 Q45 74 41 69 Q35 71 34 65 Q29 67 26 62 Z" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
+      </g>
+    </svg>
   </div>
 
   <!-- Bruma y niebla nocturna de fondo -->

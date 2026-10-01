@@ -6,47 +6,42 @@ const PRODUCTS_DATA = [
     "id": "bang-leader",
     "nombre": "BANG LEADER",
     "categoria": "desechables",
-    "subtitulo": "32.000 Puffs • 6 Sabores",
+    "subtitulo": "32.000 Puffs • 5 Sabores",
     "puffs": 32000,
     "precio": 45000,
     "precio_promo_2": 80000,
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 3420,
-    "imagen": "assets/productos/1.png",
+    "imagen": "BANG LEADER/Red Bull - Blueberry.png",
     "descripcion": "El Bang Leader es un vape desechable de alto rendimiento diseñado para ofrecer hasta 32.000 caladas de sabor intenso y constante.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Red Bull – Blueberry",
-        "img": "assets/productos/1.png",
+        "nombre": "Red Bull - Blueberry",
+        "img": "BANG LEADER/Red Bull - Blueberry.png",
         "desc": "Mezcla energética de arándanos con un toque ácido."
       },
       {
-        "nombre": "Hielo de Lichi – Mango",
-        "img": "assets/productos/2.png",
-        "desc": "Lichi dulce con mango jugoso y un golpe helado."
+        "nombre": "Arándanos & Menta",
+        "img": "BANG LEADER/Arandanos & Menta.png",
+        "desc": "Arándanos frescos con menta helada."
       },
       {
-        "nombre": "Helado de Sandía – Arándanos & Menta",
-        "img": "assets/productos/3.png",
-        "desc": "Sandía cremosa con arándanos y menta fresca."
+        "nombre": "Cereza & Arándano",
+        "img": "BANG LEADER/Cereza & Arandano.png",
+        "desc": "Cereza dulce combinada con arándanos jugosos."
       },
       {
-        "nombre": "Helado de Sandía – Fresa & Mango",
-        "img": "assets/productos/4.png",
-        "desc": "Sandía helada con fresa dulce y mango tropical."
+        "nombre": "Fresa & Mango",
+        "img": "BANG LEADER/Fresa & Mango.png",
+        "desc": "Fresa dulce con mango tropical maduro."
       },
       {
-        "nombre": "Coca‑Cola – Cereza & Arándano",
-        "img": "assets/productos/5.png",
-        "desc": "Cola clásica con cereza y un toque de arándano."
-      },
-      {
-        "nombre": "Sandía de Arándano – Mango de Fresa",
-        "img": "assets/productos/6.png",
-        "desc": "Combinación frutal de sandía, arándano, mango y fresa."
+        "nombre": "Mango de Fresa",
+        "img": "BANG LEADER/Mango de Fresa.png",
+        "desc": "Deliciosa fusión frutal de mango con fresa."
       }
     ]
   },
@@ -59,7 +54,7 @@ const PRODUCTS_DATA = [
     "precio": 35000,
     "precio_promo_2": 60000,
     "ahorro_2": 10000,
-    "rating": 5.0,
+    "rating": 5,
     "ventas": 5120,
     "imagen": "DojoVape/Watermelon Ice.png",
     "descripcion": "El DOJO Sphere S 40K es un vape desechable premium de última generación con hasta 40.000 caladas extraordinarias, pantalla digital inteligente, doble resistencia de malla y 17 sabores ultra intensos.",
@@ -172,60 +167,60 @@ const PRODUCTS_DATA = [
     "ahorro_2": 12000,
     "rating": 4.9,
     "ventas": 4900,
-    "imagen": "assets/productos/214.png",
+    "imagen": "HOOKALIT/Amor magico.png",
     "descripcion": "El gigante del vapeo: 40.000 puffs con tecnología DTL (Direct to Lung), simulador de narguile / shisha con vapor denso.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
         "nombre": "Amor Mágico",
-        "img": "assets/productos/214.png",
-        "desc": "Mezcla shisha de frutas del bosque y menta."
+        "img": "HOOKALIT/Amor magico.png",
+        "desc": "Mezcla aromática y seductora estilo hookah."
+      },
+      {
+        "nombre": "Cereza",
+        "img": "HOOKALIT/cereza.png",
+        "desc": "Cereza intensa y dulce."
       },
       {
         "nombre": "Gomita",
-        "img": "assets/productos/215.png",
-        "desc": "Gomitas dulces estilo shisha."
+        "img": "HOOKALIT/gomita.png",
+        "desc": "Sabor dulce a gomitas frutales."
+      },
+      {
+        "nombre": "Lady Killer",
+        "img": "HOOKALIT/lady killer.png",
+        "desc": "Explosión exótica de frutas orientales."
+      },
+      {
+        "nombre": "Lucid Dream",
+        "img": "HOOKALIT/lucid dream.png",
+        "desc": "Sueño lúcido con notas dulces y misteriosas."
+      },
+      {
+        "nombre": "Manzana",
+        "img": "HOOKALIT/manzana.png",
+        "desc": "Doble manzana tradicional con anís suave."
       },
       {
         "nombre": "Menta Helada",
-        "img": "assets/productos/216.png",
-        "desc": "Menta potente con frescura helada."
+        "img": "HOOKALIT/menta helada.png",
+        "desc": "Menta glaciar de frescura profunda."
+      },
+      {
+        "nombre": "Mistery Blue",
+        "img": "HOOKALIT/mistery blue.png",
+        "desc": "Frutos azules con un toque secreto."
       },
       {
         "nombre": "Mujer Asesina",
-        "img": "assets/productos/217.png",
-        "desc": "Frutos rojos con toque floral seductor."
+        "img": "HOOKALIT/mujer asesina.png",
+        "desc": "Combinación fatal de frutas dulces y ácidas."
       },
       {
-        "nombre": "Amor 66",
-        "img": "assets/productos/218.png",
-        "desc": "Sabor legendario de melón, maracuyá y menta."
-      },
-      {
-        "nombre": "Misterio Azul",
-        "img": "assets/productos/219.png",
-        "desc": "Arándano azul con toque secreto de hierbas."
-      },
-      {
-        "nombre": "Doble Manzana",
-        "img": "assets/productos/220.png",
-        "desc": "Clásico sabor a doble manzana de narguile con anís."
-      },
-      {
-        "nombre": "Vainilla Blanca",
-        "img": "assets/productos/221.png",
-        "desc": "Vainilla cremosa y suave."
-      },
-      {
-        "nombre": "Sueño Lúcido",
-        "img": "assets/productos/222.png",
-        "desc": "Mezcla relajante de uvas y bayas dulces."
-      },
-      {
-        "nombre": "Durazno Vainilla",
-        "img": "assets/productos/223.png",
-        "desc": "Durazno maduro con crema de vainilla."
+        "nombre": "White Flash",
+        "img": "HOOKALIT/white flash.png",
+        "desc": "Destello blanco de vainilla y frescura mentolada."
       }
     ]
   },
@@ -240,16 +235,15 @@ const PRODUCTS_DATA = [
     "ahorro_2": 15000,
     "rating": 4.8,
     "ventas": 2890,
-    "imagen": "assets/productos/8.png",
+    "imagen": "HUMO AZUL/DORADO (Bananno helado, toronja limon, menta, sandia, arandano).png",
     "descripcion": "Dispositivo con variantes por color, cada uno con una selección exclusiva de sabores frutales y refrescantes.",
     "agotado": false,
     "tipo_variante": "color",
     "colores": [
       {
         "nombre": "DORADO",
-        "img": "assets/productos/8.png",
+        "img": "HUMO AZUL/DORADO (Bananno helado, toronja limon, menta, sandia, arandano).png",
         "sabores": [
-          "Fresa frambuesa",
           "Banano helado",
           "Toronja limón",
           "Menta",
@@ -259,9 +253,9 @@ const PRODUCTS_DATA = [
       },
       {
         "nombre": "NEGRO",
-        "img": "assets/productos/9.png",
+        "img": "HUMO AZUL/NEGRO (Frambuesa, gomitas dulces, sandia, manzana, arandano).png",
         "sabores": [
-          "Fresa frambuesa",
+          "Frambuesa",
           "Gomitas dulces",
           "Sandía",
           "Manzana",
@@ -270,7 +264,7 @@ const PRODUCTS_DATA = [
       },
       {
         "nombre": "ORO ROSA",
-        "img": "assets/productos/10.png",
+        "img": "HUMO AZUL/ORO ROSA (Melon, Toronja limon, uva helada, banano helado, lima limon).png",
         "sabores": [
           "Melón",
           "Toronja limón",
@@ -281,7 +275,7 @@ const PRODUCTS_DATA = [
       },
       {
         "nombre": "PLATEADO",
-        "img": "assets/productos/11.png",
+        "img": "HUMO AZUL/Plateado (Miel durazno, uva helada, gomita cereza).png",
         "sabores": [
           "Miel durazno",
           "Uva helada",
@@ -424,110 +418,110 @@ const PRODUCTS_DATA = [
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 3950,
-    "imagen": "assets/productos/248.png",
+    "imagen": "DONUT/248.png",
     "descripcion": "Diseño innovador y divertido con 12.000 caladas de sabor ultra dulce, notas de postre, frutas y gomitas.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
         "nombre": "Dragon Melón",
-        "img": "assets/productos/248.png",
-        "desc": "Fruta del dragón exótica con melón dulce."
+        "img": "DONUT/248.png",
+        "desc": "Dragon Fruit y melón refrescante."
       },
       {
-        "nombre": "Fresa Sandía",
-        "img": "assets/productos/249.png",
-        "desc": "Dúo fresco y dulce de fresa y sandía."
+        "nombre": "Sour Chill Apple",
+        "img": "DONUT/249.png",
+        "desc": "Manzana verde helada y ácida."
       },
       {
-        "nombre": "Fresa Plátano",
-        "img": "assets/productos/250.png",
-        "desc": "Fresas con plátano cremoso."
+        "nombre": "Blueberry Watermelon",
+        "img": "DONUT/250.png",
+        "desc": "Arándano jugoso con sandía helada."
       },
       {
-        "nombre": "Mora Helada",
-        "img": "assets/productos/251.png",
-        "desc": "Moras silvestres con toque frío."
+        "nombre": "The Mighty Peach",
+        "img": "DONUT/251.png",
+        "desc": "Melocotón maduro dulce y carnoso."
       },
       {
-        "nombre": "Mango Helado",
-        "img": "assets/productos/252.png",
-        "desc": "Mango tropical con frescura helada."
+        "nombre": "Uva",
+        "img": "DONUT/252.png",
+        "desc": "Uva morada intensa (The Mighty Grape)."
       },
       {
-        "nombre": "Gomitas",
-        "img": "assets/productos/253.png",
-        "desc": "Gomitas de osito dulces."
+        "nombre": "Miami Mint",
+        "img": "DONUT/253.png",
+        "desc": "Menta fresca clásica estilo Miami."
       },
       {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/254.png",
-        "desc": "Menta limpia con frescura duradera."
+        "nombre": "Blue Razz Ice",
+        "img": "DONUT/254.png",
+        "desc": "Mora azul ácida con golpe frío."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/255.png",
-        "desc": "Sandía jugosa con golpe de frío."
+        "nombre": "Mango",
+        "img": "DONUT/255.png",
+        "desc": "Mango tropical súper dulce (The Mighty Mango)."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/256.png",
-        "desc": "Uvas moradas con acabado frío."
+        "nombre": "Berry Crush",
+        "img": "DONUT/256.png",
+        "desc": "Triturado de frutos rojos silvestres."
       },
       {
-        "nombre": "Melocotón Mango",
-        "img": "assets/productos/257.png",
-        "desc": "Durazno sedoso con mango dulce."
+        "nombre": "B Burst",
+        "img": "DONUT/257.png",
+        "desc": "Explosión de caramelos masticables y gomitas."
       },
       {
-        "nombre": "Kiwi Fresa",
-        "img": "assets/productos/258.png",
-        "desc": "Fresa dulce con kiwi cítrico."
+        "nombre": "Watermelon Ice",
+        "img": "DONUT/258.png",
+        "desc": "Sandía helada ultra refrescante."
       },
       {
-        "nombre": "Piña Helada",
-        "img": "assets/productos/259.png",
-        "desc": "Piña dulce con toque helado."
+        "nombre": "Fcuking FAB",
+        "img": "DONUT/259.png",
+        "desc": "Mezcla secreta frutal tropical y cítrica."
       },
       {
-        "nombre": "Arándano Frambuesa",
-        "img": "assets/productos/260.png",
-        "desc": "Arándanos jugosos y frambuesa ácida."
+        "nombre": "Freezy Banana",
+        "img": "DONUT/260.png",
+        "desc": "Plátano cremoso con terminado frozen."
       },
       {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/261.png",
-        "desc": "Cerezas con frescura intensa."
+        "nombre": "The Mighty Straw",
+        "img": "DONUT/261.png",
+        "desc": "Fresa madura dulce e intensa."
       },
       {
-        "nombre": "Plátano Helado",
-        "img": "assets/productos/262.png",
-        "desc": "Plátano dulce con toque frío."
+        "nombre": "Piña Colada",
+        "img": "DONUT/262.png",
+        "desc": "Cóctel helado de piña y crema de coco (Freezy Pina Colada)."
+      },
+      {
+        "nombre": "Blackberry FAB",
+        "img": "DONUT/263.png",
+        "desc": "Mora silvestre profunda con matices cítricos."
+      },
+      {
+        "nombre": "Sour FAB",
+        "img": "DONUT/264.png",
+        "desc": "Caramelos ácidos explosivos."
+      },
+      {
+        "nombre": "Oasis Bliss",
+        "img": "DONUT/265.png",
+        "desc": "Oasis de frutas tropicales y frescura."
+      },
+      {
+        "nombre": "Dragon Razz",
+        "img": "DONUT/266.png",
+        "desc": "Pitahaya con frambuesas ácidas."
       },
       {
         "nombre": "Manzana Verde",
-        "img": "assets/productos/263.png",
-        "desc": "Manzana ácida y crujiente."
-      },
-      {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/264.png",
-        "desc": "Surtido de moras y bayas rojas."
-      },
-      {
-        "nombre": "Algodón Dulce",
-        "img": "assets/productos/265.png",
-        "desc": "Algodón de azúcar dulce de feria."
-      },
-      {
-        "nombre": "Limonada Rosa",
-        "img": "assets/productos/266.png",
-        "desc": "Limonada cítrica con fresas."
-      },
-      {
-        "nombre": "Bebida Energética",
-        "img": "assets/productos/267.png",
-        "desc": "Sabor clásico a bebida energizante."
+        "img": "DONUT/267.png",
+        "desc": "Manzana crujiente (The Mighty Apple)."
       }
     ]
   },
@@ -542,50 +536,50 @@ const PRODUCTS_DATA = [
     "ahorro_2": 8000,
     "rating": 4.8,
     "ventas": 3100,
-    "imagen": "assets/productos/12.png",
+    "imagen": "SOLOBAR KIT/Citricos refrescantes.png",
     "descripcion": "Kit con batería recargable y pods intercambiables de 10.000 puffs, ideal para quienes buscan versatilidad y ahorro continuo.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Arándano Frambuesa",
-        "img": "assets/productos/12.png",
-        "desc": "Arándanos jugosos con frambuesa ácida."
+        "nombre": "Cítricos Refrescantes",
+        "img": "SOLOBAR KIT/Citricos refrescantes.png",
+        "desc": "Explosión de lima, limón y naranja cítrica."
+      },
+      {
+        "nombre": "Durazno Morado",
+        "img": "SOLOBAR KIT/Durazno morado.png",
+        "desc": "Durazno dulce con notas oscuras frutales."
+      },
+      {
+        "nombre": "Explosión de Uva",
+        "img": "SOLOBAR KIT/Explosion de uva.png",
+        "desc": "Uvas moradas jugosas en su punto."
+      },
+      {
+        "nombre": "Mango Dulce",
+        "img": "SOLOBAR KIT/Mango dulce.png",
+        "desc": "Mango maduro caribeño."
+      },
+      {
+        "nombre": "Manzana Sandía",
+        "img": "SOLOBAR KIT/Manzana sandia.png",
+        "desc": "Manzana crocante con sandía refrescante."
       },
       {
         "nombre": "Menta Fresca",
-        "img": "assets/productos/13.png",
-        "desc": "Menta intensa y refrescante para todo el día."
+        "img": "SOLOBAR KIT/Menta fresca.png",
+        "desc": "Menta natural revitalizante."
       },
       {
-        "nombre": "Fresa Kiwi",
-        "img": "assets/productos/14.png",
-        "desc": "Fresas dulces combinadas con kiwi tropical ácido."
+        "nombre": "Puro Neutro",
+        "img": "SOLOBAR KIT/Puro neutro.png",
+        "desc": "Vapor limpio sin notas invasivas."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/15.png",
-        "desc": "Sandía jugosa con un final helado irresistible."
-      },
-      {
-        "nombre": "Mango Melocotón",
-        "img": "assets/productos/16.png",
-        "desc": "Mango maduro con durazno aterciopelado."
-      },
-      {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/17.png",
-        "desc": "Uvas moradas dulces con golpe frío."
-      },
-      {
-        "nombre": "Manzana Doble",
-        "img": "assets/productos/18.png",
-        "desc": "Mezcla crujiente de manzana roja y verde."
-      },
-      {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/19.png",
-        "desc": "Explosión de bayas silvestres dulces y ácidas."
+        "nombre": "Tabaco",
+        "img": "SOLOBAR KIT/Tabaco.png",
+        "desc": "Tabaco rubio tostado tradicional."
       }
     ]
   },
@@ -600,50 +594,50 @@ const PRODUCTS_DATA = [
     "ahorro_2": 8000,
     "rating": 4.8,
     "ventas": 4200,
-    "imagen": "assets/productos/20.png",
+    "imagen": "SOLOBAR POD/Durazno piña.png",
     "descripcion": "Cartucho de repuesto para Solobar Kit con 10.000 caladas de sabor puro y tecnología de resistencia de malla.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Arándano Frambuesa",
-        "img": "assets/productos/20.png",
-        "desc": "Arándanos jugosos con frambuesa ácida."
+        "nombre": "Durazno Piña",
+        "img": "SOLOBAR POD/Durazno piña.png",
+        "desc": "Fusión tropical de durazno y piña dorada."
       },
       {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/21.png",
-        "desc": "Menta intensa y refrescante para todo el día."
+        "nombre": "Explosión de Uva",
+        "img": "SOLOBAR POD/Explosion de uva.png",
+        "desc": "Uva negra dulce y jugosa."
       },
       {
-        "nombre": "Fresa Kiwi",
-        "img": "assets/productos/22.png",
-        "desc": "Fresas dulces combinadas con kiwi tropical ácido."
+        "nombre": "Frambuesa con Limón",
+        "img": "SOLOBAR POD/Frambuesa con limon.png",
+        "desc": "Frambuesa silvestre con toque cítrico de limón."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/23.png",
-        "desc": "Sandía jugosa con un final helado irresistible."
+        "nombre": "Mango Dulce",
+        "img": "SOLOBAR POD/Mango dulce.png",
+        "desc": "Mango dulce tropical."
       },
       {
-        "nombre": "Mango Melocotón",
-        "img": "assets/productos/24.png",
-        "desc": "Mango maduro con durazno aterciopelado."
+        "nombre": "Mora Azul",
+        "img": "SOLOBAR POD/Mora azul.png",
+        "desc": "Arándanos y moras azules maduras."
+      },
+      {
+        "nombre": "Sandía",
+        "img": "SOLOBAR POD/Sandia.png",
+        "desc": "Sandía veraniega hidratante."
+      },
+      {
+        "nombre": "Tabaco",
+        "img": "SOLOBAR POD/Tabaco.png",
+        "desc": "Tabaco clásico suave."
       },
       {
         "nombre": "Uva Helada",
-        "img": "assets/productos/25.png",
-        "desc": "Uvas moradas dulces con golpe frío."
-      },
-      {
-        "nombre": "Manzana Doble",
-        "img": "assets/productos/26.png",
-        "desc": "Mezcla crujiente de manzana roja y verde."
-      },
-      {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/27.png",
-        "desc": "Explosión de bayas silvestres dulces y ácidas."
+        "img": "SOLOBAR POD/Uva helada.png",
+        "desc": "Uvas dulces con toque de hielo."
       }
     ]
   },
@@ -658,45 +652,45 @@ const PRODUCTS_DATA = [
     "ahorro_2": 4000,
     "rating": 4.8,
     "ventas": 2100,
-    "imagen": "assets/productos/28.png",
+    "imagen": "YOCCO/Mora azul.png",
     "descripcion": "Vape desechable elegante y compacto con 10.000 puffs de sabores frutales y refrescantes.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Mora Azul",
-        "img": "assets/productos/28.png",
-        "desc": "Arándanos maduros con dulzura natural."
+        "nombre": "Durazno Helado",
+        "img": "YOCCO/Durazno helado.png",
+        "desc": "Melocotón con hielo polar."
       },
       {
-        "nombre": "Helado de Fresa",
-        "img": "assets/productos/29.png",
-        "desc": "Fresa dulce con base cremosa y fría."
-      },
-      {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/30.png",
-        "desc": "Menta limpia con golpe fresco duradero."
-      },
-      {
-        "nombre": "Helado de Sandía",
-        "img": "assets/productos/31.png",
-        "desc": "Sandía veraniega con toque helado."
-      },
-      {
-        "nombre": "Mango Helado",
-        "img": "assets/productos/32.png",
-        "desc": "Mango tropical maduro con frescura glacial."
+        "nombre": "Explosión Tropical",
+        "img": "YOCCO/Explosion tropical.png",
+        "desc": "Frutas exóticas caribeñas."
       },
       {
         "nombre": "Fresa Kiwi",
-        "img": "assets/productos/33.png",
-        "desc": "Balance frutal de fresa dulce y kiwi ácido."
+        "img": "YOCCO/Fresa kiwi.png",
+        "desc": "Fresa dulce y kiwi acidulado."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/34.png",
-        "desc": "Uva morada dulce con acabado refrescante."
+        "nombre": "Fresa Mango",
+        "img": "YOCCO/Fresa mango.png",
+        "desc": "Fresa combinada con mango."
+      },
+      {
+        "nombre": "Maracuyá",
+        "img": "YOCCO/Maracuya.png",
+        "desc": "Fruta de la pasión intensa."
+      },
+      {
+        "nombre": "Melocotón Mango",
+        "img": "YOCCO/Melocoton mango.png",
+        "desc": "Durazno y mango dulce."
+      },
+      {
+        "nombre": "Mora Azul",
+        "img": "YOCCO/Mora azul.png",
+        "desc": "Moras silvestres frescas."
       }
     ]
   },
@@ -711,55 +705,55 @@ const PRODUCTS_DATA = [
     "ahorro_2": 5000,
     "rating": 4.8,
     "ventas": 1950,
-    "imagen": "assets/productos/36.png",
+    "imagen": "DEATH ROW/Explosion tropical.png",
     "descripcion": "Edición oficial Death Row Records con 7.000 caladas de potencia pura y perfiles de sabor legendarios.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Manzana Dulce",
-        "img": "assets/productos/36.png",
-        "desc": "Manzana dulce tipo caramelo crujiente."
+        "nombre": "Dulce",
+        "img": "DEATH ROW/Dulce.png",
+        "desc": "Caramelo azucarado clásico."
       },
       {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/37.png",
-        "desc": "Cereza madura con golpe helado potente."
+        "nombre": "Durazno Uva",
+        "img": "DEATH ROW/Durazno uva.png",
+        "desc": "Durazno suave con uva oscura."
       },
       {
-        "nombre": "Mora y Fresa",
-        "img": "assets/productos/38.png",
-        "desc": "Dúo clásico de moras y fresas dulces."
+        "nombre": "Explosión Tropical",
+        "img": "DEATH ROW/Explosion tropical.png",
+        "desc": "Carga de frutas del trópico."
+      },
+      {
+        "nombre": "Fresa Banano",
+        "img": "DEATH ROW/Fresa banano.png",
+        "desc": "Batido de fresa con banano."
+      },
+      {
+        "nombre": "Fresa Durazno",
+        "img": "DEATH ROW/Fresa durazno.png",
+        "desc": "Fresas del huerto con melocotón."
       },
       {
         "nombre": "Kiwi Fresa",
-        "img": "assets/productos/39.png",
-        "desc": "Equilibrio cítrico-dulce entre kiwi y fresa."
+        "img": "DEATH ROW/Kiwi fresa.png",
+        "desc": "Kiwi fresco y fresa dulce."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/40.png",
-        "desc": "Sandía jugosa con frescura intensa."
+        "nombre": "Mango Uva",
+        "img": "DEATH ROW/Mango uva.png",
+        "desc": "Mango maduro con uva morada."
       },
       {
-        "nombre": "Mango Helado",
-        "img": "assets/productos/41.png",
-        "desc": "Mango exótico maduro con toque frío."
+        "nombre": "Menta",
+        "img": "DEATH ROW/Menta.png",
+        "desc": "Menta limpia y helada."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/42.png",
-        "desc": "Uvas oscuras dulces con frescura glacial."
-      },
-      {
-        "nombre": "Menta Salvaje",
-        "img": "assets/productos/43.png",
-        "desc": "Menta herbal fuerte y refrescante."
-      },
-      {
-        "nombre": "Limonada Rosa",
-        "img": "assets/productos/44.png",
-        "desc": "Limonada rosada dulce con toque ácido vibrante."
+        "nombre": "Miel de Piña",
+        "img": "DEATH ROW/Miel de piña.png",
+        "desc": "Piña dorada caramelizada con miel."
       }
     ]
   },
@@ -767,152 +761,147 @@ const PRODUCTS_DATA = [
     "id": "lost-mary-os",
     "nombre": "LOST MARY OS",
     "categoria": "desechables",
-    "subtitulo": "5.000 Puffs • 27 Sabores",
+    "subtitulo": "5.000 Puffs • 26 Sabores",
     "puffs": 5000,
     "precio": 18000,
     "precio_promo_2": 30000,
     "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 5120,
-    "imagen": "assets/productos/46.png",
+    "imagen": "LOST MARY OS/fresa hielo.png",
     "descripcion": "Uno de los vapes desechables más reconocidos a nivel mundial, con diseño ergonómico de superficie planetaria y 5.000 caladas suaves.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
+        "nombre": "Arándano Helado",
+        "img": "LOST MARY OS/arandano helado.png",
+        "desc": "Arándano azul con frío polar."
+      },
+      {
+        "nombre": "Arándano",
+        "img": "LOST MARY OS/arandano.png",
+        "desc": "Arándanos puros silvestres."
+      },
+      {
+        "nombre": "Banano",
+        "img": "LOST MARY OS/banano.png",
+        "desc": "Plátano dulce y cremoso."
+      },
+      {
+        "nombre": "Cereza",
+        "img": "LOST MARY OS/cereza.png",
+        "desc": "Cerezas rojas jugosas."
+      },
+      {
+        "nombre": "Durazno",
+        "img": "LOST MARY OS/durazno.png",
+        "desc": "Melocotón carnoso dulce."
+      },
+      {
+        "nombre": "Frambuesa",
+        "img": "LOST MARY OS/frambuesa.png",
+        "desc": "Frambuesas ácidas y vivas."
+      },
+      {
         "nombre": "Fresa Hielo",
-        "img": "assets/productos/46.png",
-        "desc": "Fresas maduras con toque helado."
+        "img": "LOST MARY OS/fresa hielo.png",
+        "desc": "Fresas maduras en hielo picado."
       },
       {
         "nombre": "Fresa Mango",
-        "img": "assets/productos/47.png",
+        "img": "LOST MARY OS/fresa mango.png",
         "desc": "Fresas dulces y mango tropical."
       },
       {
-        "nombre": "Arándano Hielo",
-        "img": "assets/productos/48.png",
-        "desc": "Arándano silvestre con golpe frío."
+        "nombre": "Fresa Nieve",
+        "img": "LOST MARY OS/fresa nieve.png",
+        "desc": "Nieve helada sabor fresa."
       },
       {
-        "nombre": "Sandía Hielo",
-        "img": "assets/productos/49.png",
-        "desc": "Sandía dulce con acabado fresco."
+        "nombre": "Kiwi",
+        "img": "LOST MARY OS/kiwi.png",
+        "desc": "Kiwi verde refrescante."
       },
       {
-        "nombre": "Algodón de Azúcar",
-        "img": "assets/productos/50.png",
-        "desc": "Algodón de azúcar dulce de feria."
+        "nombre": "Limón",
+        "img": "LOST MARY OS/limon.png",
+        "desc": "Limón amarillo cítrico."
       },
       {
-        "nombre": "Hielo Negro",
-        "img": "assets/productos/51.png",
-        "desc": "Moras oscuras con menta helada."
+        "nombre": "Limonada",
+        "img": "LOST MARY OS/limonada.png",
+        "desc": "Limonada clásica veraniega."
       },
       {
-        "nombre": "Menta Verde",
-        "img": "assets/productos/52.png",
-        "desc": "Menta verde herbal clásica."
+        "nombre": "Mad Azul",
+        "img": "LOST MARY OS/mad azul.png",
+        "desc": "Trilogía de frutos azules intensos."
       },
       {
-        "nombre": "Piña Helada",
-        "img": "assets/productos/53.png",
-        "desc": "Piña dulce tropical helada."
+        "nombre": "Mango",
+        "img": "LOST MARY OS/mango.png",
+        "desc": "Mango caribeño maduro."
       },
       {
-        "nombre": "Frutas Tropicales",
-        "img": "assets/productos/54.png",
-        "desc": "Mezcla de frutas exóticas del caribe."
+        "nombre": "Menta Spear",
+        "img": "LOST MARY OS/menta spear.png",
+        "desc": "Hierbabuena suave y herbal."
       },
       {
-        "nombre": "Frambuesa Fresa",
-        "img": "assets/productos/55.png",
-        "desc": "Frambuesa ácida con fresa suave."
+        "nombre": "Menta",
+        "img": "LOST MARY OS/menta.png",
+        "desc": "Menta fresca y pura."
       },
       {
-        "nombre": "Melocotón Mango",
-        "img": "assets/productos/56.png",
-        "desc": "Durazno suave con mango aromático."
+        "nombre": "Mora Azul",
+        "img": "LOST MARY OS/mora azul.png",
+        "desc": "Mora azul dulce."
       },
       {
-        "nombre": "Kiwi Maracuyá Guayaba",
-        "img": "assets/productos/57.png",
-        "desc": "Trío tropical cítrico y aromático."
+        "nombre": "Neutro",
+        "img": "LOST MARY OS/neutro.png",
+        "desc": "Sin aroma dulce, vapor limpio."
       },
       {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/58.png",
-        "desc": "Cereza dulce con frescura polar."
+        "nombre": "Pitaya",
+        "img": "LOST MARY OS/pitaya.png",
+        "desc": "Dragon fruit sutil y refrescante."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/59.png",
-        "desc": "Uvas moradas con frío intenso."
+        "nombre": "Piña Colada",
+        "img": "LOST MARY OS/piña colada.png",
+        "desc": "Piña dulce con crema de coco."
       },
       {
-        "nombre": "Mango Hielo",
-        "img": "assets/productos/60.png",
-        "desc": "Mango cremoso con toque helado."
+        "nombre": "Piña Mango",
+        "img": "LOST MARY OS/piña mango.png",
+        "desc": "Piña caribeña con mango maduro."
       },
       {
-        "nombre": "Manzana Melocotón",
-        "img": "assets/productos/61.png",
-        "desc": "Manzana crujiente y durazno suave."
+        "nombre": "Sandía Limón",
+        "img": "LOST MARY OS/sandia limon.png",
+        "desc": "Sandía jugosa con gotas de limón."
       },
       {
-        "nombre": "Limonada Arándano",
-        "img": "assets/productos/62.png",
-        "desc": "Limonada fresca con arándanos."
+        "nombre": "Sandía",
+        "img": "LOST MARY OS/sandia.png",
+        "desc": "Sandía roja y fresca."
       },
       {
-        "nombre": "Lichi Hielo",
-        "img": "assets/productos/63.png",
-        "desc": "Lichi oriental dulce y frío."
+        "nombre": "Sueño Mary",
+        "img": "LOST MARY OS/sueño mary.png",
+        "desc": "Fórmula de ensueño frutal Lost Mary."
       },
       {
-        "nombre": "Maracuyá Naranja",
-        "img": "assets/productos/64.png",
-        "desc": "Maracuyá cítrico con naranja jugosa."
+        "nombre": "Uva Sakura",
+        "img": "LOST MARY OS/uva sakura.png",
+        "desc": "Uva dulce con notas florales de cerezo."
       },
       {
-        "nombre": "Coco Melón",
-        "img": "assets/productos/65.png",
-        "desc": "Coco cremoso con melón dulce."
-      },
-      {
-        "nombre": "Baya Mixta",
-        "img": "assets/productos/66.png",
-        "desc": "Surtido de moras y arándanos."
-      },
-      {
-        "nombre": "Plátano Hielo",
-        "img": "assets/productos/67.png",
-        "desc": "Plátano dulce con acabado helado."
-      },
-      {
-        "nombre": "Menta Arándano",
-        "img": "assets/productos/68.png",
-        "desc": "Arándano dulce con menta limpia."
-      },
-      {
-        "nombre": "Gomita Osito",
-        "img": "assets/productos/69.png",
-        "desc": "Gomitas frutales masticables."
-      },
-      {
-        "nombre": "Caramelo Ácido",
-        "img": "assets/productos/70.png",
-        "desc": "Caramelo con toque ácido chispeante."
-      },
-      {
-        "nombre": "Fresa Piña",
-        "img": "assets/productos/71.png",
-        "desc": "Fresa dulce con piña ácida."
-      },
-      {
-        "nombre": "Bebida Energética",
-        "img": "assets/productos/72.png",
-        "desc": "Bebida energética clásica estimulante."
+        "nombre": "Uva",
+        "img": "LOST MARY OS/uva.png",
+        "desc": "Uvas moradas clásicas."
       }
     ]
   },
@@ -927,85 +916,85 @@ const PRODUCTS_DATA = [
     "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 3890,
-    "imagen": "assets/productos/73.png",
+    "imagen": "LOST MARY MO/Blue trio.png",
     "descripcion": "Diseño cilíndrico ultra ergonómico con acabado marmoleado de lujo y tecnología de resistencia de malla para caladas sedosas.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Hielo de Cereza Negra",
-        "img": "assets/productos/73.png",
-        "desc": "Cereza negra intensa con golpe frío."
+        "nombre": "Arándano",
+        "img": "LOST MARY MO/Arandano.png",
+        "desc": "Arándano silvestre delicioso."
       },
       {
-        "nombre": "Rosa Frutal",
-        "img": "assets/productos/74.png",
-        "desc": "Combinación suave de frutas rosadas."
+        "nombre": "Blue Trio",
+        "img": "LOST MARY MO/Blue trio.png",
+        "desc": "Trío de moras, frambuesas y arándanos."
       },
       {
-        "nombre": "Mango Melocotón Sandía",
-        "img": "assets/productos/75.png",
-        "desc": "Trío tropical refrescante y dulce."
+        "nombre": "Cereza Limón",
+        "img": "LOST MARY MO/Cereza limon.png",
+        "desc": "Cerezas rojas con chispa de limón."
       },
       {
-        "nombre": "Guayaba Kiwi Maracuyá",
-        "img": "assets/productos/76.png",
-        "desc": "Mezcla exótica cítrica y dulce."
+        "nombre": "Dulce",
+        "img": "LOST MARY MO/Dulce.png",
+        "desc": "Notas caramelizadas suaves."
       },
       {
-        "nombre": "Fresa Helada",
-        "img": "assets/productos/77.png",
-        "desc": "Fresas dulces con toque helado."
+        "nombre": "Durazno",
+        "img": "LOST MARY MO/Durazno.png",
+        "desc": "Melocotón jugoso de verano."
       },
       {
-        "nombre": "Mora y Frambuesa",
-        "img": "assets/productos/78.png",
-        "desc": "Bayas silvestres equilibradas."
+        "nombre": "Energizante",
+        "img": "LOST MARY MO/Energizante.png",
+        "desc": "Sabor a bebida energética revitalizante."
       },
       {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/79.png",
-        "desc": "Menta limpia con frescura duradera."
+        "nombre": "Fusión Kiwi",
+        "img": "LOST MARY MO/Fusion kiwi.png",
+        "desc": "Kiwi mezclado con frutas verdes."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/80.png",
-        "desc": "Sandía jugosa con frío polar."
+        "nombre": "Ginger",
+        "img": "LOST MARY MO/Ginger.png",
+        "desc": "Jengibre suave especiado y fresco."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/81.png",
-        "desc": "Uvas moradas con golpe helado."
+        "nombre": "Limón",
+        "img": "LOST MARY MO/Limon.png",
+        "desc": "Limón cítrico refrescante."
       },
       {
-        "nombre": "Piña Helada",
-        "img": "assets/productos/82.png",
-        "desc": "Piña dulce con toque fresco."
+        "nombre": "Mango",
+        "img": "LOST MARY MO/Mango.png",
+        "desc": "Mango tropical dulce."
       },
       {
-        "nombre": "Manzana Crujiente",
-        "img": "assets/productos/83.png",
-        "desc": "Manzana verde ácida y fresca."
+        "nombre": "Menta",
+        "img": "LOST MARY MO/Mneta.png",
+        "desc": "Menta natural refrescante."
       },
       {
-        "nombre": "Limonada Rosa",
-        "img": "assets/productos/84.png",
-        "desc": "Limonada cítrica con toque dulce."
+        "nombre": "Piña Manzana",
+        "img": "LOST MARY MO/Piña manzana.png",
+        "desc": "Piña dorada y manzana verde."
       },
       {
-        "nombre": "Plátano Helado",
-        "img": "assets/productos/85.png",
-        "desc": "Plátano cremoso con frío suave."
+        "nombre": "Sandía Cereza",
+        "img": "LOST MARY MO/Sandia cereza.png",
+        "desc": "Sandía dulce con cerezas."
       },
       {
-        "nombre": "Arándano Helado",
-        "img": "assets/productos/86.png",
-        "desc": "Arándano silvestre con frescura."
+        "nombre": "Sandía",
+        "img": "LOST MARY MO/Sandia.png",
+        "desc": "Sandía jugosa."
       },
       {
-        "nombre": "Naranja Helada",
-        "img": "assets/productos/87.png",
-        "desc": "Cítrico de naranja con golpe frío."
+        "nombre": "Uva Dulce",
+        "img": "LOST MARY MO/Uva dulce.png",
+        "desc": "Uvas dulces maduras."
       }
     ]
   },
@@ -1013,167 +1002,162 @@ const PRODUCTS_DATA = [
     "id": "ease",
     "nombre": "EASE",
     "categoria": "desechables",
-    "subtitulo": "8.000 Puffs • 30 Sabores",
+    "subtitulo": "8.000 Puffs • 29 Sabores",
     "puffs": 8000,
     "precio": 18000,
     "precio_promo_2": 30000,
     "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 4600,
-    "imagen": "assets/productos/88.png",
+    "imagen": "EASE/Mango.png",
     "descripcion": "El Ease destaca por su boquilla de silicona ergonómica, pantalla LED informativa y 30 opciones de sabor frutal e intenso.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Limonada de Fresa",
-        "img": "assets/productos/88.png",
-        "desc": "Limonada refrescante con fresas maduras."
+        "nombre": "Algodón de Azúcar",
+        "img": "EASE/Algodon de azucar.png",
+        "desc": "Algodón dulce ferial nostálgico."
       },
       {
-        "nombre": "Gomitas de Sandía",
-        "img": "assets/productos/89.png",
-        "desc": "Caramelo masticable con sabor a sandía."
+        "nombre": "Arándano Azul",
+        "img": "EASE/Arandano azul.png",
+        "desc": "Mora y arándano azul dulce."
       },
       {
-        "nombre": "Fresa y Frambuesa",
-        "img": "assets/productos/90.png",
-        "desc": "Dúo frutal rojo dulce y ácido."
+        "nombre": "Arándano",
+        "img": "EASE/Arandano.png",
+        "desc": "Arándanos silvestres frescos."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/91.png",
-        "desc": "Sandía jugosa con frescura glacial."
+        "nombre": "Cereza",
+        "img": "EASE/cereza.png",
+        "desc": "Cereza roja dulce."
       },
       {
-        "nombre": "Mora Azul y Arándano",
-        "img": "assets/productos/92.png",
-        "desc": "Combinación rica de bayas azules."
+        "nombre": "Coco",
+        "img": "EASE/coco.png",
+        "desc": "Coco tropical cremoso."
       },
       {
-        "nombre": "Kiwi Maracuyá Guayaba",
-        "img": "assets/productos/93.png",
-        "desc": "Trío exótico tropical con notas ácidas."
+        "nombre": "Durazno",
+        "img": "EASE/Durazno.png",
+        "desc": "Melocotón dulce y jugoso."
       },
       {
-        "nombre": "Mango y Melocotón",
-        "img": "assets/productos/94.png",
-        "desc": "Mango maduro con durazno suave."
+        "nombre": "Fresa - Banano",
+        "img": "EASE/fresa - banano.png",
+        "desc": "Clásico batido de fresa y banano."
       },
       {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/95.png",
-        "desc": "Menta pura y refrescante."
+        "nombre": "Fresa Helada",
+        "img": "EASE/fresa helada.png",
+        "desc": "Fresas maduras en hielo."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/96.png",
-        "desc": "Uvas oscuras con golpe frío."
+        "nombre": "Frío Pacífico",
+        "img": "EASE/Frio pacifico.png",
+        "desc": "Brisa marina con frescura oceánica."
+      },
+      {
+        "nombre": "Frutos Rojos",
+        "img": "EASE/frutos rojos.png",
+        "desc": "Mix silvestre de bayas y frutos rojos."
+      },
+      {
+        "nombre": "Jungle",
+        "img": "EASE/Jungel.png",
+        "desc": "Fórmula misteriosa de la selva tropical."
+      },
+      {
+        "nombre": "Kiwi",
+        "img": "EASE/Kiwi.png",
+        "desc": "Kiwi jugoso y acidito."
+      },
+      {
+        "nombre": "Lulo",
+        "img": "EASE/Lulo.png",
+        "desc": "Lulo colombiano cítrico y refrescante."
+      },
+      {
+        "nombre": "Mango Azul",
+        "img": "EASE/Mango azul.png",
+        "desc": "Mango dulce con toques de mora azul."
+      },
+      {
+        "nombre": "Mango",
+        "img": "EASE/Mango.png",
+        "desc": "Mango caribeño maduro."
+      },
+      {
+        "nombre": "Manzana",
+        "img": "EASE/Manzana.png",
+        "desc": "Manzana roja dulce y crocante."
+      },
+      {
+        "nombre": "Manzana Verde",
+        "img": "EASE/ManzanaVerde.png",
+        "desc": "Manzana ácida y refrescante."
+      },
+      {
+        "nombre": "Melón",
+        "img": "EASE/Melon.png",
+        "desc": "Melón verde suave."
+      },
+      {
+        "nombre": "Menta Azul",
+        "img": "EASE/Menta azul.png",
+        "desc": "Menta fresca con fondo de arándano."
+      },
+      {
+        "nombre": "Menta",
+        "img": "EASE/Menta.png",
+        "desc": "Menta glaciar pura."
+      },
+      {
+        "nombre": "Naranja",
+        "img": "EASE/Naranja.png",
+        "desc": "Naranja dulce exprimida."
+      },
+      {
+        "nombre": "Pera",
+        "img": "EASE/Pera.png",
+        "desc": "Pera dulce y delicada."
       },
       {
         "nombre": "Piña Colada",
-        "img": "assets/productos/97.png",
-        "desc": "Piña tropical con crema de coco."
+        "img": "EASE/piña colada.png",
+        "desc": "Piña dulce y crema de coco."
       },
       {
-        "nombre": "Plátano Helado",
-        "img": "assets/productos/98.png",
-        "desc": "Plátano dulce con acabado frío."
+        "nombre": "Piña",
+        "img": "EASE/piña.png",
+        "desc": "Piña dorada tropical."
       },
       {
-        "nombre": "Manzana Doble",
-        "img": "assets/productos/99.png",
-        "desc": "Manzanas rojas y verdes crujientes."
+        "nombre": "Sandía",
+        "img": "EASE/Sandia.png",
+        "desc": "Sandía roja y refrescante."
       },
       {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/100.png",
-        "desc": "Cereza madura con frescura polar."
+        "nombre": "Toronja",
+        "img": "EASE/Toronja.png",
+        "desc": "Toronja rosada con agradable amargor cítrico."
       },
       {
-        "nombre": "Lichi Helado",
-        "img": "assets/productos/101.png",
-        "desc": "Lichi oriental con golpe frío."
+        "nombre": "Trío Azul",
+        "img": "EASE/Trio azul.png",
+        "desc": "Combinación de 3 frutas azules."
       },
       {
-        "nombre": "Melón Dulce",
-        "img": "assets/productos/102.png",
-        "desc": "Melón maduro con dulzura natural."
+        "nombre": "Uva Rojo",
+        "img": "EASE/uva rojo.png",
+        "desc": "Uva borgoña dulce e intensa."
       },
       {
-        "nombre": "Frutos del Bosque",
-        "img": "assets/productos/103.png",
-        "desc": "Surtido de frutas silvestres del bosque."
-      },
-      {
-        "nombre": "Algodón de Azúcar",
-        "img": "assets/productos/104.png",
-        "desc": "Algodón de azúcar dulce de feria."
-      },
-      {
-        "nombre": "Bebida Energética",
-        "img": "assets/productos/105.png",
-        "desc": "Sabor vibrante a bebida energizante."
-      },
-      {
-        "nombre": "Cola Helada",
-        "img": "assets/productos/106.png",
-        "desc": "Refresco de cola con hielo."
-      },
-      {
-        "nombre": "Naranja y Mango",
-        "img": "assets/productos/107.png",
-        "desc": "Cítricos de naranja con mango dulce."
-      },
-      {
-        "nombre": "Fresa y Kiwi",
-        "img": "assets/productos/108.png",
-        "desc": "Fresa suave con kiwi ácido."
-      },
-      {
-        "nombre": "Mora Helada",
-        "img": "assets/productos/109.png",
-        "desc": "Moras silvestres con toque frío."
-      },
-      {
-        "nombre": "Durazno Helado",
-        "img": "assets/productos/110.png",
-        "desc": "Duraznos jugosos con acabado helado."
-      },
-      {
-        "nombre": "Pomelo y Frutos",
-        "img": "assets/productos/111.png",
-        "desc": "Toronja amarga-dulce con frutas mixtas."
-      },
-      {
-        "nombre": "Chicle de Fresa",
-        "img": "assets/productos/112.png",
-        "desc": "Chicle dulce de fresa clásica."
-      },
-      {
-        "nombre": "Mango y Piña",
-        "img": "assets/productos/113.png",
-        "desc": "Mango tropical con piña ácida."
-      },
-      {
-        "nombre": "Frambuesa Helada",
-        "img": "assets/productos/114.png",
-        "desc": "Frambuesa silvestre con toque frío."
-      },
-      {
-        "nombre": "Menta y Hierbabuena",
-        "img": "assets/productos/115.png",
-        "desc": "Doble frescura de menta y hierba."
-      },
-      {
-        "nombre": "Fruta de la Pasión",
-        "img": "assets/productos/116.png",
-        "desc": "Maracuyá exótico puro y aromático."
-      },
-      {
-        "nombre": "Hielo Negro Especial",
-        "img": "assets/productos/117.png",
-        "desc": "Moras oscuras con menta polar intensa."
+        "nombre": "Uva",
+        "img": "EASE/Uva.png",
+        "desc": "Uva morada clásica."
       }
     ]
   },
@@ -1181,117 +1165,97 @@ const PRODUCTS_DATA = [
     "id": "dummy",
     "nombre": "DUMMY",
     "categoria": "desechables",
-    "subtitulo": "8.000 Puffs • 20 Sabores",
+    "subtitulo": "8.000 Puffs • 16 Sabores",
     "puffs": 8000,
     "precio": 18000,
     "precio_promo_2": 30000,
     "ahorro_2": 6000,
     "rating": 4.8,
     "ventas": 3750,
-    "imagen": "assets/productos/118.png",
+    "imagen": "DUMMY/fresa.png",
     "descripcion": "Inspirado en la cultura urbana con pantalla LED que indica batería y líquido, ofreciendo 8.000 caladas de gran densidad.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Fresa Helada",
-        "img": "assets/productos/118.png",
-        "desc": "Fresas dulces con toque polar."
+        "nombre": "Arándano",
+        "img": "DUMMY/arandano.png",
+        "desc": "Arándano silvestre."
       },
       {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/119.png",
-        "desc": "Menta limpia con frescura duradera."
+        "nombre": "Bad Berry",
+        "img": "DUMMY/bad berry.png",
+        "desc": "Bayas oscuras rebeldes."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/120.png",
-        "desc": "Sandía jugosa con acabado frío."
+        "nombre": "Fizzy Limón",
+        "img": "DUMMY/fizzy limon.png",
+        "desc": "Limón burbujeante efervescente."
       },
       {
-        "nombre": "Mango Helado",
-        "img": "assets/productos/121.png",
-        "desc": "Mango dulce con toque glacial."
+        "nombre": "Fresa",
+        "img": "DUMMY/fresa.png",
+        "desc": "Fresa madura dulce."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/122.png",
-        "desc": "Uvas moradas con frío intenso."
+        "nombre": "Gomita",
+        "img": "DUMMY/gomita.png",
+        "desc": "Gomitas de osito masticables."
       },
       {
-        "nombre": "Arándano Helado",
-        "img": "assets/productos/123.png",
-        "desc": "Arándano con toque refrescante."
+        "nombre": "Guava",
+        "img": "DUMMY/guava.png",
+        "desc": "Guayaba tropical aromática."
       },
       {
-        "nombre": "Kiwi Fresa",
-        "img": "assets/productos/124.png",
-        "desc": "Equilibrio entre fresa y kiwi ácido."
+        "nombre": "Invasión Alien",
+        "img": "DUMMY/invasion alien.png",
+        "desc": "Mezcla misteriosa de otro planeta."
       },
       {
-        "nombre": "Piña Helada",
-        "img": "assets/productos/125.png",
-        "desc": "Piña dulce con toque helado."
+        "nombre": "Kiwi",
+        "img": "DUMMY/kiwi.png",
+        "desc": "Kiwi verde fresco."
       },
       {
-        "nombre": "Plátano Helado",
-        "img": "assets/productos/126.png",
-        "desc": "Plátano cremoso con acabado frío."
+        "nombre": "Manzana",
+        "img": "DUMMY/manzana.png",
+        "desc": "Manzana dulce crocante."
       },
       {
-        "nombre": "Manzana Helada",
-        "img": "assets/productos/127.png",
-        "desc": "Manzana crujiente con frescura."
+        "nombre": "Naranja",
+        "img": "DUMMY/naranja.png",
+        "desc": "Naranja jugosa."
       },
       {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/128.png",
-        "desc": "Cereza dulce con golpe polar."
+        "nombre": "Neutro",
+        "img": "DUMMY/neutro.png",
+        "desc": "Sabor neutro sin dulzura."
       },
       {
-        "nombre": "Limonada Rosa",
-        "img": "assets/productos/129.png",
-        "desc": "Limonada cítrica con toque dulce."
+        "nombre": "Rainbow Rapper",
+        "img": "DUMMY/rainbow rapper.png",
+        "desc": "Caramelos multicolores de rap."
       },
       {
-        "nombre": "Gomitas Dulces",
-        "img": "assets/productos/130.png",
-        "desc": "Gomitas frutales masticables."
+        "nombre": "Sandía",
+        "img": "DUMMY/sandia.png",
+        "desc": "Sandía veraniega."
       },
       {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/131.png",
-        "desc": "Surtido de moras y fresas."
+        "nombre": "Sueño Dummy",
+        "img": "DUMMY/sueño dummy.png",
+        "desc": "Fantasía frutal de la casa Dummy."
       },
       {
-        "nombre": "Melón Helado",
-        "img": "assets/productos/132.png",
-        "desc": "Melón maduro con toque helado."
+        "nombre": "Troll",
+        "img": "DUMMY/troll.png",
+        "desc": "Caramelo ácido de troll."
       },
       {
-        "nombre": "Durazno Helado",
-        "img": "assets/productos/133.png",
-        "desc": "Durazno jugoso con acabado frío."
-      },
-      {
-        "nombre": "Bebida Energética",
-        "img": "assets/productos/134.png",
-        "desc": "Sabor clásico a bebida energizante."
-      },
-      {
-        "nombre": "Algodón de Azúcar",
-        "img": "assets/productos/135.png",
-        "desc": "Algodón de azúcar dulce de feria."
-      },
-      {
-        "nombre": "Cola Helada",
-        "img": "assets/productos/136.png",
-        "desc": "Refresco de cola con hielo."
-      },
-      {
-        "nombre": "Frutas Tropicales",
-        "img": "assets/productos/137.png",
-        "desc": "Mezcla de frutas tropicales exóticas."
+        "nombre": "Uva",
+        "img": "DUMMY/uva.png",
+        "desc": "Uvas moradas intensas."
       }
     ]
   },
@@ -1306,90 +1270,90 @@ const PRODUCTS_DATA = [
     "ahorro_2": 9000,
     "rating": 4.8,
     "ventas": 4100,
-    "imagen": "assets/productos/138.png",
+    "imagen": "NICKY JAM/el ganador.png",
     "descripcion": "Edición oficial de Nicky Jam con 10.000 puffs, pantalla digital de batería y líquido, y sabores urbanos irresistibles.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Fresa Sandía",
-        "img": "assets/productos/138.png",
-        "desc": "Fresas dulces combinadas con sandía jugosa."
+        "nombre": "69 Bananas",
+        "img": "NICKY JAM/69 bananas.png",
+        "desc": "Plátano dulce con estilo urbano."
       },
       {
-        "nombre": "Arándano Helado",
-        "img": "assets/productos/139.png",
-        "desc": "Arándanos azules con golpe frío polar."
+        "nombre": "Black Hat",
+        "img": "NICKY JAM/black hat.png",
+        "desc": "Misterio de moras oscuras de Nicky."
       },
       {
-        "nombre": "Menta Miami",
-        "img": "assets/productos/140.png",
-        "desc": "Menta refrescante con estilo de Miami."
+        "nombre": "Calor Juice",
+        "img": "NICKY JAM/calor juice.png",
+        "desc": "Jugo frutal encendido de verano."
       },
       {
-        "nombre": "Mango Melocotón",
-        "img": "assets/productos/141.png",
-        "desc": "Mango tropical con durazno suave."
+        "nombre": "Durazno XXX",
+        "img": "NICKY JAM/durazno xxx.png",
+        "desc": "Melocotón extra jugoso y atrevido."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/142.png",
-        "desc": "Uvas moradas con acabado glacial."
+        "nombre": "El Ganador",
+        "img": "NICKY JAM/el ganador.png",
+        "desc": "El sabor insignia de los campeones."
       },
       {
-        "nombre": "Kiwi Maracuyá",
-        "img": "assets/productos/143.png",
-        "desc": "Kiwi cítrico con maracuyá aromático."
+        "nombre": "Estilo en Miami",
+        "img": "NICKY JAM/estilo en miami.png",
+        "desc": "Frutas tropicales frente al mar."
       },
       {
-        "nombre": "Piña Colada",
-        "img": "assets/productos/144.png",
-        "desc": "Piña jugosa con crema de coco."
+        "nombre": "Fantasía Fume",
+        "img": "NICKY JAM/fantasia fume.png",
+        "desc": "Fantasía exótica de vapor denso."
       },
       {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/145.png",
-        "desc": "Cerezas rojas con golpe frío."
+        "nombre": "Fresh Whine Up",
+        "img": "NICKY JAM/fresh whine up.png",
+        "desc": "Golpe fresco con ritmo caribeño."
       },
       {
-        "nombre": "Manzana Doble",
-        "img": "assets/productos/146.png",
-        "desc": "Manzanas rojas y verdes crujientes."
+        "nombre": "Jugo Cálido",
+        "img": "NICKY JAM/jugo calido.png",
+        "desc": "Néctar frutal suave y placentero."
       },
       {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/147.png",
-        "desc": "Surtido de bayas silvestres dulces."
+        "nombre": "Lush Medellín",
+        "img": "NICKY JAM/lush medellin.png",
+        "desc": "Sandía helada homenaje a la ciudad de la eterna primavera."
       },
       {
-        "nombre": "Plátano Helado",
-        "img": "assets/productos/148.png",
-        "desc": "Plátano cremoso con toque helado."
+        "nombre": "Menta en la Disco",
+        "img": "NICKY JAM/menta en la disco.png",
+        "desc": "Menta electrizante de fiesta nocturna."
       },
       {
-        "nombre": "Limonada Rosa",
-        "img": "assets/productos/149.png",
-        "desc": "Limonada fresca con fresas."
+        "nombre": "Menta",
+        "img": "NICKY JAM/menta.png",
+        "desc": "Menta fresca clásica."
       },
       {
-        "nombre": "Gomitas de Oso",
-        "img": "assets/productos/150.png",
-        "desc": "Gomitas dulces masticables."
+        "nombre": "Ojos Rojos",
+        "img": "NICKY JAM/ojos rojos.png",
+        "desc": "Frutas rojas maduras e intensas."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/151.png",
-        "desc": "Sandía pura con frescura intensa."
+        "nombre": "Summer Amante",
+        "img": "NICKY JAM/summer amante.png",
+        "desc": "Amor de verano entre frutas tropicales."
       },
       {
-        "nombre": "Melón Dulce",
-        "img": "assets/productos/152.png",
-        "desc": "Melón maduro con dulzura natural."
+        "nombre": "Sweet Gatas",
+        "img": "NICKY JAM/sweet gatas.png",
+        "desc": "Dulzura frutal irresistible."
       },
       {
-        "nombre": "Bebida Energética",
-        "img": "assets/productos/153.png",
-        "desc": "Sabor a bebida energética clásica."
+        "nombre": "Yellow Amanecer",
+        "img": "NICKY JAM/yellow amanecer.png",
+        "desc": "Frutas amarillas de amanecer tropical."
       }
     ]
   },
@@ -1404,35 +1368,35 @@ const PRODUCTS_DATA = [
     "ahorro_2": 4000,
     "rating": 4.8,
     "ventas": 2300,
-    "imagen": "assets/productos/154.png",
+    "imagen": "BEYOND/Blue sour razz.png",
     "descripcion": "Dispositivo premium de 10.000 caladas con diseño futurista y sabores frutales de máxima pureza.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Fresa Sandía",
-        "img": "assets/productos/154.png",
-        "desc": "Fresas dulces y sandía refrescante."
+        "nombre": "Blue Sour Razz",
+        "img": "BEYOND/Blue sour razz.png",
+        "desc": "Frambuesa azul ácida y electrizante."
       },
       {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/155.png",
-        "desc": "Menta pura con golpe helado duradero."
+        "nombre": "Cereza Crush",
+        "img": "BEYOND/Cereza crush.png",
+        "desc": "Cereza triturada súper jugosa."
       },
       {
-        "nombre": "Arándano Helado",
-        "img": "assets/productos/156.png",
-        "desc": "Arándanos silvestres con frescura polar."
+        "nombre": "Cereza Durazno Limón",
+        "img": "BEYOND/Cereza durazno limon.png",
+        "desc": "Trío de cereza dulce, durazno y toque cítrico."
       },
       {
-        "nombre": "Mango Melocotón",
-        "img": "assets/productos/157.png",
-        "desc": "Mango tropical con durazno suave."
+        "nombre": "Durazno Blanco",
+        "img": "BEYOND/Durazno blanco.png",
+        "desc": "Melocotón blanco delicado y dulce."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/158.png",
-        "desc": "Uvas dulces con acabado frío."
+        "nombre": "Piña",
+        "img": "BEYOND/Piña.png",
+        "desc": "Piña tropical madura."
       }
     ]
   },
@@ -1447,55 +1411,55 @@ const PRODUCTS_DATA = [
     "ahorro_2": 9000,
     "rating": 4.9,
     "ventas": 3800,
-    "imagen": "assets/productos/159.png",
+    "imagen": "BUGATTI/Mora azul.png",
     "descripcion": "El lujo y la potencia automotriz llevados al vapeo: diseño aerodinámico exclusivo, acabados metálicos y 9.000 caladas de máxima intensidad.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Mora Azul y Arándano",
-        "img": "assets/productos/159.png",
-        "desc": "Bayas azules oscuras con toque dulce y frío."
+        "nombre": "Fresa Piña Colada",
+        "img": "BUGATTI/fresa piña colada.png",
+        "desc": "Cóctel premium de fresa, piña y coco."
       },
       {
-        "nombre": "Fresa Kiwi",
-        "img": "assets/productos/160.png",
-        "desc": "Fresas dulces con kiwi cítrico equilibrado."
+        "nombre": "Fresa Sandía",
+        "img": "BUGATTI/Fresa sandia.png",
+        "desc": "Fresa madura con sandía jugosa."
       },
       {
-        "nombre": "Sandía Helada",
-        "img": "assets/productos/161.png",
-        "desc": "Sandía jugosa con golpe de frío polar."
+        "nombre": "Fruta de Dragón",
+        "img": "BUGATTI/fruta de dragon.png",
+        "desc": "Pitahaya exótica refinada."
       },
       {
-        "nombre": "Menta de Miami",
-        "img": "assets/productos/162.png",
-        "desc": "Menta fresca y limpia con notas heladas."
+        "nombre": "Helado de Banana",
+        "img": "BUGATTI/helado de banana.png",
+        "desc": "Crema de banana helada gourmet."
       },
       {
-        "nombre": "Mango Helado",
-        "img": "assets/productos/163.png",
-        "desc": "Mango tropical maduro con frescura glacial."
+        "nombre": "Mango Melón",
+        "img": "BUGATTI/mango melon.png",
+        "desc": "Mango caribeño con melón dulce."
       },
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/164.png",
-        "desc": "Uvas moradas con frío intenso y dulce."
+        "nombre": "Menta",
+        "img": "BUGATTI/menta.png",
+        "desc": "Menta glaciar de alta gama."
       },
       {
-        "nombre": "Melocotón Mango",
-        "img": "assets/productos/165.png",
-        "desc": "Durazno sedoso con mango dulce."
+        "nombre": "Mora Azul",
+        "img": "BUGATTI/Mora azul.png",
+        "desc": "Arándanos y moras azules intensas."
       },
       {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/166.png",
-        "desc": "Surtido silvestre de frambuesas y moras."
+        "nombre": "Naranja Coqueta",
+        "img": "BUGATTI/naranja coqueta.png",
+        "desc": "Naranja cítrica y seductora."
       },
       {
-        "nombre": "Cereza Helada",
-        "img": "assets/productos/167.png",
-        "desc": "Cereza madura con frescura extrema."
+        "nombre": "Uva Deliciosa",
+        "img": "BUGATTI/uva deliciosa.png",
+        "desc": "Uvas moradas exquisitas."
       }
     ]
   },
@@ -1510,70 +1474,70 @@ const PRODUCTS_DATA = [
     "ahorro_2": 11000,
     "rating": 4.8,
     "ventas": 2900,
-    "imagen": "assets/productos/168.png",
+    "imagen": "NIMBOX KIT/fresa sandia.png",
     "descripcion": "Sistema modular de vapeo con batería recargable tipo C y cartuchos intercambiables de 10.000 puffs.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Banana Ice",
-        "img": "assets/productos/168.png",
-        "desc": "Plátano dulce con toque helado."
+        "nombre": "Arándano",
+        "img": "NIMBOX KIT/arandano.png",
+        "desc": "Arándanos frescos."
+      },
+      {
+        "nombre": "Bayas Mixtas",
+        "img": "NIMBOX KIT/bayas mixtas.png",
+        "desc": "Cosecha de bayas del bosque."
+      },
+      {
+        "nombre": "Dulce Arcoíris",
+        "img": "NIMBOX KIT/dulce arcoirirs.png",
+        "desc": "Caramelos masticables dulces."
+      },
+      {
+        "nombre": "Fresa Crema",
+        "img": "NIMBOX KIT/fresa crema.png",
+        "desc": "Fresas dulces con crema suave."
       },
       {
         "nombre": "Fresa Sandía",
-        "img": "assets/productos/169.png",
-        "desc": "Fresas dulces y sandía jugosa."
+        "img": "NIMBOX KIT/fresa sandia.png",
+        "desc": "Fresas y sandía refrescante."
       },
       {
-        "nombre": "Mango Ice",
-        "img": "assets/productos/170.png",
-        "desc": "Mango tropical con acabado frío."
+        "nombre": "Fresa",
+        "img": "NIMBOX KIT/fresa.png",
+        "desc": "Fresa madura dulce."
       },
       {
-        "nombre": "Maracuyá",
-        "img": "assets/productos/171.png",
-        "desc": "Maracuyá exótico cítrico aromático."
+        "nombre": "Grosella Negra",
+        "img": "NIMBOX KIT/grosella negra.png",
+        "desc": "Grosellas oscuras aciduladas."
       },
       {
-        "nombre": "Salpicón",
-        "img": "assets/productos/172.png",
-        "desc": "Mezcla tradicional de frutas colombianas."
+        "nombre": "Manzana",
+        "img": "NIMBOX KIT/manzana.png",
+        "desc": "Manzana verde fresca."
       },
       {
-        "nombre": "Arándano Ice",
-        "img": "assets/productos/173.png",
-        "desc": "Arándano silvestre con golpe helado."
+        "nombre": "Melón",
+        "img": "NIMBOX KIT/melon.png",
+        "desc": "Melón jugoso."
       },
       {
-        "nombre": "Energetic Ice",
-        "img": "assets/productos/174.png",
-        "desc": "Bebida energizante con toque frío."
+        "nombre": "Menta",
+        "img": "NIMBOX KIT/menta.png",
+        "desc": "Menta fresca."
       },
       {
-        "nombre": "Frutos Morados",
-        "img": "assets/productos/175.png",
-        "desc": "Uvas y moras oscuras combinadas."
+        "nombre": "Uva",
+        "img": "NIMBOX KIT/uva.png",
+        "desc": "Uva morada intensa."
       },
       {
-        "nombre": "Kiwi Fresa",
-        "img": "assets/productos/176.png",
-        "desc": "Fresa dulce con kiwi cítrico."
-      },
-      {
-        "nombre": "Lulo",
-        "img": "assets/productos/177.png",
-        "desc": "Sabor a lulo ácido y refrescante."
-      },
-      {
-        "nombre": "Doble Manzana",
-        "img": "assets/productos/178.png",
-        "desc": "Manzanas crujientes rojas y verdes."
-      },
-      {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/179.png",
-        "desc": "Menta limpia con frescura prolongada."
+        "nombre": "Yogurt Cítrico",
+        "img": "NIMBOX KIT/yogurt citrico.png",
+        "desc": "Yogurt cremoso con toque de limón."
       }
     ]
   },
@@ -1588,70 +1552,70 @@ const PRODUCTS_DATA = [
     "ahorro_2": 9000,
     "rating": 4.8,
     "ventas": 4100,
-    "imagen": "assets/productos/180.png",
+    "imagen": "NIMBOX POD/fresa sandia.png",
     "descripcion": "Pod de repuesto para Nimbox Kit con 10.000 caladas de sabor continuo con resistencia de malla.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Banana Ice",
-        "img": "assets/productos/180.png",
-        "desc": "Plátano dulce con toque helado."
+        "nombre": "Arándanos",
+        "img": "NIMBOX POD/arandanos.png",
+        "desc": "Arándanos seleccionados."
+      },
+      {
+        "nombre": "Bayas Mixtas",
+        "img": "NIMBOX POD/bayas mixtas.png",
+        "desc": "Mix de frutos del bosque."
+      },
+      {
+        "nombre": "Explosión Dulce",
+        "img": "NIMBOX POD/explosion dulce.png",
+        "desc": "Caramelos dulces intensos."
       },
       {
         "nombre": "Fresa Sandía",
-        "img": "assets/productos/181.png",
-        "desc": "Fresas dulces y sandía jugosa."
+        "img": "NIMBOX POD/fresa sandia.png",
+        "desc": "Fresa y sandía veraniega."
       },
       {
-        "nombre": "Mango Ice",
-        "img": "assets/productos/182.png",
-        "desc": "Mango tropical con acabado frío."
+        "nombre": "Fresa",
+        "img": "NIMBOX POD/fresa.png",
+        "desc": "Fresas rojas del huerto."
       },
       {
-        "nombre": "Maracuyá",
-        "img": "assets/productos/183.png",
-        "desc": "Maracuyá exótico cítrico aromático."
+        "nombre": "Grosella Negra",
+        "img": "NIMBOX POD/grosella negra.png",
+        "desc": "Grosella oscura profunda."
       },
       {
-        "nombre": "Salpicón",
-        "img": "assets/productos/184.png",
-        "desc": "Mezcla tradicional de frutas colombianas."
+        "nombre": "Helado de Fresa",
+        "img": "NIMBOX POD/helado de fresa.png",
+        "desc": "Helado artesanal de fresa."
       },
       {
-        "nombre": "Arándano Ice",
-        "img": "assets/productos/185.png",
-        "desc": "Arándano silvestre con golpe helado."
+        "nombre": "Manzana",
+        "img": "NIMBOX POD/manzana.png",
+        "desc": "Manzana crujiente."
       },
       {
-        "nombre": "Energetic Ice",
-        "img": "assets/productos/186.png",
-        "desc": "Bebida energizante con toque frío."
+        "nombre": "Melón",
+        "img": "NIMBOX POD/melon.png",
+        "desc": "Melón dulce maduro."
       },
       {
-        "nombre": "Frutos Morados",
-        "img": "assets/productos/187.png",
-        "desc": "Uvas y moras oscuras combinadas."
+        "nombre": "Menta",
+        "img": "NIMBOX POD/menta.png",
+        "desc": "Menta refrescante."
       },
       {
-        "nombre": "Kiwi Fresa",
-        "img": "assets/productos/188.png",
-        "desc": "Fresa dulce con kiwi cítrico."
+        "nombre": "Uva",
+        "img": "NIMBOX POD/uva.png",
+        "desc": "Uva madura."
       },
       {
-        "nombre": "Lulo",
-        "img": "assets/productos/189.png",
-        "desc": "Sabor a lulo ácido y refrescante."
-      },
-      {
-        "nombre": "Doble Manzana",
-        "img": "assets/productos/190.png",
-        "desc": "Manzanas crujientes rojas y verdes."
-      },
-      {
-        "nombre": "Menta Fresca",
-        "img": "assets/productos/191.png",
-        "desc": "Menta limpia con frescura prolongada."
+        "nombre": "Yogurt Cítrico",
+        "img": "NIMBOX POD/yogurt citrico.png",
+        "desc": "Yogurt suave con cítricos."
       }
     ]
   },
@@ -1666,45 +1630,45 @@ const PRODUCTS_DATA = [
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 2750,
-    "imagen": "assets/productos/192.png",
+    "imagen": "VERA/uva.png",
     "descripcion": "Dispositivo elegante de 12.000 caladas con excelente rendimiento de batería y perfiles frutales de gran intensidad.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Uva Helada",
-        "img": "assets/productos/192.png",
-        "desc": "Uvas oscuras con golpe frío polar."
+        "nombre": "Fresa Kiwi",
+        "img": "VERA/fresa kiwi.png",
+        "desc": "Fresas dulces y kiwi verde."
       },
       {
-        "nombre": "Cereza Arándano",
-        "img": "assets/productos/193.png",
-        "desc": "Cereza madura con arándano silvestre."
+        "nombre": "Frutos Rojos",
+        "img": "VERA/frutos rojos.png",
+        "desc": "Mix de frutos rojos silvestres."
       },
       {
-        "nombre": "Menta Helada",
-        "img": "assets/productos/194.png",
-        "desc": "Menta fresca con golpe helado duradero."
+        "nombre": "Gomita",
+        "img": "VERA/gomita.png",
+        "desc": "Gomitas dulces masticables."
       },
       {
-        "nombre": "Miami Mint",
-        "img": "assets/productos/195.png",
-        "desc": "Menta suave y refrescante."
+        "nombre": "Manzana",
+        "img": "VERA/manzana.png",
+        "desc": "Manzana verde jugosa."
       },
       {
-        "nombre": "Kiwi Fresa",
-        "img": "assets/productos/196.png",
-        "desc": "Fresa dulce con kiwi cítrico."
+        "nombre": "Menta",
+        "img": "VERA/menta.png",
+        "desc": "Menta helada cristalina."
       },
       {
         "nombre": "Triple Uva",
-        "img": "assets/productos/197.png",
-        "desc": "Intensa combinación de tres variedades de uva."
+        "img": "VERA/uva triple.png",
+        "desc": "Tres variedades de uva dulce."
       },
       {
-        "nombre": "Caminante Diurno",
-        "img": "assets/productos/198.png",
-        "desc": "Mezcla misteriosa de frutas energéticas."
+        "nombre": "Uva",
+        "img": "VERA/uva.png",
+        "desc": "Uva clásica morada."
       }
     ]
   },
@@ -1719,50 +1683,50 @@ const PRODUCTS_DATA = [
     "ahorro_2": 8000,
     "rating": 4.8,
     "ventas": 3200,
-    "imagen": "assets/productos/199.png",
+    "imagen": "KATCHMI/gomita blanca.png",
     "descripcion": "Gran capacidad de 12.000 caladas con diseño innovador, flujo de aire regulable y sabores dulces y helados.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Gomita Blanca",
-        "img": "assets/productos/199.png",
-        "desc": "Gomitas dulces blancas con toque de piña."
-      },
-      {
-        "nombre": "Mora Azul",
-        "img": "assets/productos/200.png",
-        "desc": "Arándanos silvestres dulces con frescura."
-      },
-      {
-        "nombre": "Helado de Sandía",
-        "img": "assets/productos/201.png",
-        "desc": "Sandía dulce con acabado cremoso y frío."
+        "nombre": "Cereza Azul",
+        "img": "KATCHMI/cereza azul.png",
+        "desc": "Cereza con moras azules."
       },
       {
         "nombre": "Explosión Arizona",
-        "img": "assets/productos/202.png",
-        "desc": "Té helado frutal con notas de durazno y limón."
-      },
-      {
-        "nombre": "Menta de Miami",
-        "img": "assets/productos/203.png",
-        "desc": "Menta fresca de estilo veraniego."
+        "img": "KATCHMI/explosion arizona.png",
+        "desc": "Té helado frutal estilo Arizona."
       },
       {
         "nombre": "Fresa Sandía",
-        "img": "assets/productos/204.png",
-        "desc": "Dúo clásico de fresas dulces y sandía."
+        "img": "KATCHMI/fresa sandia.png",
+        "desc": "Fresas dulces y sandía."
       },
       {
-        "nombre": "Cereza Azul",
-        "img": "assets/productos/205.png",
-        "desc": "Cereza jugosa con toque de mora azul."
+        "nombre": "Gomita Blanca",
+        "img": "KATCHMI/gomita blanca.png",
+        "desc": "Gomita blanca de piña dulce."
+      },
+      {
+        "nombre": "Helado de Sandía",
+        "img": "KATCHMI/helado de sandia.png",
+        "desc": "Sandía helada ultra fresca."
       },
       {
         "nombre": "Lágrimas Ácidas",
-        "img": "assets/productos/206.png",
-        "desc": "Caramelo ácido y cítrico electrizante."
+        "img": "KATCHMI/lagrimas acidas.png",
+        "desc": "Caramelo ácido potente."
+      },
+      {
+        "nombre": "Menta de Miami",
+        "img": "KATCHMI/menta de miami.png",
+        "desc": "Menta refrescante Miami breeze."
+      },
+      {
+        "nombre": "Mora Azul",
+        "img": "KATCHMI/mora azul.png",
+        "desc": "Mora azul jugosa."
       }
     ]
   },
@@ -1777,45 +1741,45 @@ const PRODUCTS_DATA = [
     "ahorro_2": 15000,
     "rating": 4.8,
     "ventas": 3600,
-    "imagen": "assets/productos/207.png",
+    "imagen": "FIFTY CENT/purpura.png",
     "descripcion": "Edición oficial 50 Cent con 20.000 puffs de duración masiva, pantalla HD y perfiles de sabor explosivos.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Púrpura",
-        "img": "assets/productos/207.png",
-        "desc": "Uvas moradas intensas con toque helado."
-      },
-      {
-        "nombre": "Niebla Azul",
-        "img": "assets/productos/208.png",
-        "desc": "Mora azul misteriosa con frescura polar."
-      },
-      {
-        "nombre": "Fiesta Mango",
-        "img": "assets/productos/209.png",
-        "desc": "Mango tropical dulce y jugoso."
+        "nombre": "Cereza Uva",
+        "img": "FIFTY CENT/cereza uva.png",
+        "desc": "Cereza silvestre con uvas oscuras."
       },
       {
         "nombre": "Coca Cola",
-        "img": "assets/productos/210.png",
+        "img": "FIFTY CENT/coca cola.png",
         "desc": "Refresco de cola clásico con hielo."
       },
       {
-        "nombre": "Osito de Azúcar",
-        "img": "assets/productos/211.png",
-        "desc": "Gomitas dulces masticables con azúcar."
-      },
-      {
         "nombre": "Durazno Helado",
-        "img": "assets/productos/212.png",
-        "desc": "Durazno aterciopelado con golpe frío."
+        "img": "FIFTY CENT/durazno helado.png",
+        "desc": "Durazno maduro sobre hielo."
       },
       {
-        "nombre": "Cereza Uva",
-        "img": "assets/productos/213.png",
-        "desc": "Cereza roja con uvas oscuras."
+        "nombre": "Fiesta Mango",
+        "img": "FIFTY CENT/fiesta mango.png",
+        "desc": "Mango tropical en fiesta de sabor."
+      },
+      {
+        "nombre": "Niebla Azul",
+        "img": "FIFTY CENT/niebla azul.png",
+        "desc": "Blue mist de arándanos y menta suave."
+      },
+      {
+        "nombre": "Púrpura",
+        "img": "FIFTY CENT/purpura.png",
+        "desc": "Uva morada de lujo 50 Cent."
+      },
+      {
+        "nombre": "Osito de Azúcar",
+        "img": "FIFTY CENT/sito de azucar.png",
+        "desc": "Gomitas de osito con azúcar escarchada."
       }
     ]
   },
@@ -1823,67 +1787,57 @@ const PRODUCTS_DATA = [
     "id": "spaceman",
     "nombre": "SPACEMAN",
     "categoria": "desechables",
-    "subtitulo": "50.000 Puffs • 10 Sabores",
+    "subtitulo": "50.000 Puffs • 8 Sabores",
     "puffs": 50000,
     "precio": 40000,
     "precio_promo_2": 70000,
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 3300,
-    "imagen": "assets/productos/224.png",
+    "imagen": "SPACEMAN/fresa sandia.png",
     "descripcion": "Diseño espacial con pantalla curva a todo color, múltiples modos de potencia y 20.000 caladas de gran fidelidad.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Uva Verde",
-        "img": "assets/productos/224.png",
-        "desc": "Uvas verdes crujientes y dulces."
-      },
-      {
-        "nombre": "Fresa Sandía",
-        "img": "assets/productos/225.png",
-        "desc": "Fresas con sandía veraniega."
-      },
-      {
-        "nombre": "Mango Dulce",
-        "img": "assets/productos/226.png",
-        "desc": "Mango tropical aromático y dulce."
-      },
-      {
-        "nombre": "Sandía Melocotón",
-        "img": "assets/productos/227.png",
-        "desc": "Sandía jugosa combinada con durazno."
-      },
-      {
-        "nombre": "Menta Miami",
-        "img": "assets/productos/228.png",
-        "desc": "Menta pura y refrescante."
-      },
-      {
-        "nombre": "Mora Azul",
-        "img": "assets/productos/229.png",
-        "desc": "Arándano silvestre con dulzura natural."
-      },
-      {
-        "nombre": "Fresa",
-        "img": "assets/productos/230.png",
-        "desc": "Fresa madura dulce."
-      },
-      {
-        "nombre": "Frambuesa Melocotón",
-        "img": "assets/productos/231.png",
-        "desc": "Frambuesa ácida con durazno aterciopelado."
-      },
-      {
-        "nombre": "Frutos Rojos",
-        "img": "assets/productos/232.png",
-        "desc": "Surtido de moras y bayas."
+        "nombre": "Durazno Sandía",
+        "img": "SPACEMAN/durazno sandia.png",
+        "desc": "Durazno dulce con sandía espacial."
       },
       {
         "nombre": "Fresa B-Pop",
-        "img": "assets/productos/233.png",
-        "desc": "Paleta de fresa dulce con centro efervescente."
+        "img": "SPACEMAN/fresa bpop.png",
+        "desc": "Paleta clásica de fresa con chicle."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "SPACEMAN/fresa sandia.png",
+        "desc": "Fresas y sandía cósmica."
+      },
+      {
+        "nombre": "Fresa",
+        "img": "SPACEMAN/fresa.png",
+        "desc": "Fresa madura espacial."
+      },
+      {
+        "nombre": "Mango",
+        "img": "SPACEMAN/mango.png",
+        "desc": "Mango tropical estelar."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "SPACEMAN/miami mint.png",
+        "desc": "Menta fresca interestelar."
+      },
+      {
+        "nombre": "Mora Frambuesa",
+        "img": "SPACEMAN/mora frambuesa.png",
+        "desc": "Moras y frambuesas ácidas."
+      },
+      {
+        "nombre": "Uva Blanca",
+        "img": "SPACEMAN/uva blanca.png",
+        "desc": "Uva blanca cristalina."
       }
     ]
   },
@@ -1898,70 +1852,70 @@ const PRODUCTS_DATA = [
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 3100,
-    "imagen": "assets/productos/235.png",
+    "imagen": "DINNER LADY/cereza dulce.png",
     "descripcion": "Líquidos premium británicos en formato desechable de 15.000 caladas, reconocidos por su complejidad y calidad de sabor inigualable.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Frutos Rojos y Caramelo",
-        "img": "assets/productos/235.png",
-        "desc": "Frutos rojos con toque de caramelo dulce."
+        "nombre": "Cereza California",
+        "img": "DINNER LADY/cereza california.png",
+        "desc": "Cerezas rojas de los valles de California."
       },
       {
-        "nombre": "Mora FAB",
-        "img": "assets/productos/236.png",
-        "desc": "Moras azules con toque helado fabuloso."
+        "nombre": "Cereza Dulce",
+        "img": "DINNER LADY/cereza dulce.png",
+        "desc": "Cereza dulce estilo repostería británica."
       },
       {
-        "nombre": "Cereza Strazz",
-        "img": "assets/productos/237.png",
-        "desc": "Cereza dulce con fresa silvestre."
+        "nombre": "Cereza Limón",
+        "img": "DINNER LADY/cereza limon.png",
+        "desc": "Cereza con acento cítrico de limón."
       },
       {
-        "nombre": "Caramelo de Fresa",
-        "img": "assets/productos/238.png",
-        "desc": "Caramelo suave de fresa dulce."
-      },
-      {
-        "nombre": "Menta Miami",
-        "img": "assets/productos/239.png",
-        "desc": "Menta fresca con golpe glacial."
-      },
-      {
-        "nombre": "Cereza de California",
-        "img": "assets/productos/240.png",
-        "desc": "Cerezas rojas dulces californianas."
-      },
-      {
-        "nombre": "Mango",
-        "img": "assets/productos/241.png",
-        "desc": "Mango tropical maduro."
-      },
-      {
-        "nombre": "Rosa Ácida",
-        "img": "assets/productos/242.png",
-        "desc": "Frutas rosadas con golpe ácido."
-      },
-      {
-        "nombre": "Melón Definitivo",
-        "img": "assets/productos/243.png",
-        "desc": "Mezcla de tres tipos de melón dulce."
-      },
-      {
-        "nombre": "Chicle de Uva",
-        "img": "assets/productos/244.png",
-        "desc": "Chicle masticable de uva morada."
+        "nombre": "Dulce de Arándano",
+        "img": "DINNER LADY/dulce de arandano.png",
+        "desc": "Arándanos caramelizados."
       },
       {
         "nombre": "Fresa B-Pop",
-        "img": "assets/productos/245.png",
-        "desc": "Paleta de fresa con toque burbujeante."
+        "img": "DINNER LADY/fresa b pop.png",
+        "desc": "Piruleta dulce de fresa."
       },
       {
-        "nombre": "Manzana Verde",
-        "img": "assets/productos/246.png",
-        "desc": "Manzana verde crujiente y ácida."
+        "nombre": "Melón",
+        "img": "DINNER LADY/melon.png",
+        "desc": "Melón dulce y perfumado."
+      },
+      {
+        "nombre": "Miami Menta",
+        "img": "DINNER LADY/miami menta.png",
+        "desc": "Menta refinada y refrescante."
+      },
+      {
+        "nombre": "Mora",
+        "img": "DINNER LADY/mora.png",
+        "desc": "Moras silvestres de campo inglés."
+      },
+      {
+        "nombre": "Rosa Ácido",
+        "img": "DINNER LADY/rosa acido.png",
+        "desc": "Caramelos rosados agridulces."
+      },
+      {
+        "nombre": "Sour Apple",
+        "img": "DINNER LADY/sour apple.png",
+        "desc": "Manzana ácida intensa."
+      },
+      {
+        "nombre": "Sour Mango Piña",
+        "img": "DINNER LADY/sour mango piña.png",
+        "desc": "Mango y piña con toque ácido."
+      },
+      {
+        "nombre": "Uva Chicle",
+        "img": "DINNER LADY/uva chicle.png",
+        "desc": "Chicle bomba sabor uva."
       }
     ]
   },
@@ -1975,7 +1929,7 @@ const PRODUCTS_DATA = [
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 2100,
-    "imagen": "assets/productos/268.png",
+    "imagen": "BRASS TYPE - C/268.png",
     "descripcion": "Batería clásica con rosca 510 universal, voltaje variable, puerto de carga Type-C y cuerpo metálico de alta durabilidad.",
     "agotado": false,
     "tipo_variante": "color",
@@ -2018,7 +1972,7 @@ const PRODUCTS_DATA = [
     "ahorro_2": 10000,
     "rating": 4.8,
     "ventas": 1950,
-    "imagen": "assets/productos/269.png",
+    "imagen": "ANV DIGITAL/269.png",
     "descripcion": "Batería 510 avanzada con pantalla digital que muestra voltaje exacto y nivel de batería en tiempo real.",
     "agotado": false,
     "tipo_variante": "color",
@@ -2061,7 +2015,7 @@ const PRODUCTS_DATA = [
     "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 2400,
-    "imagen": "assets/productos/270.png",
+    "imagen": "HIGH PRO/270.png",
     "descripcion": "Batería de cartucho oculto para máxima discreción, protección contra caídas y precalentamiento rápido.",
     "agotado": false,
     "tipo_variante": "color",
@@ -2104,7 +2058,7 @@ const PRODUCTS_DATA = [
     "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 2150,
-    "imagen": "assets/productos/271.png",
+    "imagen": "SECRET PRO/271.png",
     "descripcion": "Batería en formato encendedor / llavero que oculta el cartucho completamente para total privacidad.",
     "agotado": false,
     "tipo_variante": "color",
@@ -2138,60 +2092,60 @@ const PRODUCTS_DATA = [
     "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 3600,
-    "imagen": "assets/productos/273.png",
+    "imagen": "WAKA SOLO 2/arandano.png",
     "descripcion": "Dispositivo desechable compacto respaldado por la tecnología de Relx con 2.500 caladas de sabor refinado.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
         "nombre": "Arándano",
-        "img": "assets/productos/273.png",
-        "desc": "Arándano silvestre puro."
+        "img": "WAKA SOLO 2/arandano.png",
+        "desc": "Arándanos frescos intensos."
       },
       {
         "nombre": "Cereza",
-        "img": "assets/productos/274.png",
-        "desc": "Cereza dulce y aromática."
-      },
-      {
-        "nombre": "Menta",
-        "img": "assets/productos/275.png",
-        "desc": "Menta fresca intensa."
-      },
-      {
-        "nombre": "Piña Colada",
-        "img": "assets/productos/276.png",
-        "desc": "Piña con coco cremoso."
-      },
-      {
-        "nombre": "Sandía",
-        "img": "assets/productos/277.png",
-        "desc": "Sandía jugosa y refrescante."
-      },
-      {
-        "nombre": "Fresa",
-        "img": "assets/productos/278.png",
-        "desc": "Fresas maduras dulces."
-      },
-      {
-        "nombre": "Uva",
-        "img": "assets/productos/279.png",
-        "desc": "Uvas moradas aromáticas."
-      },
-      {
-        "nombre": "Maracuyá",
-        "img": "assets/productos/280.png",
-        "desc": "Maracuyá cítrico tropical."
+        "img": "WAKA SOLO 2/cereza.png",
+        "desc": "Cereza jugosa."
       },
       {
         "nombre": "Fresa Sandía",
-        "img": "assets/productos/281.png",
-        "desc": "Fresa dulce con sandía fresca."
+        "img": "WAKA SOLO 2/fresa sandia.png",
+        "desc": "Fresas y sandía."
       },
       {
         "nombre": "Fresa Uva",
-        "img": "assets/productos/282.png",
-        "desc": "Fresa jugosa con uva morada."
+        "img": "WAKA SOLO 2/fresa uva.png",
+        "desc": "Fresas con uvas oscuras."
+      },
+      {
+        "nombre": "Fresa",
+        "img": "WAKA SOLO 2/fresa.png",
+        "desc": "Fresa dulce."
+      },
+      {
+        "nombre": "Kiwi Maracuyá",
+        "img": "WAKA SOLO 2/kiwi maracuya.png",
+        "desc": "Kiwi fresco con maracuyá."
+      },
+      {
+        "nombre": "Menta",
+        "img": "WAKA SOLO 2/menta.png",
+        "desc": "Menta glaciar pura."
+      },
+      {
+        "nombre": "Piña Colada",
+        "img": "WAKA SOLO 2/piña colada.png",
+        "desc": "Piña dulce y coco."
+      },
+      {
+        "nombre": "Sandía",
+        "img": "WAKA SOLO 2/sandia.png",
+        "desc": "Sandía veraniega."
+      },
+      {
+        "nombre": "Uva",
+        "img": "WAKA SOLO 2/uva.png",
+        "desc": "Uva morada clásica."
       }
     ]
   },
@@ -2205,7 +2159,7 @@ const PRODUCTS_DATA = [
     "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 2100,
-    "imagen": "assets/productos/283.png",
+    "imagen": "WAKA BATERIA/283.png",
     "descripcion": "Batería recargable reutilizable compatible con todos los pods Waka Creator de 20.000 caladas.",
     "agotado": false,
     "tipo_variante": "color",
@@ -2234,45 +2188,45 @@ const PRODUCTS_DATA = [
     "ahorro_2": 0,
     "rating": 4.9,
     "ventas": 4300,
-    "imagen": "assets/productos/285.png",
+    "imagen": "WAKA CREATOR POD/arandano.png",
     "descripcion": "Cartucho de 20.000 caladas con pantalla digital integrada de nivel de líquido y doble resistencia de malla.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
         "nombre": "Arándano",
-        "img": "assets/productos/285.png",
-        "desc": "Arándano puro y fresco."
-      },
-      {
-        "nombre": "Sandía",
-        "img": "assets/productos/286.png",
-        "desc": "Sandía dulce con golpe frío."
-      },
-      {
-        "nombre": "Menta",
-        "img": "assets/productos/287.png",
-        "desc": "Menta polar refrescante."
-      },
-      {
-        "nombre": "Fresa Sandía",
-        "img": "assets/productos/288.png",
-        "desc": "Fresa dulce combinada con sandía."
+        "img": "WAKA CREATOR POD/arandano.png",
+        "desc": "Arándanos jugosos."
       },
       {
         "nombre": "Cereza",
-        "img": "assets/productos/289.png",
-        "desc": "Cereza jugosa intensa."
+        "img": "WAKA CREATOR POD/cereza.png",
+        "desc": "Cerezas rojas dulces."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "WAKA CREATOR POD/fresa sandia.png",
+        "desc": "Fresa y sandía fresca."
       },
       {
         "nombre": "Fresa",
-        "img": "assets/productos/290.png",
-        "desc": "Fresa dulce madura."
+        "img": "WAKA CREATOR POD/fresa.png",
+        "desc": "Fresas dulces del huerto."
+      },
+      {
+        "nombre": "Menta",
+        "img": "WAKA CREATOR POD/menta.png",
+        "desc": "Menta helada profunda."
+      },
+      {
+        "nombre": "Sandía",
+        "img": "WAKA CREATOR POD/sandia.png",
+        "desc": "Sandía dulce refrescante."
       },
       {
         "nombre": "Uva",
-        "img": "assets/productos/291.png",
-        "desc": "Uvas moradas aromáticas."
+        "img": "WAKA CREATOR POD/uva.png",
+        "desc": "Uva morada dulce."
       }
     ]
   },
@@ -2286,7 +2240,7 @@ const PRODUCTS_DATA = [
     "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 1850,
-    "imagen": "assets/productos/292.png",
+    "imagen": "SAMMY 2 BATERIA/292.png",
     "descripcion": "Batería de larga duración recargable por USB Tipo-C, diseñada específicamente para el sistema Sammy Pod 2.",
     "agotado": false,
     "tipo_variante": "color",
@@ -2315,75 +2269,75 @@ const PRODUCTS_DATA = [
     "ahorro_2": 0,
     "rating": 4.8,
     "ventas": 3700,
-    "imagen": "assets/productos/294.png",
+    "imagen": "SAMMY POD 2/banana ice.png",
     "descripcion": "Cartucho desechable de 12.000 caladas para batería Sammy 2 con amplio menú de sabores tropicales colombianos y mentolados.",
     "agotado": false,
     "tipo_variante": "sabor",
     "sabores": [
       {
-        "nombre": "Banana Ice",
-        "img": "assets/productos/294.png",
-        "desc": "Plátano dulce con toque helado."
-      },
-      {
-        "nombre": "Fresa Sandía",
-        "img": "assets/productos/295.png",
-        "desc": "Fresas dulces y sandía jugosa."
-      },
-      {
-        "nombre": "Mango Ice",
-        "img": "assets/productos/296.png",
-        "desc": "Mango tropical con acabado frío."
-      },
-      {
-        "nombre": "Maracuyá",
-        "img": "assets/productos/297.png",
-        "desc": "Maracuyá cítrico aromático."
-      },
-      {
-        "nombre": "Salpicón",
-        "img": "assets/productos/298.png",
-        "desc": "Mezcla tradicional de frutas colombianas."
-      },
-      {
         "nombre": "Arándano Ice",
-        "img": "assets/productos/299.png",
-        "desc": "Arándano silvestre con golpe helado."
+        "img": "SAMMY POD 2/arandano ice.png",
+        "desc": "Arándanos con toque helado."
+      },
+      {
+        "nombre": "Banana Ice",
+        "img": "SAMMY POD 2/banana ice.png",
+        "desc": "Plátano cremoso helado."
       },
       {
         "nombre": "Energetic Ice",
-        "img": "assets/productos/300.png",
-        "desc": "Bebida energizante con toque frío."
+        "img": "SAMMY POD 2/energetic ice.png",
+        "desc": "Bebida energética congelada."
+      },
+      {
+        "nombre": "Fresa Sandía",
+        "img": "SAMMY POD 2/fresa sandia.png",
+        "desc": "Fresas con sandía."
       },
       {
         "nombre": "Frutos Morados",
-        "img": "assets/productos/301.png",
-        "desc": "Uvas y moras oscuras combinadas."
+        "img": "SAMMY POD 2/frutos morados.png",
+        "desc": "Uva, mora y arándano morado."
       },
       {
         "nombre": "Kiwi Fresa",
-        "img": "assets/productos/302.png",
-        "desc": "Fresa dulce con kiwi cítrico."
+        "img": "SAMMY POD 2/kiwi fresa.png",
+        "desc": "Kiwi ácido con fresa dulce."
       },
       {
         "nombre": "Lulo",
-        "img": "assets/productos/303.png",
-        "desc": "Sabor a lulo ácido y refrescante."
+        "img": "SAMMY POD 2/lulo.png",
+        "desc": "Lulo exótico cítrico."
       },
       {
-        "nombre": "Doble Manzana",
-        "img": "assets/productos/304.png",
-        "desc": "Manzanas crujientes rojas y verdes."
+        "nombre": "Mango Ice",
+        "img": "SAMMY POD 2/mango ice.png",
+        "desc": "Mango caribeño en hielo."
+      },
+      {
+        "nombre": "Manzana Doble",
+        "img": "SAMMY POD 2/manzana doble.png",
+        "desc": "Doble manzana verde y roja."
+      },
+      {
+        "nombre": "Maracuyá",
+        "img": "SAMMY POD 2/maracuya.png",
+        "desc": "Fruta de la pasión refrescante."
+      },
+      {
+        "nombre": "Melón Chicle",
+        "img": "SAMMY POD 2/melon chicle.png",
+        "desc": "Chicle dulce de melón."
       },
       {
         "nombre": "Menta Fresca",
-        "img": "assets/productos/305.png",
-        "desc": "Menta limpia con frescura prolongada."
+        "img": "SAMMY POD 2/menta fresca.png",
+        "desc": "Menta natural refrescante."
       },
       {
-        "nombre": "Chicle",
-        "img": "assets/productos/306.png",
-        "desc": "Chicle dulce tradicional."
+        "nombre": "Piña Colada",
+        "img": "SAMMY POD 2/piña colada.png",
+        "desc": "Piña y crema de coco caribeña."
       }
     ]
   },
@@ -2441,7 +2395,7 @@ const PRODUCTS_DATA = [
     "precio": 0,
     "precio_promo_2": null,
     "ahorro_2": 0,
-    "rating": 5.0,
+    "rating": 5,
     "ventas": 0,
     "imagen": "assets/logo/logo.png",
     "descripcion": "El nuevo EN CREATE llegará muy pronto al catálogo oficial de Capital Vape. ¡Espéralo próximamente!",
@@ -2451,7 +2405,3 @@ const PRODUCTS_DATA = [
     "sabores": []
   }
 ];
-
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { PRODUCTS_DATA };
-}

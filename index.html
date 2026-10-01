@@ -22,7 +22,56 @@
 </head>
 <body>
 
-      <!-- NAVBAR (DESKTOP & MOBILE ADAPTED) -->
+  <!-- ==========================================================================
+       CAPA VISUAL DECORATIVA HALLOWEEN (NO INTRUSIVA)
+       ========================================================================== -->
+  <div class="luna"></div>
+
+  <div class="calabaza-halloween">
+    🎃
+  </div>
+
+  <div class="tela-halloween arriba-izquierda">
+    <svg viewBox="0 0 150 150">
+      <path d="M0 0 Q75 25 150 0" />
+      <path d="M0 0 Q25 75 0 150" />
+      <path class="hilo" d="M20 0 Q35 35 0 20" />
+      <path class="hilo" d="M45 0 Q65 55 0 45" />
+      <path class="hilo" d="M70 0 Q90 75 0 70" />
+    </svg>
+  </div>
+
+  <div class="tela-halloween arriba-derecha">
+    <svg viewBox="0 0 150 150">
+      <path d="M0 0 Q75 25 150 0" />
+      <path d="M0 0 Q25 75 0 150" />
+      <path class="hilo" d="M20 0 Q35 35 0 20" />
+      <path class="hilo" d="M45 0 Q65 55 0 45" />
+      <path class="hilo" d="M70 0 Q90 75 0 70" />
+    </svg>
+  </div>
+
+  <div class="tela-halloween abajo-izquierda">
+    <svg viewBox="0 0 150 150">
+      <path d="M0 0 Q75 25 150 0" />
+      <path d="M0 0 Q25 75 0 150" />
+      <path class="hilo" d="M20 0 Q35 35 0 20" />
+      <path class="hilo" d="M45 0 Q65 55 0 45" />
+      <path class="hilo" d="M70 0 Q90 75 0 70" />
+    </svg>
+  </div>
+
+  <div class="tela-halloween abajo-derecha">
+    <svg viewBox="0 0 150 150">
+      <path d="M0 0 Q75 25 150 0" />
+      <path d="M0 0 Q25 75 0 150" />
+      <path class="hilo" d="M20 0 Q35 35 0 20" />
+      <path class="hilo" d="M45 0 Q65 55 0 45" />
+      <path class="hilo" d="M70 0 Q90 75 0 70" />
+    </svg>
+  </div>
+
+  <!-- NAVBAR (DESKTOP & MOBILE ADAPTED) -->
   <header class="cv-navbar">
     <div class="container nav-container">
       <a href="#inicio" class="brand-wrapper">
@@ -132,13 +181,13 @@
           </div>
           
           <div class="hero-product-img-box" onclick="openHeroProductFlavors()" style="cursor: pointer;" title="Ver sabores">
-            <img src="assets/productos/1.png" alt="Bang Leader - Más Vendido" class="hero-product-img" id="heroProductImg">
+            <img src="BANG LEADER/Red Bull - Blueberry.png" alt="Bang Leader - Más Vendido" class="hero-product-img" id="heroProductImg">
           </div>
 
           <div class="hero-product-info">
             <div class="hero-product-meta" id="heroProductMeta">
               <span class="hero-spec-tag">⚡ 32.000 Puffs</span>
-              <span class="hero-spec-tag">🎨 6 Sabores</span>
+              <span class="hero-spec-tag">🎨 5 Sabores</span>
               <span class="hero-spec-tag">🔋 Recargable C</span>
             </div>
             
@@ -185,7 +234,7 @@
           <!-- 1. BANG -->
           <button type="button" class="brand-card-item" data-brand="BANG" onclick="CatalogController.filterByBrand('BANG', 'bang')" title="Ver productos Bang">
             <div class="brand-img-wrap">
-              <img src="assets/productos/1.png" alt="Bang" class="brand-img" loading="lazy">
+              <img src="BANG LEADER/Red Bull - Blueberry.png" alt="Bang" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">BANG</span>
             <span class="brand-badge">32.000 Puffs</span>
@@ -203,7 +252,7 @@
           <!-- 2. HOOKALIT -->
           <button type="button" class="brand-card-item" data-brand="HOOKALIT" onclick="CatalogController.filterByBrand('HOOKALIT', 'hookalit')" title="Ver productos Hookalit">
             <div class="brand-img-wrap">
-              <img src="assets/productos/214.png" alt="Hookalit" class="brand-img" loading="lazy">
+              <img src="HOOKALIT/Amor magico.png" alt="Hookalit" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">HOOKALIT</span>
             <span class="brand-badge">35.000 Puffs</span>
@@ -212,7 +261,7 @@
           <!-- 3. HUMO AZUL -->
           <button type="button" class="brand-card-item" data-brand="HUMO AZUL" onclick="CatalogController.filterByBrand('HUMO AZUL', 'humo azul')" title="Ver productos Humo Azul">
             <div class="brand-img-wrap">
-              <img src="assets/productos/8.png" alt="Humo Azul" class="brand-img" loading="lazy">
+              <img src="HUMO AZUL/DORADO (Bananno helado, toronja limon, menta, sandia, arandano).png" alt="Humo Azul" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">HUMO AZUL</span>
             <span class="brand-badge">15.000 Puffs</span>
@@ -230,7 +279,7 @@
           <!-- 5. DONUT -->
           <button type="button" class="brand-card-item" data-brand="DONUT" onclick="CatalogController.filterByBrand('DONUT', 'donut')" title="Ver productos Donut">
             <div class="brand-img-wrap">
-              <img src="assets/productos/248.png" alt="Donut" class="brand-img" loading="lazy">
+              <img src="DONUT/248.png" alt="Donut" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">DONUT</span>
             <span class="brand-badge">50.000 Puffs</span>
@@ -239,7 +288,7 @@
           <!-- 6. SOLOBAR -->
           <button type="button" class="brand-card-item" data-brand="SOLOBAR" onclick="CatalogController.filterByBrand('SOLOBAR', 'solobar')" title="Ver productos Solobar">
             <div class="brand-img-wrap">
-              <img src="assets/productos/12.png" alt="Solobar" class="brand-img" loading="lazy">
+              <img src="SOLOBAR KIT/Citricos refrescantes.png" alt="Solobar" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">SOLOBAR</span>
             <span class="brand-badge">35.000 Puffs</span>
@@ -248,7 +297,7 @@
           <!-- 7. LOST MARY -->
           <button type="button" class="brand-card-item" data-brand="LOST MARY" onclick="CatalogController.filterByBrand('LOST MARY', 'lost mary')" title="Ver productos Lost Mary">
             <div class="brand-img-wrap">
-              <img src="assets/productos/46.png" alt="Lost Mary" class="brand-img" loading="lazy">
+              <img src="LOST MARY OS/fresa hielo.png" alt="Lost Mary" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">LOST MARY</span>
             <span class="brand-badge">5.000 Puffs</span>
@@ -257,7 +306,7 @@
           <!-- 8. WAKA -->
           <button type="button" class="brand-card-item" data-brand="WAKA" onclick="CatalogController.filterByBrand('WAKA', 'waka')" title="Ver productos Waka">
             <div class="brand-img-wrap">
-              <img src="assets/productos/285.png" alt="Waka" class="brand-img" loading="lazy">
+              <img src="WAKA SOLO 2/arandano.png" alt="Waka" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">WAKA</span>
             <span class="brand-badge">Pods & Batería</span>
@@ -266,7 +315,7 @@
           <!-- 9. SPACEMAN -->
           <button type="button" class="brand-card-item" data-brand="SPACEMAN" onclick="CatalogController.filterByBrand('SPACEMAN', 'spaceman')" title="Ver productos Spaceman">
             <div class="brand-img-wrap">
-              <img src="assets/productos/224.png" alt="Spaceman" class="brand-img" loading="lazy">
+              <img src="SPACEMAN/fresa sandia.png" alt="Spaceman" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">SPACEMAN</span>
             <span class="brand-badge">50.000 Puffs</span>
@@ -275,7 +324,7 @@
           <!-- 10. DEATH ROW -->
           <button type="button" class="brand-card-item" data-brand="DEATH ROW" onclick="CatalogController.filterByBrand('DEATH ROW', 'death row')" title="Ver productos Death Row">
             <div class="brand-img-wrap">
-              <img src="assets/productos/36.png" alt="Death Row" class="brand-img" loading="lazy">
+              <img src="DEATH ROW/Explosion tropical.png" alt="Death Row" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">DEATH ROW</span>
             <span class="brand-badge">5.000 Puffs</span>
@@ -284,7 +333,7 @@
           <!-- 11. NIMBOX -->
           <button type="button" class="brand-card-item" data-brand="NIMBOX" onclick="CatalogController.filterByBrand('NIMBOX', 'nimbox')" title="Ver productos Nimbox">
             <div class="brand-img-wrap">
-              <img src="assets/productos/168.png" alt="Nimbox" class="brand-img" loading="lazy">
+              <img src="NIMBOX KIT/fresa sandia.png" alt="Nimbox" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">NIMBOX</span>
             <span class="brand-badge">25.000 Puffs</span>
@@ -293,7 +342,7 @@
           <!-- 12. SAMMY -->
           <button type="button" class="brand-card-item" data-brand="SAMMY" onclick="CatalogController.filterByBrand('SAMMY', 'sammy')" title="Ver productos Sammy">
             <div class="brand-img-wrap">
-              <img src="assets/productos/294.png" alt="Sammy" class="brand-img" loading="lazy">
+              <img src="SAMMY POD 2/banana ice.png" alt="Sammy" class="brand-img" loading="lazy">
             </div>
             <span class="brand-name">SAMMY</span>
             <span class="brand-badge">15.000 Puffs</span>

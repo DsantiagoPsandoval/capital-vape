@@ -236,8 +236,8 @@ const HERO_PRODUCTS_CONFIG = {
   "bang-leader": {
     badge: "🔥 TOP #1 MÁS VENDIDO",
     title: "BANG LEADER 32.000 PUFFS",
-    img: "assets/productos/1.png",
-    specs: ["⚡ 32.000 Puffs", "🎨 6 Sabores", "🔋 Recargable C"],
+    img: "BANG LEADER/Red Bull - Blueberry.png",
+    specs: ["⚡ 32.000 Puffs", "🎨 5 Sabores", "🔋 Recargable C"],
     retailPrice: "$45.000",
     wholesalePrice: "$23.000",
     productId: "bang-leader"
@@ -245,7 +245,7 @@ const HERO_PRODUCTS_CONFIG = {
   "humo-azul": {
     badge: "⚡ EDICIÓN ESPECIAL COLORES",
     title: "HUMO AZUL 15.000 PUFFS",
-    img: "assets/productos/8.png",
+    img: "HUMO AZUL/DORADO (Bananno helado, toronja limon, menta, sandia, arandano).png",
     specs: ["⚡ 15.000 Puffs", "🎨 4 Colores", "🌬️ 23 Sabores"],
     retailPrice: "$50.000",
     wholesalePrice: "$23.000",
@@ -254,7 +254,7 @@ const HERO_PRODUCTS_CONFIG = {
   "donut": {
     badge: "🍩 MÁXIMA POTENCIA DIGITAL",
     title: "DONUT 50.000 PUFFS",
-    img: "assets/productos/248.png",
+    img: "DONUT/248.png",
     specs: ["⚡ 50.000 Puffs", "🖥️ Pantalla Digital", "🔋 650 mAh"],
     retailPrice: "$40.000",
     wholesalePrice: "$18.000",
@@ -317,3 +317,47 @@ function openHeroProductFlavors() {
 window.switchHeroProduct = switchHeroProduct;
 window.addCurrentHeroToCart = addCurrentHeroToCart;
 window.openHeroProductFlavors = openHeroProductFlavors;
+
+/* ==========================================================================
+   HALLOWEEN - ANIMACIÓN DINÁMICA DE MURCIÉLAGOS
+   ========================================================================== */
+function crearMurcielagoHalloween() {
+  const murcielago = document.createElement("div");
+
+  murcielago.className = "murcielago-halloween";
+
+  murcielago.innerHTML = `
+    <svg viewBox="0 0 100 60" aria-hidden="true">
+      <path
+        d="M50 30
+        C40 10 25 5 5 10
+        C15 20 20 30 5 40
+        C25 35 35 35 50 45
+        C65 35 75 35 95 40
+        C80 30 85 20 95 10
+        C75 5 60 10 50 30Z"
+      />
+    </svg>
+  `;
+
+  murcielago.style.top =
+    Math.floor(Math.random() * 70 + 5) + "vh";
+
+  murcielago.style.animationDelay =
+    "-" + Math.floor(Math.random() * 10) + "s";
+
+  document.body.appendChild(murcielago);
+}
+
+if (document.body) {
+  for (let i = 0; i < 5; i++) {
+    crearMurcielagoHalloween();
+  }
+} else {
+  document.addEventListener("DOMContentLoaded", () => {
+    for (let i = 0; i < 5; i++) {
+      crearMurcielagoHalloween();
+    }
+  });
+}
+

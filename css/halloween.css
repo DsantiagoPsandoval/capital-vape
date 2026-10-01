@@ -1,280 +1,335 @@
-/**
- * CAPITAL VAPE - Ambientación Oficial de Halloween
- * Estilo: Halloween + Oscuro + Premium + Moderno
- * Diseñado para complementar la identidad de Capital Vape sin afectar usabilidad ni rendimiento.
- */
-
-/* ==========================================================================
-   1. VARIABLES & PALETA HALLOWEEN PREMIUM
-   ========================================================================== */
 :root {
-  --hw-orange: #FF7518;
-  --hw-orange-glow: rgba(255, 117, 24, 0.25);
-  --hw-purple: #8B5CF6;
-  --hw-purple-glow: rgba(139, 92, 246, 0.22);
-  --hw-green-toxic: #10B981;
-  --hw-blood: #DC2626;
+  --noche: #120a1f;
+  --ciruela: #2a1240;
+  --calabaza: #ff7a1a;
+  --hueso: #efe6d2;
+  --seda: #c9bfe0;
 }
 
-/* ==========================================================================
-   2. TELARAÑAS DE ESQUINA (SVG EMBEDDED)
-   ========================================================================== */
-.hw-cobweb-top-left,
-.hw-cobweb-top-right {
-  position: absolute;
-  top: 0;
-  width: 140px;
-  height: 140px;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.35;
-  background-size: contain;
-  background-repeat: no-repeat;
-  transition: opacity 0.3s ease;
-}
+/* ================================
+   LUNA DE HALLOWEEN
+================================ */
 
-.hw-cobweb-top-left {
-  left: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23A855F7' stroke-width='0.8'%3E%3Cpath d='M0,0 L100,0 M0,0 L0,100 M0,0 L100,100 M0,0 L75,100 M0,0 L100,75 M0,0 L35,100 M0,0 L100,35' opacity='0.6'/%3E%3Cpath d='M0,20 Q20,20 20,0 M0,40 Q40,40 40,0 M0,60 Q60,60 60,0 M0,80 Q80,80 80,0' stroke='%23FF7518' opacity='0.7'/%3E%3C/svg%3E");
-}
-
-.hw-cobweb-top-right {
-  right: 0;
-  transform: scaleX(-1);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%23A855F7' stroke-width='0.8'%3E%3Cpath d='M0,0 L100,0 M0,0 L0,100 M0,0 L100,100 M0,0 L75,100 M0,0 L100,75 M0,0 L35,100 M0,0 L100,35' opacity='0.6'/%3E%3Cpath d='M0,20 Q20,20 20,0 M0,40 Q40,40 40,0 M0,60 Q60,60 60,0 M0,80 Q80,80 80,0' stroke='%23FF7518' opacity='0.7'/%3E%3C/svg%3E");
-}
-
-/* ==========================================================================
-   3. MURCIÉLAGOS ANIMADOS EN EL HERO
-   ========================================================================== */
-.hw-bats-container {
-  position: absolute;
-  top: 15px;
-  left: 0;
-  width: 100%;
-  height: 90px;
-  pointer-events: none;
-  overflow: hidden;
-  z-index: 3;
-}
-
-.hw-bat {
-  position: absolute;
-  width: 24px;
-  height: 14px;
-  opacity: 0.65;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 20' fill='%23C084FC'%3E%3Cpath d='M20,10 C16,4 12,0 6,2 C0,4 2,12 8,14 C12,15 16,13 20,17 C24,13 28,15 32,14 C38,12 40,4 34,2 C28,0 24,4 20,10 Z'/%3E%3C/svg%3E");
-}
-
-.hw-bat-1 {
-  top: 15px;
-  left: -30px;
-  animation: flyBat1 18s linear infinite;
-  transform: scale(0.9);
-}
-
-.hw-bat-2 {
-  top: 45px;
-  left: -40px;
-  animation: flyBat2 24s linear infinite 5s;
-  transform: scale(0.7);
-  opacity: 0.5;
-}
-
-.hw-bat-3 {
-  top: 25px;
-  right: -30px;
-  animation: flyBatReverse 21s linear infinite 2s;
-  transform: scale(0.8) scaleX(-1);
-  opacity: 0.55;
-}
-
-@keyframes flyBat1 {
-  0% { transform: translate(-20px, 10px) scale(0.9); }
-  25% { transform: translate(25vw, -5px) scale(0.95); }
-  50% { transform: translate(50vw, 15px) scale(0.9); }
-  75% { transform: translate(75vw, -8px) scale(0.95); }
-  100% { transform: translate(105vw, 12px) scale(0.9); }
-}
-
-@keyframes flyBat2 {
-  0% { transform: translate(-30px, 0px) scale(0.7); }
-  33% { transform: translate(35vw, 18px) scale(0.75); }
-  66% { transform: translate(70vw, -10px) scale(0.7); }
-  100% { transform: translate(105vw, 5px) scale(0.75); }
-}
-
-@keyframes flyBatReverse {
-  0% { transform: translate(20px, 5px) scaleX(-1) scale(0.8); }
-  50% { transform: translate(-50vw, -12px) scaleX(-1) scale(0.85); }
-  100% { transform: translate(-105vw, 10px) scaleX(-1) scale(0.8); }
-}
-
-/* ==========================================================================
-   4. ARAÑITA COLGANTE
-   ========================================================================== */
-.hw-hanging-spider {
-  position: absolute;
-  top: -10px;
+.luna {
+  position: fixed;
+  top: 35px;
   right: 40px;
-  width: 20px;
+  width: 90px;
   height: 90px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle at 35% 35%,
+    #fff8d6 0%,
+    #efe6d2 45%,
+    #c9bfe0 100%
+  );
+
+  box-shadow:
+    0 0 20px rgba(255, 248, 214, 0.8),
+    0 0 50px rgba(255, 122, 26, 0.25);
+
+  z-index: 20;
   pointer-events: none;
-  z-index: 4;
-  animation: spiderSwing 7s ease-in-out infinite;
 }
 
-.hw-spider-thread {
-  position: absolute;
+/* ================================
+   CALABAZA
+================================ */
+
+.calabaza-halloween {
+  position: fixed;
+  bottom: 25px;
+  right: 30px;
+
+  font-size: 70px;
+
+  z-index: 30;
+  pointer-events: none;
+
+  animation: latidoHalloween 2s ease-in-out infinite;
+}
+
+@keyframes latidoHalloween {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+/* ================================
+   TELARAÑAS
+================================ */
+
+.tela-halloween {
+  position: fixed;
+
+  width: 150px;
+  height: 150px;
+
+  z-index: 25;
+
+  pointer-events: none;
+}
+
+.tela-halloween svg {
+  width: 100%;
+  height: 100%;
+
+  fill: none;
+
+  stroke: rgba(239, 230, 210, 0.7);
+
+  stroke-width: 2;
+}
+
+.tela-halloween path {
+  vector-effect: non-scaling-stroke;
+}
+
+.tela-halloween path.hilo {
+  stroke: rgba(201, 191, 224, 0.5);
+}
+
+/* ================================
+   POSICIONES DE TELARAÑAS
+================================ */
+
+.tela-halloween.arriba-izquierda {
   top: 0;
-  left: 9px;
-  width: 1px;
-  height: 65px;
-  background: rgba(255, 255, 255, 0.25);
+  left: 0;
 }
 
-.hw-spider-body {
-  position: absolute;
-  bottom: 8px;
-  left: 1px;
-  width: 18px;
-  height: 18px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23FF7518'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Ccircle cx='12' cy='6' r='2.5'/%3E%3Cpath d='M9,10 C5,7 4,4 3,3 M15,10 C19,7 20,4 21,3 M9,13 C4,13 3,11 2,10 M15,13 C20,13 21,11 22,10 M9,15 C5,18 4,21 3,22 M15,15 C19,18 20,21 21,22' stroke='%23FF7518' stroke-width='1.2' fill='none'/%3E%3C/svg%3E");
-  filter: drop-shadow(0 0 4px rgba(255, 117, 24, 0.6));
+.tela-halloween.arriba-derecha {
+  top: 0;
+  right: 0;
+
+  transform: scaleX(-1);
 }
 
-@keyframes spiderSwing {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  30% { transform: translateY(16px) rotate(4deg); }
-  60% { transform: translateY(-4px) rotate(-4deg); }
-  85% { transform: translateY(8px) rotate(2deg); }
-}
-
-/* ==========================================================================
-   5. CAPA DE HUMO / NEBLINA SUAVE EN EL HERO
-   ========================================================================== */
-.hw-mist-overlay {
-  position: absolute;
+.tela-halloween.abajo-izquierda {
   bottom: 0;
   left: 0;
-  width: 100%;
-  height: 70px;
-  pointer-events: none;
-  background: linear-gradient(
-    to top,
-    rgba(10, 5, 13, 0.85) 0%,
-    rgba(20, 10, 30, 0.4) 50%,
-    transparent 100%
-  );
-  z-index: 1;
+
+  transform: scaleY(-1);
 }
 
-/* ==========================================================================
-   6. CALABAZA / SILUETAS ZOMBIE & FANTASMA SUTILES
-   ========================================================================== */
+.tela-halloween.abajo-derecha {
+  bottom: 0;
+  right: 0;
+
+  transform: scale(-1);
+}
+
+/* ================================
+   MURCIÉLAGOS
+================================ */
+
+.murcielago-halloween {
+  position: fixed;
+
+  width: 45px;
+  height: 30px;
+
+  z-index: 26;
+
+  pointer-events: none;
+
+  animation:
+    vueloHalloween 12s linear infinite,
+    aleteoHalloween 0.45s ease-in-out infinite alternate;
+}
+
+.murcielago-halloween svg {
+  width: 100%;
+  height: 100%;
+
+  fill: #120a1f;
+
+  filter:
+    drop-shadow(0 0 5px rgba(255, 122, 26, 0.5));
+}
+
+.murcielago-halloween .ala {
+  transform-origin: center;
+}
+
+@keyframes aleteoHalloween {
+  from {
+    transform: scaleY(1);
+  }
+
+  to {
+    transform: scaleY(0.65);
+  }
+}
+
+@keyframes vueloHalloween {
+  0% {
+    transform: translateX(-10vw) translateY(0);
+  }
+
+  25% {
+    transform: translateX(25vw) translateY(-20px);
+  }
+
+  50% {
+    transform: translateX(50vw) translateY(15px);
+  }
+
+  75% {
+    transform: translateX(75vw) translateY(-25px);
+  }
+
+  100% {
+    transform: translateX(110vw) translateY(0);
+  }
+}
+
+/* ================================
+   EFECTO DE HUMO
+================================ */
+
+.humo-halloween {
+  position: fixed;
+
+  width: 180px;
+  height: 180px;
+
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    rgba(201, 191, 224, 0.12) 0%,
+    rgba(201, 191, 224, 0.05) 40%,
+    transparent 70%
+  );
+
+  filter: blur(10px);
+
+  z-index: 10;
+
+  pointer-events: none;
+
+  animation: humoHalloween 8s ease-in-out infinite alternate;
+}
+
+@keyframes humoHalloween {
+  from {
+    transform: translateY(20px) scale(0.9);
+    opacity: 0.35;
+  }
+
+  to {
+    transform: translateY(-30px) scale(1.1);
+    opacity: 0.7;
+  }
+}
+
+/* ================================
+   PARTÍCULAS
+================================ */
+
+.particula-halloween {
+  position: fixed;
+
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: var(--calabaza);
+
+  box-shadow:
+    0 0 8px rgba(255, 122, 26, 0.7);
+
+  pointer-events: none;
+
+  z-index: 21;
+
+  animation: particulaHalloween 5s linear infinite;
+}
+
+@keyframes particulaHalloween {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  20% {
+    opacity: 0.8;
+  }
+
+  80% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}
+
+/* ================================
+   REDUCIR ANIMACIONES
+================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .calabaza-halloween,
+  .murcielago-halloween,
+  .humo-halloween,
+  .particula-halloween {
+    animation: none;
+  }
+}
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+  .luna {
+    width: 60px;
+    height: 60px;
+
+    top: 20px;
+    right: 20px;
+  }
+
+  .calabaza-halloween {
+    font-size: 45px;
+
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .tela-halloween {
+    width: 100px;
+    height: 100px;
+  }
+
+  .murcielago-halloween {
+    width: 32px;
+    height: 22px;
+  }
+}
+
+/* ================================
+   DETALLES VISUALES COMPLEMENTARIOS
+================================ */
 .hw-badge-pumpkin {
   display: inline-flex;
   align-items: center;
   gap: 5px;
   margin-right: 6px;
-  filter: drop-shadow(0 0 6px rgba(255, 117, 24, 0.6));
+  filter: drop-shadow(0 0 6px rgba(255, 122, 26, 0.6));
 }
 
-.hw-silhouette-divider {
-  position: relative;
-  width: 100%;
-  height: 32px;
-  pointer-events: none;
-  overflow: hidden;
-  opacity: 0.15;
-  background-repeat: repeat-x;
-  background-position: center bottom;
-  background-size: 280px 28px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 28' fill='%23C084FC'%3E%3Cpath d='M20,28 L20,18 C20,14 23,12 25,12 C27,12 30,14 30,18 L30,28 Z M90,28 L90,12 C90,8 94,6 97,6 C100,6 104,8 104,12 L104,28 Z M160,28 L160,16 C160,11 163,9 166,9 C169,9 172,11 172,16 L172,28 Z M230,28 L230,14 C230,10 233,8 236,8 C239,8 242,10 242,14 L242,28 Z'/%3E%3Ccircle cx='25' cy='9' r='3'/%3E%3Ccircle cx='97' cy='4' r='3'/%3E%3Ccircle cx='166' cy='6' r='3'/%3E%3Ccircle cx='236' cy='5' r='3'/%3E%3C/svg%3E");
-}
-
-/* ==========================================================================
-   7. DETALLES HALLOWEEN EN TARJETAS DE PRODUCTOS
-   ========================================================================== */
-.product-card {
-  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-  position: relative;
-}
-
-/* Telaraña miniatura en esquina superior derecha de la imagen */
-.product-card .card-image-wrapper::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 44px;
-  height: 44px;
-  pointer-events: none;
-  opacity: 0.4;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 50 50' fill='none' stroke='%23FF7518' stroke-width='0.8'%3E%3Cpath d='M50,0 L0,0 M50,0 L50,50 M50,0 L0,50 M50,0 L20,50 M50,0 L0,20' opacity='0.5'/%3E%3Cpath d='M50,15 Q35,15 35,0 M50,30 Q20,30 20,0 M50,45 Q5,45 5,0' stroke='%23C084FC' opacity='0.7'/%3E%3C/svg%3E");
-  z-index: 2;
-  transition: opacity 0.25s ease;
-}
-
-.product-card:hover .card-image-wrapper::after {
-  opacity: 0.75;
-}
-
-/* Brillo sutil Halloween al hacer hover sobre las tarjetas */
 .product-card:hover {
-  border-color: rgba(255, 117, 24, 0.35) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 117, 24, 0.16), 0 0 24px rgba(139, 92, 246, 0.12) !important;
-}
-
-/* ==========================================================================
-   8. ADAPTACIONES MÓVILES RESPONSIVE (CELULARES & TABLETS)
-   ========================================================================== */
-@media (max-width: 768px) {
-  .hw-cobweb-top-left,
-  .hw-cobweb-top-right {
-    width: 80px;
-    height: 80px;
-    opacity: 0.25;
-  }
-
-  .hw-hanging-spider {
-    right: 18px;
-    height: 60px;
-    transform: scale(0.8);
-  }
-
-  .hw-spider-thread {
-    height: 40px;
-  }
-
-  /* Reducir carga de murciélagos a solo 1 y movimiento lento y suave */
-  .hw-bat-2,
-  .hw-bat-3 {
-    display: none;
-  }
-
-  .hw-bat-1 {
-    animation-duration: 25s;
-    opacity: 0.45;
-  }
-
-  .hw-mist-overlay {
-    height: 40px;
-  }
-
-  /* Garantizar que nada cause scroll horizontal ni tape toques */
-  .hw-bats-container,
-  .hw-hanging-spider,
-  .hw-cobweb-top-left,
-  .hw-cobweb-top-right,
-  .hw-silhouette-divider {
-    max-width: 100vw;
-    overflow: hidden;
-  }
+  border-color: rgba(255, 122, 26, 0.35) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 122, 26, 0.16), 0 0 24px rgba(139, 92, 246, 0.12) !important;
 }

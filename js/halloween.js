@@ -565,6 +565,266 @@
   }
 
   /* ==========================================================================
+     SISTEMA DE TELARAÑAS 3D DINÁMICAS EN LAS 4 ESQUINAS (THREE.JS RUNTIME)
+     - Geometría de seda tridimensional con rayos radiales y anillos catenarios
+     - Física elástica reactiva (Spring-Damper): vibración armónica, reacción al cursor y murciélagos
+     - Gotas de rocío brillantes en las uniones que capturan la luz nocturna
+     ========================================================================== */
+  class CornerCobwebs3D {
+    constructor(scene, screenBounds) {
+      this.scene = scene;
+      this.screenBounds = screenBounds || { width: 1200, height: 800 };
+
+      this.lineMaterial = new THREE.LineBasicMaterial({
+        color: 0xd8d0f8,
+        transparent: true,
+        opacity: 0.65,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      this.dewdropMaterial = new THREE.PointsMaterial({
+        size: 7,
+        color: 0xfff8d6,
+        map: getParticleTexture(),
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+      });
+
+      this.nodes = [];
+      this.segments = [];
+      this.linePositions = null;
+      this.dewdropPositions = null;
+
+      this.lineGeom = null;
+      this.dewdropGeom = null;
+      this.lines = null;
+      this.dewdrops = null;
+
+      this.buildWebs();
+
+      this.lines = new THREE.LineSegments(this.lineGeom, this.lineMaterial);
+      this.dewdrops = new THREE.Points(this.dewdropGeom, this.dewdropMaterial);
+
+      this.scene.add(this.lines);
+      this.scene.add(this.dewdrops);
+    }
+
+    buildWebs() {
+      if (this.lineGeom) this.lineGeom.dispose();
+      if (this.dewdropGeom) this.dewdropGeom.dispose();
+
+      this.lineGeom = new THREE.BufferGeometry();
+      this.dewdropGeom = new THREE.BufferGeometry();
+
+      this.nodes = [];
+      this.segments = [];
+
+      const b = this.screenBounds || { width: 1200, height: 800 };
+      const hw = Math.max(b.width || 0, 400) * 0.5;
+      const hh = Math.max(b.height || 0, 300) * 0.5;
+      const w = window.innerWidth;
+      const isMobile = w < 768;
+      const isTablet = w < 1024;
+      const webRadius = isMobile ? 85 : (isTablet ? 120 : 160);
+      const bottomBarOffset = isMobile ? (hh * 0.14) : 0;
+      const zPlane = 45;
+
+      const cornerConfigs = [
+        // 0: Arriba-Izquierda
+        { ox: -hw, oy: hh, oz: zPlane, startAngle: -Math.PI * 0.5, endAngle: 0 },
+        // 1: Arriba-Derecha
+        { ox: hw, oy: hh, oz: zPlane, startAngle: -Math.PI, endAngle: -Math.PI * 0.5 },
+        // 2: Abajo-Izquierda
+        { ox: -hw, oy: -hh + bottomBarOffset, oz: zPlane, startAngle: 0, endAngle: Math.PI * 0.5 },
+        // 3: Abajo-Derecha
+        { ox: hw, oy: -hh + bottomBarOffset, oz: zPlane, startAngle: Math.PI * 0.5, endAngle: Math.PI }
+      ];
+
+      const numSpokes = isMobile ? 5 : 6;
+      const numRings = isMobile ? 4 : 5;
+
+      cornerConfigs.forEach((cfg) => {
+        const originIndex = this.nodes.length;
+        this.nodes.push({
+          basePos: new THREE.Vector3(cfg.ox, cfg.oy, cfg.oz),
+          currPos: new THREE.Vector3(cfg.ox, cfg.oy, cfg.oz),
+          velocity: new THREE.Vector3(0, 0, 0),
+          isFixed: true,
+          isDewdrop: false,
+          phase: Math.random() * Math.PI * 2
+        });
+
+        const ringGrid = [];
+
+        for (let s = 0; s < numSpokes; s++) {
+          ringGrid[s] = [];
+          const spokeT = s / (numSpokes - 1);
+          const angle = cfg.startAngle + spokeT * (cfg.endAngle - cfg.startAngle);
+
+          for (let r = 1; r <= numRings; r++) {
+            const ringT = r / numRings;
+            const rad = webRadius * (0.15 + 0.85 * Math.pow(ringT, 1.15));
+            const nx = cfg.ox + Math.cos(angle) * rad;
+            const ny = cfg.oy + Math.sin(angle) * rad;
+            const nz = cfg.oz + Math.sin(s * 1.8 + r * 1.2) * 5;
+
+            const nIdx = this.nodes.length;
+            this.nodes.push({
+              basePos: new THREE.Vector3(nx, ny, nz),
+              currPos: new THREE.Vector3(nx, ny, nz),
+              velocity: new THREE.Vector3(0, 0, 0),
+              isFixed: false,
+              isDewdrop: true,
+              phase: Math.random() * Math.PI * 2
+            });
+            ringGrid[s][r] = nIdx;
+
+            const prevIdx = (r === 1) ? originIndex : ringGrid[s][r - 1];
+            this.segments.push(prevIdx, nIdx);
+          }
+        }
+
+        // Hilos transversales/espirales (con curvatura natural catenaria)
+        for (let r = 1; r <= numRings; r++) {
+          for (let s = 0; s < numSpokes - 1; s++) {
+            const nodeA = ringGrid[s][r];
+            const nodeB = ringGrid[s + 1][r];
+
+            const posA = this.nodes[nodeA].basePos;
+            const posB = this.nodes[nodeB].basePos;
+            const midBase = new THREE.Vector3().addVectors(posA, posB).multiplyScalar(0.5);
+            const sagVec = new THREE.Vector3().subVectors(new THREE.Vector3(cfg.ox, cfg.oy, cfg.oz), midBase).multiplyScalar(0.12);
+            midBase.add(sagVec);
+
+            const midIdx = this.nodes.length;
+            this.nodes.push({
+              basePos: midBase.clone(),
+              currPos: midBase.clone(),
+              velocity: new THREE.Vector3(0, 0, 0),
+              isFixed: false,
+              isDewdrop: false,
+              phase: Math.random() * Math.PI * 2
+            });
+
+            this.segments.push(nodeA, midIdx);
+            this.segments.push(midIdx, nodeB);
+          }
+        }
+      });
+
+      this.linePositions = new Float32Array(this.segments.length * 3);
+      this.lineGeom.setAttribute('position', new THREE.BufferAttribute(this.linePositions, 3));
+
+      this.dewdropIndices = this.nodes.map((n, i) => n.isDewdrop ? i : -1).filter(i => i !== -1);
+      this.dewdropPositions = new Float32Array(this.dewdropIndices.length * 3);
+      this.dewdropGeom.setAttribute('position', new THREE.BufferAttribute(this.dewdropPositions, 3));
+
+      if (this.lines) this.lines.geometry = this.lineGeom;
+      if (this.dewdrops) this.dewdrops.geometry = this.dewdropGeom;
+
+      this.syncBuffers();
+    }
+
+    syncBuffers() {
+      for (let i = 0; i < this.segments.length; i++) {
+        const node = this.nodes[this.segments[i]];
+        const i3 = i * 3;
+        this.linePositions[i3 + 0] = node.currPos.x;
+        this.linePositions[i3 + 1] = node.currPos.y;
+        this.linePositions[i3 + 2] = node.currPos.z;
+      }
+      this.lineGeom.attributes.position.needsUpdate = true;
+
+      for (let i = 0; i < this.dewdropIndices.length; i++) {
+        const node = this.nodes[this.dewdropIndices[i]];
+        const i3 = i * 3;
+        this.dewdropPositions[i3 + 0] = node.currPos.x;
+        this.dewdropPositions[i3 + 1] = node.currPos.y;
+        this.dewdropPositions[i3 + 2] = node.currPos.z;
+      }
+      this.dewdropGeom.attributes.position.needsUpdate = true;
+    }
+
+    onResize(screenBounds) {
+      this.screenBounds = screenBounds;
+      this.buildWebs();
+    }
+
+    update(dt, time, mouseWorld, bats) {
+      if (!dt || isNaN(dt) || dt <= 0) dt = 0.016;
+      dt = Math.min(dt, 0.05);
+
+      const springK = 38.0;
+      const damping = 0.86;
+      const dewPulse = 0.72 + 0.22 * Math.sin(time * 2.8);
+      this.dewdropMaterial.opacity = dewPulse;
+
+      for (let i = 0; i < this.nodes.length; i++) {
+        const node = this.nodes[i];
+        if (node.isFixed) continue;
+
+        // 1. Brisa suave procedural en 3D
+        const breeze = Math.sin(time * 2.2 + node.phase) * 0.45;
+        node.velocity.z += breeze * dt * 20;
+
+        // 2. Interacción con Mouse (enganchar y tensar hilos elásticamente)
+        if (mouseWorld) {
+          const dx = node.currPos.x - mouseWorld.x;
+          const dy = node.currPos.y - mouseWorld.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 110 && dist > 1) {
+            const pullForce = (1.0 - dist / 110) * 22;
+            node.velocity.x += (dx / dist) * pullForce * dt * 32;
+            node.velocity.y += (dy / dist) * pullForce * dt * 32;
+            node.velocity.z += (Math.sin(time * 8.0) * 0.5) * pullForce * dt * 25;
+          }
+        }
+
+        // 3. Interacción con Murciélagos (turbulencia de aleteo en vuelo cercano)
+        if (bats && bats.length > 0) {
+          for (let b = 0; b < bats.length; b++) {
+            const bat = bats[b];
+            const distBat = bat.position.distanceTo(node.currPos);
+            if (distBat < 150) {
+              const wakeForce = (1.0 - distBat / 150) * 14;
+              node.velocity.x += (Math.random() - 0.5) * wakeForce * dt * 24;
+              node.velocity.y += (Math.random() - 0.5) * wakeForce * dt * 24;
+              node.velocity.z += (Math.random() - 0.5) * wakeForce * dt * 32;
+            }
+          }
+        }
+
+        // 4. Dinámica de resorte amortiguado hacia su posición base de reposo
+        const fx = (node.basePos.x - node.currPos.x) * springK;
+        const fy = (node.basePos.y - node.currPos.y) * springK;
+        const fz = (node.basePos.z - node.currPos.z) * springK;
+
+        node.velocity.x = (node.velocity.x + fx * dt) * damping;
+        node.velocity.y = (node.velocity.y + fy * dt) * damping;
+        node.velocity.z = (node.velocity.z + fz * dt) * damping;
+
+        node.currPos.x += node.velocity.x * dt;
+        node.currPos.y += node.velocity.y * dt;
+        node.currPos.z += node.velocity.z * dt;
+      }
+
+      this.syncBuffers();
+    }
+
+    dispose() {
+      if (this.lines && this.lines.parent) this.lines.parent.remove(this.lines);
+      if (this.dewdrops && this.dewdrops.parent) this.dewdrops.parent.remove(this.dewdrops);
+      if (this.lineGeom) this.lineGeom.dispose();
+      if (this.dewdropGeom) this.dewdropGeom.dispose();
+      if (this.lineMaterial) this.lineMaterial.dispose();
+      if (this.dewdropMaterial) this.dewdropMaterial.dispose();
+    }
+  }
+
+  /* ==========================================================================
      ESCENA PRINCIPAL DE HALLOWEEN (THREE.JS RUNTIME DE ALTO RENDIMIENTO)
      ========================================================================== */
   class HalloweenScene {
@@ -611,9 +871,10 @@
       // Iluminación nocturna
       this.setupLights();
 
-      // Entidades: murciélagos y partículas
+      // Entidades: murciélagos, partículas y telarañas 3D
       this.bats = [];
       this.particles = null;
+      this.cobwebs = null;
       this.initEntities();
 
       // Interacción sutil de ratón (solo si existe dispositivo apuntador)
@@ -724,6 +985,12 @@
         this.particles = null;
       }
 
+      // Limpiar telarañas previas
+      if (this.cobwebs) {
+        this.cobwebs.dispose();
+        this.cobwebs = null;
+      }
+
       // Crear murciélagos con distribución de planos de profundidad
       const totalBats = this.getBatCount();
       for (let i = 0; i < totalBats; i++) {
@@ -737,18 +1004,37 @@
       // Crear partículas espectrales adaptadas
       const particleCount = this.getParticleCount();
       this.particles = new SpectralParticles(this.scene, particleCount, this.screenBounds);
+
+      // Crear telarañas 3D dinámicas e interactivas en las cuatro esquinas
+      this.cobwebs = new CornerCobwebs3D(this.scene, this.screenBounds);
     }
 
     setupMouseEvents() {
-      window.addEventListener('mousemove', (e) => {
-        const ndcX = (e.clientX / (this.width || window.innerWidth)) * 2 - 1;
-        const ndcY = -(e.clientY / (this.height || window.innerHeight)) * 2 + 1;
+      const updatePointer = (clientX, clientY) => {
+        const ndcX = (clientX / (this.width || window.innerWidth)) * 2 - 1;
+        const ndcY = -(clientY / (this.height || window.innerHeight)) * 2 + 1;
 
         this.mouseWorld = new THREE.Vector3(
           ndcX * (this.screenBounds.width * 0.5),
           ndcY * (this.screenBounds.height * 0.5),
           0
         );
+      };
+
+      window.addEventListener('mousemove', (e) => {
+        updatePointer(e.clientX, e.clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches && e.touches.length > 0) {
+          updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: true });
+
+      window.addEventListener('touchstart', (e) => {
+        if (e.touches && e.touches.length > 0) {
+          updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+        }
       }, { passive: true });
     }
 
@@ -790,6 +1076,7 @@
       } else {
         this.bats.forEach(b => { b.screenBounds = this.screenBounds; });
         if (this.particles) this.particles.screenBounds = this.screenBounds;
+        if (this.cobwebs) this.cobwebs.onResize(this.screenBounds);
       }
 
       // Garantizar que el loop siga activo tras redimensionar
@@ -861,6 +1148,11 @@
         this.particles.update(dt, time);
       }
 
+      // Actualizar telarañas 3D dinámicas en las esquinas
+      if (this.cobwebs) {
+        this.cobwebs.update(dt, time, this.mouseWorld, this.bats);
+      }
+
       this.renderer.render(this.scene, this.camera);
     }
 
@@ -872,6 +1164,10 @@
       if (this.particles) {
         this.particles.dispose();
         this.particles = null;
+      }
+      if (this.cobwebs) {
+        this.cobwebs.dispose();
+        this.cobwebs = null;
       }
       if (this.renderer) {
         this.renderer.dispose();
@@ -930,12 +1226,15 @@
     if (isWebGLSupported() && typeof THREE !== 'undefined') {
       try {
         halloweenScene = new HalloweenScene();
+        if (document.body) document.body.classList.remove('no-webgl');
       } catch (err) {
         initError = err.stack || err.message;
+        if (document.body) document.body.classList.add('no-webgl');
         console.warn('[Halloween] Error al inicializar escena 3D:', err);
       }
     } else {
       initError = `WebGL support: ${isWebGLSupported()}, THREE: ${typeof THREE}`;
+      if (document.body) document.body.classList.add('no-webgl');
       console.warn('[Halloween] WebGL no disponible en este entorno. Manteniendo decoración atmosférica.');
     }
 

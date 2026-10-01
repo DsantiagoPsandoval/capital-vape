@@ -235,10 +235,13 @@
 }
 
 /* ==========================================================================
-   TELARAÑAS SUTILES, DELICADAS Y ANIMADAS (ESQUINAS DE PANTALLA)
-   Reducidas, elegantes, con balanceo suave y elasticidad viva al aire
+   TELARAÑAS DINÁMICAS 3D (THREE.JS RUNTIME)
+   Las 4 telarañas de las esquinas se generan e interactúan en WebGL (Three.js),
+   reaccionando dinámicamente al cursor, viento y murciélagos con física elástica.
+   Ocultamos las telarañas SVG estáticas por defecto cuando WebGL está activo.
    ========================================================================== */
 .tela-halloween {
+  display: none !important;
   position: fixed;
   width: 90px;
   height: 90px;
@@ -247,6 +250,10 @@
   opacity: 0.65;
   filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.25));
   transition: opacity 0.4s ease;
+}
+
+body.no-webgl .tela-halloween {
+  display: block !important;
 }
 
 .tela-halloween svg {

@@ -104,24 +104,32 @@ const Cart = {
     const wsItems = this.getWholesaleItems();
     if (wsItems.length === 0) return;
 
-    const totalWsQty = this.getWholesaleTotalQty();
-    const activeTier = typeof WholesaleService !== 'undefined' 
-      ? WholesaleService.getWholesaleTier(totalWsQty) 
-      : (totalWsQty >= 100 ? 100 : (totalWsQty >= 50 ? 50 : (totalWsQty >= 20 ? 20 : (totalWsQty >= 10 ? 10 : 5))));
-
+    // 1. Agrupar la cantidad total por REFERENCIA DE PRODUCTO (productId)
+    // El sabor no define la referencia mayorista, la referencia principal es el producto.
+    const qtyByProduct = {};
     wsItems.forEach(item => {
+      qtyByProduct[item.productId] = (qtyByProduct[item.productId] || 0) + (Number(item.qty) || 0);
+    });
+
+    // 2. Calcular precio unitario y rango de descuento por cada referencia
+    // y aplicarlo a todos los sabores pertenecientes a esa misma referencia
+    wsItems.forEach(item => {
+      const refTotalQty = qtyByProduct[item.productId] || (Number(item.qty) || 0);
       let unitPrice = 0;
+      let activeTier = 5;
+
       if (typeof WholesaleService !== 'undefined') {
-        unitPrice = WholesaleService.getProductWholesaleUnitPrice(item.productId, totalWsQty);
+        activeTier = WholesaleService.getWholesaleTier(refTotalQty);
+        unitPrice = WholesaleService.getProductWholesaleUnitPrice(item.productId, refTotalQty);
       } else {
         const prod = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
-        const prices = prod?.precios_mayoristas;
-        unitPrice = prices ? (prices[String(activeTier)] || prices['5'] || prod.precio) : (prod ? prod.precio : 0);
+        unitPrice = prod ? prod.precio : 0;
       }
 
       item.unitPrice = unitPrice;
       item.subtotal = item.qty * unitPrice;
       item.activeTier = activeTier;
+      item.refTotalQty = refTotalQty;
     });
   },
 
@@ -203,9 +211,10 @@ const Cart = {
     this.saveToStorage();
     this.updateUI();
     
-    const totalWs = this.getWholesaleTotalQty();
-    const tier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(totalWs) : 5;
-    Toast.show(`✓ ¡+${qtyToAdd} uds de "${product.nombre}" (${flavor}) agregadas! Rango actual: +${tier} uds (${totalWs} totales).`, 'success');
+    const refItems = this.getWholesaleItems().filter(i => i.productId === product.id);
+    const refQty = refItems.reduce((s, i) => s + (Number(i.qty) || 0), 0);
+    const tier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(refQty) : 5;
+    Toast.show(`✓ ¡+${qtyToAdd} uds de "${product.nombre}" (${flavor}) agregadas! Total ${product.nombre}: ${refQty} uds (Tarifa +${tier}).`, 'success');
     this.pulseCartBadge();
   },
 
@@ -346,24 +355,61 @@ const Cart = {
   },
 
   getShippingInfo() {
-    const subtotal = this.getSubtotal();
-    const isBogota = this.destination === 'bogota';
-    const threshold = isBogota ? (CONFIG.SHIPPING?.BOGOTA_FREE_THRESHOLD || 150000) : (CONFIG.SHIPPING?.NACIONAL_FREE_THRESHOLD || 200000);
-    const standardCost = isBogota ? (CONFIG.SHIPPING?.BOGOTA_STANDARD_COST || 10000) : (CONFIG.SHIPPING?.NACIONAL_STANDARD_COST || 15000);
+    const detalSubtotal = this.getDetalSubtotal();
+    const detalItems = this.getDetalItems();
+    const wsItems = this.getWholesaleItems();
+    const hasDetal = detalItems.length > 0;
+    const hasWholesale = wsItems.length > 0;
+    const isWholesaleOnly = hasWholesale && !hasDetal;
 
-    const isFree = subtotal >= threshold;
-    const remaining = isFree ? 0 : threshold - subtotal;
-    const cost = (this.items.length === 0 || isFree) ? 0 : standardCost;
-    const percent = Math.min(100, Math.round((subtotal / threshold) * 100));
+    let standardCost = 10000;
+    let threshold = 150000;
+    let isFree = false;
+    let cost = 0;
+    let remaining = 0;
+    let percent = 0;
+
+    if (this.destination === 'soacha') {
+      // Tarifa fija Soacha: SIEMPRE $15.000 COP, nunca gratis
+      standardCost = CONFIG.SHIPPING?.SOACHA_COST || 15000;
+      threshold = null;
+      isFree = false;
+      cost = (this.items.length === 0) ? 0 : standardCost;
+      remaining = 0;
+      percent = 0;
+    } else if (this.destination === 'nacional') {
+      standardCost = CONFIG.SHIPPING?.NACIONAL_STANDARD_COST || 18000;
+      threshold = CONFIG.SHIPPING?.NACIONAL_FREE_THRESHOLD || 220000;
+      // El envío gratis aplica ÚNICAMENTE a compras al detal
+      isFree = hasDetal && (detalSubtotal >= threshold);
+      remaining = isFree ? 0 : Math.max(0, threshold - detalSubtotal);
+      cost = (this.items.length === 0 || isFree) ? 0 : standardCost;
+      percent = threshold > 0 ? Math.min(100, Math.round((detalSubtotal / threshold) * 100)) : 0;
+    } else {
+      // Por defecto 'bogota'
+      standardCost = CONFIG.SHIPPING?.BOGOTA_STANDARD_COST || 10000;
+      threshold = CONFIG.SHIPPING?.BOGOTA_FREE_THRESHOLD || 150000;
+      // El envío gratis aplica ÚNICAMENTE a compras al detal
+      isFree = hasDetal && (detalSubtotal >= threshold);
+      remaining = isFree ? 0 : Math.max(0, threshold - detalSubtotal);
+      cost = (this.items.length === 0 || isFree) ? 0 : standardCost;
+      percent = threshold > 0 ? Math.min(100, Math.round((detalSubtotal / threshold) * 100)) : 0;
+    }
 
     return {
-      isBogota,
+      destination: this.destination,
+      isBogota: this.destination === 'bogota',
+      isSoacha: this.destination === 'soacha',
+      isNacional: this.destination === 'nacional',
       threshold,
       standardCost,
       isFree,
       remaining,
       cost,
-      percent
+      percent,
+      hasDetal,
+      hasWholesale,
+      isWholesaleOnly
     };
   },
 
@@ -433,28 +479,71 @@ const Cart = {
     const activeTier = typeof WholesaleService !== 'undefined' ? WholesaleService.getWholesaleTier(totalWsQty) : 5;
     const tierInfo = typeof WholesaleService !== 'undefined' ? WholesaleService.getNextTierInfo(totalWsQty) : null;
 
-    // Free Shipping Progress Meter
+    // Free Shipping Progress Meter & Shipping Destination Selector
     if (meterContainer) {
-      meterContainer.innerHTML = `
-        <div class="shipping-meter-box">
-          <div class="dest-toggle-group">
-            <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
-              📍 Bogotá (Gratis > ${this.formatCOP(shipping.threshold)})
-            </button>
-            <button type="button" class="dest-btn ${!shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
-              🇨🇴 Nacional (Gratis > ${this.formatCOP(shipping.threshold)})
-            </button>
+      if (shipping.isWholesaleOnly) {
+        meterContainer.innerHTML = `
+          <div class="shipping-meter-box wholesale-meter-box">
+            <div class="dest-toggle-group">
+              <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
+                📍 Bogotá
+              </button>
+              <button type="button" class="dest-btn ${shipping.isSoacha ? 'active' : ''}" onclick="Cart.setDestination('soacha')">
+                📍 Soacha ($15.000)
+              </button>
+              <button type="button" class="dest-btn ${shipping.isNacional ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
+                🇨🇴 Nacional
+              </button>
+            </div>
+            <div class="meter-status" style="margin-top: 8px; font-size: 0.85rem; color: #F59E0B;">
+              📦 <strong>Envíos Mayoristas:</strong> Se coordinan exclusivamente vía WhatsApp al <strong>3133572726</strong> según transportadora y volumen. No aplica envío gratis.
+            </div>
           </div>
-          <div class="meter-status">
-            ${shipping.isFree 
-              ? `<span class="free-badge">🎉 ¡Felicitaciones! Tienes <strong>ENVÍO GRATIS</strong>.</span>` 
-              : `<span>🛍️ Te faltan <strong>${this.formatCOP(shipping.remaining)}</strong> para obtener <strong>ENVÍO GRATIS</strong></span>`}
+        `;
+      } else if (shipping.isSoacha) {
+        meterContainer.innerHTML = `
+          <div class="shipping-meter-box">
+            <div class="dest-toggle-group">
+              <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
+                📍 Bogotá (Gratis > ${this.formatCOP(CONFIG.SHIPPING.BOGOTA_FREE_THRESHOLD)})
+              </button>
+              <button type="button" class="dest-btn active" onclick="Cart.setDestination('soacha')">
+                📍 Soacha ($15.000)
+              </button>
+              <button type="button" class="dest-btn ${shipping.isNacional ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
+                🇨🇴 Nacional (Gratis > ${this.formatCOP(CONFIG.SHIPPING.NACIONAL_FREE_THRESHOLD)})
+              </button>
+            </div>
+            <div class="meter-status" style="margin-top: 8px; font-size: 0.88rem; color: #EAB308;">
+              📍 Tarifa fija de envío a Soacha: <strong>$15.000 COP</strong> (se suma automáticamente al total).
+            </div>
           </div>
-          <div class="meter-bar-track">
-            <div class="meter-bar-fill ${shipping.isFree ? 'complete' : ''}" style="width: ${shipping.percent}%;"></div>
+        `;
+      } else {
+        meterContainer.innerHTML = `
+          <div class="shipping-meter-box">
+            <div class="dest-toggle-group">
+              <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
+                📍 Bogotá (Gratis > ${this.formatCOP(CONFIG.SHIPPING.BOGOTA_FREE_THRESHOLD)})
+              </button>
+              <button type="button" class="dest-btn ${shipping.isSoacha ? 'active' : ''}" onclick="Cart.setDestination('soacha')">
+                📍 Soacha ($15.000)
+              </button>
+              <button type="button" class="dest-btn ${shipping.isNacional ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
+                🇨🇴 Nacional (Gratis > ${this.formatCOP(CONFIG.SHIPPING.NACIONAL_FREE_THRESHOLD)})
+              </button>
+            </div>
+            <div class="meter-status">
+              ${shipping.isFree 
+                ? `<span class="free-badge">🎉 ¡Felicitaciones! Tienes <strong>ENVÍO GRATIS</strong> en tus productos al detal.</span>` 
+                : `<span>🛍️ Te faltan <strong>${this.formatCOP(shipping.remaining)}</strong> al detal para obtener <strong>ENVÍO GRATIS</strong></span>`}
+            </div>
+            <div class="meter-bar-track">
+              <div class="meter-bar-fill ${shipping.isFree ? 'complete' : ''}" style="width: ${shipping.percent}%;"></div>
+            </div>
           </div>
-        </div>
-      `;
+        `;
+      }
     }
 
     // Items list (Strictly Separated DETAL and MAYORISTA)
@@ -552,96 +641,118 @@ const Cart = {
           `;
         }
 
-        // SECTION 2: MAYORISTA ITEMS
+        // SECTION 2: MAYORISTA ITEMS (AGRUPADOS POR REFERENCIA CON DETALLE DE SABORES)
         if (wsItems.length > 0) {
-          let tierProgressBannerHtml = '';
-          if (tierInfo && tierInfo.nextTier) {
-            tierProgressBannerHtml = `
-              <div class="ws-tier-progress-banner">
-                <span class="ws-tier-progress-icon">💡</span>
-                <span>Agrega <strong>${tierInfo.needed} uds más</strong> para desbloquear la tarifa de <strong>+${tierInfo.nextTier} unidades</strong>.</span>
-              </div>
-            `;
-          } else {
-            tierProgressBannerHtml = `
-              <div class="ws-tier-progress-banner max-tier">
-                <span class="ws-tier-progress-icon">🎉</span>
-                <span>¡Tienes activa la <strong>tarifa máxima mayorista (+100 uds)</strong> en todo tu pedido!</span>
-              </div>
-            `;
-          }
+          // Agrupar items por referencia de producto (productId)
+          const wsGroups = {};
+          wsItems.forEach(item => {
+            if (!wsGroups[item.productId]) {
+              wsGroups[item.productId] = {
+                productId: item.productId,
+                nombre: item.nombre,
+                items: [],
+                refTotalQty: 0,
+                activeTier: item.activeTier || 5,
+                unitPrice: item.unitPrice || 0,
+                refSubtotal: 0
+              };
+            }
+            wsGroups[item.productId].items.push(item);
+            wsGroups[item.productId].refTotalQty += item.qty;
+            wsGroups[item.productId].refSubtotal += item.subtotal;
+          });
 
           html += `
             <div class="cart-section-block wholesale-block">
               <div class="cart-section-header wholesale-header">
                 <div class="ws-header-tag-wrap">
                   <span class="cart-sec-tag wholesale-tag">📦 MAYORISTA</span>
-                  <span class="ws-header-tier-pill">Rango +${activeTier} (${totalWsQty} uds)</span>
+                  <span class="ws-header-tier-pill">${totalWsQty} uds totales</span>
                 </div>
                 <span class="cart-sec-subtotal">Subtotal: ${this.formatCOP(wsSubtotal)}</span>
               </div>
-              
-              ${tierProgressBannerHtml}
 
               <div class="cart-items-group">
           `;
 
-          html += wsItems.map(item => {
-            const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
-            let variantOptionsHtml = '';
-            if (prodObj) {
-              let varList = [];
-              if (prodObj.sabores && prodObj.sabores.length > 0) {
-                varList = prodObj.sabores.filter(s => s.visible !== false).map(s => s.nombre);
-              } else if (prodObj.colores && prodObj.colores.length > 0) {
-                varList = prodObj.colores.map(c => c.nombre);
-              }
-              if (varList.length > 1) {
-                variantOptionsHtml = `
-                  <div class="cart-flavor-select-row">
-                    <label>Sabor/Color:</label>
-                    <select class="cart-flavor-dropdown" onchange="Cart.changeItemVariant('${item.key}', this.value)">
-                      ${varList.map(v => `<option value="${v}" ${v === item.variant ? 'selected' : ''}>${v}</option>`).join('')}
-                    </select>
+          Object.values(wsGroups).forEach(group => {
+            html += `
+              <div class="ws-ref-group-container" style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; margin-bottom: 14px; padding: 12px; overflow: hidden;">
+                <div class="ws-ref-group-header" style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 10px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); margin-bottom: 10px;">
+                  <div>
+                    <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #fff; font-weight: 700;">${group.nombre}</h4>
+                    <span class="ws-header-tier-pill" style="font-size: 0.78rem;">${group.refTotalQty} uds • Tarifa +${group.activeTier} (${this.formatCOP(group.unitPrice)} c/u)</span>
                   </div>
-                `;
+                  <div style="text-align: right;">
+                    <span style="font-size: 0.75rem; color: var(--text-secondary); display: block;">Subtotal ${group.nombre}:</span>
+                    <strong style="color: var(--accent-yellow); font-size: 0.95rem;">${this.formatCOP(group.refSubtotal)}</strong>
+                  </div>
+                </div>
+
+                <div class="ws-ref-flavors-list" style="display: flex; flex-direction: column; gap: 8px;">
+            `;
+
+            group.items.forEach(item => {
+              const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
+              let variantOptionsHtml = '';
+              if (prodObj) {
+                let varList = [];
+                if (prodObj.sabores && prodObj.sabores.length > 0) {
+                  varList = prodObj.sabores.filter(s => s.visible !== false).map(s => s.nombre);
+                } else if (prodObj.colores && prodObj.colores.length > 0) {
+                  varList = prodObj.colores.map(c => c.nombre);
+                }
+                if (varList.length > 1) {
+                  variantOptionsHtml = `
+                    <div class="cart-flavor-select-row" style="margin: 4px 0;">
+                      <label style="font-size: 0.75rem;">Sabor:</label>
+                      <select class="cart-flavor-dropdown" onchange="Cart.changeItemVariant('${item.key}', this.value)">
+                        ${varList.map(v => `<option value="${v}" ${v === item.variant ? 'selected' : ''}>${v}</option>`).join('')}
+                      </select>
+                    </div>
+                  `;
+                } else if (item.variant) {
+                  variantOptionsHtml = `<div class="item-variant-line" style="font-size: 0.8rem;"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
+                }
               } else if (item.variant) {
-                variantOptionsHtml = `<div class="item-variant-line"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
+                variantOptionsHtml = `<div class="item-variant-line" style="font-size: 0.8rem;"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
               }
-            } else if (item.variant) {
-              variantOptionsHtml = `<div class="item-variant-line"><span class="item-variant">Sabor: <strong>${item.variant}</strong></span></div>`;
-            }
 
-            return `
-              <div class="cart-item-row ws-item-row" id="cart-row-${item.key}">
-                <div class="ws-item-header">
-                  <div class="ws-pack-badge">⚡ ${item.qty} UDS • TARIFA +${activeTier}</div>
-                  <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar del pedido mayorista">🗑️</button>
-                </div>
+              html += `
+                <div class="cart-item-row ws-item-row" id="cart-row-${item.key}" style="background: rgba(0,0,0,0.2); border-radius: 8px; padding: 10px; border: 1px solid rgba(255,255,255,0.04);">
+                  <div class="ws-item-header" style="margin-bottom: 6px;">
+                    <div class="ws-pack-badge" style="font-size: 0.75rem;">⚡ ${item.qty} UDS • Sabor: <strong>${item.variant}</strong></div>
+                    <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar este sabor">🗑️</button>
+                  </div>
 
-                <div class="ws-item-main">
-                  <h4 class="item-title">${item.nombre}</h4>
-                  ${variantOptionsHtml}
-                  <div class="item-unit-price">
-                    <span class="unit-price-label">Precio Rango:</span>
-                    <strong class="unit-price-val">${this.formatCOP(item.unitPrice)}</strong> c/u
+                  <div class="ws-item-main">
+                    ${variantOptionsHtml}
+                    <div class="item-unit-price" style="font-size: 0.8rem;">
+                      <span class="unit-price-label">Tarifa (+${item.activeTier}):</span>
+                      <strong class="unit-price-val">${this.formatCOP(item.unitPrice)}</strong> c/u
+                    </div>
+                  </div>
+
+                  <div class="ws-item-footer" style="margin-top: 8px;">
+                    <div class="item-qty-selector ws-qty-selector">
+                      <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', -1)" title="Restar 1 unidad">−</button>
+                      <span class="qty-num">${item.qty} uds</span>
+                      <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', 1)" title="Sumar 1 unidad">+</button>
+                    </div>
+                    <div class="item-subtotal-block">
+                      <span class="subtotal-label">Subtotal sabor:</span>
+                      <span class="item-total-price ws-total">${this.formatCOP(item.subtotal)}</span>
+                    </div>
                   </div>
                 </div>
+              `;
+            });
 
-                <div class="ws-item-footer">
-                  <div class="item-qty-selector ws-qty-selector">
-                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', -1)" title="Restar 1 unidad">−</button>
-                    <span class="qty-num">${item.qty} uds</span>
-                    <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', 1)" title="Sumar 1 unidad">+</button>
-                  </div>
-                  <div class="item-subtotal-block">
-                    <span class="subtotal-label">Subtotal:</span>
-                    <span class="item-total-price ws-total">${this.formatCOP(item.subtotal)}</span>
-                  </div>
+            html += `
                 </div>
               </div>
             `;
-          }).join('');
+          });
 
           html += `
               </div>
@@ -658,6 +769,18 @@ const Cart = {
       if (this.items.length === 0) {
         footerContainer.innerHTML = '';
       } else {
+        const destName = shipping.isSoacha ? 'Soacha' : (shipping.isBogota ? 'Bogotá' : 'Nacional');
+        let shippingLineContent = '';
+        if (shipping.isSoacha) {
+          shippingLineContent = `${this.formatCOP(shipping.cost)}`;
+        } else if (shipping.isWholesaleOnly) {
+          shippingLineContent = `<span style="color: #F59E0B; font-size: 0.82rem;">WhatsApp 3133572726 (A coordinar)</span>`;
+        } else if (shipping.isFree) {
+          shippingLineContent = `<strong class="text-green">GRATIS</strong>`;
+        } else {
+          shippingLineContent = `${this.formatCOP(shipping.cost)}`;
+        }
+
         footerContainer.innerHTML = `
           <div class="cart-summary-box">
             ${detalItems.length > 0 ? `
@@ -668,13 +791,13 @@ const Cart = {
             ` : ''}
             ${wsItems.length > 0 ? `
               <div class="summary-line ws-summary-line">
-                <span>Subtotal Mayorista (${totalWsQty} uds • Rango +${activeTier}):</span>
+                <span>Subtotal Mayorista (${totalWsQty} uds):</span>
                 <span>${this.formatCOP(wsSubtotal)}</span>
               </div>
             ` : ''}
             <div class="summary-line">
-              <span>Envío (${shipping.isBogota ? 'Bogotá' : 'Nacional'}):</span>
-              <span>${shipping.isFree ? '<strong class="text-green">GRATIS</strong>' : this.formatCOP(shipping.cost)}</span>
+              <span>Envío (${destName}):</span>
+              <span>${shippingLineContent}</span>
             </div>
             <div class="summary-line total-line">
               <span>Total Final a Pagar:</span>

@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/wholesale.css">
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="css/responsive.css">
+  <link rel="stylesheet" href="css/halloween.css">
 </head>
 <body>
 
@@ -79,16 +80,30 @@
     </div>
   </header>
 
-  <!-- LANDING / HERO SECTION -->
-  <section id="inicio" class="hero-section">
+  <!-- LANDING / HERO SECTION (EDICIÓN ESPECIAL HALLOWEEN) -->
+  <section id="inicio" class="hero-section" style="position: relative; overflow: hidden;">
+    <!-- Halloween Ambient Elements (Elegantes, no intrusivos) -->
+    <div class="hw-cobweb-top-left" aria-hidden="true"></div>
+    <div class="hw-cobweb-top-right" aria-hidden="true"></div>
+    <div class="hw-hanging-spider" aria-hidden="true">
+      <div class="hw-spider-thread"></div>
+      <div class="hw-spider-body"></div>
+    </div>
+    <div class="hw-bats-container" aria-hidden="true">
+      <div class="hw-bat hw-bat-1"></div>
+      <div class="hw-bat hw-bat-2"></div>
+      <div class="hw-bat hw-bat-3"></div>
+    </div>
+    <div class="hw-mist-overlay" aria-hidden="true"></div>
+
     <div class="container hero-grid">
       <div class="hero-content">
-        <div class="hero-badge">⚡ Vapes Premium & Mayorista Oficial</div>
+        <div class="hero-badge"><span class="hw-badge-pumpkin">🎃</span> ⚡ Vapes Premium & Mayorista Oficial</div>
         <h1 class="hero-title">Tu Experiencia de Vapeo en <span>Bogotá & Colombia</span></h1>
         <p class="hero-desc">Descubre nuestra exclusiva selección de dispositivos desechables, pods recargables y baterías 510 con máxima potencia y sabores intensos.</p>
         <div class="hero-cta-group">
           <a href="#catalogo" class="btn btn-primary">Ver Catálogo de Productos</a>
-          <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20informaci%C3%B3n%20y%20asesor%C3%ADa." target="_blank" class="btn btn-whatsapp">💬 Hablar por WhatsApp</a>
+          <a href="https://wa.me/573133572726?text=Hola%20Capital%20Vape%2C%20quisiera%20recibir%20informaci%C3%B3n%20y%20asesor%C3%ADa." target="_blank" class="btn btn-whatsapp">💬 Hablar por WhatsApp</a>
         </div>
       </div>
             <!-- BEST SELLER HERO SHOWCASE (BANG LEADER, HUMO AZUL & DONUT) -->
@@ -310,10 +325,9 @@
       </div>
     </div>
   </div>
+  <div class="hw-silhouette-divider" aria-hidden="true"></div>
 
-
-
-    <!-- WHOLESALE PROMO BANNER -->
+  <!-- WHOLESALE PROMO BANNER -->
   <section class="wholesale-promo-banner-section">
     <div class="container">
       <div class="wholesale-promo-card">
@@ -321,11 +335,11 @@
         <div class="ws-promo-content">
           <h2 class="ws-promo-title">¿Quieres ser mayorista?</h2>
           <p class="ws-promo-desc">
-            Multiplica tus ganancias con precios directos de distribuidor desde <strong>5 unidades</strong> en adelante. Descuentos escalonados (+5, +10, +20, +50, +100 uds) y envíos seguros a toda Colombia.
+            Multiplica tus ganancias con precios directos de distribuidor desde <strong>5 unidades</strong> en adelante. Descuentos escalonados (+5, +10, +20, +50, +100 uds) y despachos coordinados a toda Colombia.
           </p>
           <div class="ws-promo-perks">
             <span class="ws-perk-pill">⚡ Ahorro de hasta $15.000 por unidad</span>
-            <span class="ws-perk-pill">🚚 Envíos express Bogotá & Nacional</span>
+            <span class="ws-perk-pill">🚚 Despachos directos vía WhatsApp</span>
             <span class="ws-perk-pill">📦 Catálogo 100% verificado y original</span>
           </div>
         </div>
@@ -333,7 +347,7 @@
           <a href="#mayoristas" class="btn btn-primary ws-promo-btn-enter">
             <span>🔑 Ingresar con Clave</span>
           </a>
-          <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20solicitar%20la%20clave%20para%20el%20portal%20mayorista." target="_blank" class="btn btn-whatsapp ws-promo-btn-wa">
+          <a href="https://wa.me/573133572726?text=Hola%20Capital%20Vape%2C%20quisiera%20solicitar%20la%20clave%20para%20el%20portal%20mayorista." target="_blank" class="btn btn-whatsapp ws-promo-btn-wa">
             <img src="assets/icons/whatsapp.png" class="btn-inline-icon" alt="WhatsApp"> Solicitar Clave por WhatsApp
           </a>
         </div>
@@ -353,7 +367,7 @@
       <div class="catalog-toolbar">
         <div class="toolbar-top-row">
           <div class="category-pills">
-            <button type="button" class="cat-pill-btn active" data-category="todos">Todos (33)</button>
+            <button type="button" class="cat-pill-btn active" data-category="todos">Todos (36)</button>
             <button type="button" class="cat-pill-btn" data-category="desechables">Desechables</button>
             <button type="button" class="cat-pill-btn" data-category="kits">Kits</button>
             <button type="button" class="cat-pill-btn" data-category="pods">Pods</button>
@@ -441,7 +455,7 @@
         <div class="catalog-toolbar">
           <div class="toolbar-top-row">
             <div class="category-pills">
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn active" data-category="todos">Todos (33)</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn active" data-category="todos">Todos (36)</button>
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="desechables">Desechables</button>
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="kits">Kits</button>
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="pods">Pods</button>
@@ -621,7 +635,7 @@
               <h3>Política de Tratamiento de Datos Personales</h3>
             </div>
 
-            <p class="policy-intro"><strong>Responsable del Tratamiento:</strong> CAPITAL VAPE • <strong>Contacto Oficial:</strong> WhatsApp 3248012914</p>
+            <p class="policy-intro"><strong>Responsable del Tratamiento:</strong> CAPITAL VAPE • <strong>Contacto Oficial:</strong> WhatsApp 3133572726 / 3248012914</p>
             <p>En cumplimiento de la <strong>Ley Estatutaria 1581 de 2012</strong> y sus decretos reglamentarios sobre protección de datos personales, informamos que los datos suministrados por nuestros clientes (nombre, teléfono, dirección, ciudad, etc.) serán utilizados con estricta confidencialidad para:</p>
 
             <ul class="policy-list" style="margin: 12px 0;">
@@ -736,19 +750,24 @@
             </div>
             <div class="contact-item">
               <span class="contact-item-icon">💬</span>
-              <span>WhatsApp Principal: +57 324 801 2914</span>
+              <span>Línea 1 (Mayorista & Detal): +57 313 357 2726</span>
             </div>
             <div class="contact-item">
               <span class="contact-item-icon">💬</span>
-              <span>WhatsApp Secundario: +57 313 261 2344</span>
+              <span>Línea 2 (Ventas Detal): +57 324 801 2914</span>
             </div>
           </div>
         </div>
 
         <div style="text-align: center; display: flex; flex-direction: column; gap: 14px;">
-          <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20deseo%20hacer%20un%20pedido." target="_blank" class="btn btn-whatsapp btn-block" style="padding: 16px 28px; font-size: 1.05rem;">
-            <img src="assets/icons/whatsapp.png" class="btn-inline-icon" alt="WhatsApp"> Chatear con Asesor en WhatsApp
-          </a>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <a href="https://wa.me/573133572726?text=Hola%20Capital%20Vape%2C%20quisiera%20asesor%C3%ADa." target="_blank" class="btn btn-whatsapp" style="flex: 1; min-width: 200px; padding: 14px 18px; font-size: 0.98rem; justify-content: center;">
+              <img src="assets/icons/whatsapp.png" class="btn-inline-icon" alt="WhatsApp"> WhatsApp 313 357 2726
+            </a>
+            <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20asesor%C3%ADa." target="_blank" class="btn btn-whatsapp" style="flex: 1; min-width: 200px; padding: 14px 18px; font-size: 0.98rem; justify-content: center;">
+              <img src="assets/icons/whatsapp.png" class="btn-inline-icon" alt="WhatsApp"> WhatsApp 324 801 2914
+            </a>
+          </div>
           
           <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;">¡Síguenos en nuestras redes oficiales!</div>
           
@@ -807,8 +826,11 @@
             <a href="https://www.tiktok.com/@capital..vape" target="_blank" class="footer-social-pill" rel="noopener noreferrer">
               <img src="assets/icons/tiktok.png" class="footer-social-icon" alt="TikTok"> TikTok @capital..vape
             </a>
+            <a href="https://wa.me/573133572726" target="_blank" class="footer-social-pill">
+              <img src="assets/icons/whatsapp.png" class="footer-social-icon" alt="WhatsApp"> 313 357 2726 (Línea 1)
+            </a>
             <a href="https://wa.me/573248012914" target="_blank" class="footer-social-pill">
-              <img src="assets/icons/whatsapp.png" class="footer-social-icon" alt="WhatsApp"> WhatsApp: +57 324 801 2914
+              <img src="assets/icons/whatsapp.png" class="footer-social-icon" alt="WhatsApp"> 324 801 2914 (Línea 2)
             </a>
           </div>
         </div>
@@ -840,7 +862,7 @@
   <div class="cv-modal-overlay" id="checkoutModal">
     <div class="cv-modal-box">
       <div class="cv-modal-header">
-        <div class="cv-modal-title">Finalizar Pedido al Detal — Capital Vape</div>
+        <div class="cv-modal-title" id="checkoutModalTitle">Finalizar Pedido — Capital Vape</div>
         <button type="button" class="cv-modal-close-btn" onclick="CheckoutController.closeModal()">&times;</button>
       </div>
 
@@ -866,13 +888,14 @@
             <div class="form-group">
               <label for="checkoutDestino">Destino del Envío *</label>
               <select id="checkoutDestino" class="form-select">
-                <option value="bogota">Bogotá D.C.</option>
-                <option value="nacional">Nacional (Fuera de Bogotá)</option>
+                <option value="bogota">Bogotá D.C. ($10.000 / Gratis > $150.000 al detal)</option>
+                <option value="soacha">Soacha ($15.000 COP)</option>
+                <option value="nacional">Nacional - Fuera de Bogotá ($18.000 / Gratis > $220.000 al detal)</option>
               </select>
             </div>
             <div class="form-group">
               <label for="checkoutCiudad">Ciudad / Municipio *</label>
-              <input type="text" id="checkoutCiudad" class="form-input" placeholder="Ej: Bogotá, Medellín, Cali..." required>
+              <input type="text" id="checkoutCiudad" class="form-input" placeholder="Ej: Bogotá, Soacha, Medellín, Cali..." required>
             </div>
           </div>
 
@@ -890,6 +913,32 @@
           <div class="form-group">
             <label for="checkoutNotas">Notas / Indicaciones Adicionales</label>
             <textarea id="checkoutNotas" class="form-textarea" rows="2" placeholder="Ej: Entregar en portería, timbre 201..."></textarea>
+          </div>
+
+          <!-- Selector de WhatsApp para envío de pedido -->
+          <div class="form-group" id="checkoutWhatsAppGroup" style="margin-top: 14px; margin-bottom: 16px;">
+            <label style="font-weight: 700; display: block; margin-bottom: 8px; color: #fff;">
+              ¿A qué WhatsApp deseas enviar tu pedido? *
+            </label>
+            <div class="checkout-wa-options" id="checkoutWaOptions" style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <label class="checkout-wa-card" id="checkoutWaOption1" style="flex: 1; min-width: 140px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; background: rgba(255,255,255,0.03);">
+                <input type="radio" name="checkoutWaNumber" value="573133572726" checked style="accent-color: #25D366;">
+                <div>
+                  <strong style="color: #fff; font-size: 0.95rem;">📲 3133572726</strong>
+                  <small style="display: block; color: var(--text-secondary); font-size: 0.78rem;">Línea Oficial (Detal & Mayorista)</small>
+                </div>
+              </label>
+              <label class="checkout-wa-card" id="checkoutWaOption2" style="flex: 1; min-width: 140px; display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; background: rgba(255,255,255,0.03);">
+                <input type="radio" name="checkoutWaNumber" value="573248012914" style="accent-color: #25D366;">
+                <div>
+                  <strong style="color: #fff; font-size: 0.95rem;">📲 3248012914</strong>
+                  <small style="display: block; color: var(--text-secondary); font-size: 0.78rem;">Línea Oficial (Detal)</small>
+                </div>
+              </label>
+            </div>
+            <div id="checkoutWaWholesaleNotice" style="display: none; margin-top: 6px; font-size: 0.82rem; color: #F59E0B;">
+              📦 <em>Pedidos con productos mayoristas se dirigen exclusivamente a la línea oficial mayorista (3133572726).</em>
+            </div>
           </div>
 
           <button type="submit" class="btn btn-whatsapp btn-block" style="padding: 16px; font-size: 1.05rem; margin-top: 8px;">
@@ -942,7 +991,7 @@
   <div class="cv-bottom-bar-container">
     <div class="cv-bottom-bar-inner">
       <!-- WHATSAPP AGENDAR PEDIDO BUTTON -->
-      <a href="https://wa.me/573248012914?text=Hola%20Capital%20Vape%2C%20quisiera%20agendar%20un%20pedido." target="_blank" rel="noopener noreferrer" class="cv-bottom-btn wa-bottom-btn" aria-label="📲 AGENDAR PEDIDO WhatsApp Oficial">
+      <a href="https://wa.me/573133572726?text=Hola%20Capital%20Vape%2C%20quisiera%20agendar%20un%20pedido." target="_blank" rel="noopener noreferrer" class="cv-bottom-btn wa-bottom-btn" aria-label="📲 AGENDAR PEDIDO WhatsApp Oficial">
         <img src="assets/icons/whatsapp.png" class="bottom-btn-icon" alt="WhatsApp">
         <span class="bottom-btn-label">AGENDAR PEDIDO</span>
       </a>

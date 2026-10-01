@@ -2320,6 +2320,127 @@ const PRODUCTS_DATA = [
       }
     ],
     "puffs": null
+  },
+  {
+    "id": "dojo",
+    "nombre": "DOJO SPHERE S 40K",
+    "categoria": "desechables",
+    "subtitulo": "40.000 Puffs • 17 Sabores",
+    "puffs": 40000,
+    "precio": 45000,
+    "precio_promo_2": 80000,
+    "ahorro_2": 10000,
+    "rating": 4.9,
+    "ventas": 3950,
+    "imagen": "DojoVape/Watermelon Ice.png",
+    "descripcion": "El DOJO Sphere S 40K es un vape desechable premium de última generación con hasta 40.000 caladas extraordinarias, pantalla digital inteligente, doble resistencia de malla y 17 sabores ultra intensos.",
+    "agotado": false,
+    "tipo_variante": "sabor",
+    "sabores": [
+      {
+        "nombre": "Blue Razz Ice",
+        "img": "DojoVape/Blue Razz Ice.png",
+        "desc": "Arándano azul jugoso con un toque helado súper refrescante."
+      },
+      {
+        "nombre": "Blueberry Watermelon",
+        "img": "DojoVape/Blueberry Watermelon.png",
+        "desc": "Dúo perfecto de arándanos silvestres y sandía dulce y madura."
+      },
+      {
+        "nombre": "Clear",
+        "img": "DojoVape/Clear.png",
+        "desc": "Sabor neutro, limpio y puro con un golpe fresco sin azúcar añadido."
+      },
+      {
+        "nombre": "Fcuking FAB",
+        "img": "DojoVape/Fcuking FAB.png",
+        "desc": "Mezcla secreta frutal tropical con notas de caramelo dulce y cítricos."
+      },
+      {
+        "nombre": "Frozen Banana",
+        "img": "DojoVape/Frozen Banana.png",
+        "desc": "Plátano maduro cremoso con un acabado de hielo polar intenso."
+      },
+      {
+        "nombre": "Georgia Peach",
+        "img": "DojoVape/Georgia Peach.png",
+        "desc": "Durazno dulce, aromático y jugoso recién cosechado de Georgia."
+      },
+      {
+        "nombre": "Hawaii Dream",
+        "img": "DojoVape/Hawaii Dream.png",
+        "desc": "Sueño tropical de piña dulce, coco suave y frutas del pacífico."
+      },
+      {
+        "nombre": "Juicy Grape",
+        "img": "DojoVape/Juicy Grape.png",
+        "desc": "Uva morada dulce, cristalina y profundamente jugosa."
+      },
+      {
+        "nombre": "Lemonade Pink",
+        "img": "DojoVape/Lemonade Pink.png",
+        "desc": "Limonada rosa cítrica, chispeante y veraniega con dulzura sutil."
+      },
+      {
+        "nombre": "Mexico Mango",
+        "img": "DojoVape/Mexico Mango.png",
+        "desc": "Auténtico mango mexicano dulce con abundante pulpa tropical madura."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "DojoVape/Miami Mint.png",
+        "desc": "Menta clásica estilo Miami Beach con frescura herbal balanceada."
+      },
+      {
+        "nombre": "Sour Gush",
+        "img": "DojoVape/Sour Gush.png",
+        "desc": "Explosión agridulce inspirada en caramelos líquidos frutales."
+      },
+      {
+        "nombre": "Strawberry Banana",
+        "img": "DojoVape/Strawberry Banana.png",
+        "desc": "Batido suave y cremoso de fresas silvestres maduras y banana dulce."
+      },
+      {
+        "nombre": "Strawberry Ice",
+        "img": "DojoVape/Strawberry Ice.png",
+        "desc": "Fresas dulces recién recolectadas combinadas con escarcha glacial."
+      },
+      {
+        "nombre": "Tobacco",
+        "img": "DojoVape/Tobacco.png",
+        "desc": "Tabaco tostado refinado, cálido, robusto y con un cuerpo elegante."
+      },
+      {
+        "nombre": "Watermelon Ice",
+        "img": "DojoVape/Watermelon Ice.png",
+        "desc": "Sandía dulce refrescante combinada con una potente ráfaga de hielo."
+      },
+      {
+        "nombre": "White Gummy",
+        "img": "DojoVape/White Gummy.png",
+        "desc": "Gomitas dulces de osito blanco con suaves toques de piña caramelizada."
+      }
+    ]
+  },
+  {
+    "id": "en-create",
+    "nombre": "EN CREATE",
+    "categoria": "desechables",
+    "subtitulo": "Próximamente • Coming Soon",
+    "puffs": null,
+    "precio": 0,
+    "precio_promo_2": null,
+    "ahorro_2": 0,
+    "rating": 5.0,
+    "ventas": 0,
+    "imagen": "assets/logo/logo.png",
+    "descripcion": "El nuevo EN CREATE llegará muy pronto al catálogo oficial de Capital Vape. ¡Espéralo próximamente!",
+    "agotado": true,
+    "coming_soon": true,
+    "tipo_variante": "sabor",
+    "sabores": []
   }
 ];
 

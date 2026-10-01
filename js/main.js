@@ -168,6 +168,11 @@ function initWholesaleSection() {
   // Check persistent session on load
   updateWholesaleView();
 
+  const reqBtn = document.getElementById('btnRequestWholesaleCode');
+  if (reqBtn && typeof WholesaleService !== 'undefined') {
+    reqBtn.href = WholesaleService.getWholesaleWhatsAppUrl();
+  }
+
   if (form && input) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();

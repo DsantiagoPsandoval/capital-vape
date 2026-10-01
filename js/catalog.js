@@ -312,7 +312,7 @@ const CatalogController = {
   addFlavorDirectToCart(productId, variantName) {
     this.selectVariant(productId, variantName);
     const product = PRODUCTS_DATA.find(p => p.id === productId);
-    if (!product || product.agotado) return;
+    if (!product || product.agotado || product.coming_soon) return;
 
     Cart.addItem(product, variantName, 1);
     this.closeFlavorModal();
@@ -320,7 +320,7 @@ const CatalogController = {
 
   addProductToCart(productId) {
     const product = PRODUCTS_DATA.find(p => p.id === productId);
-    if (!product || product.agotado) return;
+    if (!product || product.agotado || product.coming_soon) return;
 
     const variant = this.selectedVariants[productId] || (
       product.sabores && product.sabores.length > 0 ? product.sabores[0].nombre :
@@ -433,9 +433,10 @@ const CatalogController = {
         : (product.categoria === 'accesorios' ? 'Original' : 'Batería 510');
 
       return `
-        <article class="product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.agotado ? 'is-out' : ''}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
+        <article class="product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-out' : '')}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
           <!-- 1. INDEPENDENT IMAGE -->
-          <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}')" title="Ver sabores y detalles">
+          <div class="card-image-wrapper" ${!product.coming_soon ? `onclick="CatalogController.openFlavorModal('${product.id}')"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Ver sabores y detalles'}">
+            ${product.coming_soon ? `<span class="product-agotado-badge" style="background:#EAB308;color:#000;">COMING SOON</span>` : ''}
             <img src="${currentImage || 'assets/logo/logo.png'}" 
                  alt="${product.nombre}" 
                  class="product-img-real" 
@@ -450,9 +451,11 @@ const CatalogController = {
                 <span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}
               </span>
               ${(product.ventas && product.ventas > 3000) ? `<span class="card-top-seller-pill">🔥 Top Ventas</span>` : ''}
-              ${product.agotado 
-                ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
-                : `<span class="card-stock-badge in">🟢 Disponible</span>`}
+              ${product.coming_soon 
+                ? `<span class="card-stock-badge out" style="background: rgba(234, 179, 8, 0.2); color: #EAB308; border-color: rgba(234, 179, 8, 0.4);">⏳ COMING SOON</span>`
+                : (product.agotado 
+                  ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
+                  : `<span class="card-stock-badge in">🟢 Disponible</span>`)}
             </div>
 
             <!-- Title & Puffs Tag Below Title -->
@@ -476,29 +479,39 @@ const CatalogController = {
             ` : ''}
 
             <!-- Organized Pricing -->
-            <div class="card-pricing-block">
-              <div class="pricing-tier-row">
-                <div class="tier-label-group">
-                  <span class="tier-badge-tag">1 UNIDAD</span>
-                  <span class="tier-name">Precio Regular</span>
-                </div>
-                <div class="tier-price-val">${this.formatCOP(product.precio)}</div>
-              </div>
-
-              ${hasDuoPromo ? `
-                <div class="pricing-tier-row promo-tier">
+            ${!product.coming_soon ? `
+              <div class="card-pricing-block">
+                <div class="pricing-tier-row">
                   <div class="tier-label-group">
-                    <span class="tier-badge-tag duo">2 UNIDADES</span>
-                    <span class="tier-save-tag">Ahorras ${this.formatCOP(ahorroDuo)}</span>
+                    <span class="tier-badge-tag">1 UNIDAD</span>
+                    <span class="tier-name">Precio Regular</span>
                   </div>
-                  <div class="tier-price-val promo">${this.formatCOP(product.precio_promo_2)}</div>
+                  <div class="tier-price-val">${this.formatCOP(product.precio)}</div>
                 </div>
-              ` : ''}
-            </div>
+
+                ${hasDuoPromo ? `
+                  <div class="pricing-tier-row promo-tier">
+                    <div class="tier-label-group">
+                      <span class="tier-badge-tag duo">2 UNIDADES</span>
+                      <span class="tier-save-tag">Ahorras ${this.formatCOP(ahorroDuo)}</span>
+                    </div>
+                    <div class="tier-price-val promo">${this.formatCOP(product.precio_promo_2)}</div>
+                  </div>
+                ` : ''}
+              </div>
+            ` : `
+              <div class="card-pricing-block" style="text-align: center; padding: 10px 0; color: #EAB308; font-weight: 600;">
+                🔥 Gran Lanzamiento Muy Pronto
+              </div>
+            `}
 
             <!-- Action Button -->
             <div class="card-actions-wrapper">
-              ${product.agotado ? `
+              ${product.coming_soon ? `
+                <button type="button" class="btn btn-secondary btn-block" disabled style="opacity: 0.7; cursor: not-allowed; border-color: #EAB308; color: #EAB308; font-weight: 700;">
+                  ⏳ COMING SOON
+                </button>
+              ` : (product.agotado ? `
                 <button type="button" class="btn btn-secondary btn-block" disabled>
                   ⚠️ Agotado
                 </button>
@@ -506,7 +519,7 @@ const CatalogController = {
                 <button type="button" class="btn btn-primary btn-add-cart" onclick="CatalogController.addProductToCart('${product.id}')">
                   <span><img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito</span>
                 </button>
-              `}
+              `)}
             </div>
           </div>
         </article>

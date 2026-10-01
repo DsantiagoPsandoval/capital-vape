@@ -7,39 +7,39 @@ const WHOLESALE_PASSWORD = "CV-MAYORISTA-2026";
 const WholesaleService = {
   PRICES: {
     "bang-leader": {
-        "5": 35000,
-        "10": 26000,
-        "20": 25000,
-        "50": 24000,
-        "100": 23000
-    },
-    "humo-azul": {
-        "5": 35000,
-        "10": 27000,
-        "20": 25500,
-        "50": 24000,
-        "100": 23000
-    },
-    "donut": {
         "5": 30000,
         "10": 21000,
         "20": 20000,
         "50": 19000,
         "100": 18000
     },
+    "humo-azul": {
+        "5": 30000,
+        "10": 22000,
+        "20": 20500,
+        "50": 19000,
+        "100": 18000
+    },
+    "donut": {
+        "5": 29500,
+        "10": 20500,
+        "20": 19500,
+        "50": 18500,
+        "100": 17500
+    },
     "solobar-kit": {
-        "5": 29000,
-        "10": 24000,
-        "20": 23000,
-        "50": 22000,
-        "100": 21000
+        "5": 25000,
+        "10": 20000,
+        "20": 19000,
+        "50": 18000,
+        "100": 17000
     },
     "solobar-pod": {
-        "5": 21000,
-        "10": 17000,
-        "20": 16000,
-        "50": 15000,
-        "100": 14000
+        "5": 14000,
+        "10": 10000,
+        "20": 9000,
+        "50": 8000,
+        "100": 7000
     },
     "yocco": {
         "5": 9000,
@@ -58,9 +58,16 @@ const WholesaleService = {
     "ease": {
         "5": 11000,
         "10": 8000,
-        "20": 7400,
-        "50": 6800,
-        "100": 6200
+        "20": 7700,
+        "50": 7100,
+        "100": 6500
+    },
+    "dojo": {
+        "5": 32000,
+        "10": 24000,
+        "20": 23000,
+        "50": 22000,
+        "100": 21000
     },
     "dummy": {
         "5": 11500,
@@ -112,23 +119,23 @@ const WholesaleService = {
         "100": 11000
     },
     "nimbox-kit": {
-        "5": 21000,
-        "10": 16000,
-        "20": 15000,
-        "50": 14000,
-        "100": 13000
+        "5": 19000,
+        "10": 14000,
+        "20": 13000,
+        "50": 12000,
+        "100": 11000
     },
     "nimbox-pod": {
-        "5": 16000,
-        "10": 12000,
-        "20": 11000,
-        "50": 10000,
-        "100": 8500
+        "5": 14000,
+        "10": 10000,
+        "20": 9000,
+        "50": 8000,
+        "100": 6500
     },
     "vera": {
         "5": 19000,
-        "10": 16000,
-        "20": 15000,
+        "10": 15000,
+        "20": 14000,
         "50": 14000,
         "100": 13000
     },
@@ -140,11 +147,11 @@ const WholesaleService = {
         "100": 14500
     },
     "hookalit": {
-        "5": 23000,
-        "10": 18000,
-        "20": 17000,
-        "50": 16000,
-        "100": 15300
+        "5": 21000,
+        "10": 16000,
+        "20": 15000,
+        "50": 14000,
+        "100": 13300
     },
     "fifty-cent": {
         "5": 22000,
@@ -155,17 +162,17 @@ const WholesaleService = {
     },
     "spaceman": {
         "5": 27000,
-        "10": 20500,
-        "20": 19500,
-        "50": 18500,
-        "100": 18000
+        "10": 19500,
+        "20": 19000,
+        "50": 18000,
+        "100": 17000
     },
     "dinner-lady": {
         "5": 27000,
-        "10": 20700,
-        "20": 19700,
-        "50": 18700,
-        "100": 18200
+        "10": 19000,
+        "20": 18000,
+        "50": 17000,
+        "100": 16000
     },
     "waka-creator-bateria": {
         "5": 32000,
@@ -413,7 +420,7 @@ const WholesaleService = {
 
   getWholesaleWhatsAppUrl() {
     const text = encodeURIComponent('Hola Capital Vape, soy comerciante/distribuidor y solicito la clave para acceder al portal mayorista.');
-    return `https://wa.me/573248012914?text=${text}`;
+    return `https://wa.me/573133572726?text=${text}`;
   }
 };
 
@@ -706,9 +713,9 @@ const WholesaleCatalog = {
       }
 
       return `
-        <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.agotado ? 'is-product-agotado' : ''}" id="ws-card-${product.id}" data-product-id="${product.id}">
-          <div class="card-image-wrapper" onclick="CatalogController.openFlavorModal('${product.id}', true)" title="Ver sabores y detalles">
-            ${product.agotado ? `<span class="product-agotado-badge">AGOTADO</span>` : ''}
+        <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-product-agotado' : '')}" id="ws-card-${product.id}" data-product-id="${product.id}">
+          <div class="card-image-wrapper" ${!product.coming_soon ? `onclick="CatalogController.openFlavorModal('${product.id}', true)"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Ver sabores y detalles'}">
+            ${product.coming_soon ? `<span class="product-agotado-badge" style="background:#EAB308;color:#000;">COMING SOON</span>` : (product.agotado ? `<span class="product-agotado-badge">AGOTADO</span>` : '')}
             <img src="${currentImage || 'assets/logo/logo.png'}" alt="${product.nombre}" class="product-img-real" loading="lazy">
           </div>
 
@@ -716,9 +723,11 @@ const WholesaleCatalog = {
             <div class="card-meta-row">
               <span class="card-rating-badge"><span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}</span>
               ${savingPerUnit > 0 ? `<span class="ws-save-pill">Ahorro ${WholesaleService.formatCOP(savingPerUnit)}/u</span>` : ''}
-              ${product.agotado 
-                ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
-                : `<span class="card-stock-badge in">🟢 Mayorista</span>`}
+              ${product.coming_soon 
+                ? `<span class="card-stock-badge out" style="background: rgba(234, 179, 8, 0.2); color: #EAB308; border-color: rgba(234, 179, 8, 0.4);">⏳ COMING SOON</span>`
+                : (product.agotado 
+                  ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
+                  : `<span class="card-stock-badge in">🟢 Mayorista</span>`)}
             </div>
 
             <div class="card-header-info">
@@ -728,7 +737,13 @@ const WholesaleCatalog = {
 
             ${variantsHtml}
 
-            ${product.agotado ? `
+            ${product.coming_soon ? `
+              <div style="padding: 16px 0; text-align: center;">
+                <button type="button" class="btn btn-secondary btn-block" disabled style="opacity: 0.7; cursor: not-allowed; border-color: #EAB308; color: #EAB308; font-weight: 700;">
+                  ⏳ COMING SOON
+                </button>
+              </div>
+            ` : (product.agotado ? `
               <div style="padding: 16px 0; text-align: center;">
                 <button type="button" class="btn btn-secondary btn-block" disabled style="opacity: 0.6; cursor: not-allowed;">
                   ⚠️ Producto Agotado
@@ -755,7 +770,7 @@ const WholesaleCatalog = {
                   `;
                 }).join('')}
               </div>
-            `}
+            `)}
 
           </div>
         </article>

@@ -5,7 +5,7 @@
  */
 const CloudSyncService = {
   // Configuración de almacenamiento en la nube
-  STORAGE_KEY: 'cv_cloud_catalog_overrides_v1',
+  STORAGE_KEY: 'cv_cloud_catalog_overrides_v2',
   REMOTE_CONFIG_KEY: 'cv_custom_cloud_endpoint',
   
   // Memoria de sobreescrituras actuales

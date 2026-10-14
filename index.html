@@ -19,8 +19,131 @@
   <link rel="stylesheet" href="css/admin.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/halloween.css">
+  <link rel="stylesheet" href="css/age-verification.css?v=20261014_1">
+
+  <!-- Anti-FOUC para Verificación de Mayoría de Edad (+18) -->
+  <script>
+    (function() {
+      try {
+        if (localStorage.getItem('capital_vape_age_verified') !== 'true') {
+          document.documentElement.classList.add('age-gate-locked');
+        }
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
+
+  <!-- ==========================================================================
+       PANTALLA DE VERIFICACIÓN DE MAYORÍA DE EDAD (+18) - CAPITAL VAPE
+       Cumplimiento Ley 124/1994, Ley 1335/2009 y Código de Infancia y Adolescencia
+       ========================================================================== -->
+  <div id="ageVerificationOverlay" class="age-gate-overlay" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
+    <!-- Fondo con iluminación neón, degradados sutiles y partículas -->
+    <div class="age-gate-bg" aria-hidden="true">
+      <div class="age-gate-glow-magenta"></div>
+      <div class="age-gate-glow-gold"></div>
+      <canvas id="ageGateCanvas" class="age-gate-canvas"></canvas>
+    </div>
+
+    <div class="age-gate-wrapper">
+      <!-- VISTA PRINCIPAL: PREGUNTA DE VERIFICACIÓN -->
+      <div id="ageGateMainView" class="age-gate-card">
+        <div class="age-gate-card-inner">
+          <!-- Logo Oficial de Capital Vape -->
+          <div class="age-gate-brand">
+            <img src="assets/logo/logo.png" alt="Capital Vape Logo" class="age-gate-logo">
+            <div class="age-gate-brand-name">CAPITAL<span>VAPE</span></div>
+          </div>
+
+          <!-- Símbolo Visual 18+ Grande con Resplandor Neón -->
+          <div class="age-gate-badge-wrapper">
+            <div class="age-gate-badge-18">
+              <span class="age-badge-glow"></span>
+              <span class="age-badge-text">18+</span>
+            </div>
+          </div>
+
+          <!-- Título Oficial -->
+          <h2 id="ageGateTitle" class="age-gate-title">¿ERES MAYOR DE EDAD?</h2>
+
+          <!-- Texto Introductorio -->
+          <p class="age-gate-intro">
+            Antes de entrar a Capital Vape, confirma que tienes la edad legal requerida para acceder a esta tienda.
+          </p>
+
+          <!-- Aviso Legal Oficial Visible (Colombia) -->
+          <div class="age-gate-legal-box">
+            <div class="age-gate-legal-header">
+              <svg class="age-legal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              <span class="age-legal-badge">Aviso Legal Colombia</span>
+            </div>
+            <p class="age-gate-legal-text">
+              En Colombia, la venta y exhibición de productos para adultos, como licores, cigarrillos, vapeadores o artículos íntimos, requiere advertencias visibles sobre la restricción de edad (+18), conforme a la Ley 124 de 1994, la Ley 1335 de 2009 y el Código de Infancia y Adolescencia.
+            </p>
+            <p class="age-gate-legal-note">
+              El acceso está restringido a personas mayores de edad. Los productos están sujetos a las restricciones legales aplicables.
+            </p>
+          </div>
+
+          <!-- Botones de Decisión -->
+          <div class="age-gate-actions">
+            <!-- BOTÓN 1: SÍ, SOY MAYOR DE EDAD -->
+            <button type="button" id="btnAgeConfirm" class="age-btn age-btn-confirm">
+              <svg class="age-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span>SÍ, SOY MAYOR DE EDAD</span>
+            </button>
+
+            <!-- BOTÓN 2: NO SOY MAYOR DE EDAD -->
+            <button type="button" id="btnAgeReject" class="age-btn age-btn-reject">
+              <span>NO SOY MAYOR DE EDAD</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VISTA ALTERNATIVA: ACCESO RESTRINGIDO (CUANDO SE PULSA "NO") -->
+      <div id="ageGateDeniedView" class="age-gate-card age-gate-card-denied" style="display: none;">
+        <div class="age-gate-card-inner">
+          <div class="age-gate-denied-icon-box">
+            <div class="age-gate-denied-pulse"></div>
+            <svg class="age-gate-denied-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+            </svg>
+          </div>
+
+          <h2 class="age-gate-denied-title">Acceso restringido</h2>
+          <p class="age-gate-denied-subtitle">
+            Debes ser mayor de edad para ingresar a Capital Vape.
+          </p>
+
+          <p class="age-gate-denied-desc">
+            En cumplimiento de la legislación colombiana y la protección a menores de edad, el acceso a nuestro catálogo, productos y precios está reservado exclusivamente a mayores de 18 años.
+          </p>
+
+          <div class="age-gate-denied-actions">
+            <a href="https://www.google.com" class="age-btn age-btn-exit" id="btnAgeExitSite" rel="noopener noreferrer">
+              <svg class="age-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>Salir del sitio</span>
+            </a>
+            <button type="button" id="btnAgeRetry" class="age-btn age-btn-secondary">
+              <span>Volver a verificar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ==========================================================================
        CAPA VISUAL DECORATIVA HALLOWEEN (NO INTRUSIVA & 3D WEBGL)
@@ -1252,6 +1375,7 @@
   <script src="js/cart.js?v=20261001_4"></script>
   <script src="js/checkout.js?v=20261001_4"></script>
   <script src="js/catalog.js?v=20261001_4"></script>
+  <script src="js/age-verification.js?v=20261014_1"></script>
   <script src="js/halloween.js?v=20261001_4"></script>
   <script src="js/main.js?v=20261001_4"></script>
 </body>

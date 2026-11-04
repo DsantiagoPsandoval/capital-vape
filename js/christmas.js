@@ -922,7 +922,7 @@
 
   /* ==========================================================================
      3.3 & 3.4 ESCENARIO 3D DEL BANNER NAVIDEÑO:
-     Árbol de Navidad 3D + Estrella Brillante + Luces Animadas + Regalos 3D
+     Vape 3D 360° Interactivo (REIGN BAR PALETTE Dual) + Luces + Regalos 3D
      ========================================================================== */
   class ChristmasTreeStage3D {
     constructor(canvasEl) {
@@ -938,140 +938,484 @@
       this.renderer.setClearColor(0x000000, 0);
 
       this.scene = new THREE.Scene();
-      this.camera = new THREE.PerspectiveCamera(42, 1, 0.1, 500);
-      this.camera.position.set(0, 6.5, 36);
-      this.camera.lookAt(0, 4.2, 0);
+      this.camera = new THREE.PerspectiveCamera(40, 1, 0.1, 500);
+      this.camera.position.set(0, 6.8, 34);
+      this.camera.lookAt(0, 5.2, 0);
 
       this.treeRoot = new THREE.Group();
-      this.treeRoot.position.set(0, -5.8, 0);
+      this.treeRoot.position.set(0, -4.8, 0);
       this.scene.add(this.treeRoot);
 
-      this.starMesh = null;
+      this.vapeAssembly = null;
+      this.ledScreenMat = null;
+      this.glowRingMesh = null;
       this.garlandPoints = null;
-      this.garlandColors = null;
       this.gifts = [];
-      this.targetRotY = 0;
+      this.targetRotY = 0.45;
       this.isDragging = false;
       this.prevX = 0;
 
       this.setupLights();
-      this.buildTreeAndGifts();
+      this.buildVape360AndGifts();
       this.bindInteraction();
       this.resize();
     }
 
     setupLights() {
-      const ambient = new THREE.AmbientLight(0x3b1d5e, 1.5);
+      const ambient = new THREE.AmbientLight(0x4c2878, 1.75);
       this.scene.add(ambient);
 
-      const keyLight = new THREE.DirectionalLight(0xfffbeb, 1.85);
-      keyLight.position.set(18, 28, 22);
+      const keyLight = new THREE.DirectionalLight(0xfffbeb, 2.1);
+      keyLight.position.set(20, 30, 26);
       this.scene.add(keyLight);
 
-      const warmPoint = new THREE.PointLight(0xfacc15, 1.6, 55);
-      warmPoint.position.set(0, 16, 6);
+      const fillLight = new THREE.DirectionalLight(0xffbcde, 1.25);
+      fillLight.position.set(-22, 14, 18);
+      this.scene.add(fillLight);
+
+      const warmPoint = new THREE.PointLight(0xfacc15, 1.6, 60);
+      warmPoint.position.set(0, 16, 12);
       this.scene.add(warmPoint);
       this.warmPoint = warmPoint;
 
-      const rimLight = new THREE.PointLight(0xd81bb7, 1.25, 45);
-      rimLight.position.set(-14, 8, -10);
+      const rimLight = new THREE.PointLight(0xd81bb7, 1.5, 50);
+      rimLight.position.set(-14, 10, -14);
       this.scene.add(rimLight);
     }
 
-    buildTreeAndGifts() {
-      // 1. Base de nieve acumulada 3D
-      const snowMoundGeom = new THREE.CylinderGeometry(8.8, 10.2, 1.6, 24);
-      const snowMat = new THREE.MeshStandardMaterial({
-        color: 0xf8fafc,
-        roughness: 0.75,
-        metalness: 0.08
-      });
-      const snowMound = new THREE.Mesh(snowMoundGeom, snowMat);
-      snowMound.position.y = 0.6;
-      this.treeRoot.add(snowMound);
+    createRoundedHalfShape(width, depth, radius, isLeft) {
+      const shape = new THREE.Shape();
+      const r = Math.min(radius, width * 0.45, depth * 0.45);
+      const halfD = depth / 2;
 
-      // 2. Tronco del árbol
-      const trunkGeom = new THREE.CylinderGeometry(1.3, 1.7, 4.2, 12);
-      const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5c3a21, roughness: 0.85 });
-      const trunk = new THREE.Mesh(trunkGeom, trunkMat);
-      trunk.position.y = 2.4;
-      this.treeRoot.add(trunk);
+      if (isLeft) {
+        // Va de x = -width a x = 0 (unión magnética en x = 0)
+        shape.moveTo(0, -halfD);
+        shape.lineTo(-width + r, -halfD);
+        shape.quadraticCurveTo(-width, -halfD, -width, -halfD + r);
+        shape.lineTo(-width, halfD - r);
+        shape.quadraticCurveTo(-width, halfD, -width + r, halfD);
+        shape.lineTo(0, halfD);
+        shape.lineTo(0, -halfD);
+      } else {
+        // Va de x = 0 a x = +width (unión magnética en x = 0)
+        shape.moveTo(0, -halfD);
+        shape.lineTo(width - r, -halfD);
+        shape.quadraticCurveTo(width, -halfD, width, -halfD + r);
+        shape.lineTo(width, halfD - r);
+        shape.quadraticCurveTo(width, halfD, width - r, halfD);
+        shape.lineTo(0, halfD);
+        shape.lineTo(0, -halfD);
+      }
+      return shape;
+    }
 
-      // 3. Capas cónicas del pino 3D con bordes de nieve acumulada
-      const pineMat = new THREE.MeshStandardMaterial({
-        color: 0x059669,
-        roughness: 0.55,
-        metalness: 0.15,
-        flatShading: true
-      });
-      const snowCapMat = new THREE.MeshStandardMaterial({
-        color: 0xf1f5f9,
-        roughness: 0.65,
-        metalness: 0.1
-      });
+    createBodyBrandingTexture(isRightHalf) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 512;
+      canvas.height = 1024;
+      const ctx = canvas.getContext('2d');
 
-      const tiers = [
-        { radius: 7.4, height: 5.8, y: 5.5 },
-        { radius: 6.1, height: 5.2, y: 8.6 },
-        { radius: 4.8, height: 4.6, y: 11.4 },
-        { radius: 3.4, height: 4.0, y: 13.9 },
-        { radius: 2.0, height: 3.2, y: 16.0 }
-      ];
+      if (isRightHalf) {
+        // Fondo metálico rosa/dorado suave (Módulo Derecho)
+        const grad = ctx.createLinearGradient(0, 0, 512, 1024);
+        grad.addColorStop(0, '#f3b8d2');
+        grad.addColorStop(0.5, '#dfa0be');
+        grad.addColorStop(1, '#c87da1');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 512, 1024);
 
-      tiers.forEach((t) => {
-        const cone = new THREE.Mesh(new THREE.ConeGeometry(t.radius, t.height, 11), pineMat);
-        cone.position.y = t.y;
-        this.treeRoot.add(cone);
+        // Texto vertical "REIGN BAR"
+        ctx.save();
+        ctx.translate(220, 500);
+        ctx.rotate(Math.PI / 2);
+        ctx.font = '900 104px Inter, Arial, sans-serif';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('REIGN BAR', 0, 0);
+        ctx.restore();
 
-        // Detalle de nieve acumulada en la falda de cada nivel de ramas
-        const snowRing = new THREE.Mesh(
-          new THREE.TorusGeometry(t.radius * 0.92, 0.28, 7, 18),
-          snowCapMat
-        );
-        snowRing.rotation.x = Math.PI / 2;
-        snowRing.position.y = t.y - t.height * 0.46;
-        this.treeRoot.add(snowRing);
-      });
+        // Subtítulo vertical de sabor junto a la unión
+        ctx.save();
+        ctx.translate(70, 560);
+        ctx.rotate(Math.PI / 2);
+        ctx.font = '700 28px Inter, Arial, sans-serif';
+        ctx.fillStyle = 'rgba(255, 245, 252, 0.78)';
+        ctx.textAlign = 'center';
+        ctx.fillText('BLUE RAZZ ICE • 50K PUFFS', 0, 0);
+        ctx.restore();
+      } else {
+        // Fondo metálico violeta/azul profundo (Módulo Izquierdo)
+        const grad = ctx.createLinearGradient(0, 0, 512, 1024);
+        grad.addColorStop(0, '#7c3aed');
+        grad.addColorStop(0.5, '#5b21b6');
+        grad.addColorStop(1, '#3b0764');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 512, 1024);
 
-      // 4. Esferas navideñas 3D metálicas (Oro, Carmesí, Magenta, Azul Hielo)
-      const ornamentMats = [
-        new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.88, roughness: 0.18 }),
-        new THREE.MeshStandardMaterial({ color: 0xe11d48, metalness: 0.78, roughness: 0.22 }),
-        new THREE.MeshStandardMaterial({ color: 0xd81bb7, metalness: 0.82, roughness: 0.2 }),
-        new THREE.MeshStandardMaterial({ color: 0x38bdf8, metalness: 0.8, roughness: 0.22 })
-      ];
-      const baubleGeom = new THREE.SphereGeometry(0.56, 12, 12);
+        // Marco redondeado vertical "Palette"
+        ctx.save();
+        ctx.translate(285, 420);
+        ctx.rotate(Math.PI / 2);
+        ctx.strokeStyle = 'rgba(235, 225, 255, 0.78)';
+        ctx.lineWidth = 6;
+        const bw = 310, bh = 104, br = 24;
+        ctx.beginPath();
+        ctx.moveTo(-bw / 2 + br, -bh / 2);
+        ctx.arcTo(bw / 2, -bh / 2, bw / 2, bh / 2, br);
+        ctx.arcTo(bw / 2, bh / 2, -bw / 2, bh / 2, br);
+        ctx.arcTo(-bw / 2, bh / 2, -bw / 2, -bh / 2, br);
+        ctx.arcTo(-bw / 2, -bh / 2, bw / 2, -bh / 2, br);
+        ctx.closePath();
+        ctx.stroke();
 
-      const numOrnaments = 22;
-      for (let i = 0; i < numOrnaments; i++) {
-        const frac = i / numOrnaments;
-        const y = 3.6 + frac * 11.8;
-        const maxR = 6.9 * (1 - frac * 0.76);
-        const angle = i * 2.35;
+        ctx.font = '600 66px Inter, Arial, sans-serif';
+        ctx.fillStyle = 'rgba(240, 232, 255, 0.9)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('Palette', 0, 0);
+        ctx.restore();
 
-        const bauble = new THREE.Mesh(baubleGeom, ornamentMats[i % ornamentMats.length]);
-        bauble.position.set(Math.cos(angle) * maxR, y, Math.sin(angle) * maxR);
-        this.treeRoot.add(bauble);
+        // Texto vertical junto a la unión
+        ctx.save();
+        ctx.translate(430, 580);
+        ctx.rotate(Math.PI / 2);
+        ctx.font = '700 26px Inter, Arial, sans-serif';
+        ctx.fillStyle = 'rgba(225, 210, 255, 0.75)';
+        ctx.textAlign = 'center';
+        ctx.fillText('STRAWBERRY • DUAL MESH', 0, 0);
+        ctx.restore();
       }
 
-      // 5. Guirnalda espiral de luces navideñas animadas en 3D
-      const lightCount = 46;
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    createLedScreenTexture() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 256;
+      canvas.height = 640;
+      const ctx = canvas.getContext('2d');
+
+      // Fondo negro brillante de pantalla OLED
+      ctx.fillStyle = '#050508';
+      ctx.fillRect(0, 0, 256, 640);
+
+      // Borde sutil de cristal
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)';
+      ctx.lineWidth = 6;
+      ctx.strokeRect(8, 8, 240, 624);
+
+      // 1. Arco superior rojo/naranja + ícono de llama (Turbo/Boost)
+      ctx.save();
+      ctx.strokeStyle = '#ff5722';
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.arc(128, 125, 54, Math.PI * 0.18, Math.PI * 0.82);
+      ctx.stroke();
+
+      ctx.fillStyle = '#ff7043';
+      ctx.font = 'bold 44px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🔥', 128, 118);
+      ctx.restore();
+
+      // 2. Dígitos digitales "88%" en blanco brillante + punto verde
+      ctx.save();
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+      ctx.shadowBlur = 12;
+      ctx.font = '900 105px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('88', 114, 275);
+
+      // Punto verde de carga activa
+      ctx.fillStyle = '#10b981';
+      ctx.shadowColor = '#10b981';
+      ctx.beginPath();
+      ctx.arc(204, 248, 11, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#a7f3d0';
+      ctx.font = 'bold 28px Arial';
+      ctx.fillText('%', 204, 286);
+      ctx.restore();
+
+      // 3. Indicador de nivel de líquido (barras cian + gota)
+      ctx.save();
+      const barColors = ['#38bdf8', '#38bdf8', '#0284c7'];
+      for (let i = 0; i < 3; i++) {
+        ctx.fillStyle = barColors[i];
+        ctx.shadowColor = '#38bdf8';
+        ctx.shadowBlur = 8;
+        ctx.fillRect(46 + i * 40, 382, 28, 14);
+      }
+      ctx.font = 'bold 34px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('💧', 194, 390);
+      ctx.restore();
+
+      const tex = new THREE.CanvasTexture(canvas);
+      tex.needsUpdate = true;
+      return tex;
+    }
+
+    buildVape360AndGifts() {
+      // 1. Base de plataforma 3D con borde de nieve y anillo de neón dorado
+      const snowMoundGeom = new THREE.CylinderGeometry(8.2, 9.6, 1.3, 32);
+      const snowMat = new THREE.MeshStandardMaterial({
+        color: 0x1a0b2e,
+        roughness: 0.35,
+        metalness: 0.6
+      });
+      const snowMound = new THREE.Mesh(snowMoundGeom, snowMat);
+      snowMound.position.y = 0.5;
+      this.treeRoot.add(snowMound);
+
+      const neonRing = new THREE.Mesh(
+        new THREE.TorusGeometry(8.3, 0.22, 12, 48),
+        new THREE.MeshStandardMaterial({
+          color: 0xfacc15,
+          emissive: 0xfacc15,
+          emissiveIntensity: 0.85,
+          roughness: 0.2,
+          metalness: 0.9
+        })
+      );
+      neonRing.rotation.x = Math.PI / 2;
+      neonRing.position.y = 1.15;
+      this.treeRoot.add(neonRing);
+      this.glowRingMesh = neonRing;
+
+      // 2. GRUPO CENTRAL DEL VAPE 360° (REIGN BAR PALETTE 3D)
+      this.vapeAssembly = new THREE.Group();
+      this.vapeAssembly.position.set(0, 10.2, 0);
+      // Ligera inclinación dinámica tipo estudio como en la foto oficial
+      this.vapeAssembly.rotation.z = 0.14;
+      this.vapeAssembly.rotation.x = 0.06;
+      this.treeRoot.add(this.vapeAssembly);
+
+      const bodyH = 11.4;
+      const halfW = 3.25;
+      const bodyD = 3.5;
+      const extrudeSettings = {
+        depth: bodyH,
+        bevelEnabled: true,
+        bevelSegments: 5,
+        steps: 1,
+        bevelSize: 0.38,
+        bevelThickness: 0.42
+      };
+
+      // Módulo Izquierdo (Violeta Metálico - Palette)
+      const leftShape = this.createRoundedHalfShape(halfW, bodyD, 1.25, true);
+      const leftGeom = new THREE.ExtrudeGeometry(leftShape, extrudeSettings);
+      leftGeom.rotateX(-Math.PI / 2);
+      leftGeom.translate(0, -bodyH / 2, 0);
+
+      const leftMat = new THREE.MeshStandardMaterial({
+        color: 0x7c3aed,
+        roughness: 0.26,
+        metalness: 0.62
+      });
+      const leftModuleMesh = new THREE.Mesh(leftGeom, leftMat);
+      this.vapeAssembly.add(leftModuleMesh);
+
+      // Módulo Derecho (Rosa Oro Metálico - REIGN BAR)
+      const rightShape = this.createRoundedHalfShape(halfW, bodyD, 1.25, false);
+      const rightGeom = new THREE.ExtrudeGeometry(rightShape, extrudeSettings);
+      rightGeom.rotateX(-Math.PI / 2);
+      rightGeom.translate(0, -bodyH / 2, 0);
+
+      const rightMat = new THREE.MeshStandardMaterial({
+        color: 0xeba4c2,
+        roughness: 0.22,
+        metalness: 0.68
+      });
+      const rightModuleMesh = new THREE.Mesh(rightGeom, rightMat);
+      this.vapeAssembly.add(rightModuleMesh);
+
+      // Placas frontales y traseras con tipografía nítida "REIGN BAR" y "Palette"
+      const leftBrandTex = this.createBodyBrandingTexture(false);
+      const rightBrandTex = this.createBodyBrandingTexture(true);
+
+      const facePlaneGeom = new THREE.PlaneGeometry(halfW - 0.35, bodyH - 0.4);
+      const leftFaceMat = new THREE.MeshStandardMaterial({
+        map: leftBrandTex,
+        roughness: 0.25,
+        metalness: 0.55
+      });
+      const rightFaceMat = new THREE.MeshStandardMaterial({
+        map: rightBrandTex,
+        roughness: 0.22,
+        metalness: 0.6
+      });
+
+      const frontZ = bodyD / 2 + 0.39;
+      const backZ = -(bodyD / 2 + 0.39);
+
+      // Cara frontal (ambos módulos)
+      const frontLeftLabel = new THREE.Mesh(facePlaneGeom, leftFaceMat);
+      frontLeftLabel.position.set(-halfW * 0.48, 0, frontZ);
+      this.vapeAssembly.add(frontLeftLabel);
+
+      const frontRightLabel = new THREE.Mesh(facePlaneGeom, rightFaceMat);
+      frontRightLabel.position.set(halfW * 0.48, 0, frontZ);
+      this.vapeAssembly.add(frontRightLabel);
+
+      // Cara trasera (para que al girar 360° se vea impecable por ambos lados)
+      const backLeftLabel = new THREE.Mesh(facePlaneGeom, leftFaceMat);
+      backLeftLabel.position.set(halfW * 0.48, 0, backZ);
+      backLeftLabel.rotation.y = Math.PI;
+      this.vapeAssembly.add(backLeftLabel);
+
+      const backRightLabel = new THREE.Mesh(facePlaneGeom, rightFaceMat);
+      backRightLabel.position.set(-halfW * 0.48, 0, backZ);
+      backRightLabel.rotation.y = Math.PI;
+      this.vapeAssembly.add(backRightLabel);
+
+      // Línea central de unión magnética entre ambos sabores
+      const seamMat = new THREE.MeshStandardMaterial({
+        color: 0xfef08a,
+        emissive: 0xd81bb7,
+        emissiveIntensity: 0.35,
+        metalness: 0.9,
+        roughness: 0.15
+      });
+      const seamLine = new THREE.Mesh(
+        new THREE.BoxGeometry(0.08, bodyH + 0.72, bodyD + 0.78),
+        seamMat
+      );
+      this.vapeAssembly.add(seamLine);
+
+      // 3. PANTALLA INTELIGENTE LED CURVA EN EL COSTADO DERECHO ("88%" + Botón Metálico)
+      const screenGroup = new THREE.Group();
+      screenGroup.position.set(halfW + 0.39, -0.3, 0);
+      screenGroup.rotation.y = Math.PI / 2;
+      this.vapeAssembly.add(screenGroup);
+
+      // Marco de cápsula negra brillante
+      const bezelMesh = new THREE.Mesh(
+        new THREE.BoxGeometry(2.15, 6.2, 0.14),
+        new THREE.MeshStandardMaterial({ color: 0x050508, roughness: 0.1, metalness: 0.85 })
+      );
+      screenGroup.add(bezelMesh);
+
+      const ledTex = this.createLedScreenTexture();
+      this.ledScreenMat = new THREE.MeshStandardMaterial({
+        map: ledTex,
+        emissiveMap: ledTex,
+        emissive: 0xffffff,
+        emissiveIntensity: 0.95,
+        roughness: 0.12,
+        metalness: 0.2
+      });
+      const screenPlane = new THREE.Mesh(new THREE.PlaneGeometry(1.92, 4.6), this.ledScreenMat);
+      screenPlane.position.set(0, 0.55, 0.08);
+      screenGroup.add(screenPlane);
+
+      // Botón circular metálico inferior en la pantalla LED
+      const powerBtn = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.68, 0.72, 0.22, 24),
+        new THREE.MeshStandardMaterial({
+          color: 0x1e293b,
+          metalness: 0.92,
+          roughness: 0.18
+        })
+      );
+      powerBtn.rotation.x = Math.PI / 2;
+      powerBtn.position.set(0, -2.05, 0.08);
+      screenGroup.add(powerBtn);
+
+      const powerBtnRing = new THREE.Mesh(
+        new THREE.TorusGeometry(0.68, 0.06, 10, 24),
+        new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.95, roughness: 0.15 })
+      );
+      powerBtnRing.position.set(0, -2.05, 0.18);
+      screenGroup.add(powerBtnRing);
+
+      // 4. BOQUILLA SUPERIOR TRANSLÚCIDA BITONO (Cristal Violeta + Cristal Rosa)
+      const tipGroup = new THREE.Group();
+      tipGroup.position.set(0, bodyH / 2 + 0.38, 0);
+      this.vapeAssembly.add(tipGroup);
+
+      // Anillo metálico en la base de la boquilla
+      const tipCollar = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.65, 1.85, 0.42, 24),
+        new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.9, roughness: 0.15 })
+      );
+      tipCollar.scale.set(1.15, 1, 0.78);
+      tipCollar.position.y = 0.18;
+      tipGroup.add(tipCollar);
+
+      // Mitad izquierda de la boquilla (Cristal Púrpura)
+      const leftTipMat = new THREE.MeshStandardMaterial({
+        color: 0x9333ea,
+        emissive: 0x4c1d95,
+        emissiveIntensity: 0.3,
+        roughness: 0.08,
+        metalness: 0.2,
+        transparent: true,
+        opacity: 0.84
+      });
+      const leftTip = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.68, 0.98, 2.35, 18),
+        leftTipMat
+      );
+      leftTip.scale.set(1.0, 1.0, 0.82);
+      leftTip.position.set(-0.74, 1.25, 0);
+      tipGroup.add(leftTip);
+
+      // Mitad derecha de la boquilla (Cristal Rosa/Magenta)
+      const rightTipMat = new THREE.MeshStandardMaterial({
+        color: 0xec4899,
+        emissive: 0x831843,
+        emissiveIntensity: 0.3,
+        roughness: 0.08,
+        metalness: 0.2,
+        transparent: true,
+        opacity: 0.84
+      });
+      const rightTip = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.68, 0.98, 2.35, 18),
+        rightTipMat
+      );
+      rightTip.scale.set(1.0, 1.0, 0.82);
+      rightTip.position.set(0.74, 1.25, 0);
+      tipGroup.add(rightTip);
+
+      // 5. DETALLES INFERIORES (Puerto USB-C y Selectores de Flujo de Aire)
+      const bottomY = -(bodyH / 2 + 0.42);
+      const usbPort = new THREE.Mesh(
+        new THREE.BoxGeometry(1.1, 0.1, 0.48),
+        new THREE.MeshStandardMaterial({ color: 0x09090b, metalness: 0.9, roughness: 0.2 })
+      );
+      usbPort.position.set(1.5, bottomY, 0);
+      this.vapeAssembly.add(usbPort);
+
+      // 6. ESPIRAL ORBITAL DE PARTÍCULAS Y VAPOR NEÓN ALREDEDOR DEL VAPE 360°
+      const lightCount = 42;
       const lPos = new Float32Array(lightCount * 3);
       const lCol = new Float32Array(lightCount * 3);
       this.lightBaseColors = [];
 
       const lightPalette = [
         new THREE.Color(0xfef08a),
-        new THREE.Color(0xf43f5e),
-        new THREE.Color(0x34d399),
-        new THREE.Color(0xe879f9)
+        new THREE.Color(0xd81bb7),
+        new THREE.Color(0x38bdf8),
+        new THREE.Color(0xf43f5e)
       ];
 
       for (let i = 0; i < lightCount; i++) {
         const t = i / (lightCount - 1);
-        const y = 3.2 + t * 13.4;
-        const r = (7.2 * (1 - t * 0.82)) + 0.25;
-        const angle = t * Math.PI * 9.5;
+        const y = 2.6 + t * 14.5;
+        const r = 5.8 + Math.sin(t * Math.PI * 2) * 1.1;
+        const angle = t * Math.PI * 7.0;
 
         lPos[i * 3 + 0] = Math.cos(angle) * r;
         lPos[i * 3 + 1] = y;
@@ -1089,11 +1433,11 @@
       lGeom.setAttribute('color', new THREE.BufferAttribute(lCol, 3));
 
       const lMat = new THREE.PointsMaterial({
-        size: 3.2,
+        size: 3.0,
         vertexColors: true,
         map: getSparkleTexture(),
         transparent: true,
-        opacity: 0.95,
+        opacity: 0.92,
         depthWrite: false,
         blending: THREE.AdditiveBlending
       });
@@ -1101,40 +1445,17 @@
       this.garlandPoints = new THREE.Points(lGeom, lMat);
       this.treeRoot.add(this.garlandPoints);
 
-      // 6. Estrella brillante 3D en la cúspide
-      this.starGroup = new THREE.Group();
-      this.starGroup.position.y = 18.2;
-      this.treeRoot.add(this.starGroup);
-
-      const starMat = new THREE.MeshStandardMaterial({
-        color: 0xfef08a,
-        emissive: 0xfacc15,
-        emissiveIntensity: 0.9,
-        metalness: 0.9,
-        roughness: 0.15
-      });
-
-      const oct1 = new THREE.Mesh(new THREE.OctahedronGeometry(1.55, 0), starMat);
-      oct1.scale.set(1, 1.3, 0.45);
-      this.starGroup.add(oct1);
-
-      const oct2 = new THREE.Mesh(new THREE.OctahedronGeometry(1.45, 0), starMat);
-      oct2.scale.set(1.3, 1, 0.45);
-      oct2.rotation.z = Math.PI / 4;
-      this.starGroup.add(oct2);
-
-      // 7. Regalos navideños 3D con cintas alrededor del árbol
+      // 7. Regalos navideños 3D en la base del Vape 360°
       const giftConfigs = [
-        { x: -4.6, z: 4.5, w: 2.7, h: 2.4, d: 2.7, box: 0xe11d48, rib: 0xfacc15, rot: 0.35 },
-        { x: 4.5, z: 4.2, w: 2.4, h: 2.8, d: 2.4, box: 0x7e22ce, rib: 0xfacc15, rot: -0.4 },
-        { x: 0.4, z: 6.1, w: 3.0, h: 2.0, d: 2.3, box: 0x059669, rib: 0xf8fafc, rot: 0.12 },
-        { x: -5.8, z: -1.8, w: 2.5, h: 2.5, d: 2.5, box: 0xfacc15, rib: 0xe11d48, rot: 0.65 },
-        { x: 5.6, z: -2.2, w: 2.6, h: 2.2, d: 2.6, box: 0xd81bb7, rib: 0xfffbeb, rot: -0.55 }
+        { x: -4.8, z: 3.8, w: 2.3, h: 2.0, d: 2.3, box: 0xe11d48, rib: 0xfacc15, rot: 0.35 },
+        { x: 4.8, z: 3.6, w: 2.1, h: 2.3, d: 2.1, box: 0x7e22ce, rib: 0xfacc15, rot: -0.4 },
+        { x: -5.2, z: -2.2, w: 2.2, h: 2.1, d: 2.2, box: 0xfacc15, rib: 0xe11d48, rot: 0.65 },
+        { x: 5.2, z: -2.4, w: 2.2, h: 1.9, d: 2.2, box: 0xd81bb7, rib: 0xfffbeb, rot: -0.55 }
       ];
 
       giftConfigs.forEach((g) => {
         const gGroup = new THREE.Group();
-        gGroup.position.set(g.x, 1.4 + g.h * 0.5, g.z);
+        gGroup.position.set(g.x, 1.15 + g.h * 0.5, g.z);
         gGroup.rotation.y = g.rot;
 
         const boxMat = new THREE.MeshStandardMaterial({
@@ -1151,23 +1472,17 @@
         const boxMesh = new THREE.Mesh(new THREE.BoxGeometry(g.w, g.h, g.d), boxMat);
         gGroup.add(boxMesh);
 
-        // Cintas cruzadas 3D
         const rib1 = new THREE.Mesh(
-          new THREE.BoxGeometry(g.w + 0.12, g.h + 0.12, g.d * 0.18),
+          new THREE.BoxGeometry(g.w + 0.1, g.h + 0.1, g.d * 0.18),
           ribMat
         );
         gGroup.add(rib1);
 
         const rib2 = new THREE.Mesh(
-          new THREE.BoxGeometry(g.w * 0.18, g.h + 0.12, g.d + 0.12),
+          new THREE.BoxGeometry(g.w * 0.18, g.h + 0.1, g.d + 0.1),
           ribMat
         );
         gGroup.add(rib2);
-
-        // Moño superior
-        const bow = new THREE.Mesh(new THREE.TorusKnotGeometry(0.38, 0.11, 24, 6), ribMat);
-        bow.position.y = g.h * 0.5 + 0.25;
-        gGroup.add(bow);
 
         this.treeRoot.add(gGroup);
         this.gifts.push({ group: gGroup, baseY: gGroup.position.y, phase: Math.random() * 6 });
@@ -1186,7 +1501,7 @@
           if (!this.isDragging) return;
           const dx = e.clientX - this.prevX;
           this.prevX = e.clientX;
-          this.targetRotY += dx * 0.012;
+          this.targetRotY += dx * 0.014;
         },
         { passive: true }
       );
@@ -1211,35 +1526,34 @@
       this.camera.aspect = w / h;
       this.camera.updateProjectionMatrix();
 
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.35);
       this.renderer.setPixelRatio(dpr);
       this.renderer.setSize(w, h, false);
     }
 
     update(dt, time) {
       if (!this.renderer) return;
-      const rotSpeed = isReducedMotion ? 0.15 : 0.45;
+      const rotSpeed = isReducedMotion ? 0.25 : 0.72;
       if (!this.isDragging) {
         this.targetRotY += dt * rotSpeed;
       }
-      this.treeRoot.rotation.y += (this.targetRotY - this.treeRoot.rotation.y) * 0.1;
+      this.treeRoot.rotation.y += (this.targetRotY - this.treeRoot.rotation.y) * 0.12;
 
-      if (this.starGroup) {
-        this.starGroup.rotation.y = time * 1.4;
-        const starScale = 1.0 + Math.sin(time * 3.5) * 0.08;
-        this.starGroup.scale.setScalar(starScale);
+      // Levitación suave 360° del dispositivo Vape
+      if (this.vapeAssembly) {
+        this.vapeAssembly.position.y = 10.2 + Math.sin(time * 2.2) * 0.45;
       }
 
       if (this.warmPoint) {
-        this.warmPoint.intensity = 1.45 + Math.sin(time * 4.0) * 0.3;
+        this.warmPoint.intensity = 1.45 + Math.sin(time * 3.8) * 0.3;
       }
 
-      // Parpadeo vivo de la guirnalda de luces 3D
+      // Destello vivo de las partículas orbitales
       if (this.garlandPoints) {
         const colArr = this.garlandPoints.geometry.attributes.color.array;
         for (let i = 0; i < this.lightBaseColors.length; i++) {
           const base = this.lightBaseColors[i];
-          const pulse = 0.55 + 0.45 * Math.sin(time * 4.2 + i * 0.7);
+          const pulse = 0.55 + 0.45 * Math.sin(time * 4.0 + i * 0.7);
           colArr[i * 3 + 0] = base.r * pulse;
           colArr[i * 3 + 1] = base.g * pulse;
           colArr[i * 3 + 2] = base.b * pulse;

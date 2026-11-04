@@ -5,14 +5,133 @@
  */
 const CheckoutController = {
   init() {
+    this.initQuickSelector();
     this.bindForm();
   },
 
-  openModal() {
-    if (Cart.items.length === 0) {
-      Toast.show('Tu carrito está vacío.', 'error');
-      return;
+  initQuickSelector() {
+    const prodSelect = document.getElementById('checkoutQuickProduct');
+    if (!prodSelect || typeof PRODUCTS_DATA === 'undefined') return;
+
+    const availableProducts = PRODUCTS_DATA.filter(p => !p.agotado && !p.coming_soon);
+    prodSelect.innerHTML = availableProducts.map(p => {
+      const promoTxt = p.precio_promo_2 ? ` • Promo 2x ${Cart.formatCOP(p.precio_promo_2)}` : '';
+      return `<option value="${p.id}">${p.nombre} — ${Cart.formatCOP(p.precio)}${promoTxt}</option>`;
+    }).join('');
+
+    prodSelect.addEventListener('change', () => {
+      this.populateQuickFlavors(prodSelect.value);
+      if (Cart.items.length === 0) this.renderOrderSummary();
+    });
+
+    const f1Select = document.getElementById('checkoutQuickFlavor1');
+    const f2Select = document.getElementById('checkoutQuickFlavor2');
+    const qtySelect = document.getElementById('checkoutQuickQty');
+    [f1Select, f2Select, qtySelect].forEach(sel => {
+      if (sel) {
+        sel.addEventListener('change', () => {
+          if (Cart.items.length === 0) this.renderOrderSummary();
+        });
+      }
+    });
+
+    if (availableProducts.length > 0) {
+      this.populateQuickFlavors(availableProducts[0].id);
     }
+  },
+
+  populateQuickFlavors(productId) {
+    const prod = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === productId) : null;
+    const f1Select = document.getElementById('checkoutQuickFlavor1');
+    const f2Select = document.getElementById('checkoutQuickFlavor2');
+    const f2Group = document.getElementById('checkoutQuickFlavor2Group');
+    const f1Label = document.getElementById('checkoutQuickFlavor1Label');
+    if (!prod || !f1Select) return;
+
+    const isReign = prod.id === 'reign-bar-palette';
+    let variants = [];
+    if (Array.isArray(prod.sabores) && prod.sabores.length > 0) {
+      variants = prod.sabores.filter(s => s && s.visible !== false && !s.agotado).map(s => s.nombre);
+    } else if (Array.isArray(prod.colores) && prod.colores.length > 0) {
+      variants = prod.colores.filter(c => c && !c.agotado).map(c => c.nombre);
+    }
+
+    if (variants.length === 0) {
+      variants = ['Estándar / Original'];
+    }
+
+    f1Select.innerHTML = variants.map(v => `<option value="${v}">${v}</option>`).join('');
+
+    if (isReign && f2Select && f2Group) {
+      if (f1Label) f1Label.textContent = '1° Sabor (Módulo Izq.) *';
+      f2Group.style.display = 'flex';
+      f2Select.innerHTML = [
+        `<option value="__SINGLE__">Ninguno (Un solo sabor)</option>`,
+        ...variants.map(v => `<option value="${v}">${v}</option>`)
+      ].join('');
+      if (typeof ReignPaletteConfigurator !== 'undefined') {
+        if (variants.includes(ReignPaletteConfigurator.flavor1)) f1Select.value = ReignPaletteConfigurator.flavor1;
+        if (ReignPaletteConfigurator.mode === 'single') {
+          f2Select.value = '__SINGLE__';
+        } else if (variants.includes(ReignPaletteConfigurator.flavor2)) {
+          f2Select.value = ReignPaletteConfigurator.flavor2;
+        }
+      } else if (variants.length > 1) {
+        f2Select.value = variants[1];
+      }
+    } else {
+      if (f1Label) f1Label.textContent = (prod.tipo_variante === 'color' ? 'Color *' : 'Sabor *');
+      if (f2Group) f2Group.style.display = 'none';
+      const preselected = (typeof CatalogController !== 'undefined' && CatalogController.selectedVariants[prod.id]);
+      if (preselected && variants.includes(preselected)) {
+        f1Select.value = preselected;
+      }
+    }
+  },
+
+  addQuickSelectedVape(silent = false) {
+    const prodSelect = document.getElementById('checkoutQuickProduct');
+    const f1Select = document.getElementById('checkoutQuickFlavor1');
+    const f2Select = document.getElementById('checkoutQuickFlavor2');
+    const qtySelect = document.getElementById('checkoutQuickQty');
+    if (!prodSelect) return false;
+
+    const prod = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === prodSelect.value) : null;
+    if (!prod) return false;
+
+    const qty = Math.max(1, Number(qtySelect ? qtySelect.value : 1) || 1);
+    const f1 = f1Select ? f1Select.value : '';
+    const f2 = f2Select ? f2Select.value : '__SINGLE__';
+
+    if (prod.id === 'reign-bar-palette') {
+      if (f2 && f2 !== '__SINGLE__' && f2 !== f1) {
+        const f1Obj = prod.sabores ? prod.sabores.find(s => s.nombre === f1) : null;
+        const f2Obj = prod.sabores ? prod.sabores.find(s => s.nombre === f2) : null;
+        Cart.addItem(prod, `${f1} + ${f2}`, qty, {
+          isDualFlavor: true,
+          flavor1: f1,
+          flavor2: f2,
+          flavor1Img: f1Obj ? f1Obj.img : prod.imagen,
+          flavor2Img: f2Obj ? f2Obj.img : prod.imagen,
+          compositeImg: (f1Obj && f1Obj.img) || prod.imagen
+        });
+      } else {
+        const fSingleObj = prod.sabores ? prod.sabores.find(s => s.nombre === f1) : null;
+        Cart.addItem(prod, f1, qty, {
+          isDualFlavor: false,
+          singleImg: fSingleObj ? fSingleObj.img : prod.imagen
+        });
+      }
+    } else {
+      Cart.addItem(prod, f1, qty);
+    }
+
+    this.configureWhatsAppRouting();
+    this.renderOrderSummary();
+    return true;
+  },
+
+  openModal() {
     Cart.closeDrawer();
     const modal = document.getElementById('checkoutModal');
     if (modal) {
@@ -21,6 +140,10 @@ const CheckoutController = {
       const destSelect = document.getElementById('checkoutDestino');
       if (destSelect && Cart.destination) {
         destSelect.value = Cart.destination;
+      }
+      const prodSelect = document.getElementById('checkoutQuickProduct');
+      if (prodSelect && prodSelect.options.length === 0) {
+        this.initQuickSelector();
       }
       this.configureWhatsAppRouting();
       this.renderOrderSummary();
@@ -76,6 +199,41 @@ const CheckoutController = {
     const total = Cart.getTotal();
 
     let itemsHtml = '';
+
+    if (detalItems.length === 0 && wsItems.length === 0) {
+      const prodSelect = document.getElementById('checkoutQuickProduct');
+      const f1Select = document.getElementById('checkoutQuickFlavor1');
+      const f2Select = document.getElementById('checkoutQuickFlavor2');
+      const qtySelect = document.getElementById('checkoutQuickQty');
+      const prod = (prodSelect && typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === prodSelect.value) : null;
+      const qty = Math.max(1, Number(qtySelect ? qtySelect.value : 1) || 1);
+      const f1 = f1Select ? f1Select.value : '';
+      const f2 = (f2Select && prod && prod.id === 'reign-bar-palette' && f2Select.value !== '__SINGLE__' && f2Select.value !== f1) ? f2Select.value : '';
+      const flavorText = f2 ? `${f1} + ${f2}` : f1;
+      const lineTotal = prod ? (qty === 2 && prod.precio_promo_2 ? prod.precio_promo_2 : prod.precio * qty) : 0;
+
+      if (prod) {
+        itemsHtml = `
+          <div class="checkout-sec-divider">⚡ VAPE SELECCIONADO EN EL FORMULARIO</div>
+          <div class="checkout-item-card">
+            <div class="checkout-item-thumb-box">
+              <img src="${prod.imagen || 'assets/logo/logo.png'}" alt="${prod.nombre}" class="checkout-item-thumb-img" loading="lazy">
+            </div>
+            <div class="checkout-item-info">
+              <div class="checkout-item-top">
+                <strong class="checkout-item-name">${prod.nombre}</strong>
+                <span class="checkout-item-qty-pill">x${qty}</span>
+              </div>
+              <div class="checkout-item-flavor-text">Sabor: <strong>${flavorText}</strong></div>
+              <div class="checkout-item-price-row">
+                <span class="checkout-item-unit">Se incluirá al enviar</span>
+                <strong class="checkout-item-total">${Cart.formatCOP(lineTotal)}</strong>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
 
     if (detalItems.length > 0) {
       itemsHtml += `
@@ -234,6 +392,11 @@ const CheckoutController = {
     if (!nombre || !telefono || !direccion || !ciudad) {
       Toast.show('Por favor completa todos los campos requeridos (*)', 'error');
       return;
+    }
+
+    // Si el carrito estaba vacío y el cliente eligió su vape directamente en "Agendar Pedido", agregarlo automáticamente
+    if (Cart.items.length === 0) {
+      this.addQuickSelectedVape(true);
     }
 
     const detalItems = Cart.getDetalItems();

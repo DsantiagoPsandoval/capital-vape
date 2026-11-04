@@ -97,6 +97,42 @@
   gap: 14px;
 }
 
+.checkout-quick-selector-box {
+  background: linear-gradient(145deg, rgba(22, 10, 36, 0.96), rgba(14, 6, 24, 0.98));
+  border: 1.5px solid rgba(229, 183, 0, 0.48);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+}
+
+.checkout-quick-selector-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #FFE066;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.checkout-quick-add-row {
+  display: grid;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 10px;
+  align-items: end;
+}
+
+.checkout-quick-add-btn {
+  padding: 12px 14px !important;
+  font-size: 0.9rem !important;
+  font-weight: 800 !important;
+  border-radius: 10px !important;
+  white-space: nowrap;
+}
+
 .form-group {
   display: flex;
   flex-direction: column;

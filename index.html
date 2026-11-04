@@ -9,16 +9,16 @@
   <link rel="icon" type="image/png" href="assets/logo/favicon.png">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/main.css?v=20261103_10">
-  <link rel="stylesheet" href="css/layout.css?v=20261103_10">
-  <link rel="stylesheet" href="css/catalog.css?v=20261103_10">
-  <link rel="stylesheet" href="css/cart.css?v=20261103_10">
-  <link rel="stylesheet" href="css/checkout.css?v=20261103_10">
-  <link rel="stylesheet" href="css/toast.css?v=20261103_10">
-  <link rel="stylesheet" href="css/wholesale.css?v=20261103_10">
-  <link rel="stylesheet" href="css/admin.css?v=20261103_10">
-  <link rel="stylesheet" href="css/responsive.css?v=20261103_10">
-  <link rel="stylesheet" href="css/christmas.css?v=20261103_10">
+  <link rel="stylesheet" href="css/main.css?v=20261103_11">
+  <link rel="stylesheet" href="css/layout.css?v=20261103_11">
+  <link rel="stylesheet" href="css/catalog.css?v=20261103_11">
+  <link rel="stylesheet" href="css/cart.css?v=20261103_11">
+  <link rel="stylesheet" href="css/checkout.css?v=20261103_11">
+  <link rel="stylesheet" href="css/toast.css?v=20261103_11">
+  <link rel="stylesheet" href="css/wholesale.css?v=20261103_11">
+  <link rel="stylesheet" href="css/admin.css?v=20261103_11">
+  <link rel="stylesheet" href="css/responsive.css?v=20261103_11">
+  <link rel="stylesheet" href="css/christmas.css?v=20261103_11">
   <link rel="stylesheet" href="css/age-verification.css?v=20261014_1">
 
   <!-- Anti-FOUC para Verificación de Mayoría de Edad (+18) -->
@@ -1022,6 +1022,42 @@
 
       <div class="checkout-grid">
         <form id="checkoutForm" class="checkout-form">
+          <!-- SELECTOR DIRECTO DE VAPE, SABOR Y CANTIDAD -->
+          <div class="checkout-quick-selector-box" id="checkoutQuickSelectorBox">
+            <div class="checkout-quick-selector-head">
+              <span>?? ?Cu?l Vape deseas pedir?</span>
+            </div>
+            <div class="form-group">
+              <label for="checkoutQuickProduct">Referencia de Vape *</label>
+              <select id="checkoutQuickProduct" class="form-select"></select>
+            </div>
+            <div class="form-row-2" id="checkoutQuickFlavorsRow">
+              <div class="form-group">
+                <label for="checkoutQuickFlavor1" id="checkoutQuickFlavor1Label">Sabor / Variante *</label>
+                <select id="checkoutQuickFlavor1" class="form-select"></select>
+              </div>
+              <div class="form-group" id="checkoutQuickFlavor2Group" style="display: none;">
+                <label for="checkoutQuickFlavor2">2? Sabor (REIGN BAR)</label>
+                <select id="checkoutQuickFlavor2" class="form-select"></select>
+              </div>
+            </div>
+            <div class="checkout-quick-add-row">
+              <div class="form-group">
+                <label for="checkoutQuickQty">Cantidad *</label>
+                <select id="checkoutQuickQty" class="form-select">
+                  <option value="1">1 Unidad</option>
+                  <option value="2">2 Unidades (Promo)</option>
+                  <option value="3">3 Unidades</option>
+                  <option value="4">4 Unidades</option>
+                  <option value="5">5 Unidades</option>
+                  <option value="10">10 Unidades</option>
+                </select>
+              </div>
+              <button type="button" class="btn btn-primary checkout-quick-add-btn" onclick="CheckoutController.addQuickSelectedVape()">
+                ? Agregar al Pedido
+              </button>
+            </div>
+          </div>
           <div class="form-row-2">
             <div class="form-group">
               <label for="checkoutNombre">Nombre Completo *</label>
@@ -1143,10 +1179,10 @@
   <div class="cv-bottom-bar-container">
     <div class="cv-bottom-bar-inner">
       <!-- WHATSAPP AGENDAR PEDIDO BUTTON -->
-      <a href="https://wa.me/573133572726?text=Hola%20Capital%20Vape%2C%20quisiera%20agendar%20un%20pedido." target="_blank" rel="noopener noreferrer" class="cv-bottom-btn wa-bottom-btn" aria-label="📲 AGENDAR PEDIDO WhatsApp Oficial">
+      <button type="button" onclick="CheckoutController.openModal()" class="cv-bottom-btn wa-bottom-btn" aria-label="?? AGENDAR PEDIDO">
         <img src="assets/icons/whatsapp.png" class="bottom-btn-icon" alt="WhatsApp">
         <span class="bottom-btn-label">AGENDAR PEDIDO</span>
-      </a>
+      </button>
 
       <!-- CART WITH SUBTOTAL BUTTON -->
       <button type="button" class="cv-bottom-btn cart-bottom-btn open-cart-btn" aria-label="🛒 Ver Carrito de compras">
@@ -1222,19 +1258,19 @@
 
   <!-- JAVASCRIPT SCRIPTS -->
   <script src="js/vendor/three.min.js" defer></script>
-  <script src="js/config.js?v=20261103_10"></script>
-  <script src="js/toast.js?v=20261103_10"></script>
-  <script src="js/products-data.js?v=20261103_10"></script>
-  <script src="js/reign-palette-configurator.js?v=20261103_10"></script>
-  <script src="js/wholesale.js?v=20261103_10"></script>
-  <script src="js/cloud-sync.js?v=20261103_10"></script>
-  <script src="js/admin.js?v=20261103_10"></script>
-  <script src="js/cart.js?v=20261103_10"></script>
-  <script src="js/checkout.js?v=20261103_10"></script>
-  <script src="js/catalog.js?v=20261103_10"></script>
+  <script src="js/config.js?v=20261103_11"></script>
+  <script src="js/toast.js?v=20261103_11"></script>
+  <script src="js/products-data.js?v=20261103_11"></script>
+  <script src="js/reign-palette-configurator.js?v=20261103_11"></script>
+  <script src="js/wholesale.js?v=20261103_11"></script>
+  <script src="js/cloud-sync.js?v=20261103_11"></script>
+  <script src="js/admin.js?v=20261103_11"></script>
+  <script src="js/cart.js?v=20261103_11"></script>
+  <script src="js/checkout.js?v=20261103_11"></script>
+  <script src="js/catalog.js?v=20261103_11"></script>
   <script src="js/age-verification.js?v=20261014_1"></script>
-  <script src="js/christmas.js?v=20261103_10" defer></script>
-  <script src="js/main.js?v=20261103_10"></script>
+  <script src="js/christmas.js?v=20261103_11" defer></script>
+  <script src="js/main.js?v=20261103_11"></script>
 </body>
 </html>
 

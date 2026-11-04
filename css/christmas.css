@@ -106,19 +106,12 @@
 
 @keyframes xmasBulbTwinkle {
   0% {
-    opacity: 0.48;
-    transform: scale(0.92) rotate(-2deg);
-    filter: brightness(0.85);
-  }
-  50% {
-    opacity: 0.92;
-    transform: scale(1.02) rotate(1deg);
-    filter: brightness(1.15);
+    opacity: 0.45;
+    transform: scale(0.92);
   }
   100% {
     opacity: 1;
-    transform: scale(1.08) rotate(2deg);
-    filter: brightness(1.3);
+    transform: scale(1.05);
   }
 }
 
@@ -494,6 +487,16 @@ body.no-webgl .xmas-fallback-tree-svg {
 
   .xmas-light-bulb:nth-child(even) {
     display: none;
+  }
+
+  .xmas-light-bulb {
+    box-shadow: none !important;
+    animation-duration: 3.5s !important;
+  }
+
+  .xmas-snow-ridge,
+  .xmas-banner-title span {
+    filter: none !important;
   }
 
   .xmas-edition-banner-section {

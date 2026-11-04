@@ -94,8 +94,8 @@ body.menu-open-scroll-lock {
     padding: 8px 0 !important;
     z-index: 1000 !important;
     background: rgba(11, 4, 16, 0.98) !important;
-    backdrop-filter: blur(14px) !important;
-    -webkit-backdrop-filter: blur(14px) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7) !important;
   }
 
@@ -679,15 +679,25 @@ body.menu-open-scroll-lock {
 
   /* ----------------- CHECKOUT MODAL RESPONSIVE ----------------- */
   .cv-modal-box {
-    padding: 16px 12px !important;
-    width: 95% !important;
+    padding: 0 !important;
+    width: 96% !important;
     max-height: 90vh !important;
     overflow-y: auto !important;
   }
 
   .checkout-grid {
     grid-template-columns: 1fr !important;
-    gap: 16px !important;
+    gap: 18px !important;
+    padding: 16px !important;
+  }
+
+  /* Optimización de fluidez GPU en móvil (sin filtros pesados durante el scroll) */
+  .product-img-real,
+  .flavor-card-img,
+  .reign-card-3d-joined,
+  .brand-img,
+  .hero-product-img {
+    filter: none !important;
   }
 
   .form-row-2 {

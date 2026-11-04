@@ -46,35 +46,39 @@
       return {
         tier: 'mobile-compact',
         isMobile: true,
-        maxDpr: 1.15,
-        snowCounts: { far: 55, mid: 40, near: 22 },
-        sparkleCount: 16
+        maxDpr: 0.9,
+        targetFps: 24,
+        snowCounts: { far: 22, mid: 14, near: 6 },
+        sparkleCount: 6
       };
     }
     if (w < 768 || isLowPower) {
       return {
         tier: 'mobile',
         isMobile: true,
-        maxDpr: 1.25,
-        snowCounts: { far: 75, mid: 55, near: 28 },
-        sparkleCount: 22
+        maxDpr: 1.0,
+        targetFps: 28,
+        snowCounts: { far: 30, mid: 18, near: 8 },
+        sparkleCount: 8
       };
     }
     if (w < 1024) {
       return {
         tier: 'tablet',
         isMobile: false,
-        maxDpr: 1.35,
-        snowCounts: { far: 120, mid: 85, near: 42 },
-        sparkleCount: 35
+        maxDpr: 1.25,
+        targetFps: 45,
+        snowCounts: { far: 85, mid: 55, near: 25 },
+        sparkleCount: 22
       };
     }
     return {
       tier: 'desktop',
       isMobile: false,
       maxDpr: 1.5,
-      snowCounts: { far: 190, mid: 130, near: 65 },
-      sparkleCount: 55
+      targetFps: 60,
+      snowCounts: { far: 160, mid: 110, near: 50 },
+      sparkleCount: 40
     };
   }
 
@@ -1296,6 +1300,15 @@
       // Escenario 3D del Árbol de Navidad en el Banner
       const treeCanvas = document.getElementById('christmasTreeCanvas');
       this.treeStage = treeCanvas ? new ChristmasTreeStage3D(treeCanvas) : null;
+      this.treeStageVisible = true;
+      if (treeCanvas && 'IntersectionObserver' in window) {
+        this.treeObserver = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            this.treeStageVisible = entry.isIntersecting;
+          });
+        }, { threshold: 0.05 });
+        this.treeObserver.observe(treeCanvas);
+      }
 
       this.windOffset = 0;
       this.setupEvents();
@@ -1304,6 +1317,7 @@
       this.isRunning = false;
       this.rafId = null;
       this.lastFrameTime = performance.now();
+      this.lastRenderStamp = 0;
       this.animate = this.animate.bind(this);
 
       this.startLoop();
@@ -1425,13 +1439,33 @@
       if (!this.isRunning) return;
       this.rafId = requestAnimationFrame(this.animate);
 
+      const now = currentTime || performance.now();
+      const targetFps = (this.profile && this.profile.targetFps) || 60;
+      const minInterval = 1000 / targetFps;
+      if (targetFps < 60 && (now - (this.lastRenderStamp || 0)) < minInterval) {
+        return;
+      }
+      this.lastRenderStamp = now;
+
+      // Pausar renderizado WebGL cuando el usuario tiene abierto el carrito, checkout o modal en móvil
+      const cartEl = document.getElementById('cartDrawer');
+      const checkoutEl = document.getElementById('checkoutModal');
+      const flavorEl = document.getElementById('flavorModal');
+      const isModalOpen = (cartEl && cartEl.classList.contains('open')) ||
+                          (checkoutEl && checkoutEl.classList.contains('open')) ||
+                          (flavorEl && flavorEl.style.display === 'flex');
+      if (isModalOpen) {
+        this.lastFrameTime = now;
+        this.clock.getDelta();
+        return;
+      }
+
       let dt = this.clock.getDelta();
       if (!dt || isNaN(dt) || dt <= 0 || dt > 0.2) {
-        const now = currentTime || performance.now();
         const rawDelta = (now - (this.lastFrameTime || now)) / 1000;
         dt = rawDelta > 0.001 && rawDelta < 0.1 ? rawDelta : 0.016;
       }
-      this.lastFrameTime = currentTime || performance.now();
+      this.lastFrameTime = now;
       const time = this.clock.getElapsedTime();
 
       if (this.snowSystem) {
@@ -1442,7 +1476,7 @@
         this.santaSleigh.update(dt, time);
       }
 
-      if (this.treeStage) {
+      if (this.treeStage && this.treeStageVisible) {
         this.treeStage.update(dt, time);
       }
 
@@ -1469,6 +1503,7 @@
   `;
 
   function applyFestiveSnowCapsToCards() {
+    if (window.innerWidth && window.innerWidth < 768) return;
     const cards = document.querySelectorAll('.product-card');
     if (!cards || cards.length === 0) return;
 

@@ -18,6 +18,10 @@ const CheckoutController = {
     if (modal) {
       modal.classList.add('open');
       document.body.style.overflow = 'hidden';
+      const destSelect = document.getElementById('checkoutDestino');
+      if (destSelect && Cart.destination) {
+        destSelect.value = Cart.destination;
+      }
       this.configureWhatsAppRouting();
       this.renderOrderSummary();
     }
@@ -45,8 +49,8 @@ const CheckoutController = {
 
     if (title) {
       title.textContent = hasWholesale 
-        ? 'Finalizar Pedido (Mayorista) — Capital Vape' 
-        : 'Finalizar Pedido al Detal — Capital Vape';
+        ? 'Finalizar Pedido Mayorista' 
+        : 'Finalizar Pedido — Capital Vape';
     }
 
     if (hasWholesale) {
@@ -82,16 +86,30 @@ const CheckoutController = {
         const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
         const f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
         const f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
+        const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
+        const thumbSrc = item.flavor1Img || item.imagen || (prodObj && prodObj.imagen) || 'assets/logo/logo.png';
 
         return `
-        <div class="checkout-item-line">
-          <div>
-            <strong>${item.nombre}</strong> (x${item.qty})
-            ${isDual ? `
-              <br><small class="text-secondary">Primer sabor: <strong>${f1}</strong> | Segundo sabor: <strong>${f2}</strong></small>
-            ` : (item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant}</small>` : '')}
+        <div class="checkout-item-card">
+          <div class="checkout-item-thumb-box">
+            <img src="${thumbSrc}" alt="${item.nombre}" class="checkout-item-thumb-img" loading="lazy">
           </div>
-          <div>${Cart.formatCOP(lineTotal)}</div>
+          <div class="checkout-item-info">
+            <div class="checkout-item-top">
+              <strong class="checkout-item-name">${item.nombre}</strong>
+              <span class="checkout-item-qty-pill">x${item.qty}</span>
+            </div>
+            ${isDual ? `
+              <div class="checkout-item-flavor-text">
+                <span>1° Sabor: <strong>${f1}</strong></span>
+                <span>2° Sabor: <strong>${f2}</strong></span>
+              </div>
+            ` : (item.variant ? `<div class="checkout-item-flavor-text">Sabor: <strong>${item.variant}</strong></div>` : '')}
+            <div class="checkout-item-price-row">
+              <span class="checkout-item-unit">${Cart.formatCOP(item.effectiveUnitPrice || item.precio)} c/u</span>
+              <strong class="checkout-item-total">${Cart.formatCOP(lineTotal)}</strong>
+            </div>
+          </div>
         </div>
       `;
       }).join('');
@@ -123,19 +141,19 @@ const CheckoutController = {
 
       Object.values(wsGroups).forEach(group => {
         itemsHtml += `
-          <div class="checkout-ref-group" style="margin-bottom: 10px; padding: 8px; background: rgba(255,255,255,0.03); border-radius: 8px;">
-            <div style="display: flex; justify-content: space-between; font-weight: 700; color: #fff; margin-bottom: 4px;">
-              <span>• ${group.nombre} (${group.refTotalQty} uds • Tarifa +${group.activeTier})</span>
-              <span style="color: var(--accent-yellow);">${Cart.formatCOP(group.refSubtotal)}</span>
+          <div class="checkout-ref-group">
+            <div class="checkout-ref-head">
+              <span class="checkout-ref-title">• ${group.nombre} (${group.refTotalQty} uds • Tarifa +${group.activeTier})</span>
+              <span class="checkout-ref-sub">${Cart.formatCOP(group.refSubtotal)}</span>
             </div>
-            <div style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 6px;">
-              Tarifa mayorista aplicada: ${Cart.formatCOP(group.unitPrice)} c/u
+            <div class="checkout-ref-rate">
+              Tarifa mayorista aplicada: <strong>${Cart.formatCOP(group.unitPrice)} c/u</strong>
             </div>
-            <div style="padding-left: 10px; border-left: 2px solid rgba(255,255,255,0.1);">
+            <div class="checkout-ref-flavors">
               ${group.items.map(i => `
-                <div style="display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary); padding: 2px 0;">
+                <div class="checkout-ref-flavor-line">
                   <span>- ${i.variant}: <strong>${i.qty} uds</strong></span>
-                  <span>${Cart.formatCOP(i.subtotal)}</span>
+                  <strong>${Cart.formatCOP(i.subtotal)}</strong>
                 </div>
               `).join('')}
             </div>

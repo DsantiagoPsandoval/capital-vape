@@ -674,58 +674,45 @@ const Cart = {
 
     // Free Shipping Progress Meter & Shipping Destination Selector
     if (meterContainer) {
+      const destButtonsHtml = `
+        <div class="dest-toggle-group">
+          <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
+            <span class="dest-btn-title">📍 Bogotá</span>
+            <small class="dest-btn-sub">Gratis &gt; $150k</small>
+          </button>
+          <button type="button" class="dest-btn ${shipping.isSoacha ? 'active' : ''}" onclick="Cart.setDestination('soacha')">
+            <span class="dest-btn-title">📍 Soacha</span>
+            <small class="dest-btn-sub">Tarifa $15.000</small>
+          </button>
+          <button type="button" class="dest-btn ${shipping.isNacional ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
+            <span class="dest-btn-title">🇨🇴 Nacional</span>
+            <small class="dest-btn-sub">Gratis &gt; $220k</small>
+          </button>
+        </div>
+      `;
+
       if (shipping.isWholesaleOnly) {
         meterContainer.innerHTML = `
           <div class="shipping-meter-box wholesale-meter-box">
-            <div class="dest-toggle-group">
-              <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
-                📍 Bogotá
-              </button>
-              <button type="button" class="dest-btn ${shipping.isSoacha ? 'active' : ''}" onclick="Cart.setDestination('soacha')">
-                📍 Soacha ($15.000)
-              </button>
-              <button type="button" class="dest-btn ${shipping.isNacional ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
-                🇨🇴 Nacional
-              </button>
-            </div>
-            <div class="meter-status" style="margin-top: 8px; font-size: 0.85rem; color: #F59E0B;">
-              📦 <strong>Envíos Mayoristas:</strong> Se coordinan exclusivamente vía WhatsApp al <strong>3133572726</strong> según transportadora y volumen. No aplica envío gratis.
+            ${destButtonsHtml}
+            <div class="meter-status" style="margin-top: 8px; font-size: 0.86rem; color: #F59E0B;">
+              📦 <strong>Envíos Mayoristas:</strong> Se coordinan vía WhatsApp al <strong>3133572726</strong> según transportadora y volumen.
             </div>
           </div>
         `;
       } else if (shipping.isSoacha) {
         meterContainer.innerHTML = `
           <div class="shipping-meter-box">
-            <div class="dest-toggle-group">
-              <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
-                📍 Bogotá (Gratis > ${this.formatCOP(CONFIG.SHIPPING.BOGOTA_FREE_THRESHOLD)})
-              </button>
-              <button type="button" class="dest-btn active" onclick="Cart.setDestination('soacha')">
-                📍 Soacha ($15.000)
-              </button>
-              <button type="button" class="dest-btn ${shipping.isNacional ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
-                🇨🇴 Nacional (Gratis > ${this.formatCOP(CONFIG.SHIPPING.NACIONAL_FREE_THRESHOLD)})
-              </button>
-            </div>
+            ${destButtonsHtml}
             <div class="meter-status" style="margin-top: 8px; font-size: 0.88rem; color: #EAB308;">
-              📍 Tarifa fija de envío a Soacha: <strong>$15.000 COP</strong> (se suma automáticamente al total).
+              📍 Tarifa fija de envío a Soacha: <strong>$15.000 COP</strong> (incluida en el total).
             </div>
           </div>
         `;
       } else {
         meterContainer.innerHTML = `
           <div class="shipping-meter-box">
-            <div class="dest-toggle-group">
-              <button type="button" class="dest-btn ${shipping.isBogota ? 'active' : ''}" onclick="Cart.setDestination('bogota')">
-                📍 Bogotá (Gratis > ${this.formatCOP(CONFIG.SHIPPING.BOGOTA_FREE_THRESHOLD)})
-              </button>
-              <button type="button" class="dest-btn ${shipping.isSoacha ? 'active' : ''}" onclick="Cart.setDestination('soacha')">
-                📍 Soacha ($15.000)
-              </button>
-              <button type="button" class="dest-btn ${shipping.isNacional ? 'active' : ''}" onclick="Cart.setDestination('nacional')">
-                🇨🇴 Nacional (Gratis > ${this.formatCOP(CONFIG.SHIPPING.NACIONAL_FREE_THRESHOLD)})
-              </button>
-            </div>
+            ${destButtonsHtml}
             <div class="meter-status">
               ${shipping.isFree 
                 ? `<span class="free-badge">🎉 ¡Felicitaciones! Tienes <strong>ENVÍO GRATIS</strong> en tus productos al detal.</span>` 
@@ -765,7 +752,7 @@ const Cart = {
           html += `
             <div class="cart-section-block detal-block">
               <div class="cart-section-header">
-                <span class="cart-sec-tag">DETAL</span>
+                <span class="cart-sec-tag">🛒 PRODUCTOS DETAL</span>
                 <span class="cart-sec-subtotal">Subtotal: ${this.formatCOP(detalSubtotal)}</span>
               </div>
               <div class="cart-items-group">
@@ -779,6 +766,7 @@ const Cart = {
             const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
             let f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
             let f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
+            const thumbSrc = item.flavor1Img || item.imagen || (prodObj && prodObj.imagen) || 'assets/logo/logo.png';
 
             let variantOptionsHtml = '';
             if (prodObj) {
@@ -792,13 +780,7 @@ const Cart = {
               if (isDual && varList.length > 0) {
                 variantOptionsHtml = `
                   <div class="cart-dual-flavor-box">
-                    <div class="cart-dual-preview-header">
-                      ${item.compositeImg ? `<img src="${item.compositeImg}" alt="${item.nombre}" class="cart-dual-composite-thumb">` : ''}
-                      <div class="cart-dual-summary-lines">
-                        <div><span class="dual-slot-tag">Primer sabor:</span> <strong>${f1}</strong></div>
-                        <div><span class="dual-slot-tag">Segundo sabor:</span> <strong>${f2}</strong></div>
-                      </div>
-                    </div>
+                    <div class="cart-dual-badge-line">✨ Combinación de 2 Sabores</div>
                     <div class="cart-flavor-select-row">
                       <label>1° Sabor:</label>
                       <select class="cart-flavor-dropdown" onchange="Cart.changeDualFlavor('${item.key}', 1, this.value)">
@@ -816,7 +798,7 @@ const Cart = {
               } else if (varList.length > 1) {
                 variantOptionsHtml = `
                   <div class="cart-flavor-select-row">
-                    <label>Sabor/Color:</label>
+                    <label>Sabor:</label>
                     <select class="cart-flavor-dropdown" onchange="Cart.changeItemVariant('${item.key}', this.value)">
                       ${varList.map(v => `<option value="${v}" ${v === item.variant ? 'selected' : ''}>${v}</option>`).join('')}
                     </select>
@@ -832,7 +814,15 @@ const Cart = {
             return `
               <div class="cart-item-row detal-item-row" id="cart-row-${item.key}">
                 <div class="detal-item-header">
-                  <h4 class="item-title">${item.nombre}</h4>
+                  <div class="cart-item-head-left">
+                    <div class="cart-item-thumb-box">
+                      <img src="${thumbSrc}" alt="${item.nombre}" class="cart-item-thumb-img" loading="lazy">
+                    </div>
+                    <div class="cart-item-title-wrap">
+                      <h4 class="item-title">${item.nombre}</h4>
+                      <div class="item-unit-price">${this.formatCOP(item.effectiveUnitPrice || item.precio)} c/u ${promoNote}</div>
+                    </div>
+                  </div>
                   <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar del carrito">🗑️</button>
                 </div>
                 ${variantOptionsHtml}
@@ -843,7 +833,7 @@ const Cart = {
                     <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', 1)" title="Sumar 1">+</button>
                   </div>
                   <div class="item-subtotal-block">
-                    <div class="item-unit-price">${this.formatCOP(item.effectiveUnitPrice || item.precio)} c/u ${promoNote}</div>
+                    <span class="subtotal-label">Total ítem</span>
                     <div class="item-total-price">${this.formatCOP(linePrice)}</div>
                   </div>
                 </div>

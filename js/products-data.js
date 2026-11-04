@@ -199,7 +199,7 @@ const PRODUCTS_DATA = [
     "ahorro_2": 10000,
     "rating": 4.9,
     "ventas": 4620,
-    "imagen": "U-PENDS UP9/blue razz ice.jpg",
+    "imagen": "U-PENDS UP9/blue razz ice.png",
     "imagen_pendiente": false,
     "carpeta_imagenes": "U-PENDS UP9",
     "descripcion": "U-PENDS UP9 Disposable Vape Kit ofrece hasta 50.000 Puffs con tanque visible y una potente batería de 1000 mAh. Llévalo por $35.000 COP la unidad o en promoción de 2 unidades por $60.000 COP.",
@@ -216,63 +216,63 @@ const PRODUCTS_DATA = [
     "sabores": [
       {
         "nombre": "Blue Razz Ice",
-        "img": "U-PENDS UP9/blue razz ice.jpg",
+        "img": "U-PENDS UP9/blue razz ice.png",
         "archivo_original": "U-PENDS UP9/blue razz ice.jpg",
         "imagenes_adicionales": [],
         "desc": "Frambuesa azul intensa con toque helado refrescante."
       },
       {
         "nombre": "Cool Mint",
-        "img": "U-PENDS UP9/cool mint upends.jpg",
+        "img": "U-PENDS UP9/cool mint upends.png",
         "archivo_original": "U-PENDS UP9/cool mint upends.jpg",
         "imagenes_adicionales": [],
         "desc": "Menta fresca y cristalina de máxima pureza."
       },
       {
         "nombre": "Grape Gush",
-        "img": "U-PENDS UP9/grape gush.jpg",
+        "img": "U-PENDS UP9/grape gush.png",
         "archivo_original": "U-PENDS UP9/grape gush.jpg",
         "imagenes_adicionales": [],
         "desc": "Explosión jugosa de uvas dulces maduras."
       },
       {
         "nombre": "Miami Mint",
-        "img": "U-PENDS UP9/miami mint.jpg",
+        "img": "U-PENDS UP9/miami mint.png",
         "archivo_original": "U-PENDS UP9/miami mint.jpg",
         "imagenes_adicionales": [],
         "desc": "Menta suave estilo Miami con frescura prolongada."
       },
       {
         "nombre": "Orange Slush",
-        "img": "U-PENDS UP9/orange slush.jpg",
+        "img": "U-PENDS UP9/orange slush.png",
         "archivo_original": "U-PENDS UP9/orange slush.jpg",
         "imagenes_adicionales": [],
         "desc": "Granizado cítrico de naranja dulce y helada."
       },
       {
         "nombre": "Sour Apple Ice",
-        "img": "U-PENDS UP9/sour apple ice.jpg",
+        "img": "U-PENDS UP9/sour apple ice.png",
         "archivo_original": "U-PENDS UP9/sour apple ice.jpg",
         "imagenes_adicionales": [],
         "desc": "Manzana verde ácida con acabado frío."
       },
       {
         "nombre": "Straw Melon",
-        "img": "U-PENDS UP9/straw melon.jpg",
+        "img": "U-PENDS UP9/straw melon.png",
         "archivo_original": "U-PENDS UP9/straw melon.jpg",
         "imagenes_adicionales": [],
         "desc": "Combinación equilibrada de fresa dulce y sandía."
       },
       {
         "nombre": "Strawberry Kiwi",
-        "img": "U-PENDS UP9/strawberry kiwi.jpg",
+        "img": "U-PENDS UP9/strawberry kiwi.png",
         "archivo_original": "U-PENDS UP9/strawberry kiwi.jpg",
         "imagenes_adicionales": [],
         "desc": "Clásico dúo frutal de fresas frescas y kiwi tropical."
       },
       {
         "nombre": "Watermelon Ice",
-        "img": "U-PENDS UP9/watermelon ice.jpg",
+        "img": "U-PENDS UP9/watermelon ice.png",
         "archivo_original": "U-PENDS UP9/watermelon ice.jpg",
         "imagenes_adicionales": [],
         "desc": "Sandía jugosa con sensación helada."

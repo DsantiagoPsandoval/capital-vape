@@ -58,11 +58,71 @@ const ReignPaletteConfigurator = {
     }
   },
 
+  MASTER_CLEAN_SRC: 'REIGN BAR PALETTE/dual-master-clean.png',
+  MASTER_MASKS_SRC: 'REIGN BAR PALETTE/dual-masks.png',
+  masterPixels: null,
+  masksPixels: null,
+  offscreen500: null,
+
+  FLAVOR_RGB_MAP: {
+    'Strawberry Banana': [241, 168, 208],
+    'Raspberry Lemonade': [156, 102, 215],
+    'Miami Mint': [112, 220, 130],
+    'Blue Razz Ice': [65, 166, 242],
+    'Mexico Mango': [242, 202, 34],
+    'Fcuking Fab': [74, 146, 232],
+    'Watermelon Ice': [248, 96, 76],
+    'OMG B Pop': [234, 174, 204],
+    'Caramel Cream': [214, 190, 162],
+    'Virginia Tobacco': [38, 36, 42],
+    'Ice Coffee': [56, 44, 38],
+    'Root Beer': [214, 92, 66],
+    'Vanilla Ice Cream': [226, 224, 218],
+    'Cheese Cake': [242, 210, 48],
+    'Strawberry': [242, 132, 178],
+    'Cherry Lemon': [246, 84, 78],
+    'Cool Mint': [202, 226, 222]
+  },
+
   preloadInitialImages() {
     const f1 = this.getFlavorObj(this.flavor1);
     const f2 = this.getFlavorObj(this.flavor2);
-    if (f1 && f1.img) this.loadImage(f1.img).then(() => this.refreshAllCanvases());
-    if (f2 && f2.img) this.loadImage(f2.img).then(() => this.refreshAllCanvases());
+    Promise.all([
+      this.ensureMasterBuffers(),
+      f1 && f1.img ? this.loadImage(f1.img) : Promise.resolve(null),
+      f2 && f2.img ? this.loadImage(f2.img) : Promise.resolve(null)
+    ]).then(() => this.refreshAllCanvases());
+  },
+
+  async ensureMasterBuffers() {
+    if (this.masterPixels && this.masksPixels) return true;
+    if (typeof document === 'undefined' || !document.createElement) return false;
+    const [masterImg, masksImg] = await Promise.all([
+      this.loadImage(this.MASTER_CLEAN_SRC),
+      this.loadImage(this.MASTER_MASKS_SRC)
+    ]);
+    if (!masterImg || !masksImg || !masterImg.width) return false;
+
+    try {
+      const c1 = document.createElement('canvas');
+      c1.width = 500;
+      c1.height = 500;
+      const ctx1 = c1.getContext('2d');
+      ctx1.drawImage(masterImg, 0, 0, 500, 500);
+      this.masterPixels = ctx1.getImageData(0, 0, 500, 500).data;
+
+      const c2 = document.createElement('canvas');
+      c2.width = 500;
+      c2.height = 500;
+      const ctx2 = c2.getContext('2d');
+      ctx2.drawImage(masksImg, 0, 0, 500, 500);
+      this.masksPixels = ctx2.getImageData(0, 0, 500, 500).data;
+
+      this.offscreen500 = c1;
+      return true;
+    } catch (e) {
+      return false;
+    }
   },
 
   loadImage(src) {
@@ -209,8 +269,8 @@ const ReignPaletteConfigurator = {
   },
 
   /**
-   * Renderiza la composición visual automática de los dos módulos de REIGN BAR PALETTE
-   * ensamblados como un único dispositivo completo en el <canvas> indicado.
+   * Renderiza la composición visual 3D exacta de los dos módulos de REIGN BAR PALETTE
+   * acoplados magnéticamente según la imagen de referencia oficial.
    */
   async renderCompositeToCanvas(canvas, f1Name = this.flavor1, f2Name = this.flavor2) {
     if (!canvas) return null;
@@ -218,13 +278,9 @@ const ReignPaletteConfigurator = {
     const f2 = this.getFlavorObj(f2Name);
     if (!f1 || !f2) return null;
 
-    const [img1, img2] = await Promise.all([
-      this.loadImage(f1.img),
-      this.loadImage(f2.img)
-    ]);
-
-    const W = canvas.width || 520;
-    const H = canvas.height || 480;
+    const hasMaster = await this.ensureMasterBuffers();
+    const W = canvas.width || 460;
+    const H = canvas.height || 420;
     const ctx = canvas.getContext('2d');
     if (!ctx) return null;
 
@@ -232,231 +288,172 @@ const ReignPaletteConfigurator = {
 
     const col1 = f1.colorPrimary || '#3553F6';
     const col2 = f2.colorPrimary || '#FB5E9B';
+    const rgb1 = this.FLAVOR_RGB_MAP[f1.nombre] || [65, 166, 242];
+    const rgb2 = this.FLAVOR_RGB_MAP[f2.nombre] || [234, 174, 204];
 
-    // 1. FONDO DE ESTUDIO DIVIDIDO Y FUSIONADO CON LAS FRUTAS DE AMBOS SABORES
+    // 1. Halo ambiental suave de estudio detrás del dispositivo 3D
     ctx.save();
-    this.roundRectPath(ctx, 0, 0, W, H, 22);
-    ctx.clip();
-
-    // Base oscura profunda
-    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
-    bgGrad.addColorStop(0, '#0D0714');
-    bgGrad.addColorStop(0.5, '#130A1E');
-    bgGrad.addColorStop(1, '#0D0714');
-    ctx.fillStyle = bgGrad;
-    ctx.fillRect(0, 0, W, H);
-
-    // Mitad izquierda: atmósfera frutal del Primer Sabor (recortando la parte superior frutal de la foto original)
-    if (img1) {
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(0, 0, W * 0.52, H);
-      ctx.clip();
-      ctx.globalAlpha = 0.34;
-      ctx.filter = 'blur(8px) saturate(1.25)';
-      ctx.drawImage(img1, 0, 0, 382, 310, -20, -15, W * 0.62, H * 1.05);
-      ctx.restore();
-    }
-
-    // Mitad derecha: atmósfera frutal del Segundo Sabor
-    if (img2) {
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(W * 0.48, 0, W * 0.52, H);
-      ctx.clip();
-      ctx.globalAlpha = 0.34;
-      ctx.filter = 'blur(8px) saturate(1.25)';
-      ctx.drawImage(img2, 0, 0, 382, 310, W * 0.40, -15, W * 0.62, H * 1.05);
-      ctx.restore();
-    }
-
-    // Halos de color neón de cada sabor detrás de su respectiva mitad
-    const glowLeft = ctx.createRadialGradient(W * 0.32, H * 0.46, 12, W * 0.32, H * 0.46, W * 0.44);
-    glowLeft.addColorStop(0, col1 + '88');
+    const glowLeft = ctx.createRadialGradient(W * 0.36, H * 0.48, 8, W * 0.36, H * 0.48, W * 0.42);
+    glowLeft.addColorStop(0, col1 + '44');
     glowLeft.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glowLeft;
     ctx.fillRect(0, 0, W, H);
 
-    const glowRight = ctx.createRadialGradient(W * 0.68, H * 0.46, 12, W * 0.68, H * 0.46, W * 0.44);
-    glowRight.addColorStop(0, col2 + '88');
+    const glowRight = ctx.createRadialGradient(W * 0.64, H * 0.48, 8, W * 0.64, H * 0.48, W * 0.42);
+    glowRight.addColorStop(0, col2 + '44');
     glowRight.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glowRight;
     ctx.fillRect(0, 0, W, H);
-
-    // Viñeta de estudio para dar profundidad al dispositivo central
-    const vignette = ctx.createLinearGradient(0, 0, 0, H);
-    vignette.addColorStop(0, 'rgba(8, 4, 15, 0.35)');
-    vignette.addColorStop(0.68, 'rgba(8, 4, 15, 0.15)');
-    vignette.addColorStop(1, 'rgba(6, 3, 12, 0.88)');
-    ctx.fillStyle = vignette;
-    ctx.fillRect(0, 0, W, H);
-
-    // 2. PARÁMETROS GEOMÉTRICOS DEL DISPOSITIVO ENSAMBLADO
-    const seamX = W * 0.5;
-    const centerY = H * 0.47;
-    const scale = Math.min(W / 440, H / 430) * 1.04;
-    const tiltRad = 21.6 * Math.PI / 180; // Ángulo exacto para enderezar el módulo de b-*.webp
-    const srcPivotX = 185;
-    const srcPivotY = 209;
-    const innerEdgeOffset = 48; // rx=+48 corresponde a la cara magnética interior del módulo
-
-    // Sombra proyectada 3D unificada bajo el dispositivo ensamblado
-    ctx.save();
-    const shadowGrad = ctx.createRadialGradient(seamX, centerY + 138 * scale, 8, seamX, centerY + 138 * scale, 118 * scale);
-    shadowGrad.addColorStop(0, 'rgba(0, 0, 0, 0.78)');
-    shadowGrad.addColorStop(0.6, 'rgba(0, 0, 0, 0.32)');
-    shadowGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = shadowGrad;
-    ctx.beginPath();
-    ctx.ellipse(seamX, centerY + 138 * scale, 112 * scale, 22 * scale, 0, 0, Math.PI * 2);
-    ctx.fill();
     ctx.restore();
 
-    // 3. MÓDULO IZQUIERDO (PRIMER SABOR)
-    if (img1) {
-      ctx.save();
-      this.traceLeftHalfModulePath(ctx, seamX, centerY, scale);
-      ctx.clip();
+    // 2. Composición 3D basada en el modelo maestro de referencia (500x500)
+    if (hasMaster && this.masterPixels && this.masksPixels && this.offscreen500) {
+      const offCtx = this.offscreen500.getContext('2d');
+      const outImgData = offCtx.createImageData(500, 500);
+      const dst = outImgData.data;
+      const src = this.masterPixels;
+      const msk = this.masksPixels;
 
-      // Posicionar el pivote del módulo izquierdo para que su cara plana interior (rx = +48) coincida con seamX
-      ctx.translate(seamX - innerEdgeOffset * scale, centerY);
-      ctx.scale(scale, scale);
-      ctx.rotate(tiltRad);
-      ctx.drawImage(img1, -srcPivotX, -srcPivotY, 382, 482);
+      const r1 = rgb1[0], g1 = rgb1[1], b1 = rgb1[2];
+      const r2 = rgb2[0], g2 = rgb2[1], b2 = rgb2[2];
 
-      // Sutil volumen cilíndrico en la unión central izquierda
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      const leftInnerShade = ctx.createLinearGradient(seamX - 18 * scale, 0, seamX, 0);
-      leftInnerShade.addColorStop(0, 'rgba(0,0,0,0)');
-      leftInnerShade.addColorStop(1, 'rgba(0,0,0,0.26)');
-      ctx.fillStyle = leftInnerShade;
-      ctx.fillRect(seamX - 20 * scale, centerY - 170 * scale, 20 * scale, 300 * scale);
-      ctx.restore();
+      // Solo recorrer el bounding box activo del dispositivo (x: 130..370, y: 42..458)
+      for (let y = 42; y <= 458; y++) {
+        const rowOffset = y * 500;
+        for (let x = 130; x <= 370; x++) {
+          const i = (rowOffset + x) << 2;
+          const alpha = msk[i + 3];
+          if (alpha === 0) continue;
+
+          const wLeft = msk[i] / 255.0;       // 1.0 = Módulo Izquierdo, 0.0 = Módulo Derecho
+          const keepOrig = msk[i + 1] / 255.0; // Protección de pantalla LED '88' y logos metálicos
+          const lum = msk[i + 2];
+
+          // Curva anodizada 3D para Módulo Izquierdo (ref_lum = 112)
+          let L1 = lum / 112.0;
+          if (L1 > 2.2) L1 = 2.2;
+          let nr1, ng1, nb1;
+          if (L1 <= 1.0) {
+            const p1 = Math.pow(L1, 0.92);
+            nr1 = r1 * p1;
+            ng1 = g1 * p1;
+            nb1 = b1 * p1;
+          } else {
+            const h1 = Math.min(1.0, (L1 - 1.0) * 1.35);
+            nr1 = r1 + (255.0 - r1) * h1;
+            ng1 = g1 + (255.0 - g1) * h1;
+            nb1 = b1 + (255.0 - b1) * h1;
+          }
+
+          // Curva anodizada 3D para Módulo Derecho (ref_lum = 172)
+          let L2 = lum / 172.0;
+          if (L2 > 2.2) L2 = 2.2;
+          let nr2, ng2, nb2;
+          if (L2 <= 1.0) {
+            const p2 = Math.pow(L2, 0.92);
+            nr2 = r2 * p2;
+            ng2 = g2 * p2;
+            nb2 = b2 * p2;
+          } else {
+            const h2 = Math.min(1.0, (L2 - 1.0) * 1.35);
+            nr2 = r2 + (255.0 - r2) * h2;
+            ng2 = g2 + (255.0 - g2) * h2;
+            nb2 = b2 + (255.0 - b2) * h2;
+          }
+
+          const wRight = 1.0 - wLeft;
+          const br = nr1 * wLeft + nr2 * wRight;
+          const bg = ng1 * wLeft + ng2 * wRight;
+          const bb = nb1 * wLeft + nb2 * wRight;
+
+          const invKeep = 1.0 - keepOrig;
+          dst[i]     = br * invKeep + src[i] * keepOrig;
+          dst[i + 1] = bg * invKeep + src[i + 1] * keepOrig;
+          dst[i + 2] = bb * invKeep + src[i + 2] * keepOrig;
+          dst[i + 3] = alpha;
+        }
+      }
+
+      offCtx.putImageData(outImgData, 0, 0);
+
+      // Imprimir dinámicamente los nombres de ambos sabores a los lados de la junta magnética central (como en la imagen de referencia)
+      const seamAngle = Math.atan2(1.0, 0.2038); // ~78.48°
+      offCtx.save();
+      offCtx.font = '600 8.5px Inter, system-ui, sans-serif';
+      offCtx.fillStyle = 'rgba(235, 238, 245, 0.72)';
+      offCtx.textBaseline = 'middle';
+
+      // Texto Sabor 1 (Módulo Izquierdo — paralelo a la junta central)
+      const yAnchor1 = 262;
+      const xAnchor1 = 179.0 + (yAnchor1 - 125.0) * 0.2038 - 9.5;
+      offCtx.save();
+      offCtx.translate(xAnchor1, yAnchor1);
+      offCtx.rotate(seamAngle);
+      offCtx.textAlign = 'left';
+      offCtx.fillText(f1.nombre.toUpperCase(), 0, 0, 112);
+      offCtx.restore();
+
+      // Texto Sabor 2 (Módulo Derecho — paralelo a la junta central)
+      const yAnchor2 = 250;
+      const xAnchor2 = 179.0 + (yAnchor2 - 125.0) * 0.2038 + 8.5;
+      offCtx.save();
+      offCtx.translate(xAnchor2, yAnchor2);
+      offCtx.rotate(seamAngle);
+      offCtx.textAlign = 'left';
+      offCtx.fillText(f2.nombre.toUpperCase(), 0, 0, 95);
+      offCtx.restore();
+      offCtx.restore();
+
+      // Dibujar el dispositivo 3D centrado y con máxima nitidez en el canvas destino
+      const drawSize = Math.min(W, H - 24) * 1.04;
+      const dx = (W - drawSize) / 2;
+      const dy = (H - 22 - drawSize) / 2;
+      ctx.drawImage(this.offscreen500, dx, dy, drawSize, drawSize);
     }
 
-    // 4. MÓDULO DERECHO (SEGUNDO SABOR — ACOPLADO MAGNÉTICAMENTE)
-    if (img2) {
-      ctx.save();
-      this.traceRightHalfModulePath(ctx, seamX, centerY, scale);
-      ctx.clip();
-
-      // Dibujar el cuerpo del módulo derecho reflejado simétricamente respecto al eje central seamX
-      // para que ambas boquillas se unan en el centro y el borde curvo quede al exterior derecho
-      ctx.save();
-      ctx.translate(seamX + innerEdgeOffset * scale, centerY);
-      ctx.scale(-scale, scale);
-      ctx.rotate(tiltRad);
-      ctx.drawImage(img2, -srcPivotX, -srcPivotY, 382, 482);
-      ctx.restore();
-
-      // PARCHE DE REALISMO: Redibujar la pantalla LED negra ('88') del módulo derecho SIN espejo
-      // para que los dígitos '88' y los iconos se lean al derecho en el borde exterior derecho
-      ctx.save();
-      const screenCenterX = seamX + (innerEdgeOffset + 36) * scale;
-      const screenCenterY = centerY + 52 * scale;
-      ctx.beginPath();
-      ctx.ellipse(screenCenterX, screenCenterY, 15.5 * scale, 52 * scale, 0, 0, Math.PI * 2);
-      ctx.clip();
-      ctx.translate(screenCenterX + 36 * scale, centerY);
-      ctx.scale(scale, scale);
-      ctx.rotate(tiltRad);
-      ctx.drawImage(img2, -srcPivotX, -srcPivotY, 382, 482);
-      ctx.restore();
-
-      // Sutil volumen cilíndrico en la unión central derecha
-      const rightInnerShade = ctx.createLinearGradient(seamX, 0, seamX + 18 * scale, 0);
-      rightInnerShade.addColorStop(0, 'rgba(0,0,0,0.28)');
-      rightInnerShade.addColorStop(0.35, 'rgba(255,255,255,0.12)');
-      rightInnerShade.addColorStop(1, 'rgba(0,0,0,0)');
-      ctx.fillStyle = rightInnerShade;
-      ctx.fillRect(seamX, centerY - 170 * scale, 20 * scale, 300 * scale);
-      ctx.restore();
-    }
-
-    // 5. JUNTA MAGNÉTICA CENTRAL Y ACABADO DE DISPOSITIVO UNIFICADO
+    // 3. Píldoras inferiores compactas indicando los 2 sabores acoplados
     ctx.save();
-    // Línea de ensamblaje magnético central (entre ambos módulos)
-    const seamGrad = ctx.createLinearGradient(0, centerY - 162 * scale, 0, centerY + 125 * scale);
-    seamGrad.addColorStop(0, 'rgba(255, 255, 255, 0.55)');
-    seamGrad.addColorStop(0.2, 'rgba(15, 10, 25, 0.85)');
-    seamGrad.addColorStop(0.5, 'rgba(255, 215, 100, 0.45)');
-    seamGrad.addColorStop(0.85, 'rgba(15, 10, 25, 0.85)');
-    seamGrad.addColorStop(1, 'rgba(255, 255, 255, 0.3)');
-    ctx.fillStyle = seamGrad;
-    ctx.fillRect(seamX - 1.1 * scale, centerY - 162 * scale, 2.2 * scale, 287 * scale);
-
-    // Anillo conector superior en la base de la boquilla dual
-    const collarY = centerY - 127 * scale;
-    const collarGrad = ctx.createLinearGradient(seamX - 38 * scale, collarY, seamX + 38 * scale, collarY);
-    collarGrad.addColorStop(0, 'rgba(255,255,255,0.15)');
-    collarGrad.addColorStop(0.5, 'rgba(255,255,255,0.65)');
-    collarGrad.addColorStop(1, 'rgba(255,255,255,0.15)');
-    ctx.fillStyle = collarGrad;
-    ctx.fillRect(seamX - 37 * scale, collarY - 1.2 * scale, 74 * scale, 2.4 * scale);
-
-    // Indicador magnético central sutil ("DUAL LOCK")
-    ctx.beginPath();
-    ctx.arc(seamX, centerY - 12 * scale, 6.5 * scale, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(12, 8, 22, 0.88)';
-    ctx.fill();
-    ctx.lineWidth = 1.4 * scale;
-    ctx.strokeStyle = 'rgba(255, 215, 102, 0.85)';
-    ctx.stroke();
-
-    ctx.fillStyle = '#FFE066';
-    ctx.font = `700 ${Math.round(7.5 * scale)}px sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('⚡', seamX, centerY - 11.5 * scale);
-    ctx.restore();
-
-    // 6. ETIQUETAS VISUALES FLOTANTES DE CADA MITAD EN EL LIENZO
-    ctx.save();
-    const pillY = H - 36;
-    const pillH = 26;
+    const pillY = H - 28;
+    const pillH = 22;
     const maxPillW = (W * 0.45);
 
-    // Etiqueta Módulo 1 (Izquierda)
-    this.roundRectPath(ctx, 12, pillY, maxPillW, pillH, 13);
-    ctx.fillStyle = 'rgba(12, 7, 20, 0.84)';
+    this.roundRectPath(ctx, 10, pillY, maxPillW, pillH, 11);
+    ctx.fillStyle = 'rgba(12, 7, 20, 0.86)';
     ctx.fill();
-    ctx.lineWidth = 1.2;
+    ctx.lineWidth = 1.1;
     ctx.strokeStyle = col1;
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(24, pillY + pillH / 2, 4.5, 0, Math.PI * 2);
+    ctx.arc(20, pillY + pillH / 2, 3.8, 0, Math.PI * 2);
     ctx.fillStyle = col1;
     ctx.fill();
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.font = '700 11px Inter, system-ui, sans-serif';
+    ctx.font = '700 10px Inter, system-ui, sans-serif';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'middle';
-    ctx.fillText(`1: ${f1.nombre}`, 34, pillY + pillH / 2 + 0.5, maxPillW - 28);
+    ctx.fillText(`1: ${f1.nombre}`, 28, pillY + pillH / 2 + 0.5, maxPillW - 22);
 
-    // Etiqueta Módulo 2 (Derecha)
-    const rightPillX = W - 12 - maxPillW;
-    this.roundRectPath(ctx, rightPillX, pillY, maxPillW, pillH, 13);
-    ctx.fillStyle = 'rgba(12, 7, 20, 0.84)';
+    const rightPillX = W - 10 - maxPillW;
+    this.roundRectPath(ctx, rightPillX, pillY, maxPillW, pillH, 11);
+    ctx.fillStyle = 'rgba(12, 7, 20, 0.86)';
     ctx.fill();
-    ctx.lineWidth = 1.2;
+    ctx.lineWidth = 1.1;
     ctx.strokeStyle = col2;
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.arc(rightPillX + 12, pillY + pillH / 2, 4.5, 0, Math.PI * 2);
+    ctx.arc(rightPillX + 10, pillY + pillH / 2, 3.8, 0, Math.PI * 2);
     ctx.fillStyle = col2;
     ctx.fill();
 
     ctx.fillStyle = '#FFFFFF';
-    ctx.fillText(`2: ${f2.nombre}`, rightPillX + 22, pillY + pillH / 2 + 0.5, maxPillW - 28);
-
+    ctx.fillText(`2: ${f2.nombre}`, rightPillX + 18, pillY + pillH / 2 + 0.5, maxPillW - 22);
     ctx.restore();
-    ctx.restore(); // Fin del clip general
 
     try {
-      this.lastCompositeDataUrl = canvas.toDataURL('image/webp', 0.86);
+      this.lastCompositeDataUrl = canvas.toDataURL('image/webp', 0.90);
     } catch (e) {}
 
     return this.lastCompositeDataUrl;

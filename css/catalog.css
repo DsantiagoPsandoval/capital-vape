@@ -1029,9 +1029,10 @@
    REIGN BAR PALETTE — CONFIGURADOR VISUAL DE 2 SABORES Y COMPOSICIÓN EN VIVO
    ========================================================================== */
 .card-image-wrapper.is-reign-composite-stage {
-  position: relative;
-  padding: 6px;
-  background: radial-gradient(circle at 50% 45%, rgba(53, 83, 246, 0.22), rgba(216, 27, 183, 0.18), #0B0512 85%);
+  padding: 4px;
+  background: radial-gradient(circle at 50% 45%, rgba(216, 27, 183, 0.16), rgba(10, 5, 18, 0.96));
+  aspect-ratio: 16 / 11;
+  max-height: 205px;
 }
 
 .reign-live-preview-badge {
@@ -1064,24 +1065,24 @@
   transform: scale(1.02);
 }
 
-/* Bloque Configurador dentro de la tarjeta REIGN BAR PALETTE */
+/* Bloque Configurador Compacto dentro de la tarjeta REIGN BAR PALETTE */
 .reign-configurator-box {
   background: linear-gradient(160deg, rgba(22, 10, 36, 0.96), rgba(13, 6, 23, 0.98));
-  border: 1px solid rgba(229, 183, 0, 0.38);
-  border-radius: 12px;
-  padding: 10px;
+  border: 1px solid rgba(229, 183, 0, 0.34);
+  border-radius: 10px;
+  padding: 6px 8px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  gap: 4px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .reign-config-header {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 6px;
+  gap: 1px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 3px;
 }
 
 .reign-config-title-row {
@@ -1089,30 +1090,30 @@
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .reign-config-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
-  border: 1px solid rgba(229, 183, 0, 0.55);
+  gap: 3px;
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.22), rgba(216, 27, 183, 0.22));
+  border: 1px solid rgba(229, 183, 0, 0.5);
   color: #FFE066;
-  font-size: 0.65rem;
+  font-size: 0.56rem;
   font-weight: 800;
-  padding: 2px 7px;
+  padding: 1px 5px;
   border-radius: 999px;
 }
 
 .reign-random-btn,
 .reign-swap-btn {
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   color: #F3E8FF;
-  font-size: 0.65rem;
+  font-size: 0.56rem;
   font-weight: 700;
-  padding: 2px 7px;
+  padding: 1px 6px;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1126,165 +1127,168 @@
 }
 
 .reign-config-title {
-  margin: 2px 0 0;
+  margin: 1px 0 0;
   font-family: var(--font-heading);
-  font-size: 0.84rem;
+  font-size: 0.7rem;
   font-weight: 900;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
   color: #FFFFFF;
 }
 
 .reign-config-subtitle {
   margin: 0;
-  font-size: 0.71rem;
+  font-size: 0.59rem;
   color: var(--text-secondary);
-  line-height: 1.3;
+  line-height: 1.15;
 }
 
-/* Pasos 1 y 2 en la tarjeta */
+/* Pasos 1 y 2 ultra-compactos en la tarjeta */
 .reign-step-block {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 2px;
 }
 
 .reign-step-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
-  font-size: 0.68rem;
+  gap: 4px;
+  font-size: 0.58rem;
 }
 
 .reign-step-num {
   color: #FFE066;
   font-weight: 800;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .reign-step-current {
   color: #FFFFFF;
   font-weight: 700;
-  background: rgba(216, 27, 183, 0.2);
-  border: 1px solid rgba(216, 27, 183, 0.45);
-  padding: 1px 6px;
-  border-radius: 6px;
-  max-width: 125px;
+  background: rgba(216, 27, 183, 0.18);
+  border: 1px solid rgba(216, 27, 183, 0.4);
+  padding: 0 5px;
+  border-radius: 4px;
+  font-size: 0.56rem;
+  max-width: 115px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* Carrusel horizontal de sabores con fotografías */
+/* Tira horizontal compacta de sabores (píldoras con miniatura sin fondo) */
 .reign-flavor-strip {
   display: flex;
-  gap: 6px;
+  gap: 4px;
   overflow-x: auto;
-  padding: 3px 2px 6px;
+  padding: 2px 1px 3px;
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
-  scrollbar-color: rgba(229, 183, 0, 0.45) rgba(255, 255, 255, 0.05);
+  scrollbar-color: rgba(229, 183, 0, 0.4) rgba(255, 255, 255, 0.04);
 }
 
 .reign-flavor-strip::-webkit-scrollbar {
-  height: 5px;
+  height: 3px;
 }
 
 .reign-flavor-strip::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 999px;
 }
 
 .reign-flavor-strip::-webkit-scrollbar-thumb {
-  background: rgba(229, 183, 0, 0.45);
+  background: rgba(229, 183, 0, 0.4);
   border-radius: 999px;
 }
 
 .reign-flavor-option {
-  flex: 0 0 74px;
+  flex: 0 0 auto;
   scroll-snap-align: start;
   background: rgba(255, 255, 255, 0.04);
-  border: 1.5px solid rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  padding: 4px;
-  display: flex;
-  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 2px 6px 2px 3px;
+  display: inline-flex;
+  flex-direction: row;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
   color: var(--text-primary);
-  text-align: center;
+  text-align: left;
 }
 
 .reign-flavor-option:hover {
   border-color: rgba(229, 183, 0, 0.65);
-  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .reign-flavor-option.is-selected {
-  background: linear-gradient(145deg, rgba(229, 183, 0, 0.22), rgba(216, 27, 183, 0.22));
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
   border-color: #FFE066;
-  box-shadow: 0 0 12px rgba(229, 183, 0, 0.35);
+  box-shadow: 0 0 8px rgba(229, 183, 0, 0.28);
 }
 
 .reign-opt-img-wrap {
-  width: 58px;
-  height: 64px;
-  border-radius: 7px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
   overflow: hidden;
-  background: #0D0616;
+  background: rgba(13, 6, 22, 0.85);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .reign-opt-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 
 .reign-opt-name {
-  font-size: 0.62rem;
+  font-size: 0.59rem;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   color: #FFFFFF;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  min-height: 1.45rem;
+  white-space: nowrap;
 }
 
 .reign-opt-status {
-  font-size: 0.56rem;
+  font-size: 0.48rem;
   font-weight: 800;
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text-secondary);
+  display: none;
 }
 
 .reign-flavor-option.is-selected .reign-opt-status {
+  display: inline-block;
   background: #FFE066;
   color: #0B0410;
 }
 
-/* Resumen de configuración (Sección 4) */
+/* Resumen de configuración compacto (Sección 4) */
 .reign-config-summary-card {
-  background: rgba(9, 4, 16, 0.78);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 10px;
-  padding: 8px;
+  background: rgba(9, 4, 16, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 7px;
+  padding: 4px 6px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 3px;
 }
 
 .reign-summary-modules-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 5px;
+  gap: 4px;
 }
 
 .reign-summary-module-pill {
@@ -1292,19 +1296,19 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 4px 6px;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 5px;
+  padding: 2px 4px;
 }
 
 .reign-summary-f1-img,
 .reign-summary-f2-img {
-  width: 28px;
-  height: 34px;
-  border-radius: 5px;
-  object-fit: cover;
+  width: 18px;
+  height: 20px;
+  border-radius: 3px;
+  object-fit: contain;
   flex-shrink: 0;
 }
 
@@ -1315,14 +1319,14 @@
 }
 
 .reign-pill-label {
-  font-size: 0.58rem;
+  font-size: 0.48rem;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
+  line-height: 1;
 }
 
 .reign-summary-pill-text strong {
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   color: #FFFFFF;
   white-space: nowrap;
   overflow: hidden;
@@ -1332,30 +1336,33 @@
 .reign-summary-plus {
   font-weight: 900;
   color: #FFE066;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   flex-shrink: 0;
 }
 
 .reign-summary-details-list {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-  font-size: 0.7rem;
-  border-top: 1px dashed rgba(255, 255, 255, 0.1);
-  padding-top: 5px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-size: 0.59rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-top: 2px;
 }
 
 .reign-summary-detail-line {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 6px;
+  gap: 3px;
   color: var(--text-secondary);
+}
+
+.reign-summary-detail-line:first-child {
+  display: none;
 }
 
 .reign-summary-detail-line strong {
   color: #FFFFFF;
-  text-align: right;
 }
 
 .reign-summary-price-val {
@@ -1366,30 +1373,31 @@
 .reign-qty-toggle-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  gap: 4px;
 }
 
 .reign-qty-opt-btn {
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
-  padding: 5px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 5px;
+  padding: 2px 4px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 1px;
+  justify-content: center;
+  gap: 3px;
   cursor: pointer;
   color: var(--text-secondary);
   transition: all 0.2s ease;
 }
 
 .reign-qty-opt-btn span {
-  font-size: 0.62rem;
+  font-size: 0.55rem;
   font-weight: 700;
 }
 
 .reign-qty-opt-btn strong {
-  font-size: 0.72rem;
+  font-size: 0.61rem;
   color: #FFFFFF;
 }
 
@@ -1401,13 +1409,13 @@
 
 .btn-open-full-configurator {
   width: 100%;
-  background: rgba(216, 27, 183, 0.16);
-  border: 1px solid rgba(216, 27, 183, 0.45);
+  background: rgba(216, 27, 183, 0.14);
+  border: 1px solid rgba(216, 27, 183, 0.4);
   color: #F5D0FE;
-  font-size: 0.7rem;
+  font-size: 0.6rem;
   font-weight: 700;
-  padding: 6px 10px;
-  border-radius: 8px;
+  padding: 3px 6px;
+  border-radius: 5px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -1573,7 +1581,7 @@
 .reign-modal-card-img-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

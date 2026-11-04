@@ -240,12 +240,13 @@ const CheckoutController = {
         <div class="checkout-sec-divider">🛒 PRODUCTOS AL DETAL</div>
       `;
       itemsHtml += detalItems.map(item => {
-        const lineTotal = (typeof item.calculatedLinePrice === 'number') ? item.calculatedLinePrice : (item.precio * item.qty);
+        const lineTotal = item.precio * item.qty;
         const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
         const f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
         const f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
         const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
         const thumbSrc = item.flavor1Img || item.imagen || (prodObj && prodObj.imagen) || 'assets/logo/logo.png';
+        const isEligible = typeof PromotionEngine !== 'undefined' && PromotionEngine.isProductEligible(item.productId);
 
         return `
         <div class="checkout-item-card">
@@ -264,7 +265,7 @@ const CheckoutController = {
               </div>
             ` : (item.variant ? `<div class="checkout-item-flavor-text">Sabor: <strong>${item.variant}</strong></div>` : '')}
             <div class="checkout-item-price-row">
-              <span class="checkout-item-unit">${Cart.formatCOP(item.effectiveUnitPrice || item.precio)} c/u</span>
+              <span class="checkout-item-unit">${Cart.formatCOP(item.precio)} c/u ${isEligible ? '<small style="color: #F59E0B; font-size: 0.72rem;">🏷️ Elegible</small>' : ''}</span>
               <strong class="checkout-item-total">${Cart.formatCOP(lineTotal)}</strong>
             </div>
           </div>
@@ -336,12 +337,34 @@ const CheckoutController = {
       shippingLineHtml = `<span>${Cart.formatCOP(shipping.cost)}</span>`;
     }
 
+    const promoDetails = Cart.getPromotionDetails();
+    const detalNormalSubtotal = Cart.getDetalNormalSubtotal();
+    const detalFinalSubtotal = Cart.getDetalSubtotal();
+
     summaryContainer.innerHTML = `
       ${detalItems.length > 0 ? `
         <div class="summary-line">
-          <span>Subtotal Detal:</span>
-          <span>${Cart.formatCOP(detalSubtotal)}</span>
+          <span>Subtotal Normal Detal:</span>
+          <span>${Cart.formatCOP(detalNormalSubtotal)}</span>
         </div>
+        ${promoDetails.hasPromo ? `
+          <div class="summary-line promo-discount-line" style="color: #10B981; font-weight: 600;">
+            <span>🔥 PROMOCIÓN COMBINADA:</span>
+            <span>-${Cart.formatCOP(promoDetails.discount)}</span>
+          </div>
+          <div class="promo-discount-card-mini" style="background: rgba(16, 185, 129, 0.08); border: 1px dashed rgba(16, 185, 129, 0.35); border-radius: 8px; padding: 6px 10px; margin: 4px 0 8px 0; font-size: 0.8rem; color: #E2E8F0;">
+            <div style="color: #34D399; font-weight: 600;">
+              ✨ Ahorro aplicado: ${Cart.formatCOP(promoDetails.discount)}
+            </div>
+            <div style="font-size: 0.76rem; color: #94A3B8;">
+              Menor ahorro entre referencias elegibles: <strong>${promoDetails.selectedRef.nombre}</strong>.
+            </div>
+          </div>
+          <div class="summary-line" style="font-weight: 600;">
+            <span>Subtotal Detal (con Ahorro):</span>
+            <span>${Cart.formatCOP(detalFinalSubtotal)}</span>
+          </div>
+        ` : ''}
       ` : ''}
       ${wsItems.length > 0 ? `
         <div class="summary-line">
@@ -434,6 +457,8 @@ const CheckoutController = {
       },
       detalItems,
       wsItems,
+      detalNormalSubtotal: Cart.getDetalNormalSubtotal(),
+      promoDetails: Cart.getPromotionDetails(),
       detalSubtotal,
       wsSubtotal,
       totalWsQty,

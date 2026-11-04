@@ -488,54 +488,60 @@ const Cart = {
   },
 
   /**
-   * Calcula precios al detal agrupando por referencia de producto (productId)
-   * para que la promoción de 2 unidades (ej: REIGN BAR PALETTE 2x $70.000)
-   * aplique tanto si lleva 2 unidades con la misma combinación como si lleva
-   * 2 unidades con combinaciones de sabores diferentes.
+   * Recalcula precios de cada línea al detal con sus precios individuales reales.
+   * Los descuentos no se aplican individualmente ni se alteran los precios por ítem.
    */
   recalculateDetalPrices() {
     const detalItems = this.getDetalItems();
-    const byProduct = {};
     detalItems.forEach(item => {
-      if (!byProduct[item.productId]) byProduct[item.productId] = [];
-      byProduct[item.productId].push(item);
-    });
-
-    Object.values(byProduct).forEach(group => {
-      const first = group[0];
-      const unitRegular = Number(first.precio) || 0;
-      const promo2 = Number(first.precio_promo_2) || 0;
-      const totalQty = group.reduce((s, i) => s + (Number(i.qty) || 0), 0);
-
-      if (promo2 > 0 && promo2 < unitRegular * 2 && totalQty >= 2) {
-        const pairs = Math.floor(totalQty / 2);
-        let promoUnitsRemaining = pairs * 2;
-        const promoUnitRate = promo2 / 2;
-
-        group.forEach(item => {
-          const q = Number(item.qty) || 0;
-          const promoUnitsForItem = Math.min(q, promoUnitsRemaining);
-          const regularUnitsForItem = q - promoUnitsForItem;
-          promoUnitsRemaining -= promoUnitsForItem;
-
-          item.calculatedLinePrice = (promoUnitsForItem * promoUnitRate) + (regularUnitsForItem * unitRegular);
-          item.hasPromoApplied = promoUnitsForItem > 0;
-          item.effectiveUnitPrice = q > 0 ? Math.round(item.calculatedLinePrice / q) : unitRegular;
-        });
-      } else {
-        group.forEach(item => {
-          const q = Number(item.qty) || 0;
-          item.calculatedLinePrice = q * unitRegular;
-          item.hasPromoApplied = false;
-          item.effectiveUnitPrice = unitRegular;
-        });
-      }
+      const q = Math.max(0, Number(item.qty) || 0);
+      const unit = Math.max(0, Number(item.precio) || 0);
+      item.calculatedLinePrice = q * unit;
+      item.effectiveUnitPrice = unit;
+      item.hasPromoApplied = false;
     });
   },
 
-  getDetalSubtotal() {
+  /**
+   * Subtotal normal al detal (suma de precios regulares x cantidades)
+   */
+  getDetalNormalSubtotal() {
     this.recalculateDetalPrices();
     return this.getDetalItems().reduce((sum, item) => sum + (Number(item.calculatedLinePrice) || 0), 0);
+  },
+
+  /**
+   * Obtiene el desglose oficial de la promoción combinada por menor ahorro
+   */
+  getPromotionDetails() {
+    if (typeof PromotionEngine !== 'undefined') {
+      return PromotionEngine.calculateGlobalDiscount(this.getDetalItems());
+    }
+    const normal = this.getDetalNormalSubtotal();
+    return {
+      hasPromo: false,
+      isEligible: false,
+      normalSubtotal: normal,
+      totalEligibleQty: 0,
+      eligibleReferences: [],
+      selectedRef: null,
+      discount: 0,
+      finalSubtotal: normal
+    };
+  },
+
+  /**
+   * Descuento global aplicado al detal
+   */
+  getDetalDiscount() {
+    return this.getPromotionDetails().discount;
+  },
+
+  /**
+   * Subtotal detal final después del descuento global
+   */
+  getDetalSubtotal() {
+    return this.getPromotionDetails().finalSubtotal;
   },
 
   getWholesaleSubtotal() {
@@ -765,8 +771,9 @@ const Cart = {
           `;
 
           html += detalItems.map(item => {
-            const linePrice = (typeof item.calculatedLinePrice === 'number') ? item.calculatedLinePrice : (item.precio * item.qty);
-            const promoNote = item.hasPromoApplied ? '<span class="item-promo-tag">🔥 Promo 2x</span>' : '';
+            const linePrice = item.precio * item.qty;
+            const isEligible = typeof PromotionEngine !== 'undefined' && PromotionEngine.isProductEligible(item.productId);
+            const promoNote = isEligible ? '<span class="item-promo-tag" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.72rem; padding: 2px 6px; border-radius: 4px;">🏷️ Elegible Promo</span>' : '';
 
             const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
             const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
@@ -826,7 +833,7 @@ const Cart = {
                     </div>
                     <div class="cart-item-title-wrap">
                       <h4 class="item-title">${item.nombre}</h4>
-                      <div class="item-unit-price">${this.formatCOP(item.effectiveUnitPrice || item.precio)} c/u ${promoNote}</div>
+                      <div class="item-unit-price">${this.formatCOP(item.precio)} c/u ${promoNote}</div>
                     </div>
                   </div>
                   <button type="button" class="btn-remove-item" onclick="Cart.removeItem('${item.key}')" title="Eliminar del carrito">🗑️</button>
@@ -1014,13 +1021,39 @@ const Cart = {
           shippingLineContent = `${this.formatCOP(shipping.cost)}`;
         }
 
+        const promoDetails = this.getPromotionDetails();
+        const detalNormalSubtotal = this.getDetalNormalSubtotal();
+        const detalFinalSubtotal = this.getDetalSubtotal();
+
         footerContainer.innerHTML = `
           <div class="cart-summary-box">
             ${detalItems.length > 0 ? `
               <div class="summary-line">
-                <span>Subtotal Detal (${detalItems.reduce((s,i)=>s+i.qty, 0)} uds):</span>
-                <span>${this.formatCOP(detalSubtotal)}</span>
+                <span>Subtotal Normal Detal (${detalItems.reduce((s,i)=>s+i.qty, 0)} uds):</span>
+                <span>${this.formatCOP(detalNormalSubtotal)}</span>
               </div>
+              ${promoDetails.hasPromo ? `
+                <div class="summary-line promo-discount-line" style="color: #10B981; font-weight: 600;">
+                  <span>🔥 PROMOCIÓN COMBINADA:</span>
+                  <span>-${this.formatCOP(promoDetails.discount)}</span>
+                </div>
+                <div class="promo-discount-card-mini" style="background: rgba(16, 185, 129, 0.08); border: 1px dashed rgba(16, 185, 129, 0.35); border-radius: 8px; padding: 8px 10px; margin: 4px 0 8px 0; font-size: 0.8rem; color: #E2E8F0;">
+                  <div style="color: #34D399; font-weight: 600; margin-bottom: 2px;">
+                    ✨ Ahorro aplicado: ${this.formatCOP(promoDetails.discount)}
+                  </div>
+                  <div style="font-size: 0.76rem; color: #94A3B8;">
+                    Menor ahorro entre tus referencias elegibles: <strong>${promoDetails.selectedRef.nombre}</strong> (${this.formatCOP(promoDetails.discount)}).
+                  </div>
+                </div>
+                <div class="summary-line" style="font-weight: 600;">
+                  <span>Subtotal Detal (con Ahorro):</span>
+                  <span>${this.formatCOP(detalFinalSubtotal)}</span>
+                </div>
+              ` : (promoDetails.totalEligibleQty === 1 ? `
+                <div class="promo-hint-notice" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 6px 10px; margin: 4px 0 8px 0; font-size: 0.78rem; color: #FBBF24;">
+                  💡 Agrega 1 vape más en promo para activar el <strong>descuento global combinado</strong>.
+                </div>
+              ` : '')}
             ` : ''}
             ${wsItems.length > 0 ? `
               <div class="summary-line ws-summary-line">

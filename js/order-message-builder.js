@@ -21,7 +21,8 @@
     MONEY: '\u{1F4B0}',       // 💰
     CARD: '\u{1F4B3}',        // 💳
     CHECK: '\u{2705}',        // ✅
-    HANDSHAKE: '\u{1F91D}'    // 🤝
+    HANDSHAKE: '\u{1F91D}',   // 🤝
+    FIRE: '\u{1F525}'         // 🔥
   };
 
   const OrderMessageBuilder = {
@@ -111,8 +112,8 @@
         lines.push('');
 
         detalItems.forEach((item, idx) => {
-          const lineSub = (typeof item.calculatedLinePrice === 'number') ? item.calculatedLinePrice : (item.precio * item.qty);
-          const unitEff = item.effectiveUnitPrice || (item.qty > 0 ? Math.round(lineSub / item.qty) : item.precio);
+          const unitPrice = Number(item.precio) || 0;
+          const lineSub = unitPrice * item.qty;
           const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
           const f1 = this.cleanText(item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant || ''));
           const f2 = this.cleanText(item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1));
@@ -120,7 +121,7 @@
 
           lines.push(`${idx + 1}. *${cleanNombre}*`);
           lines.push(`   - Cantidad: ${item.qty} ${item.qty === 1 ? 'unidad' : 'unidades'}.`);
-          lines.push(`   - Precio unitario: ${this.formatCOP(unitEff)}.`);
+          lines.push(`   - Precio unitario: ${this.formatCOP(unitPrice)}.`);
           if (isDual) {
             lines.push(`   - Primer sabor: ${f1}.`);
             lines.push(`   - Segundo sabor: ${f2}.`);
@@ -132,8 +133,17 @@
           lines.push('');
         });
 
-        lines.push(`*SUBTOTAL DETAL: ${this.formatCOP(detalSubtotal)}*`);
-        lines.push('');
+        const promoDetails = orderData.promoDetails;
+        if (promoDetails && promoDetails.hasPromo && promoDetails.discount > 0) {
+          lines.push(`*SUBTOTAL NORMAL: ${this.formatCOP(promoDetails.normalSubtotal)}*`);
+          lines.push(`${EMOJI.FIRE} *DESCUENTO GLOBAL (PROMOCIÓN COMBINADA):* -${this.formatCOP(promoDetails.discount)}`);
+          lines.push(`   *(Menor ahorro promocional entre referencias elegibles: ${promoDetails.selectedRef.nombre})*`);
+          lines.push(`*SUBTOTAL DETAL CON DESCUENTO: ${this.formatCOP(promoDetails.finalSubtotal)}*`);
+          lines.push('');
+        } else {
+          lines.push(`*SUBTOTAL DETAL: ${this.formatCOP(detalSubtotal)}*`);
+          lines.push('');
+        }
       }
 
       // 3. PRODUCTOS MAYORISTAS

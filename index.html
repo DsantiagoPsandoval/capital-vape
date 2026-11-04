@@ -9,16 +9,17 @@
   <link rel="icon" type="image/png" href="assets/logo/favicon.png">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/main.css?v=20261103_12">
-  <link rel="stylesheet" href="css/layout.css?v=20261103_12">
-  <link rel="stylesheet" href="css/catalog.css?v=20261103_12">
-  <link rel="stylesheet" href="css/cart.css?v=20261103_12">
-  <link rel="stylesheet" href="css/checkout.css?v=20261103_12">
-  <link rel="stylesheet" href="css/toast.css?v=20261103_12">
-  <link rel="stylesheet" href="css/wholesale.css?v=20261103_12">
-  <link rel="stylesheet" href="css/admin.css?v=20261103_12">
-  <link rel="stylesheet" href="css/responsive.css?v=20261103_12">
-  <link rel="stylesheet" href="css/christmas.css?v=20261103_12">
+  <link rel="stylesheet" href="css/main.css?v=20261103_13">
+  <link rel="stylesheet" href="css/layout.css?v=20261103_13">
+  <link rel="stylesheet" href="css/catalog.css?v=20261103_13">
+  <link rel="stylesheet" href="css/cart.css?v=20261103_13">
+  <link rel="stylesheet" href="css/checkout.css?v=20261103_13">
+  <link rel="stylesheet" href="css/toast.css?v=20261103_13">
+  <link rel="stylesheet" href="css/wholesale.css?v=20261103_13">
+  <link rel="stylesheet" href="css/admin.css?v=20261103_13">
+  <link rel="stylesheet" href="css/responsive.css?v=20261103_13">
+  <link rel="stylesheet" href="css/christmas.css?v=20261103_13">
+  <link rel="stylesheet" href="css/luxury-menu.css?v=20261103_13">
   <link rel="stylesheet" href="css/age-verification.css?v=20261014_1">
 
   <!-- Anti-FOUC para Verificación de Mayoría de Edad (+18) -->
@@ -178,25 +179,42 @@
       </a>
 
       <!-- Desktop Links & Mobile Drawer Content -->
-      <nav class="nav-menu" id="navMenu">
+      <nav class="nav-menu" id="navMenu" aria-label="Menú principal">
         <div class="mobile-menu-header">
-          <div class="brand-name">CAPITAL<span>VAPE</span></div>
-          <button type="button" class="mobile-menu-close" id="mobileMenuClose" aria-label="Cerrar Menú">&times;</button>
-        </div>
-        
-        <a href="#inicio" class="nav-link active">Inicio</a>
-        <a href="#catalogo" class="nav-link">Catálogo</a>
-        <a href="#mayoristas" class="nav-link nav-link-wholesale">¿Quieres ser mayorista?</a>
-        <a href="#informacion" class="nav-link">Envíos & Políticas</a>
-        <a href="#contacto" class="nav-link">Contacto</a>
-        
-        <div class="mobile-menu-extra">
-          <button type="button" class="btn btn-secondary btn-block open-cart-btn">
-            <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Ver Carrito Detal
+          <div class="lux-menu-brand">
+            <img src="assets/logo/logo.png" alt="Capital Vape" class="lux-menu-logo">
+            <div class="lux-menu-brand-text">
+              <div class="brand-name">CAPITAL<span>VAPE</span></div>
+              <span class="lux-menu-tagline">Premium Vape Boutique · Bogotá</span>
+            </div>
+          </div>
+          <button type="button" class="mobile-menu-close" id="mobileMenuClose" aria-label="Cerrar Menú">
+            <span class="lux-close-line"></span>
+            <span class="lux-close-line"></span>
           </button>
-          <a href="#mayoristas" class="btn btn-primary btn-block">
-            <span>🔑 Portal Mayorista</span>
+        </div>
+
+        <div class="lux-menu-divider" aria-hidden="true"><span>◆</span></div>
+
+        <a href="#inicio" class="nav-link active"><span class="lux-link-index">01</span><span class="lux-link-label">Inicio</span><span class="lux-link-arrow" aria-hidden="true"></span></a>
+        <a href="#catalogo" class="nav-link"><span class="lux-link-index">02</span><span class="lux-link-label">Catálogo</span><span class="lux-link-arrow" aria-hidden="true"></span></a>
+        <a href="#mayoristas" class="nav-link nav-link-wholesale"><span class="lux-link-index">03</span><span class="lux-link-label">¿Quieres ser mayorista?</span><span class="lux-link-arrow" aria-hidden="true"></span></a>
+        <a href="#informacion" class="nav-link"><span class="lux-link-index">04</span><span class="lux-link-label">Envíos &amp; Políticas</span><span class="lux-link-arrow" aria-hidden="true"></span></a>
+        <a href="#contacto" class="nav-link"><span class="lux-link-index">05</span><span class="lux-link-label">Contacto</span><span class="lux-link-arrow" aria-hidden="true"></span></a>
+
+        <div class="mobile-menu-extra">
+          <button type="button" class="btn btn-secondary btn-block open-cart-btn lux-menu-cart-btn">
+            <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Ver Carrito
+          </button>
+          <a href="#mayoristas" class="btn btn-primary btn-block lux-menu-ws-btn">
+            <span>Portal Mayorista</span>
           </a>
+          <div class="lux-menu-social">
+            <a href="https://wa.me/573133572726" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icons/whatsapp.png" alt="WhatsApp"></a>
+            <a href="https://www.instagram.com/capitalvap/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icons/instagram.png" alt="Instagram"></a>
+            <a href="https://www.tiktok.com/@capital..vape" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><img src="assets/icons/tiktok.png" alt="TikTok"></a>
+          </div>
+          <span class="lux-menu-footnote">Venta exclusiva +18 · Envíos a toda Colombia</span>
         </div>
       </nav>
 
@@ -213,7 +231,11 @@
         <a href="#mayoristas" class="btn btn-primary nav-wholesale-btn">Mayoristas</a>
         
         <!-- Mobile 3-Bars Hamburger Button -->
-        <button type="button" class="mobile-toggle" id="mobileMenuToggle" aria-label="Abrir Menú">☰</button>
+        <button type="button" class="mobile-toggle" id="mobileMenuToggle" aria-label="Abrir Menú" aria-expanded="false">
+          <span class="lux-burger-line"></span>
+          <span class="lux-burger-line"></span>
+          <span class="lux-burger-line"></span>
+        </button>
       </div>
     </div>
   </header>
@@ -1258,19 +1280,19 @@
 
   <!-- JAVASCRIPT SCRIPTS -->
   <script src="js/vendor/three.min.js" defer></script>
-  <script src="js/config.js?v=20261103_12"></script>
-  <script src="js/toast.js?v=20261103_12"></script>
-  <script src="js/products-data.js?v=20261103_12"></script>
-  <script src="js/reign-palette-configurator.js?v=20261103_12"></script>
-  <script src="js/wholesale.js?v=20261103_12"></script>
-  <script src="js/cloud-sync.js?v=20261103_12"></script>
-  <script src="js/admin.js?v=20261103_12"></script>
-  <script src="js/cart.js?v=20261103_12"></script>
-  <script src="js/checkout.js?v=20261103_12"></script>
-  <script src="js/catalog.js?v=20261103_12"></script>
+  <script src="js/config.js?v=20261103_13"></script>
+  <script src="js/toast.js?v=20261103_13"></script>
+  <script src="js/products-data.js?v=20261103_13"></script>
+  <script src="js/reign-palette-configurator.js?v=20261103_13"></script>
+  <script src="js/wholesale.js?v=20261103_13"></script>
+  <script src="js/cloud-sync.js?v=20261103_13"></script>
+  <script src="js/admin.js?v=20261103_13"></script>
+  <script src="js/cart.js?v=20261103_13"></script>
+  <script src="js/checkout.js?v=20261103_13"></script>
+  <script src="js/catalog.js?v=20261103_13"></script>
   <script src="js/age-verification.js?v=20261014_1"></script>
-  <script src="js/christmas.js?v=20261103_12" defer></script>
-  <script src="js/main.js?v=20261103_12"></script>
+  <script src="js/christmas.js?v=20261103_13" defer></script>
+  <script src="js/main.js?v=20261103_13"></script>
 </body>
 </html>
 

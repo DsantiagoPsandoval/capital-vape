@@ -1,0 +1,397 @@
+/* ==========================================================================
+   CAPITAL VAPE — MENÚ HAMBURGUESA LUXURY (MÓVIL)
+   Negro profundo + oro champagne, tipografía espaciada, enlaces numerados
+   y animaciones escalonadas suaves. Solo afecta pantallas <= 768px.
+   ========================================================================== */
+
+:root {
+  --lux-gold: #E8C872;
+  --lux-gold-soft: #F5E3A8;
+  --lux-gold-deep: #B8923A;
+  --lux-gold-line: rgba(232, 200, 114, 0.28);
+  --lux-ink: #07040A;
+}
+
+/* El botón ☰ y los elementos del drawer no existen en escritorio */
+.lux-burger-line,
+.lux-menu-divider,
+.lux-link-index,
+.lux-link-arrow,
+.lux-menu-social,
+.lux-menu-footnote {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  /* ---------------- BOTÓN HAMBURGUESA (3 líneas finas doradas) ---------------- */
+  .mobile-toggle {
+    position: relative !important;
+    width: 40px !important;
+    height: 40px !important;
+    padding: 0 !important;
+    border-radius: 12px !important;
+    background: linear-gradient(145deg, rgba(232, 200, 114, 0.1), rgba(255, 255, 255, 0.02)) !important;
+    border: 1px solid var(--lux-gold-line) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 4px 14px rgba(0, 0, 0, 0.45) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    font-size: 0 !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease !important;
+  }
+
+  .mobile-toggle:active {
+    transform: scale(0.94);
+  }
+
+  .mobile-toggle:hover {
+    border-color: var(--lux-gold) !important;
+    box-shadow: 0 0 18px rgba(232, 200, 114, 0.25) !important;
+  }
+
+  .lux-burger-line {
+    display: block;
+    height: 1.5px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--lux-gold-soft), var(--lux-gold));
+    transition: width 0.3s ease;
+  }
+
+  .lux-burger-line:nth-child(1) { width: 18px; }
+  .lux-burger-line:nth-child(2) { width: 12px; margin-left: 6px; }
+  .lux-burger-line:nth-child(3) { width: 18px; }
+
+  .mobile-toggle:hover .lux-burger-line:nth-child(2) {
+    width: 18px;
+    margin-left: 0;
+  }
+
+  /* ---------------- PANEL A PANTALLA COMPLETA ---------------- */
+  .nav-menu {
+    background:
+      radial-gradient(120% 60% at 100% 0%, rgba(232, 200, 114, 0.12) 0%, transparent 55%),
+      radial-gradient(90% 50% at 0% 100%, rgba(216, 27, 183, 0.1) 0%, transparent 60%),
+      linear-gradient(180deg, #0B070F 0%, #07040A 100%) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: 22px 22px calc(24px + env(safe-area-inset-bottom)) !important;
+    gap: 6px !important;
+  }
+
+  /* Marco dorado fino interior */
+  .nav-menu.open::before {
+    content: "";
+    position: fixed;
+    inset: 10px;
+    border: 1px solid rgba(232, 200, 114, 0.12);
+    border-radius: 22px;
+    pointer-events: none;
+  }
+
+  .nav-menu.open {
+    animation: luxMenuIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+
+  @keyframes luxMenuIn {
+    from { opacity: 0; transform: scale(1.03); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* ---------------- CABECERA ---------------- */
+  .mobile-menu-header {
+    padding-bottom: 6px !important;
+    border-bottom: none !important;
+  }
+
+  .lux-menu-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .lux-menu-logo {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--lux-gold-line);
+    box-shadow: 0 0 0 4px rgba(232, 200, 114, 0.06), 0 6px 18px rgba(0, 0, 0, 0.6);
+  }
+
+  .lux-menu-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .lux-menu-brand-text .brand-name {
+    font-size: 1.2rem !important;
+    letter-spacing: 0.16em !important;
+    line-height: 1;
+    color: #FFFFFF;
+  }
+
+  .lux-menu-brand-text .brand-name span {
+    background: linear-gradient(135deg, var(--lux-gold-soft), var(--lux-gold) 55%, var(--lux-gold-deep));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lux-menu-tagline {
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(245, 227, 168, 0.6);
+  }
+
+  /* Botón cerrar: aro fino con X dibujada */
+  .mobile-menu-close {
+    position: relative !important;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    border: 1px solid var(--lux-gold-line) !important;
+    font-size: 0 !important;
+    transition: transform 0.35s ease, border-color 0.3s ease !important;
+  }
+
+  .mobile-menu-close:hover,
+  .mobile-menu-close:active {
+    transform: rotate(90deg);
+    border-color: var(--lux-gold) !important;
+  }
+
+  .lux-close-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--lux-gold);
+  }
+
+  .lux-close-line:nth-child(1) { transform: translate(-50%, -50%) rotate(45deg); }
+  .lux-close-line:nth-child(2) { transform: translate(-50%, -50%) rotate(-45deg); }
+
+  /* Separador ornamental ◆ */
+  .lux-menu-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 10px 0 8px;
+    color: var(--lux-gold);
+    font-size: 0.55rem;
+  }
+
+  .lux-menu-divider::before,
+  .lux-menu-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--lux-gold-line), transparent);
+  }
+
+  /* ---------------- ENLACES NUMERADOS ---------------- */
+  .nav-menu .nav-link {
+    display: flex !important;
+    align-items: center !important;
+    gap: 16px !important;
+    width: 100% !important;
+    padding: 17px 4px !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #F4F1EA !important;
+    font-family: var(--font-heading);
+    font-size: 1.12rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    transition: color 0.25s ease, padding-left 0.3s ease !important;
+  }
+
+  .nav-menu .nav-link::after {
+    display: none !important;
+  }
+
+  .lux-link-index {
+    display: inline-block;
+    min-width: 22px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--lux-gold);
+    opacity: 0.75;
+  }
+
+  .lux-link-label {
+    flex: 1;
+  }
+
+  /* Flecha minimalista dibujada con CSS */
+  .lux-link-arrow {
+    display: inline-block;
+    position: relative;
+    width: 18px;
+    height: 1px;
+    background: rgba(232, 200, 114, 0.45);
+    transition: width 0.3s ease, background 0.3s ease;
+  }
+
+  .lux-link-arrow::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 6px;
+    height: 6px;
+    border-top: 1px solid currentColor;
+    border-right: 1px solid currentColor;
+    color: rgba(232, 200, 114, 0.7);
+    transform: rotate(45deg);
+  }
+
+  .nav-menu .nav-link:hover,
+  .nav-menu .nav-link:active,
+  .nav-menu .nav-link.active {
+    color: var(--lux-gold-soft) !important;
+    padding-left: 10px !important;
+  }
+
+  .nav-menu .nav-link:hover .lux-link-arrow,
+  .nav-menu .nav-link:active .lux-link-arrow,
+  .nav-menu .nav-link.active .lux-link-arrow {
+    width: 26px;
+    background: var(--lux-gold);
+  }
+
+  /* Mayorista: acento dorado discreto */
+  .nav-menu .nav-link.nav-link-wholesale {
+    background: transparent !important;
+    color: var(--lux-gold-soft) !important;
+  }
+
+  .nav-menu .nav-link.nav-link-wholesale .lux-link-label {
+    background: linear-gradient(135deg, var(--lux-gold-soft), var(--lux-gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Entrada escalonada de los enlaces */
+  .nav-menu.open .nav-link,
+  .nav-menu.open .mobile-menu-extra {
+    opacity: 0;
+    animation: luxItemIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  .nav-menu.open .nav-link:nth-of-type(1) { animation-delay: 0.08s; }
+  .nav-menu.open .nav-link:nth-of-type(2) { animation-delay: 0.13s; }
+  .nav-menu.open .nav-link:nth-of-type(3) { animation-delay: 0.18s; }
+  .nav-menu.open .nav-link:nth-of-type(4) { animation-delay: 0.23s; }
+  .nav-menu.open .nav-link:nth-of-type(5) { animation-delay: 0.28s; }
+  .nav-menu.open .mobile-menu-extra       { animation-delay: 0.34s; }
+
+  @keyframes luxItemIn {
+    from { opacity: 0; transform: translateX(-14px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* ---------------- PIE DEL MENÚ ---------------- */
+  .mobile-menu-extra {
+    gap: 10px !important;
+    padding-top: 22px !important;
+    border-top: none !important;
+  }
+
+  .lux-menu-ws-btn {
+    padding: 15px 18px !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg, #F5E3A8 0%, #E8C872 45%, #B8923A 100%) !important;
+    border: none !important;
+    color: #120A04 !important;
+    font-size: 0.86rem !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.18em !important;
+    text-transform: uppercase !important;
+    text-align: center !important;
+    box-shadow: 0 10px 26px rgba(232, 200, 114, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.5) !important;
+  }
+
+  .lux-menu-cart-btn {
+    padding: 14px 18px !important;
+    border-radius: 14px !important;
+    background: transparent !important;
+    border: 1px solid var(--lux-gold-line) !important;
+    color: #F4F1EA !important;
+    font-size: 0.82rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+  }
+
+  .lux-menu-cart-btn:active,
+  .lux-menu-cart-btn:hover {
+    border-color: var(--lux-gold) !important;
+    color: var(--lux-gold-soft) !important;
+  }
+
+  .lux-menu-social {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  .lux-menu-social a {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid var(--lux-gold-line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+  }
+
+  .lux-menu-social a:active,
+  .lux-menu-social a:hover {
+    border-color: var(--lux-gold);
+    transform: translateY(-2px);
+  }
+
+  .lux-menu-social img {
+    width: 19px;
+    height: 19px;
+    object-fit: contain;
+  }
+
+  .lux-menu-footnote {
+    display: block;
+    text-align: center;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244, 241, 234, 0.38);
+    margin-top: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-menu.open,
+  .nav-menu.open .nav-link,
+  .nav-menu.open .mobile-menu-extra {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}

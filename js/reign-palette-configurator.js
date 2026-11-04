@@ -276,9 +276,9 @@ const ReignPaletteConfigurator = {
   },
 
   /**
-   * 1. ESCENARIO DE IMAGEN 3D EN LA PARTE SUPERIOR DE LA TARJETA
+   * 1. ESCENARIO DE IMAGEN 3D EN LA PARTE SUPERIOR DE LA TARJETA (Soporta Detal y Mayorista)
    */
-  renderCardImageStageHTML(product) {
+  renderCardImageStageHTML(product, contextPrefix = 'detal') {
     this.initDefaults();
     const isSingleMode = this.mode === 'single';
     const fSingle = this.getFlavorObj(this.singleFlavor) || { nombre: this.singleFlavor, img: product.imagen };
@@ -287,29 +287,30 @@ const ReignPaletteConfigurator = {
 
     const leftHalfSrc = this.getLeftHalfImgPath(f1);
     const rightHalfSrc = this.getRightHalfImgPath(f2);
+    const suffix = contextPrefix === 'ws' ? 'Ws' : '';
 
     return `
       <!-- Vista Modalidad Un Sabor -->
-      <div class="reign-card-img-single" id="reignPreviewSingleView" style="display: ${isSingleMode ? 'flex' : 'none'};">
+      <div class="reign-card-img-single" id="reignPreviewSingleView${suffix}" style="display: ${isSingleMode ? 'flex' : 'none'};">
         <img src="${fSingle.img}"
              alt="${fSingle.nombre}"
              class="product-img-real reign-main-single-img"
-             id="reignMainSingleImg"
+             id="reignMainSingleImg${suffix}"
              onerror="this.src='REIGN BAR PALETTE/b-4.webp';">
       </div>
 
       <!-- Vista Modalidad 2 Sabores: Los 2 módulos reales 3D pegados -->
-      <div class="reign-card-img-dual" id="reignPreviewDualView" style="display: ${!isSingleMode ? 'flex' : 'none'};">
+      <div class="reign-card-img-dual" id="reignPreviewDualView${suffix}" style="display: ${!isSingleMode ? 'flex' : 'none'};">
         <div class="reign-card-3d-joined">
           <img src="${leftHalfSrc}"
                alt="Primer sabor: ${f1.nombre}"
                class="reign-joined-half reign-dual-left-img"
-               id="reignDualLeftImg"
+               id="reignDualLeftImg${suffix}"
                onerror="this.src='REIGN BAR PALETTE/half-left/b-8.webp';">
           <img src="${rightHalfSrc}"
                alt="Segundo sabor: ${f2.nombre}"
                class="reign-joined-half reign-dual-right-img"
-               id="reignDualRightImg"
+               id="reignDualRightImg${suffix}"
                onerror="this.src='REIGN BAR PALETTE/half-right/b-2.webp';">
         </div>
       </div>
@@ -320,33 +321,34 @@ const ReignPaletteConfigurator = {
    * 2. CONFIGURADOR VISUAL DE TARJETAS (Igual a la captura de referencia,
    *    SIN la caja redundante de 1er Sabor + 2do Sabor ni "Combinación:" ni "Pantalla Completa")
    */
-  renderCardConfiguratorHTML(product) {
+  renderCardConfiguratorHTML(product, contextPrefix = 'detal') {
     this.initDefaults();
     const flavors = this.getFlavors();
     const isSingleMode = this.mode === 'single';
     const fSingle = this.getFlavorObj(this.singleFlavor) || flavors[0];
     const f1 = this.getFlavorObj(this.flavor1) || flavors[0];
     const f2 = this.getFlavorObj(this.flavor2) || flavors[1] || flavors[0];
+    const suffix = contextPrefix === 'ws' ? 'Ws' : '';
 
     return `
-      <div class="reign-configurator-box" id="reignCardConfigurator">
+      <div class="reign-configurator-box" id="reignCardConfigurator${suffix}">
         <div class="reign-config-header">
           <div class="reign-config-title-row">
             <div class="reign-mode-pills-inline">
               <button type="button"
-                      id="reignTabDualBtn"
-                      class="reign-config-badge is-clickable ${!isSingleMode ? 'active' : ''}"
+                      id="reignTabDualBtn${suffix}"
+                      class="reign-config-badge reign-tab-dual-btn is-clickable ${!isSingleMode ? 'active' : ''}"
                       onclick="ReignPaletteConfigurator.setMode('dual')">
                 ⚡ DUAL 2 EN 1
               </button>
               <button type="button"
-                      id="reignTabSingleBtn"
-                      class="reign-config-badge is-clickable ${isSingleMode ? 'active' : ''}"
+                      id="reignTabSingleBtn${suffix}"
+                      class="reign-config-badge reign-tab-single-btn is-clickable ${isSingleMode ? 'active' : ''}"
                       onclick="ReignPaletteConfigurator.setMode('single')">
                 🍓 1 SABOR
               </button>
             </div>
-            <div class="reign-quick-btns-inline" id="reignDualQuickBtns" style="display: ${!isSingleMode ? 'flex' : 'none'};">
+            <div class="reign-quick-btns-inline reign-dual-quick-btns" id="reignDualQuickBtns${suffix}" style="display: ${!isSingleMode ? 'flex' : 'none'};">
               <button type="button" class="reign-random-btn" onclick="ReignPaletteConfigurator.randomizeFlavors()" title="Probar combinación aleatoria">
                 🎲 Aleatorio
               </button>
@@ -355,19 +357,19 @@ const ReignPaletteConfigurator = {
               </button>
             </div>
           </div>
-          <h4 class="reign-config-title" id="reignConfigHeadingTitle">
+          <h4 class="reign-config-title" id="reignConfigHeadingTitle${suffix}">
             ${isSingleMode ? 'ELIGE TU SABOR' : 'PERSONALIZA TU REIGN BAR'}
           </h4>
-          <p class="reign-config-subtitle" id="reignConfigHeadingSub">
+          <p class="reign-config-subtitle" id="reignConfigHeadingSub${suffix}">
             ${isSingleMode ? 'Selecciona tu sabor favorito.' : 'Combina dos sabores y crea tu propia combinación.'}
           </p>
         </div>
 
         <!-- MODALIDAD A: UN SOLO SABOR -->
-        <div class="reign-step-block" id="reignSingleStepBlock" style="display: ${isSingleMode ? 'flex' : 'none'};">
+        <div class="reign-step-block reign-single-step-block" id="reignSingleStepBlock${suffix}" style="display: ${isSingleMode ? 'flex' : 'none'};">
           <div class="reign-step-header">
             <span class="reign-step-num">SABOR SELECCIONADO</span>
-            <strong class="reign-step-current" id="reignSummarySingleName">${fSingle.nombre}</strong>
+            <strong class="reign-step-current reign-summary-single-name" id="reignSummarySingleName${suffix}">${fSingle.nombre}</strong>
           </div>
           <div class="reign-flavor-strip" role="listbox" aria-label="Seleccionar sabor">
             ${flavors.map(flav => {
@@ -392,7 +394,7 @@ const ReignPaletteConfigurator = {
         </div>
 
         <!-- MODALIDAD B: COMBINAR DOS SABORES (PASO 1 Y PASO 2) -->
-        <div class="reign-dual-steps-wrapper" id="reignDualStepsWrapper" style="display: ${!isSingleMode ? 'flex' : 'none'};">
+        <div class="reign-dual-steps-wrapper" id="reignDualStepsWrapper${suffix}" style="display: ${!isSingleMode ? 'flex' : 'none'};">
           <!-- PASO 1: PRIMER SABOR -->
           <div class="reign-step-block">
             <div class="reign-step-header">
@@ -469,52 +471,62 @@ const ReignPaletteConfigurator = {
     const f2 = this.getFlavorObj(this.flavor2);
     if (!fSingle || !f1 || !f2) return;
 
-    // 1. Actualizar imagen superior (1 sabor vs 2 mitades 3D)
-    const singleView = document.getElementById('reignPreviewSingleView');
-    const dualView = document.getElementById('reignPreviewDualView');
-    if (singleView) singleView.style.display = isSingleMode ? 'flex' : 'none';
-    if (dualView) dualView.style.display = !isSingleMode ? 'flex' : 'none';
+    // 1. Actualizar imagen superior (1 sabor vs 2 mitades 3D) tanto en Detal como en Mayorista
+    document.querySelectorAll('.reign-card-img-single').forEach(el => {
+      el.style.display = isSingleMode ? 'flex' : 'none';
+    });
+    document.querySelectorAll('.reign-card-img-dual').forEach(el => {
+      el.style.display = !isSingleMode ? 'flex' : 'none';
+    });
 
-    const mainSingleImg = document.getElementById('reignMainSingleImg');
-    if (mainSingleImg && fSingle.img) {
-      mainSingleImg.src = fSingle.img;
-      mainSingleImg.alt = fSingle.nombre;
-    }
+    document.querySelectorAll('.reign-main-single-img').forEach(img => {
+      if (fSingle.img) {
+        img.src = fSingle.img;
+        img.alt = fSingle.nombre;
+      }
+    });
 
-    const leftImg = document.getElementById('reignDualLeftImg');
-    const rightImg = document.getElementById('reignDualRightImg');
-    if (leftImg) {
-      leftImg.src = this.getLeftHalfImgPath(f1);
-      leftImg.alt = `Primer sabor: ${f1.nombre}`;
-    }
-    if (rightImg) {
-      rightImg.src = this.getRightHalfImgPath(f2);
-      rightImg.alt = `Segundo sabor: ${f2.nombre}`;
-    }
+    const leftPath = this.getLeftHalfImgPath(f1);
+    const rightPath = this.getRightHalfImgPath(f2);
+    document.querySelectorAll('.reign-dual-left-img').forEach(img => {
+      img.src = leftPath;
+      img.alt = `Primer sabor: ${f1.nombre}`;
+    });
+    document.querySelectorAll('.reign-dual-right-img').forEach(img => {
+      img.src = rightPath;
+      img.alt = `Segundo sabor: ${f2.nombre}`;
+    });
 
-    // 2. Actualizar cabecera y pestañas de modalidad
-    const tabSingle = document.getElementById('reignTabSingleBtn');
-    const tabDual = document.getElementById('reignTabDualBtn');
-    if (tabSingle) tabSingle.classList.toggle('active', isSingleMode);
-    if (tabDual) tabDual.classList.toggle('active', !isSingleMode);
+    // 2. Actualizar cabecera y pestañas de modalidad en ambas tarjetas
+    document.querySelectorAll('.reign-tab-single-btn').forEach(btn => {
+      btn.classList.toggle('active', isSingleMode);
+    });
+    document.querySelectorAll('.reign-tab-dual-btn').forEach(btn => {
+      btn.classList.toggle('active', !isSingleMode);
+    });
 
-    const quickBtns = document.getElementById('reignDualQuickBtns');
-    if (quickBtns) quickBtns.style.display = !isSingleMode ? 'flex' : 'none';
+    document.querySelectorAll('.reign-dual-quick-btns').forEach(el => {
+      el.style.display = !isSingleMode ? 'flex' : 'none';
+    });
 
-    const headingTitle = document.getElementById('reignConfigHeadingTitle');
-    const headingSub = document.getElementById('reignConfigHeadingSub');
-    if (headingTitle) headingTitle.textContent = isSingleMode ? 'ELIGE TU SABOR' : 'PERSONALIZA TU REIGN BAR';
-    if (headingSub) headingSub.textContent = isSingleMode ? 'Selecciona tu sabor favorito.' : 'Combina dos sabores y crea tu propia combinación.';
+    document.querySelectorAll('.reign-config-title').forEach(el => {
+      el.textContent = isSingleMode ? 'ELIGE TU SABOR' : 'PERSONALIZA TU REIGN BAR';
+    });
+    document.querySelectorAll('.reign-config-subtitle').forEach(el => {
+      el.textContent = isSingleMode ? 'Selecciona tu sabor favorito.' : 'Combina dos sabores y crea tu propia combinación.';
+    });
 
-    const singleBlock = document.getElementById('reignSingleStepBlock');
-    const dualWrapper = document.getElementById('reignDualStepsWrapper');
-    if (singleBlock) singleBlock.style.display = isSingleMode ? 'flex' : 'none';
-    if (dualWrapper) dualWrapper.style.display = !isSingleMode ? 'flex' : 'none';
+    document.querySelectorAll('.reign-single-step-block').forEach(el => {
+      el.style.display = isSingleMode ? 'flex' : 'none';
+    });
+    document.querySelectorAll('.reign-dual-steps-wrapper').forEach(el => {
+      el.style.display = !isSingleMode ? 'flex' : 'none';
+    });
 
     // 3. Actualizar etiquetas de sabor activo en PASO 1, PASO 2 y Un Sabor
-    const singleNameEl = document.getElementById('reignSummarySingleName');
-    if (singleNameEl) singleNameEl.textContent = fSingle.nombre;
-
+    document.querySelectorAll('.reign-summary-single-name').forEach(el => {
+      el.textContent = fSingle.nombre;
+    });
     document.querySelectorAll('.reign-summary-f1-name').forEach(el => {
       el.textContent = f1.nombre;
     });

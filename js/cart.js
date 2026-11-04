@@ -244,9 +244,15 @@ const Cart = {
     if (!product) return;
 
     const qtyToAdd = Number(packQty) || 5;
-    const isDualFlavor = product.id === 'reign-bar-palette';
+    let isDualFlavor = product.id === 'reign-bar-palette'
+      ? (typeof ReignPaletteConfigurator !== 'undefined' ? ReignPaletteConfigurator.mode !== 'single' : true)
+      : false;
     let flavor = (typeof WholesaleCatalog !== 'undefined' && WholesaleCatalog.selectedVariants[productId]) 
       || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : 'Surtido / A convenir'));
+
+    if (product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined' && !isDualFlavor) {
+      flavor = ReignPaletteConfigurator.singleFlavor || flavor;
+    }
 
     let flavor1 = '';
     let flavor2 = '';

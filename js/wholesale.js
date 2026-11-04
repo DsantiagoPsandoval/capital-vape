@@ -440,8 +440,8 @@ const WholesaleService = {
   },
 
   getWholesaleWhatsAppUrl() {
-    const text = encodeURIComponent('Hola Capital Vape, soy comerciante/distribuidor y solicito la clave para acceder al portal mayorista.');
-    return `https://wa.me/573133572726?text=${text}`;
+    const text = encodeURIComponent('📦 Hola Capital Vape, soy comerciante/distribuidor y quisiera solicitar la clave para acceder al portal mayorista. 🔑💼');
+    return `https://api.whatsapp.com/send?phone=573133572726&text=${text}`;
   }
 };
 

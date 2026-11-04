@@ -445,20 +445,21 @@ const CheckoutController = {
         const f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
 
         if (isDual) {
-          msg += `${idx + 1}. *${item.nombre}*\n`;
-          msg += `   - Primer sabor: ${f1}\n`;
-          msg += `   - Segundo sabor: ${f2}\n`;
-          msg += `   - Cantidad: ${item.qty}\n`;
-          msg += `   - Precio unitario: ${Cart.formatCOP(unitEff)} COP\n`;
-          msg += `   - Total: ${Cart.formatCOP(lineSub)} COP\n`;
+          msg += `🔹 *${idx + 1}. ${item.nombre}* ×${item.qty}\n`;
+          msg += `   🍓 *Módulo 1 (Sabor):* ${f1}\n`;
+          msg += `   🍇 *Módulo 2 (Sabor):* ${f2}\n`;
+          msg += `   📦 *Cantidad:* ${item.qty} ${item.qty === 1 ? 'unidad' : 'unidades'}\n`;
+          msg += `   💵 *Precio Unitario:* ${Cart.formatCOP(unitEff)} COP\n`;
+          msg += `   ✨ *Subtotal:* ${Cart.formatCOP(lineSub)} COP\n\n`;
         } else {
-          msg += `${idx + 1}. *${item.nombre}* x${item.qty}\n`;
-          if (item.variant) msg += `   - Sabor/Color: ${item.variant}\n`;
-          msg += `   - Precio unitario: ${Cart.formatCOP(unitEff)} COP\n`;
-          msg += `   - Subtotal: ${Cart.formatCOP(lineSub)} COP\n`;
+          msg += `🔹 *${idx + 1}. ${item.nombre}* ×${item.qty}\n`;
+          if (item.variant) msg += `   💨 *Sabor/Color:* ${item.variant}\n`;
+          msg += `   📦 *Cantidad:* ${item.qty} ${item.qty === 1 ? 'unidad' : 'unidades'}\n`;
+          msg += `   💵 *Precio Unitario:* ${Cart.formatCOP(unitEff)} COP\n`;
+          msg += `   ✨ *Subtotal:* ${Cart.formatCOP(lineSub)} COP\n\n`;
         }
       });
-      msg += `*Subtotal Detal: ${Cart.formatCOP(detalSubtotal)}*\n\n`;
+      msg += `🛍️ *Subtotal Detal: ${Cart.formatCOP(detalSubtotal)} COP*\n\n`;
     }
 
     // 3. PRODUCTOS MAYORISTAS (AGRUPADOS POR REFERENCIA CON DETALLE DE SABORES)
@@ -484,51 +485,56 @@ const CheckoutController = {
 
       let gIdx = 1;
       Object.values(wsGroups).forEach(group => {
-        msg += `${gIdx}. *${group.nombre}* — ${group.refTotalQty} unidades (Rango +${group.activeTier} • ${Cart.formatCOP(group.unitPrice)} c/u):\n`;
+        msg += `🏷️ *${gIdx}. ${group.nombre}* — ${group.refTotalQty} unidades (Rango +${group.activeTier} • ${Cart.formatCOP(group.unitPrice)} c/u):\n`;
         group.items.forEach(i => {
           const isDual = i.isDualFlavor === true || (i.productId === 'reign-bar-palette' && i.isDualFlavor !== false && i.variant && i.variant.includes(' + '));
           if (isDual) {
             const f1 = i.flavor1 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[0].trim() : i.variant);
             const f2 = i.flavor2 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[1].trim() : f1);
-            msg += `   • Combinación: Primer sabor: ${f1} | Segundo sabor: ${f2} — Cantidad: ${i.qty} uds (${Cart.formatCOP(i.subtotal)})\n`;
+            msg += `   🔸 *Doble Sabor:* ${f1} + ${f2} ➔ 📦 ${i.qty} uds (${Cart.formatCOP(i.subtotal)} COP)\n`;
           } else {
-            msg += `   • ${i.variant} ×${i.qty} uds (${Cart.formatCOP(i.subtotal)})\n`;
+            msg += `   🔸 *Sabor:* ${i.variant} ➔ 📦 ${i.qty} uds (${Cart.formatCOP(i.subtotal)} COP)\n`;
           }
         });
-        msg += `   Subtotal ${group.nombre}: ${Cart.formatCOP(group.refSubtotal)}\n\n`;
+        msg += `   ✨ *Subtotal ${group.nombre}:* ${Cart.formatCOP(group.refSubtotal)} COP\n\n`;
         gIdx++;
       });
 
-      msg += `*Subtotal Mayorista: ${Cart.formatCOP(wsSubtotal)}*\n\n`;
+      msg += `📦 *Subtotal Mayorista: ${Cart.formatCOP(wsSubtotal)} COP*\n\n`;
     }
 
     // 4. RESUMEN DE PAGO Y ENVÍO
     msg += `💰 *RESUMEN DE PAGO:*\n`;
     if (detalItems.length > 0 && wsItems.length > 0) {
-      msg += `• Subtotal Detal: ${Cart.formatCOP(detalSubtotal)}\n`;
-      msg += `• Subtotal Mayorista: ${Cart.formatCOP(wsSubtotal)}\n`;
+      msg += `💵 *Subtotal Detal:* ${Cart.formatCOP(detalSubtotal)} COP\n`;
+      msg += `📦 *Subtotal Mayorista:* ${Cart.formatCOP(wsSubtotal)} COP\n`;
     }
     
     if (shipping.isSoacha) {
-      msg += `• Envío Soacha: ${Cart.formatCOP(shipping.cost)}\n`;
+      msg += `🛵 *Envío (Soacha):* ${Cart.formatCOP(shipping.cost)} COP\n`;
     } else if (shipping.isWholesaleOnly) {
-      msg += `• Envío Mayorista: A coordinar por WhatsApp al 3133572726\n`;
+      msg += `🚚 *Envío Mayorista:* A coordinar por WhatsApp al 3133572726 📦\n`;
     } else if (shipping.isFree) {
-      msg += `• Envío (${destDesc}): GRATIS 🎉\n`;
+      msg += `🎉 *Envío (${destDesc}):* ¡GRATIS! 🎉\n`;
     } else {
-      msg += `• Envío (${destDesc}): ${Cart.formatCOP(shipping.cost)}\n`;
+      msg += `🛵 *Envío (${destDesc}):* ${Cart.formatCOP(shipping.cost)} COP\n`;
     }
 
-    msg += `• *TOTAL FINAL A PAGAR: ${Cart.formatCOP(total)}*\n\n`;
+    msg += `💳 *TOTAL FINAL A PAGAR: ${Cart.formatCOP(total)} COP*\n\n`;
     if (wsItems.length > 0) {
-      msg += `Deseo coordinar el despacho del pedido mayorista y acordar medio de pago.`;
+      msg += `🤝 Deseo coordinar el despacho de mi pedido mayorista y acordar el medio de pago. 💼`;
     } else {
-      msg += `Deseo confirmar mi pedido y acordar medio de pago (Transferencia Nequi/Daviplata o Contra entrega).`;
+      msg += `✅ Deseo confirmar mi pedido y acordar el medio de pago (Transferencia Nequi / Daviplata o Contra entrega). 🚀`;
     }
 
-    const waUrl = `https://wa.me/${targetWa}?text=${encodeURIComponent(msg)}`;
+    const encodedText = encodeURIComponent(msg);
+    const waUrl = `https://api.whatsapp.com/send?phone=${targetWa}&text=${encodedText}`;
 
-    window.open(waUrl, '_blank');
+    // Intentar abrir WhatsApp; si el navegador bloquea el popup, navegar en la misma ventana
+    const win = window.open(waUrl, '_blank');
+    if (!win || win.closed || typeof win.closed === 'undefined') {
+      window.location.href = waUrl;
+    }
     Toast.show('¡Pedido preparado! Te hemos redirigido a WhatsApp para confirmarlo.', 'success');
     this.closeModal();
   }

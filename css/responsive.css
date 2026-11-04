@@ -785,19 +785,125 @@ body.menu-open-scroll-lock {
     box-sizing: border-box !important;
   }
 
-  /* REIGN BAR PALETTE — Tarjeta y Configurador adaptable en Móviles */
+  /* REIGN BAR PALETTE — Ficha rediseñada con alta legibilidad en Móviles */
   .product-card.is-reign-palette-card {
     grid-column: 1 / -1 !important;
+    padding: 16px 14px !important;
+    border-radius: 18px !important;
   }
 
-  .product-card.is-reign-palette-card .card-image-wrapper.is-reign-composite-stage {
-    height: 195px !important;
-    padding: 4px !important;
+  .reign-featured-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
   }
 
-  .product-card.is-reign-palette-card .card-title {
-    font-size: 1.05rem !important;
-    min-height: auto !important;
+  .reign-section-1-preview-stage {
+    padding: 14px 12px !important;
+  }
+
+  .reign-preview-single-view,
+  .reign-preview-dual-view {
+    min-height: 265px !important;
+  }
+
+  .reign-single-photo-frame {
+    height: 220px !important;
+  }
+
+  .reign-main-single-img {
+    max-height: 215px !important;
+  }
+
+  .reign-dual-3d-stack {
+    width: 235px !important;
+    height: 235px !important;
+  }
+
+  .reign-dual-modules-floating-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .reign-module-mini-card {
+    width: 100% !important;
+  }
+
+  .reign-module-join-icon {
+    display: none !important;
+  }
+
+  .reign-main-product-title {
+    font-size: 1.55rem !important;
+  }
+
+  .reign-main-product-subtitle {
+    font-size: 0.92rem !important;
+  }
+
+  .reign-section-3-specs {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+  }
+
+  .reign-section-4-pricing {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .reign-price-amount {
+    font-size: 1.45rem !important;
+  }
+
+  .reign-mode-buttons-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .reign-modality-panel {
+    padding: 14px 12px !important;
+  }
+
+  .reign-modality-title {
+    font-size: 1.25rem !important;
+  }
+
+  .reign-visual-flavors-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .reign-flavor-card-photo-box {
+    height: 82px !important;
+  }
+
+  .reign-flavor-card-title {
+    font-size: 0.88rem !important;
+  }
+
+  .reign-summary-dual-content {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+
+  .reign-summary-plus-circle {
+    align-self: center !important;
+  }
+
+  .reign-qty-controls-layout {
+    flex-direction: column !important;
+  }
+
+  .reign-qty-stepper {
+    justify-content: center !important;
+  }
+
+  .reign-main-add-cart-btn {
+    min-height: 54px !important;
+    font-size: 0.95rem !important;
+    padding: 12px 14px !important;
+    white-space: normal !important;
+    text-align: center !important;
   }
 
   .reign-modal-studio {
@@ -807,20 +913,20 @@ body.menu-open-scroll-lock {
 
   .reign-modal-preview-panel {
     position: static !important;
-    padding: 10px !important;
+    padding: 12px !important;
   }
 
   .reign-modal-flavors-grid {
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 7px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
   }
 
   .reign-modal-flavor-card {
-    padding: 5px !important;
+    padding: 8px !important;
   }
 
   .reign-modal-card-Name {
-    font-size: 0.66rem !important;
+    font-size: 0.85rem !important;
   }
 }
 

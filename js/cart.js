@@ -23,8 +23,8 @@ const Cart = {
       rawItems.forEach(item => {
         if (!item || !item.productId) return;
 
-        // Recuperar metadatos de doble sabor si corresponde a REIGN BAR PALETTE
-        let isDualFlavor = !!item.isDualFlavor || item.productId === 'reign-bar-palette';
+        // Recuperar metadatos de doble sabor si corresponde a REIGN BAR PALETTE en modalidad de 2 sabores
+        let isDualFlavor = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
         let flavor1 = item.flavor1 || '';
         let flavor2 = item.flavor2 || '';
         if (isDualFlavor && (!flavor1 || !flavor2) && item.variant && item.variant.includes(' + ')) {
@@ -164,7 +164,14 @@ const Cart = {
     }
 
     let resolvedVariant = variant || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : ''));
-    let isDualFlavor = !!(extraMeta && extraMeta.isDualFlavor) || product.id === 'reign-bar-palette';
+    let isDualFlavor = (extraMeta && typeof extraMeta.isDualFlavor === 'boolean')
+      ? extraMeta.isDualFlavor
+      : (product.id === 'reign-bar-palette' && (!resolvedVariant || resolvedVariant.includes(' + ')));
+    let singleImg = (extraMeta && extraMeta.singleImg) || '';
+    if (!isDualFlavor && !singleImg && product.sabores && resolvedVariant) {
+      const fSingleObj = product.sabores.find(s => s.nombre === resolvedVariant);
+      if (fSingleObj && fSingleObj.img) singleImg = fSingleObj.img;
+    }
     let flavor1 = (extraMeta && extraMeta.flavor1) || '';
     let flavor2 = (extraMeta && extraMeta.flavor2) || '';
     let flavor1Img = (extraMeta && extraMeta.flavor1Img) || '';
@@ -211,7 +218,7 @@ const Cart = {
         productId: product.id,
         nombre: product.nombre,
         subtitulo: product.subtitulo || '',
-        imagen: compositeImg || flavor1Img || product.imagen,
+        imagen: compositeImg || singleImg || flavor1Img || product.imagen,
         precio: product.precio,
         precio_promo_2: product.precio_promo_2,
         variant: resolvedVariant,
@@ -769,7 +776,7 @@ const Cart = {
             const promoNote = item.hasPromoApplied ? '<span class="item-promo-tag">🔥 Promo 2x</span>' : '';
 
             const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
-            const isDual = !!(item.isDualFlavor || item.productId === 'reign-bar-palette');
+            const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
             let f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
             let f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
 

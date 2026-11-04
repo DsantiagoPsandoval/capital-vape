@@ -467,6 +467,14 @@ const CatalogController = {
       const isPlaceholderImage = !!(product.imagen_pendiente && !currentImage);
       const isReignPalette = product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined';
 
+      if (isReignPalette) {
+        return `
+          <article class="product-card is-recommended is-reign-palette-card" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
+            ${ReignPaletteConfigurator.renderFeaturedCardInnerHTML(product)}
+          </article>
+        `;
+      }
+
       return `
         <article class="product-card ${product.recomendado ? 'is-recommended' : ''} ${isReignPalette ? 'is-reign-palette-card' : ''} ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-out' : '')}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
           ${product.recomendado ? `<div class="recommended-ribbon-badge"><span>⭐</span> RECOMENDADO</div>` : ''}

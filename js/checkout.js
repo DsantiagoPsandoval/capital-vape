@@ -422,113 +422,40 @@ const CheckoutController = {
       }
     }
 
-    let destDesc = 'Bogotá D.C.';
-    if (destino === 'soacha') destDesc = 'Soacha';
-    else if (destino === 'nacional') destDesc = (depto ? `${ciudad}, ${depto}` : 'Nacional');
+    const orderData = {
+      customer: {
+        nombre,
+        telefono,
+        direccion,
+        ciudad,
+        depto,
+        destino,
+        notas
+      },
+      detalItems,
+      wsItems,
+      detalSubtotal,
+      wsSubtotal,
+      totalWsQty,
+      shipping,
+      total
+    };
 
-    let msg = `⚡ *NUEVO PEDIDO - CAPITAL VAPE* ⚡\n\n`;
-    msg += `👤 *Cliente:* ${nombre}\n`;
-    msg += `📱 *Teléfono:* ${telefono}\n`;
-    msg += `📍 *Dirección:* ${direccion}\n`;
-    msg += `🏙️ *Ciudad / Destino:* ${ciudad} (${destDesc})\n`;
-    if (notas) msg += `📝 *Notas de Entrega:* ${notas}\n`;
-    msg += `\n`;
+    const msg = (typeof OrderMessageBuilder !== 'undefined')
+      ? OrderMessageBuilder.build(orderData)
+      : this.buildFallbackMessage(orderData);
 
-    // 2. PRODUCTOS AL DETAL
-    if (detalItems.length > 0) {
-      msg += `🛒 *PRODUCTOS AL DETAL:*\n`;
-      detalItems.forEach((item, idx) => {
-        const lineSub = (typeof item.calculatedLinePrice === 'number') ? item.calculatedLinePrice : (item.precio * item.qty);
-        const unitEff = item.effectiveUnitPrice || (item.qty > 0 ? Math.round(lineSub / item.qty) : item.precio);
-        const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
-        const f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
-        const f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
+    const validation = (typeof OrderMessageBuilder !== 'undefined')
+      ? OrderMessageBuilder.validate(msg)
+      : { valid: true, errors: [] };
 
-        if (isDual) {
-          msg += `🔹 *${idx + 1}. ${item.nombre}* ×${item.qty}\n`;
-          msg += `   🍓 *Módulo 1 (Sabor):* ${f1}\n`;
-          msg += `   🍇 *Módulo 2 (Sabor):* ${f2}\n`;
-          msg += `   📦 *Cantidad:* ${item.qty} ${item.qty === 1 ? 'unidad' : 'unidades'}\n`;
-          msg += `   💵 *Precio Unitario:* ${Cart.formatCOP(unitEff)} COP\n`;
-          msg += `   ✨ *Subtotal:* ${Cart.formatCOP(lineSub)} COP\n\n`;
-        } else {
-          msg += `🔹 *${idx + 1}. ${item.nombre}* ×${item.qty}\n`;
-          if (item.variant) msg += `   💨 *Sabor/Color:* ${item.variant}\n`;
-          msg += `   📦 *Cantidad:* ${item.qty} ${item.qty === 1 ? 'unidad' : 'unidades'}\n`;
-          msg += `   💵 *Precio Unitario:* ${Cart.formatCOP(unitEff)} COP\n`;
-          msg += `   ✨ *Subtotal:* ${Cart.formatCOP(lineSub)} COP\n\n`;
-        }
-      });
-      msg += `🛍️ *Subtotal Detal: ${Cart.formatCOP(detalSubtotal)} COP*\n\n`;
+    if (!validation.valid) {
+      console.warn('[CheckoutController] Advertencias en mensaje de WhatsApp:', validation.errors);
     }
 
-    // 3. PRODUCTOS MAYORISTAS (AGRUPADOS POR REFERENCIA CON DETALLE DE SABORES)
-    if (wsItems.length > 0) {
-      msg += `📦 *PRODUCTOS MAYORISTAS (${totalWsQty} unidades totales):*\n`;
-
-      const wsGroups = {};
-      wsItems.forEach(item => {
-        if (!wsGroups[item.productId]) {
-          wsGroups[item.productId] = {
-            nombre: item.nombre,
-            refTotalQty: 0,
-            activeTier: item.activeTier || 5,
-            unitPrice: item.unitPrice || 0,
-            refSubtotal: 0,
-            items: []
-          };
-        }
-        wsGroups[item.productId].items.push(item);
-        wsGroups[item.productId].refTotalQty += item.qty;
-        wsGroups[item.productId].refSubtotal += item.subtotal;
-      });
-
-      let gIdx = 1;
-      Object.values(wsGroups).forEach(group => {
-        msg += `🏷️ *${gIdx}. ${group.nombre}* — ${group.refTotalQty} unidades (Rango +${group.activeTier} • ${Cart.formatCOP(group.unitPrice)} c/u):\n`;
-        group.items.forEach(i => {
-          const isDual = i.isDualFlavor === true || (i.productId === 'reign-bar-palette' && i.isDualFlavor !== false && i.variant && i.variant.includes(' + '));
-          if (isDual) {
-            const f1 = i.flavor1 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[0].trim() : i.variant);
-            const f2 = i.flavor2 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[1].trim() : f1);
-            msg += `   🔸 *Doble Sabor:* ${f1} + ${f2} ➔ 📦 ${i.qty} uds (${Cart.formatCOP(i.subtotal)} COP)\n`;
-          } else {
-            msg += `   🔸 *Sabor:* ${i.variant} ➔ 📦 ${i.qty} uds (${Cart.formatCOP(i.subtotal)} COP)\n`;
-          }
-        });
-        msg += `   ✨ *Subtotal ${group.nombre}:* ${Cart.formatCOP(group.refSubtotal)} COP\n\n`;
-        gIdx++;
-      });
-
-      msg += `📦 *Subtotal Mayorista: ${Cart.formatCOP(wsSubtotal)} COP*\n\n`;
-    }
-
-    // 4. RESUMEN DE PAGO Y ENVÍO
-    msg += `💰 *RESUMEN DE PAGO:*\n`;
-    if (detalItems.length > 0 && wsItems.length > 0) {
-      msg += `💵 *Subtotal Detal:* ${Cart.formatCOP(detalSubtotal)} COP\n`;
-      msg += `📦 *Subtotal Mayorista:* ${Cart.formatCOP(wsSubtotal)} COP\n`;
-    }
-    
-    if (shipping.isSoacha) {
-      msg += `🛵 *Envío (Soacha):* ${Cart.formatCOP(shipping.cost)} COP\n`;
-    } else if (shipping.isWholesaleOnly) {
-      msg += `🚚 *Envío Mayorista:* A coordinar por WhatsApp al 3133572726 📦\n`;
-    } else if (shipping.isFree) {
-      msg += `🎉 *Envío (${destDesc}):* ¡GRATIS! 🎉\n`;
-    } else {
-      msg += `🛵 *Envío (${destDesc}):* ${Cart.formatCOP(shipping.cost)} COP\n`;
-    }
-
-    msg += `💳 *TOTAL FINAL A PAGAR: ${Cart.formatCOP(total)} COP*\n\n`;
-    if (wsItems.length > 0) {
-      msg += `🤝 Deseo coordinar el despacho de mi pedido mayorista y acordar el medio de pago. 💼`;
-    } else {
-      msg += `✅ Deseo confirmar mi pedido y acordar el medio de pago (Transferencia Nequi / Daviplata o Contra entrega). 🚀`;
-    }
-
-    const encodedText = encodeURIComponent(msg);
-    const waUrl = `https://api.whatsapp.com/send?phone=${targetWa}&text=${encodedText}`;
+    const waUrl = (typeof OrderMessageBuilder !== 'undefined')
+      ? OrderMessageBuilder.buildWhatsAppUrl(targetWa, msg)
+      : `https://api.whatsapp.com/send?phone=${targetWa}&text=${encodeURIComponent(msg)}`;
 
     // Intentar abrir WhatsApp; si el navegador bloquea el popup, navegar en la misma ventana
     const win = window.open(waUrl, '_blank');
@@ -537,6 +464,11 @@ const CheckoutController = {
     }
     Toast.show('¡Pedido preparado! Te hemos redirigido a WhatsApp para confirmarlo.', 'success');
     this.closeModal();
+  },
+
+  buildFallbackMessage(data) {
+    if (typeof OrderMessageBuilder !== 'undefined') return OrderMessageBuilder.build(data);
+    return `*NUEVO PEDIDO - CAPITAL VAPE*\nCliente: ${data.customer.nombre}\nTotal: $${data.total}`;
   }
 };
 

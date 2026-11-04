@@ -318,8 +318,8 @@ const ReignPaletteConfigurator = {
   },
 
   /**
-   * 2. CONFIGURADOR VISUAL DE TARJETAS (Igual a la captura de referencia,
-   *    SIN la caja redundante de 1er Sabor + 2do Sabor ni "Combinación:" ni "Pantalla Completa")
+   * 2. CONFIGURADOR VISUAL DE TARJETAS ULTRA-COMPACTO (100% visual, menos texto y más imagen,
+   *    para cambiar sabores viendo el vape arriba sin necesidad de hacer scroll)
    */
   renderCardConfiguratorHTML(product, contextPrefix = 'detal') {
     this.initDefaults();
@@ -339,38 +339,40 @@ const ReignPaletteConfigurator = {
                       id="reignTabDualBtn${suffix}"
                       class="reign-config-badge reign-tab-dual-btn is-clickable ${!isSingleMode ? 'active' : ''}"
                       onclick="ReignPaletteConfigurator.setMode('dual')">
-                ⚡ DUAL 2 EN 1
+                ⚡ 2 Sabores
               </button>
               <button type="button"
                       id="reignTabSingleBtn${suffix}"
                       class="reign-config-badge reign-tab-single-btn is-clickable ${isSingleMode ? 'active' : ''}"
                       onclick="ReignPaletteConfigurator.setMode('single')">
-                🍓 1 SABOR
+                🍓 1 Sabor
               </button>
             </div>
             <div class="reign-quick-btns-inline reign-dual-quick-btns" id="reignDualQuickBtns${suffix}" style="display: ${!isSingleMode ? 'flex' : 'none'};">
-              <button type="button" class="reign-random-btn" onclick="ReignPaletteConfigurator.randomizeFlavors()" title="Probar combinación aleatoria">
-                🎲 Aleatorio
+              <button type="button" class="reign-random-btn" onclick="ReignPaletteConfigurator.randomizeFlavors()" title="Combinación aleatoria">
+                🎲
               </button>
-              <button type="button" class="reign-swap-btn" onclick="ReignPaletteConfigurator.swapFlavors()" title="Invertir lados de los módulos">
-                ⇄ Invertir
+              <button type="button" class="reign-swap-btn" onclick="ReignPaletteConfigurator.swapFlavors()" title="Invertir lados">
+                ⇄
               </button>
             </div>
           </div>
-          <h4 class="reign-config-title" id="reignConfigHeadingTitle${suffix}">
-            ${isSingleMode ? 'ELIGE TU SABOR' : 'PERSONALIZA TU REIGN BAR'}
-          </h4>
-          <p class="reign-config-subtitle" id="reignConfigHeadingSub${suffix}">
-            ${isSingleMode ? 'Selecciona tu sabor favorito.' : 'Combina dos sabores y crea tu propia combinación.'}
-          </p>
+
+          <!-- Píldora compacta de sabores activos (sin títulos largos) -->
+          <div class="reign-active-flavors-bar">
+            <span class="reign-step-current reign-single-pill-wrap" style="display: ${isSingleMode ? 'inline-flex' : 'none'};">
+              <span class="reign-summary-single-name" id="reignSummarySingleName${suffix}">${fSingle.nombre}</span>
+            </span>
+            <div class="reign-dual-pills-wrap" style="display: ${!isSingleMode ? 'flex' : 'none'};">
+              <span class="reign-step-current reign-summary-f1-name">${f1.nombre}</span>
+              <span class="reign-combo-plus">+</span>
+              <span class="reign-step-current reign-summary-f2-name">${f2.nombre}</span>
+            </div>
+          </div>
         </div>
 
         <!-- MODALIDAD A: UN SOLO SABOR -->
         <div class="reign-step-block reign-single-step-block" id="reignSingleStepBlock${suffix}" style="display: ${isSingleMode ? 'flex' : 'none'};">
-          <div class="reign-step-header">
-            <span class="reign-step-num">SABOR SELECCIONADO</span>
-            <strong class="reign-step-current reign-summary-single-name" id="reignSummarySingleName${suffix}">${fSingle.nombre}</strong>
-          </div>
           <div class="reign-flavor-strip" role="listbox" aria-label="Seleccionar sabor">
             ${flavors.map(flav => {
               const isSel = flav.nombre === fSingle.nombre;
@@ -386,22 +388,17 @@ const ReignPaletteConfigurator = {
                     <img src="${flav.img}" alt="${flav.nombre}" class="reign-opt-img" loading="lazy">
                   </div>
                   <span class="reign-opt-name">${flav.nombre}</span>
-                  <span class="reign-opt-status">${isSel ? '✓ ELEGIDO' : 'Elegir'}</span>
                 </button>
               `;
             }).join('')}
           </div>
         </div>
 
-        <!-- MODALIDAD B: COMBINAR DOS SABORES (PASO 1 Y PASO 2) -->
+        <!-- MODALIDAD B: COMBINAR DOS SABORES (2 FILAS VISUALES DIRECTAS) -->
         <div class="reign-dual-steps-wrapper" id="reignDualStepsWrapper${suffix}" style="display: ${!isSingleMode ? 'flex' : 'none'};">
-          <!-- PASO 1: PRIMER SABOR -->
+          <!-- FILA 1 (Módulo Izquierdo) -->
           <div class="reign-step-block">
-            <div class="reign-step-header">
-              <span class="reign-step-num">PASO 1 — PRIMER SABOR</span>
-              <strong class="reign-step-current reign-summary-f1-name">${f1.nombre}</strong>
-            </div>
-            <div class="reign-flavor-strip" role="listbox" aria-label="Seleccionar primer sabor">
+            <div class="reign-flavor-strip" role="listbox" aria-label="Primer sabor">
               ${flavors.map(flav => {
                 const isSel = flav.nombre === f1.nombre;
                 const safeName = flav.nombre.replace(/'/g, "\\'");
@@ -416,20 +413,15 @@ const ReignPaletteConfigurator = {
                       <img src="${flav.img}" alt="${flav.nombre}" class="reign-opt-img" loading="lazy">
                     </div>
                     <span class="reign-opt-name">${flav.nombre}</span>
-                    <span class="reign-opt-status">${isSel ? '✓ SABOR 1' : 'Elegir #1'}</span>
                   </button>
                 `;
               }).join('')}
             </div>
           </div>
 
-          <!-- PASO 2: SEGUNDO SABOR -->
+          <!-- FILA 2 (Módulo Derecho) -->
           <div class="reign-step-block">
-            <div class="reign-step-header">
-              <span class="reign-step-num">PASO 2 — SEGUNDO SABOR</span>
-              <strong class="reign-step-current reign-summary-f2-name">${f2.nombre}</strong>
-            </div>
-            <div class="reign-flavor-strip" role="listbox" aria-label="Seleccionar segundo sabor">
+            <div class="reign-flavor-strip" role="listbox" aria-label="Segundo sabor">
               ${flavors.map(flav => {
                 const isSel = flav.nombre === f2.nombre;
                 const isDuplicate = flav.nombre === f1.nombre;
@@ -440,12 +432,11 @@ const ReignPaletteConfigurator = {
                           data-reign-slot="2"
                           data-flavor-name="${flav.nombre}"
                           aria-pressed="${isSel ? 'true' : 'false'}"
-                          ${isDuplicate ? 'disabled title="Ya seleccionado como Primer Sabor"' : `onclick="ReignPaletteConfigurator.setFlavor(2, '${safeName}')"`}>
+                          ${isDuplicate ? 'disabled title="Ya elegido arriba"' : `onclick="ReignPaletteConfigurator.setFlavor(2, '${safeName}')"`}>
                     <div class="reign-opt-img-wrap">
                       <img src="${flav.img}" alt="${flav.nombre}" class="reign-opt-img" loading="lazy">
                     </div>
                     <span class="reign-opt-name">${flav.nombre}</span>
-                    <span class="reign-opt-status">${isSel ? '✓ SABOR 2' : (isDuplicate ? 'En #1' : 'Elegir #2')}</span>
                   </button>
                 `;
               }).join('')}
@@ -509,11 +500,11 @@ const ReignPaletteConfigurator = {
       el.style.display = !isSingleMode ? 'flex' : 'none';
     });
 
-    document.querySelectorAll('.reign-config-title').forEach(el => {
-      el.textContent = isSingleMode ? 'ELIGE TU SABOR' : 'PERSONALIZA TU REIGN BAR';
+    document.querySelectorAll('.reign-single-pill-wrap').forEach(el => {
+      el.style.display = isSingleMode ? 'inline-flex' : 'none';
     });
-    document.querySelectorAll('.reign-config-subtitle').forEach(el => {
-      el.textContent = isSingleMode ? 'Selecciona tu sabor favorito.' : 'Combina dos sabores y crea tu propia combinación.';
+    document.querySelectorAll('.reign-dual-pills-wrap').forEach(el => {
+      el.style.display = !isSingleMode ? 'flex' : 'none';
     });
 
     document.querySelectorAll('.reign-single-step-block').forEach(el => {
@@ -523,7 +514,7 @@ const ReignPaletteConfigurator = {
       el.style.display = !isSingleMode ? 'flex' : 'none';
     });
 
-    // 3. Actualizar etiquetas de sabor activo en PASO 1, PASO 2 y Un Sabor
+    // 3. Actualizar etiquetas de sabor activo
     document.querySelectorAll('.reign-summary-single-name').forEach(el => {
       el.textContent = fSingle.nombre;
     });
@@ -534,14 +525,12 @@ const ReignPaletteConfigurator = {
       el.textContent = f2.nombre;
     });
 
-    // 4. Actualizar tarjetas de sabores en Un Sabor, PASO 1 y PASO 2
+    // 4. Actualizar tarjetas de sabores
     document.querySelectorAll('[data-reign-slot="single"]').forEach(el => {
       const fname = el.getAttribute('data-flavor-name');
       const isSel = fname === this.singleFlavor;
       el.classList.toggle('is-selected', isSel);
       el.setAttribute('aria-pressed', isSel ? 'true' : 'false');
-      const statusBadge = el.querySelector('.reign-opt-status');
-      if (statusBadge) statusBadge.textContent = isSel ? '✓ ELEGIDO' : 'Elegir';
     });
 
     document.querySelectorAll('[data-reign-slot="1"]').forEach(el => {
@@ -549,8 +538,6 @@ const ReignPaletteConfigurator = {
       const isSel = fname === this.flavor1;
       el.classList.toggle('is-selected', isSel);
       el.setAttribute('aria-pressed', isSel ? 'true' : 'false');
-      const statusBadge = el.querySelector('.reign-opt-status');
-      if (statusBadge) statusBadge.textContent = isSel ? '✓ SABOR 1' : 'Elegir #1';
     });
 
     document.querySelectorAll('[data-reign-slot="2"]').forEach(el => {
@@ -568,11 +555,6 @@ const ReignPaletteConfigurator = {
       } else {
         el.removeAttribute('disabled');
         el.setAttribute('onclick', `ReignPaletteConfigurator.setFlavor(2, '${safeName}')`);
-      }
-
-      const statusBadge = el.querySelector('.reign-opt-status');
-      if (statusBadge) {
-        statusBadge.textContent = isSel ? '✓ SABOR 2' : (isDup ? 'En #1' : 'Elegir #2');
       }
     });
   },

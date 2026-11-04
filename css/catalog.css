@@ -894,24 +894,49 @@
   pointer-events: none;
 }
 
-/* Bloque Configurador dentro de la tarjeta REIGN BAR PALETTE (Sin caja redundante inferior ni pantalla completa) */
+/* Bloque Configurador dentro de la tarjeta REIGN BAR PALETTE (Ultra-compacto, 100% visual, menos texto y más imagen) */
+.product-card.is-reign-palette-card .recommended-ribbon-badge,
+.product-card.is-reign-palette-card .card-recommended-inline-pill,
+.product-card.is-reign-palette-card .card-meta-row {
+  display: none !important;
+}
+
+.product-card.is-reign-palette-card .card-header-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.product-card.is-reign-palette-card .card-title {
+  margin: 0 !important;
+  min-height: auto !important;
+  font-size: 1.05rem;
+}
+
+.product-card.is-reign-palette-card .card-specs-row {
+  margin-top: 0 !important;
+}
+
 .reign-configurator-box {
   background: linear-gradient(160deg, rgba(22, 10, 36, 0.96), rgba(13, 6, 23, 0.98));
   border: 1px solid rgba(229, 183, 0, 0.42);
-  border-radius: 14px;
-  padding: 12px;
+  border-radius: 12px;
+  padding: 8px 9px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
 .reign-config-header {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  padding-bottom: 8px;
+  gap: 5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  padding-bottom: 6px;
 }
 
 .reign-config-title-row {
@@ -919,15 +944,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 6px;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .reign-mode-pills-inline,
 .reign-quick-btns-inline {
   display: flex;
   align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
+  gap: 5px;
 }
 
 .reign-config-badge {
@@ -961,9 +985,9 @@
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #F3E8FF;
-  font-size: 0.72rem;
-  font-weight: 700;
-  padding: 4px 10px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 3px 9px;
   border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -976,69 +1000,59 @@
   color: #FFE066;
 }
 
-.reign-config-title {
-  margin: 3px 0 0;
-  font-family: var(--font-heading);
-  font-size: 0.96rem;
-  font-weight: 900;
-  letter-spacing: 0.03em;
-  color: #FFFFFF;
+.reign-active-flavors-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.reign-config-subtitle {
-  margin: 0;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  line-height: 1.3;
+.reign-dual-pills-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.reign-combo-plus {
+  color: #FFE066;
+  font-weight: 900;
+  font-size: 0.82rem;
 }
 
 .reign-dual-steps-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-}
-
-/* Pasos 1 y 2 en la tarjeta */
-.reign-step-block {
-  display: flex;
-  flex-direction: column;
   gap: 6px;
 }
 
-.reign-step-header {
+/* Filas visuales de sabores (sin cabeceras de texto redundantes) */
+.reign-step-block {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.reign-step-num {
-  color: #FFE066;
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  flex-direction: column;
+  gap: 2px;
 }
 
 /* Píldora del sabor elegido (sin recortar con '...' para que se lea completo) */
 .reign-step-current {
   color: #FFFFFF;
   font-weight: 800;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   background: linear-gradient(135deg, rgba(216, 27, 183, 0.28), rgba(229, 183, 0, 0.2));
   border: 1px solid rgba(255, 224, 102, 0.6);
-  padding: 3px 10px;
+  padding: 2px 9px;
   border-radius: 999px;
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-/* Carrusel horizontal de sabores con fotografías */
+/* Carrusel horizontal de sabores con fotografías más grandes y claras */
 .reign-flavor-strip {
   display: flex;
-  gap: 7px;
+  gap: 6px;
   overflow-x: auto;
-  padding: 4px 2px 7px;
+  padding: 2px 2px 5px;
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
   scrollbar-color: rgba(229, 183, 0, 0.45) rgba(255, 255, 255, 0.05);
@@ -1046,7 +1060,7 @@
 }
 
 .reign-flavor-strip::-webkit-scrollbar {
-  height: 5px;
+  height: 4px;
 }
 
 .reign-flavor-strip::-webkit-scrollbar-track {
@@ -1060,16 +1074,17 @@
 }
 
 .reign-flavor-option {
-  flex: 0 0 80px;
+  position: relative;
+  flex: 0 0 76px;
   scroll-snap-align: start;
   background: rgba(255, 255, 255, 0.04);
   border: 1.5px solid rgba(255, 255, 255, 0.12);
-  border-radius: 11px;
-  padding: 5px;
+  border-radius: 10px;
+  padding: 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   cursor: pointer;
   transition: all 0.2s ease;
   color: var(--text-primary);
@@ -1078,24 +1093,42 @@
 
 .reign-flavor-option:hover:not(:disabled) {
   border-color: rgba(229, 183, 0, 0.65);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .reign-flavor-option.is-selected {
-  background: linear-gradient(145deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
+  background: linear-gradient(145deg, rgba(229, 183, 0, 0.26), rgba(216, 27, 183, 0.26));
   border-color: #FFE066;
-  box-shadow: 0 0 12px rgba(229, 183, 0, 0.35);
+  box-shadow: 0 0 10px rgba(229, 183, 0, 0.35);
+}
+
+.reign-flavor-option.is-selected::after {
+  content: "✓";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #FFE066;
+  color: #0B0410;
+  font-size: 0.58rem;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.45);
 }
 
 .reign-flavor-option.is-disabled-duplicate {
-  opacity: 0.38;
+  opacity: 0.32;
   cursor: not-allowed;
 }
 
 .reign-opt-img-wrap {
-  width: 64px;
-  height: 68px;
-  border-radius: 8px;
+  width: 66px;
+  height: 66px;
+  border-radius: 7px;
   overflow: hidden;
   background: #0D0616;
   display: flex;
@@ -1111,29 +1144,15 @@
 }
 
 .reign-opt-name {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   color: #FFFFFF;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  min-height: 1.55rem;
-}
-
-.reign-opt-status {
-  font-size: 0.6rem;
-  font-weight: 800;
-  padding: 2px 6px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-secondary);
-}
-
-.reign-flavor-option.is-selected .reign-opt-status {
-  background: #FFE066;
-  color: #0B0410;
+  width: 100%;
 }
 
 /* Bloque de 2 Sabores en el Carrito */

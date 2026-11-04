@@ -795,23 +795,23 @@ body.menu-open-scroll-lock {
     box-sizing: border-box !important;
   }
 
-  /* REIGN BAR PALETTE — Tarjeta destacada a ancho completo en móvil para que los sabores se vean claros y amplios */
+  /* REIGN BAR PALETTE — Tarjeta destacada a ancho completo en móvil para cambiar sabores viendo la imagen sin hacer scroll */
   .product-card.is-reign-palette-card {
     grid-column: 1 / -1 !important;
   }
 
   .product-card.is-reign-palette-card .card-image-wrapper.is-reign-composite-stage {
-    height: 190px !important;
-    padding: 8px !important;
+    height: 155px !important;
+    padding: 6px !important;
   }
 
   .reign-card-3d-joined {
-    width: 175px !important;
-    height: 175px !important;
+    width: 148px !important;
+    height: 148px !important;
   }
 
   .product-card.is-reign-palette-card .card-title {
-    font-size: 1.12rem !important;
+    font-size: 1.02rem !important;
     min-height: auto !important;
   }
 }

@@ -226,15 +226,8 @@ const CatalogController = {
     if (!product) return;
 
     const modal = document.getElementById('flavorModal');
-    if (product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined') {
-      if (modal) modal.classList.add('is-reign-modal-active');
-      grid.classList.add('is-reign-studio-grid');
-      ReignPaletteConfigurator.renderModalConfigurator(grid, filterText, this.activeModalIsWholesale);
-      return;
-    } else {
-      if (modal) modal.classList.remove('is-reign-modal-active');
-      grid.classList.remove('is-reign-studio-grid');
-    }
+    if (modal) modal.classList.remove('is-reign-modal-active');
+    grid.classList.remove('is-reign-studio-grid');
 
     const currentSelected = this.selectedVariants[product.id] || (
       product.sabores && product.sabores.length > 0 ? product.sabores[0].nombre :
@@ -467,24 +460,13 @@ const CatalogController = {
       const isPlaceholderImage = !!(product.imagen_pendiente && !currentImage);
       const isReignPalette = product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined';
 
-      if (isReignPalette) {
-        return `
-          <article class="product-card is-recommended is-reign-palette-card" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
-            ${ReignPaletteConfigurator.renderFeaturedCardInnerHTML(product)}
-          </article>
-        `;
-      }
-
       return `
         <article class="product-card ${product.recomendado ? 'is-recommended' : ''} ${isReignPalette ? 'is-reign-palette-card' : ''} ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-out' : '')}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
           ${product.recomendado ? `<div class="recommended-ribbon-badge"><span>⭐</span> RECOMENDADO</div>` : ''}
           <!-- 1. INDEPENDENT IMAGE / COMPOSITE STAGE -->
-          <div class="card-image-wrapper ${isReignPalette ? 'is-reign-composite-stage' : ''} ${isPlaceholderImage ? 'is-placeholder-space' : ''}" ${!product.coming_soon ? `onclick="CatalogController.openFlavorModal('${product.id}')"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Ver sabores y detalles'}">
+          <div class="card-image-wrapper ${isReignPalette ? 'is-reign-composite-stage' : ''} ${isPlaceholderImage ? 'is-placeholder-space' : ''}" ${(!product.coming_soon && !isReignPalette) ? `onclick="CatalogController.openFlavorModal('${product.id}')"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Vista del producto'}">
             ${product.coming_soon ? `<span class="product-agotado-badge" style="background:#EAB308;color:#000;">COMING SOON</span>` : ''}
-            ${isReignPalette ? `
-              <div class="reign-live-preview-badge">⚡ VISTA COMBINADA EN VIVO</div>
-              <canvas id="reignCardCompositeCanvas" class="reign-composite-canvas" width="460" height="420" aria-label="Vista previa combinada de REIGN BAR PALETTE"></canvas>
-            ` : (isPlaceholderImage ? `
+            ${isReignPalette ? ReignPaletteConfigurator.renderCardImageStageHTML(product) : (isPlaceholderImage ? `
               <div class="product-photo-placeholder" data-folder="${product.carpeta_imagenes || ''}">
                 <div class="photo-placeholder-frame">
                   <svg class="photo-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
@@ -584,7 +566,7 @@ const CatalogController = {
                 </button>
               ` : `
                 <button type="button" class="btn btn-primary btn-add-cart" onclick="CatalogController.addProductToCart('${product.id}', ${isReignPalette ? 'null' : '1'})">
-                  <span><img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> ${isReignPalette ? 'Agregar Combinación al Carrito' : 'Agregar al Carrito'}</span>
+                  <span><img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito</span>
                 </button>
               `)}
             </div>

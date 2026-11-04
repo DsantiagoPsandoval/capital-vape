@@ -852,1428 +852,299 @@
 }
 
 /* ==========================================================================
-   REIGN BAR PALETTE — PRODUCTO RECOMENDADO (JERARQUÍA VISUAL SUPERIOR)
+   REIGN BAR PALETTE — TARJETA HOMOGÉNEA CON EL CATÁLOGO (1 SABOR / 2 SABORES)
    ========================================================================== */
-.product-card.is-recommended {
-  border: 1.5px solid rgba(229, 183, 0, 0.78);
-  background: linear-gradient(180deg, rgba(42, 16, 62, 0.98) 0%, var(--bg-card) 55%);
-  box-shadow:
-    0 14px 40px rgba(0, 0, 0, 0.72),
-    0 0 28px rgba(229, 183, 0, 0.25),
-    0 0 18px rgba(216, 27, 183, 0.22);
-  transform: translateY(-2px);
+.card-image-wrapper.is-reign-composite-stage {
+  cursor: default;
+  padding: 12px;
+  background: radial-gradient(circle at center, rgba(216, 27, 183, 0.16) 0%, rgba(20, 8, 33, 0.95) 75%);
 }
 
-[data-theme="light"] .product-card.is-recommended {
-  background: linear-gradient(180deg, #FFFDF5 0%, #FFFFFF 60%);
-  border-color: var(--accent-gold);
-  box-shadow: 0 12px 32px rgba(184, 134, 11, 0.2);
-}
-
-.product-card.is-recommended:hover {
-  transform: translateY(-7px);
-  border-color: #FFE600;
-  box-shadow:
-    0 18px 46px rgba(0, 0, 0, 0.8),
-    0 0 36px rgba(229, 183, 0, 0.42),
-    0 0 24px rgba(216, 27, 183, 0.35);
-}
-
-.recommended-ribbon-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 6;
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: linear-gradient(135deg, #FFE600 0%, #E5B700 50%, #D81BB7 100%);
-  color: #0B0410;
-  font-family: var(--font-heading);
-  font-size: 0.74rem;
-  font-weight: 900;
-  letter-spacing: 0.05em;
-  padding: 5px 12px;
-  border-radius: var(--radius-full);
-  box-shadow: 0 4px 16px rgba(229, 183, 0, 0.55), 0 0 10px rgba(255, 230, 0, 0.45);
-  text-transform: uppercase;
-  pointer-events: none;
-}
-
-.card-recommended-inline-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.22));
-  border: 1px solid rgba(229, 183, 0, 0.65);
-  color: var(--accent-yellow);
-  font-size: 0.72rem;
-  font-weight: 800;
-  padding: 2px 7px;
-  border-radius: var(--radius-sm);
-  white-space: nowrap;
-}
-
-.card-pricing-block.is-recommended-pricing {
-  border-color: rgba(229, 183, 0, 0.45);
-  background: linear-gradient(135deg, rgba(20, 8, 33, 0.95), rgba(38, 14, 54, 0.92));
-}
-
-[data-theme="light"] .card-pricing-block.is-recommended-pricing {
-  background: #FFFBEB;
-}
-
-.pricing-tier-row.promo-tier {
-  padding-top: 6px;
-  border-top: 1px dashed rgba(255, 255, 255, 0.1);
-  transition: var(--transition);
-}
-
-.pricing-tier-row.promo-tier:hover {
-  transform: translateX(2px);
-}
-
-.pricing-tier-row.promo-tier.promo-tier-highlighted {
-  background: linear-gradient(135deg, rgba(229, 183, 0, 0.18), rgba(216, 27, 183, 0.16));
-  border: 1px solid rgba(229, 183, 0, 0.55);
-  border-radius: var(--radius-sm);
-  padding: 7px 8px;
-  margin-top: 2px;
-  box-shadow: 0 0 14px rgba(229, 183, 0, 0.2);
-}
-
-.pricing-tier-row.promo-tier.promo-tier-highlighted .tier-badge-tag.duo {
-  background: linear-gradient(135deg, #FFE600, #E5B700);
-  color: #0B0410;
-  border-color: #FFE600;
-  font-weight: 900;
-}
-
-/* ==========================================================================
-   ESPACIO PREPARADO PARA IMÁGENES ORIGINALES (SIN FOTOS INVENTADAS)
-   ========================================================================== */
-.card-image-wrapper.is-placeholder-space,
-.flavor-card-img-wrap.is-placeholder-space {
-  background:
-    radial-gradient(circle at 50% 35%, rgba(216, 27, 183, 0.18) 0%, rgba(229, 183, 0, 0.08) 45%, rgba(16, 7, 26, 0.96) 85%);
-}
-
-.product-photo-placeholder {
+.reign-card-img-single,
+.reign-card-img-dual {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  box-sizing: border-box;
 }
 
-.photo-placeholder-frame {
-  width: 100%;
-  height: 100%;
-  border: 1.5px dashed rgba(229, 183, 0, 0.42);
-  border-radius: var(--radius-md);
-  background: rgba(11, 4, 16, 0.55);
-  backdrop-filter: blur(6px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 14px 12px;
-  gap: 6px;
-  transition: var(--transition);
-}
-
-.product-card:hover .photo-placeholder-frame {
-  border-color: var(--accent-gold);
-  background: rgba(20, 8, 33, 0.72);
-  box-shadow: inset 0 0 22px rgba(216, 27, 183, 0.18);
-}
-
-.photo-placeholder-icon {
-  width: 34px;
-  height: 34px;
-  color: var(--accent-gold);
-  opacity: 0.88;
-  filter: drop-shadow(0 0 8px rgba(229, 183, 0, 0.35));
-}
-
-.photo-placeholder-title {
-  font-family: var(--font-heading);
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1.2;
-  letter-spacing: 0.02em;
-}
-
-.photo-placeholder-specs {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent-yellow);
-  background: rgba(229, 183, 0, 0.12);
-  border: 1px solid rgba(229, 183, 0, 0.28);
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-}
-
-.photo-placeholder-status {
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  font-weight: 600;
-  line-height: 1.25;
-}
-
-/* ==========================================================================
-   REIGN BAR PALETTE — FICHA REDISEÑADA (ALTA LEGIBILIDAD + 2 MODALIDADES)
-   ========================================================================== */
-.product-card.is-reign-palette-card {
-  grid-column: 1 / -1;
-  background: linear-gradient(155deg, rgba(24, 11, 40, 0.98) 0%, rgba(12, 6, 22, 0.99) 100%);
-  border: 2px solid rgba(255, 224, 102, 0.55);
-  border-radius: 22px;
-  padding: 26px 28px;
-  box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65), 0 0 38px rgba(216, 27, 183, 0.18);
-  overflow: visible;
-}
-
-.reign-featured-layout {
-  display: grid;
-  grid-template-columns: 400px minmax(0, 1fr);
-  grid-template-areas:
-    "preview header"
-    "preview specs"
-    "preview pricing"
-    "preview modes"
-    "summary selectors"
-    "quantity selectors"
-    "actions selectors";
-  gap: 20px 30px;
-  align-items: start;
-}
-
-.reign-section-1-preview-stage { grid-area: preview; }
-.reign-section-2-header        { grid-area: header; }
-.reign-section-3-specs         { grid-area: specs; }
-.reign-section-4-pricing       { grid-area: pricing; }
-.reign-section-5-mode-selector { grid-area: modes; }
-.reign-section-6-selectors     { grid-area: selectors; }
-.reign-section-7-selection-summary { grid-area: summary; }
-.reign-section-8-quantity      { grid-area: quantity; }
-.reign-section-9-actions       { grid-area: actions; }
-
-/* 1. ESCENARIO DE FOTOGRAFÍA PRINCIPAL Y COMPOSICIÓN EN VIVO */
-.reign-section-1-preview-stage {
-  background: radial-gradient(circle at 50% 42%, rgba(216, 27, 183, 0.22) 0%, rgba(229, 183, 0, 0.09) 45%, rgba(9, 4, 16, 0.98) 100%);
-  border: 1.5px solid rgba(255, 224, 102, 0.42);
-  border-radius: 18px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+.reign-card-3d-joined {
   position: relative;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-}
-
-.reign-stage-top-badges {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.reign-recommended-pill-badge {
-  background: linear-gradient(135deg, #FFE066 0%, #F59E0B 100%);
-  color: #12061E;
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.04em;
-  padding: 5px 12px;
-  border-radius: 999px;
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
-}
-
-.reign-live-mode-indicator {
-  background: rgba(15, 7, 26, 0.9);
-  border: 1px solid rgba(255, 224, 102, 0.55);
-  color: #FFE066;
-  font-size: 0.76rem;
-  font-weight: 800;
-  padding: 5px 11px;
-  border-radius: 999px;
-}
-
-/* Vista Modalidad A: Un solo sabor */
-.reign-preview-single-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  min-height: 330px;
-  padding: 10px 6px 4px;
-}
-
-.reign-single-photo-frame {
-  width: 100%;
-  height: 270px;
+  width: 215px;
+  height: 215px;
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.65));
+  transition: transform 0.3s ease;
 }
 
-.reign-main-single-img {
-  max-width: 90%;
-  max-height: 265px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 18px 28px rgba(0, 0, 0, 0.68)) drop-shadow(0 0 18px rgba(216, 27, 183, 0.25));
-  transition: transform 0.28s ease;
+.product-card:hover .reign-card-3d-joined {
+  transform: scale(1.06) translateY(-2px);
 }
 
-.reign-single-photo-frame:hover .reign-main-single-img {
-  transform: scale(1.04);
-}
-
-.reign-preview-single-caption {
-  width: 100%;
-  background: rgba(16, 8, 28, 0.92);
-  border: 1px solid rgba(255, 224, 102, 0.45);
-  border-radius: 12px;
-  padding: 10px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  text-align: center;
-}
-
-.reign-caption-tag {
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  color: #FFE066;
-  text-transform: uppercase;
-}
-
-.reign-caption-flavor-name {
-  font-size: 1.18rem;
-  font-weight: 900;
-  color: #FFFFFF;
-}
-
-/* Vista Modalidad B: Dos sabores unidos */
-.reign-preview-dual-view {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 330px;
-}
-
-.reign-dual-device-stage {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.reign-dual-3d-stack {
-  position: relative;
-  width: 280px;
-  height: 280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.72)) drop-shadow(0 0 22px rgba(216, 27, 183, 0.25));
-}
-
-.reign-dual-half-img {
+.reign-joined-half {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: contain;
   pointer-events: none;
-  transition: transform 0.28s ease;
 }
 
-.reign-dual-3d-stack:hover .reign-dual-half-img {
-  transform: scale(1.03);
+/* Contenedor compacto y legible dentro de .card-body (igual que las otras cards) */
+.reign-card-clean-box {
+  background: var(--bg-surface);
+  border: 1px solid rgba(229, 183, 0, 0.35);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-.reign-dual-modules-floating-row {
-  width: 100%;
+.reign-clean-mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: rgba(9, 4, 15, 0.65);
+  padding: 3px;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.reign-clean-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 6px 8px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.reign-clean-tab:hover {
+  color: #FFFFFF;
+}
+
+.reign-clean-tab.active {
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
+  border-color: #FFE066;
+  color: #FFE066;
+}
+
+.reign-clean-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reign-clean-panel-head {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.reign-clean-head-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-}
-
-.reign-module-mini-card {
-  flex: 1;
-  min-width: 0;
-  background: rgba(15, 7, 27, 0.92);
-  border: 1.5px solid rgba(255, 224, 102, 0.45);
-  border-radius: 12px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-}
-
-.reign-module-mini-card.mod-right {
-  border-color: rgba(232, 121, 249, 0.55);
-}
-
-.reign-mod-mini-img {
-  width: 42px;
-  height: 46px;
-  object-fit: contain;
-  flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 8px;
-  padding: 2px;
-}
-
-.reign-mod-mini-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.reign-mod-mini-tag {
-  font-size: 0.68rem;
-  font-weight: 800;
-  color: #FFE066;
-  letter-spacing: 0.03em;
-}
-
-.reign-module-mini-card.mod-right .reign-mod-mini-tag {
-  color: #F5D0FE;
-}
-
-.reign-mod-mini-name {
-  font-size: 0.88rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  line-height: 1.2;
-  word-break: break-word;
-}
-
-.reign-module-join-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FFE066, #D81BB7);
-  color: #10051C;
-  font-weight: 900;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* 2. CABECERA Y TÍTULO PRINCIPAL */
-.reign-section-2-header {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.reign-header-badges-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.reign-star-rec-tag {
-  background: rgba(255, 224, 102, 0.16);
-  border: 1px solid rgba(255, 224, 102, 0.6);
-  color: #FFE066;
-  font-size: 0.82rem;
-  font-weight: 800;
-  padding: 4px 12px;
-  border-radius: 999px;
-}
-
-.reign-stock-available-tag {
-  background: rgba(34, 197, 94, 0.15);
-  border: 1px solid rgba(34, 197, 94, 0.45);
-  color: #4ADE80;
-  font-size: 0.82rem;
-  font-weight: 700;
-  padding: 4px 12px;
-  border-radius: 999px;
-}
-
-.reign-rating-pill {
-  background: rgba(255, 255, 255, 0.08);
-  color: #FACC15;
-  font-size: 0.85rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.reign-main-product-title {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: 2rem;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  color: #FFFFFF;
-  line-height: 1.15;
-}
-
-.reign-main-product-subtitle {
-  margin: 0;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #E2D9F3;
-}
-
-/* 3. CARACTERÍSTICAS (50.000 PUFFS Y 1200 MAH) */
-.reign-section-3-specs {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.reign-spec-feature-pill {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.reign-spec-icon {
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
-.reign-spec-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.reign-spec-label {
-  font-size: 0.78rem;
-  color: #C4B5FD;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.reign-spec-value {
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #FFFFFF;
-}
-
-/* 4. PRECIO INDIVIDUAL Y PROMOCIÓN POR 2 UNIDADES */
-.reign-section-4-pricing {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.reign-price-box {
-  background: rgba(16, 8, 28, 0.85);
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  border-radius: 16px;
-  padding: 14px 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   gap: 6px;
+}
+
+.reign-clean-panel-title {
+  font-size: 0.78rem;
+  font-weight: 900;
+  color: #FFE066;
+  letter-spacing: 0.02em;
+}
+
+.reign-clean-panel-sub {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.25;
+}
+
+.reign-clean-swap-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #FFE066;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.reign-price-box:hover {
-  border-color: rgba(255, 224, 102, 0.65);
+.reign-clean-swap-btn:hover {
+  background: rgba(255, 224, 102, 0.22);
+  border-color: #FFE066;
+}
+
+.reign-clean-single-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(11, 5, 19, 0.8);
+  border: 1px solid rgba(255, 224, 102, 0.4);
+  border-radius: 8px;
+  padding: 5px 8px;
+}
+
+.reign-clean-dual-slots {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reign-clean-slot-item {
+  background: rgba(11, 5, 19, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 5px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.reign-clean-slot-item.is-editing-slot {
+  border-color: #FFE066;
+  background: rgba(229, 183, 0, 0.08);
+}
+
+.reign-clean-slot-label {
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: #FFE066;
+  letter-spacing: 0.03em;
+}
+
+.reign-clean-slot-control {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.reign-clean-slot-thumb {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.reign-clean-select {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 0.84rem;
+  font-weight: 700;
+  outline: none;
+  cursor: pointer;
+}
+
+.reign-clean-select option {
+  background: #140821;
+  color: #FFFFFF;
+}
+
+/* Tira horizontal de tarjetas de sabores con foto real */
+.reign-mini-flavors-strip {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 3px 1px 5px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 183, 0, 0.45) rgba(255, 255, 255, 0.04);
+}
+
+.reign-mini-flavors-strip::-webkit-scrollbar {
+  height: 4px;
+}
+
+.reign-mini-flavors-strip::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.reign-mini-flavors-strip::-webkit-scrollbar-thumb {
+  background: rgba(229, 183, 0, 0.45);
+  border-radius: 999px;
+}
+
+.reign-mini-flavor-card {
+  flex: 0 0 68px;
+  scroll-snap-align: start;
+  background: rgba(14, 7, 24, 0.9);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9px;
+  padding: 5px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.reign-mini-flavor-card:hover:not(:disabled) {
+  border-color: rgba(255, 224, 102, 0.7);
   transform: translateY(-2px);
 }
 
-.reign-price-box.promo-price-box {
-  background: linear-gradient(145deg, rgba(229, 183, 0, 0.16), rgba(216, 27, 183, 0.16));
-  border-color: rgba(255, 224, 102, 0.5);
-}
-
-.reign-price-box.is-active-tier {
-  border-color: #FFE066;
-  box-shadow: 0 0 22px rgba(255, 224, 102, 0.28);
-}
-
-.reign-price-box-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.reign-price-tier-badge {
-  background: rgba(255, 255, 255, 0.12);
-  color: #FFFFFF;
-  font-size: 0.78rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.reign-price-tier-badge.promo-badge {
-  background: #FFE066;
-  color: #12061E;
-}
-
-.reign-price-tier-sub {
-  font-size: 0.85rem;
-  color: #D8B4FE;
-  font-weight: 600;
-}
-
-.reign-price-save-pill {
-  background: rgba(34, 197, 94, 0.2);
-  border: 1px solid rgba(34, 197, 94, 0.5);
-  color: #4ADE80;
-  font-size: 0.8rem;
-  font-weight: 800;
-  padding: 3px 9px;
-  border-radius: 999px;
-}
-
-.reign-price-amount {
-  font-size: 1.65rem;
-  font-weight: 900;
-  color: #FFFFFF;
-  line-height: 1.1;
-}
-
-.reign-price-amount.promo-amount {
-  color: #FFE066;
-}
-
-.reign-price-amount small {
-  font-size: 0.9rem;
-  font-weight: 700;
-  opacity: 0.85;
-}
-
-.reign-price-unit-note {
-  font-size: 0.84rem;
-  color: #E9D5FF;
-  font-weight: 600;
-}
-
-/* 5. SELECTOR DE MODALIDAD (UN SABOR VS DOS SABORES) */
-.reign-section-5-mode-selector {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.reign-mode-selector-label {
-  font-size: 0.85rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: #FFE066;
-  text-transform: uppercase;
-}
-
-.reign-mode-buttons-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.reign-mode-tab-btn {
-  background: rgba(15, 7, 26, 0.88);
-  border: 2px solid rgba(255, 255, 255, 0.16);
-  border-radius: 14px;
-  padding: 14px 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  text-align: left;
-  color: #FFFFFF;
-  transition: all 0.2s ease;
-}
-
-.reign-mode-tab-btn:hover {
-  border-color: rgba(255, 224, 102, 0.65);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.reign-mode-tab-btn.active {
-  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
-  border-color: #FFE066;
-  box-shadow: 0 0 20px rgba(255, 224, 102, 0.28);
-}
-
-.reign-mode-tab-icon {
-  font-size: 1.65rem;
-  line-height: 1;
-  flex-shrink: 0;
-}
-
-.reign-mode-tab-text {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.reign-mode-tab-text strong {
-  font-size: 1.02rem;
-  font-weight: 900;
-  color: #FFFFFF;
-}
-
-.reign-mode-tab-btn.active .reign-mode-tab-text strong {
-  color: #FFE066;
-}
-
-.reign-mode-tab-text span {
-  font-size: 0.85rem;
-  color: #D8B4FE;
-  font-weight: 600;
-}
-
-/* 6. PANELES DE SELECCIÓN DE SABORES (MODALIDAD A Y MODALIDAD B) */
-.reign-section-6-selectors {
-  width: 100%;
-}
-
-.reign-modality-panel {
-  background: rgba(13, 6, 23, 0.9);
-  border: 1.5px solid rgba(255, 255, 255, 0.14);
-  border-radius: 18px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.reign-modality-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 14px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding-bottom: 14px;
-}
-
-.reign-modality-kicker {
-  display: inline-block;
-  font-size: 0.78rem;
-  font-weight: 800;
-  color: #FFE066;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-
-.reign-modality-title {
-  margin: 0;
-  font-family: var(--font-heading);
-  font-size: 1.4rem;
-  font-weight: 900;
-  color: #FFFFFF;
-}
-
-.reign-modality-desc {
-  margin: 4px 0 0;
-  font-size: 0.96rem;
-  color: #E2D9F3;
-}
-
-.reign-active-selection-pill {
-  background: rgba(255, 224, 102, 0.16);
-  border: 1.5px solid rgba(255, 224, 102, 0.55);
-  border-radius: 12px;
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.92rem;
-  color: #FFE066;
-}
-
-.reign-active-selection-pill strong {
-  color: #FFFFFF;
-  font-size: 1rem;
-}
-
-.reign-dual-helper-actions {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.reign-helper-action-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #FFFFFF;
-  font-size: 0.88rem;
-  font-weight: 700;
-  padding: 9px 14px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.reign-helper-action-btn:hover {
-  background: rgba(255, 224, 102, 0.22);
-  border-color: #FFE066;
-  color: #FFE066;
-}
-
-/* Cuadrícula de Tarjetas Visuales de Sabores */
-.reign-visual-flavors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-  gap: 12px;
-}
-
-.reign-dual-selectors-columns {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.reign-dual-selector-box {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1.5px solid rgba(255, 224, 102, 0.28);
-  border-radius: 16px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.reign-dual-selector-box.slot-2-box {
-  border-color: rgba(232, 121, 249, 0.35);
-}
-
-.reign-dual-selector-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.reign-dual-step-title-group {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.reign-dual-step-badge {
-  display: inline-block;
-  align-self: flex-start;
-  font-size: 0.74rem;
-  font-weight: 800;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: rgba(255, 224, 102, 0.2);
-  border: 1px solid rgba(255, 224, 102, 0.55);
-  color: #FFE066;
-}
-
-.reign-dual-step-badge.mod-2 {
-  background: rgba(216, 27, 183, 0.22);
-  border-color: rgba(232, 121, 249, 0.6);
-  color: #F5D0FE;
-}
-
-.reign-dual-step-title {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 900;
-  color: #FFFFFF;
-}
-
-.reign-dual-current-chip {
-  background: rgba(15, 7, 26, 0.92);
-  border: 1.5px solid rgba(255, 224, 102, 0.55);
-  border-radius: 999px;
-  padding: 6px 14px 6px 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.reign-dual-current-chip.mod-2 {
-  border-color: rgba(232, 121, 249, 0.65);
-}
-
-.reign-dual-current-chip img {
-  width: 30px;
-  height: 30px;
-  object-fit: contain;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.reign-dual-current-chip strong {
-  font-size: 0.95rem;
-  color: #FFFFFF;
-}
-
-/* Tarjeta individual de sabor (Grande, clara y con foto real) */
-.reign-flavor-visual-card {
-  background: rgba(17, 9, 30, 0.92);
-  border: 2px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
-  padding: 10px 8px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #FFFFFF;
-  text-align: center;
-}
-
-.reign-flavor-visual-card:hover:not(:disabled) {
-  transform: translateY(-3px);
-  border-color: rgba(255, 224, 102, 0.75);
-  background: rgba(30, 15, 52, 0.95);
-}
-
-.reign-flavor-visual-card.is-selected {
-  background: linear-gradient(150deg, rgba(229, 183, 0, 0.25), rgba(216, 27, 183, 0.25));
-  border-color: #FFE066;
-  box-shadow: 0 6px 20px rgba(255, 224, 102, 0.3);
-}
-
-.reign-flavor-visual-card.is-disabled-duplicate {
-  opacity: 0.42;
-  cursor: not-allowed;
-  border-style: dashed;
-}
-
-.reign-flavor-card-photo-box {
-  width: 100%;
-  height: 86px;
-  border-radius: 10px;
-  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08), rgba(8, 4, 15, 0.95));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  overflow: hidden;
-}
-
-.reign-flavor-card-photo {
-  max-width: 92%;
-  max-height: 78px;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  transition: transform 0.22s ease;
-}
-
-.reign-flavor-visual-card:hover:not(:disabled) .reign-flavor-card-photo {
-  transform: scale(1.08);
-}
-
-.reign-flavor-card-title {
-  font-size: 0.92rem;
-  font-weight: 800;
-  line-height: 1.25;
-  color: #FFFFFF;
-  word-break: break-word;
-}
-
-.reign-flavor-card-badge {
-  font-size: 0.75rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #D8B4FE;
-}
-
-.reign-flavor-visual-card.is-selected .reign-flavor-card-badge {
-  background: #FFE066;
-  color: #12061E;
-}
-
-/* 7. VISTA PREVIA DE LA SELECCIÓN (RESUMEN) */
-.reign-section-7-selection-summary {
-  background: rgba(15, 7, 27, 0.95);
-  border: 1.5px solid rgba(255, 224, 102, 0.4);
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.reign-summary-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.reign-summary-kicker {
-  font-size: 0.78rem;
-  font-weight: 900;
-  color: #4ADE80;
-  letter-spacing: 0.04em;
-}
-
-.reign-summary-mode-tag {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #FFE066;
-}
-
-.reign-summary-single-content,
-.reign-summary-dual-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.reign-summary-flavor-pill {
-  flex: 1;
-  min-width: 0;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.reign-summary-thumb {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-  border-radius: 8px;
-  background: rgba(9, 4, 16, 0.9);
-  padding: 2px;
-  flex-shrink: 0;
-}
-
-.reign-summary-pill-meta {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.reign-summary-pill-meta span {
-  font-size: 0.74rem;
-  color: #C4B5FD;
-  font-weight: 600;
-}
-
-.reign-summary-pill-meta strong {
-  font-size: 0.95rem;
-  font-weight: 800;
-  color: #FFFFFF;
-  line-height: 1.2;
-}
-
-.reign-summary-plus-circle {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  background: rgba(255, 224, 102, 0.2);
-  border: 1px solid #FFE066;
-  color: #FFE066;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-/* 8. SELECTOR DE CANTIDAD */
-.reign-section-8-quantity {
-  background: rgba(15, 7, 27, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 16px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.reign-qty-header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.reign-qty-label {
-  font-size: 0.82rem;
-  font-weight: 800;
-  color: #E2D9F3;
-}
-
-.reign-qty-total-preview {
-  font-size: 0.95rem;
-  color: #FFFFFF;
-}
-
-.reign-qty-total-preview strong {
-  color: #FFE066;
-  font-size: 1.15rem;
-  font-weight: 900;
-}
-
-.reign-qty-controls-layout {
-  display: flex;
-  align-items: stretch;
-  gap: 10px;
-}
-
-.reign-qty-presets {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-
-.reign-qty-preset-btn {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid rgba(255, 255, 255, 0.16);
-  border-radius: 12px;
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  cursor: pointer;
-  color: #FFFFFF;
-  transition: all 0.2s ease;
-}
-
-.reign-qty-preset-btn.active {
-  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.22));
-  border-color: #FFE066;
-}
-
-.preset-qty-title {
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: #E2D9F3;
-}
-
-.preset-qty-price {
-  font-size: 0.94rem;
-  font-weight: 900;
-  color: #FFE066;
-}
-
-.reign-qty-stepper {
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid rgba(255, 255, 255, 0.18);
-  border-radius: 12px;
-  padding: 4px;
-  gap: 6px;
-}
-
-.reign-stepper-btn {
-  width: 36px;
-  height: 38px;
-  border-radius: 8px;
-  border: none;
-  background: rgba(255, 255, 255, 0.1);
-  color: #FFFFFF;
-  font-size: 1.2rem;
-  font-weight: 900;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.reign-stepper-btn:hover {
-  background: #FFE066;
-  color: #12061E;
-}
-
-.reign-stepper-val {
-  min-width: 28px;
-  text-align: center;
-  font-size: 1.05rem;
-  font-weight: 900;
-  color: #FFFFFF;
-}
-
-/* 9. BOTÓN GRANDE PARA AGREGAR AL CARRITO */
-.reign-section-9-actions {
-  width: 100%;
-}
-
-.reign-main-add-cart-btn {
-  width: 100%;
-  min-height: 58px;
-  padding: 14px 20px;
-  border-radius: 14px;
-  font-size: 1.04rem;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  box-shadow: 0 10px 28px rgba(216, 27, 183, 0.4);
-}
-
-.reign-random-btn,
-.reign-swap-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #FFFFFF;
-  font-size: 0.85rem;
-  font-weight: 700;
-  padding: 8px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.reign-random-btn:hover,
-.reign-swap-btn:hover {
-  background: rgba(229, 183, 0, 0.24);
-  border-color: #FFE066;
-  color: #FFE066;
-}
-
-.reign-summary-detail-line {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  font-size: 0.92rem;
-  color: var(--text-secondary);
-  padding: 4px 0;
-}
-
-.reign-summary-detail-line strong {
-  color: #FFFFFF;
-}
-
-.reign-summary-price-val {
-  color: #FFE066 !important;
-  font-weight: 900;
-}
-
-@media (max-width: 1080px) {
-  .reign-featured-layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "preview"
-      "header"
-      "specs"
-      "pricing"
-      "modes"
-      "selectors"
-      "summary"
-      "quantity"
-      "actions";
-    gap: 18px;
-  }
-}
-
-/* ==========================================================================
-   ESTUDIO COMPLETO EN MODAL (PERSONALIZA TU REIGN BAR)
-   ========================================================================== */
-#flavorModal.is-reign-modal-active .flavor-modal-card {
-  max-width: 1120px;
-  width: 96%;
-}
-
-.flavor-modal-grid.is-reign-studio-grid {
-  display: block;
-  padding: 4px 0;
-}
-
-.reign-modal-studio {
-  display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 20px;
-  align-items: start;
-}
-
-.reign-modal-preview-panel {
-  position: sticky;
-  top: 0;
-  background: linear-gradient(160deg, rgba(22, 10, 36, 0.96), rgba(11, 5, 19, 0.98));
-  border: 1.5px solid rgba(229, 183, 0, 0.45);
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.reign-modal-preview-header {
-  text-align: center;
-}
-
-.reign-modal-preview-sub {
-  margin: 4px 0 0;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-}
-
-.reign-modal-canvas-stage {
-  width: 100%;
-  aspect-ratio: 13 / 12;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #0B0512;
-}
-
-.reign-modal-quick-controls {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-}
-
-.reign-modal-selectors-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-.reign-modal-step-section {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 14px;
-  padding: 14px;
-}
-
-.reign-modal-step-title-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
-.reign-step-badge-pill {
-  display: inline-block;
-  background: rgba(229, 183, 0, 0.2);
-  border: 1px solid rgba(229, 183, 0, 0.55);
-  color: #FFE066;
-  font-size: 0.68rem;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 999px;
-}
-
-.reign-step-badge-pill.step-2 {
-  background: rgba(216, 27, 183, 0.22);
-  border-color: rgba(216, 27, 183, 0.6);
-  color: #F5D0FE;
-}
-
-.reign-modal-step-heading {
-  margin: 3px 0 0;
-  font-size: 1rem;
-  color: #FFFFFF;
-}
-
-.reign-modal-selected-indicator {
-  background: rgba(229, 183, 0, 0.16);
-  border: 1px solid rgba(229, 183, 0, 0.5);
-  color: #FFE066;
-  font-size: 0.78rem;
-  font-weight: 800;
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.reign-modal-flavors-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
-  gap: 10px;
-}
-
-.reign-modal-flavor-card {
-  background: rgba(14, 7, 24, 0.85);
-  border: 1.5px solid rgba(255, 255, 255, 0.12);
-  border-radius: 12px;
-  padding: 7px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  color: #FFFFFF;
-  text-align: center;
-}
-
-.reign-modal-flavor-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(229, 183, 0, 0.65);
-}
-
-.reign-modal-flavor-card.is-selected {
+.reign-mini-flavor-card.is-selected {
   background: linear-gradient(145deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
   border-color: #FFE066;
-  box-shadow: 0 0 16px rgba(229, 183, 0, 0.35);
+  box-shadow: 0 0 10px rgba(255, 224, 102, 0.28);
 }
 
-.reign-modal-card-img-box {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  border-radius: 8px;
+.reign-mini-flavor-card.is-disabled-duplicate {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.reign-mini-flavor-img-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
-  background: #09040F;
 }
 
-.reign-modal-card-img-box img {
-  width: 100%;
-  height: 100%;
+.reign-mini-flavor-img-box img {
+  max-width: 92%;
+  max-height: 40px;
   object-fit: contain;
   display: block;
 }
 
-.reign-modal-card-Name {
-  font-size: 0.75rem;
+.reign-mini-flavor-name {
+  font-size: 0.68rem;
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.15;
   color: #FFFFFF;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
 }
 
 /* Bloque de 2 Sabores en el Carrito */

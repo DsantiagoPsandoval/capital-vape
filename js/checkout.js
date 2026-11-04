@@ -225,7 +225,6 @@ const CheckoutController = {
   submitOrder() {
     const nombre = document.getElementById('checkoutNombre').value.trim();
     const telefono = document.getElementById('checkoutTelefono').value.trim();
-    const correo = document.getElementById('checkoutCorreo').value.trim();
     const direccion = document.getElementById('checkoutDireccion').value.trim();
     const ciudad = document.getElementById('checkoutCiudad').value.trim();
     const depto = document.getElementById('checkoutDepto').value.trim();
@@ -267,7 +266,6 @@ const CheckoutController = {
     let msg = `⚡ *NUEVO PEDIDO - CAPITAL VAPE* ⚡\n\n`;
     msg += `👤 *Cliente:* ${nombre}\n`;
     msg += `📱 *Teléfono:* ${telefono}\n`;
-    if (correo) msg += `✉️ *Correo:* ${correo}\n`;
     msg += `📍 *Dirección:* ${direccion}\n`;
     msg += `🏙️ *Ciudad / Destino:* ${ciudad} (${destDesc})\n`;
     if (notas) msg += `📝 *Notas de Entrega:* ${notas}\n`;

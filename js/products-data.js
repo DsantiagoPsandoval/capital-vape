@@ -2789,23 +2789,5 @@ const PRODUCTS_DATA = [
       }
     ],
     "puffs": null
-  },
-  {
-    "id": "en-create",
-    "nombre": "EN CREATE",
-    "categoria": "desechables",
-    "subtitulo": "Próximamente • Coming Soon",
-    "puffs": null,
-    "precio": 0,
-    "precio_promo_2": null,
-    "ahorro_2": 0,
-    "rating": 5,
-    "ventas": 0,
-    "imagen": "assets/logo/logo.png",
-    "descripcion": "El nuevo EN CREATE llegará muy pronto al catálogo oficial de Capital Vape. ¡Espéralo próximamente!",
-    "agotado": true,
-    "coming_soon": true,
-    "tipo_variante": "sabor",
-    "sabores": []
   }
 ];

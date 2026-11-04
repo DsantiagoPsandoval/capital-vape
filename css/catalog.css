@@ -739,7 +739,6 @@
 [data-product-id="sami-pod-2"] { --product-scale: 2.20; }
 [data-product-id="airpods-pro-2"] { --product-scale: 0.82; }
 [data-product-id="airpods-4-anc"] { --product-scale: 0.82; }
-[data-product-id="en-create"] { --product-scale: 0.82; }
 
 /* Presentación equilibrada, natural y nítida para referencias de alta luminosidad (baterías y dispositivos) */
 [data-product-id="waka-creator-bateria"] .product-img-real,

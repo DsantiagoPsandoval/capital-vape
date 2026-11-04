@@ -273,9 +273,10 @@ const CatalogController = {
       const isSelected = item.name === currentSelected;
       const isAgotado = item.agotado || product.agotado;
       const isItemPlaceholder = !!(product.imagen_pendiente && !item.img);
+      const safeItemName = String(item.name || '').replace(/'/g, "\\'");
       return `
         <div class="flavor-card-item ${isSelected ? 'is-selected' : ''} ${isAgotado ? 'is-flavor-agotado' : ''}" data-product-id="${product.id}" data-variant-name="${item.name}">
-          <div class="flavor-card-img-wrap ${isItemPlaceholder ? 'is-placeholder-space' : ''}" ${!isAgotado ? `onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')"` : ''}>
+          <div class="flavor-card-img-wrap ${isItemPlaceholder ? 'is-placeholder-space' : ''}" ${!isAgotado ? `onclick="CatalogController.selectAndApplyVariant('${product.id}', '${safeItemName}')"` : ''}>
             ${isItemPlaceholder ? `
               <div class="product-photo-placeholder is-modal-placeholder">
                 <div class="photo-placeholder-frame">
@@ -306,13 +307,13 @@ const CatalogController = {
             ` : `
               <button type="button" 
                       class="btn-flavor-select" 
-                      onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')">
+                      onclick="CatalogController.selectAndApplyVariant('${product.id}', '${safeItemName}')">
                 ${isSelected ? '✓ Seleccionado' : 'Seleccionar sabor'}
               </button>
               ${!this.activeModalIsWholesale && !product.agotado ? `
                 <button type="button" 
                         class="btn-flavor-add-cart" 
-                        onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${item.name}')">
+                        onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${safeItemName}')">
                   <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito
                 </button>
               ` : ''}

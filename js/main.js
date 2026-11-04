@@ -6,18 +6,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initThemeManager();
 
   // 1.2 Inicializar configurador dual de REIGN BAR PALETTE
-  if (window.ReignPaletteConfigurator) ReignPaletteConfigurator.init();
+  try { if (window.ReignPaletteConfigurator && typeof ReignPaletteConfigurator.init === 'function') ReignPaletteConfigurator.init(); } catch (e) { console.error(e); }
 
   // 1.5 Inicializar sincronización en la nube (Precios y Stock Globales)
-  if (window.CloudSyncService) CloudSyncService.init();
+  try { if (window.CloudSyncService) CloudSyncService.init(); } catch (e) { console.error(e); }
 
   // 2. Inicializar Carrito y Catálogos
-  if (window.Cart) Cart.init();
-  if (window.CatalogController) CatalogController.init();
-  if (window.CheckoutController) CheckoutController.init();
+  try { if (window.Cart) Cart.init(); } catch (e) { console.error(e); }
+  try { if (window.CatalogController) CatalogController.init(); } catch (e) { console.error(e); }
+  try { if (window.CheckoutController) CheckoutController.init(); } catch (e) { console.error(e); }
 
   // 3. Inicializar Portal Mayorista con sesión persistente
-  initWholesaleSection();
+  try { initWholesaleSection(); } catch (e) { console.error(e); }
 
   // 4. Mobile Menu Drawer Toggle
   const mobileToggle = document.getElementById('mobileMenuToggle') || document.getElementById('mobileMenuBtn');

@@ -25,6 +25,11 @@ const ReignPaletteConfigurator = {
     return prod.sabores.filter(s => s && s.visible !== false && s.img);
   },
 
+  init() {
+    this.initDefaults();
+    this.syncCatalogSelectedVariant();
+  },
+
   initDefaults() {
     const flavors = this.getFlavors();
     if (flavors.length === 0) return;
@@ -67,12 +72,26 @@ const ReignPaletteConfigurator = {
     return `${this.flavor1} + ${this.flavor2}`;
   },
 
+  getCombinedVariantLabel(f1Name, f2Name) {
+    this.initDefaults();
+    if (f1Name && f2Name) {
+      return `${f1Name} + ${f2Name}`;
+    }
+    return this.getCurrentVariantLabel();
+  },
+
   syncCatalogSelectedVariant() {
+    const label = this.getCurrentVariantLabel();
     if (typeof CatalogController !== 'undefined' && CatalogController.selectedVariants) {
-      CatalogController.selectedVariants[this.productId] = this.getCurrentVariantLabel();
+      CatalogController.selectedVariants[this.productId] = label;
     }
     if (typeof WholesaleCatalog !== 'undefined' && WholesaleCatalog.selectedVariants) {
-      WholesaleCatalog.selectedVariants[this.productId] = this.getCurrentVariantLabel();
+      WholesaleCatalog.selectedVariants[this.productId] = label;
+    }
+    const wsCard = typeof document !== 'undefined' ? document.getElementById('ws-card-' + this.productId) : null;
+    if (wsCard) {
+      const tag = wsCard.querySelector('.flavor-current-tag');
+      if (tag) tag.textContent = label;
     }
   },
 
@@ -241,6 +260,19 @@ const ReignPaletteConfigurator = {
       if (img.getAttribute('src') !== rightSrc) img.setAttribute('src', rightSrc);
       if (f2) img.setAttribute('alt', `Módulo 2: ${f2.nombre}`);
     });
+
+    const wsCanvas = document.getElementById('reignWsCompositeCanvas');
+    if (wsCanvas && f1 && f2) {
+      await this.renderCompositeCanvas(wsCanvas, f1.nombre, f2.nombre);
+    }
+  },
+
+  async renderCompositeToCanvas(canvasOrId, flavor1Name, flavor2Name) {
+    return this.renderCompositeCanvas(canvasOrId, flavor1Name, flavor2Name);
+  },
+
+  updateConfiguratorDOM() {
+    this.updateCardUI();
   },
 
   /**

@@ -795,59 +795,24 @@ body.menu-open-scroll-lock {
     box-sizing: border-box !important;
   }
 
-  /* REIGN BAR PALETTE — Adaptación limpia como las demás tarjetas en móvil */
+  /* REIGN BAR PALETTE — Tarjeta destacada a ancho completo en móvil para que los sabores se vean claros y amplios */
+  .product-card.is-reign-palette-card {
+    grid-column: 1 / -1 !important;
+  }
+
+  .product-card.is-reign-palette-card .card-image-wrapper.is-reign-composite-stage {
+    height: 190px !important;
+    padding: 8px !important;
+  }
+
   .reign-card-3d-joined {
-    width: 142px !important;
-    height: 142px !important;
+    width: 175px !important;
+    height: 175px !important;
   }
 
-  .reign-card-clean-box {
-    padding: 6px !important;
-    gap: 5px !important;
-  }
-
-  .reign-clean-tab {
-    font-size: 0.68rem !important;
-    padding: 4px 4px !important;
-  }
-
-  .reign-clean-panel-title {
-    font-size: 0.68rem !important;
-  }
-
-  .reign-clean-panel-sub {
-    display: none !important;
-  }
-
-  .reign-clean-slot-item {
-    padding: 4px 6px !important;
-  }
-
-  .reign-clean-slot-label {
-    font-size: 0.58rem !important;
-  }
-
-  .reign-clean-slot-thumb {
-    width: 22px !important;
-    height: 22px !important;
-  }
-
-  .reign-clean-select {
-    font-size: 0.72rem !important;
-  }
-
-  .reign-mini-flavor-card {
-    flex: 0 0 56px !important;
-    padding: 4px 3px !important;
-  }
-
-  .reign-mini-flavor-img-box {
-    width: 34px !important;
-    height: 34px !important;
-  }
-
-  .reign-mini-flavor-name {
-    font-size: 0.6rem !important;
+  .product-card.is-reign-palette-card .card-title {
+    font-size: 1.12rem !important;
+    min-height: auto !important;
   }
 }
 

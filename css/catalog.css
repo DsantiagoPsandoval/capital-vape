@@ -894,248 +894,223 @@
   pointer-events: none;
 }
 
-/* Contenedor compacto y legible dentro de .card-body (igual que las otras cards) */
-.reign-card-clean-box {
-  background: var(--bg-surface);
-  border: 1px solid rgba(229, 183, 0, 0.35);
-  border-radius: var(--radius-md);
-  padding: 10px;
+/* Bloque Configurador dentro de la tarjeta REIGN BAR PALETTE (Sin caja redundante inferior ni pantalla completa) */
+.reign-configurator-box {
+  background: linear-gradient(160deg, rgba(22, 10, 36, 0.96), rgba(13, 6, 23, 0.98));
+  border: 1px solid rgba(229, 183, 0, 0.42);
+  border-radius: 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.reign-clean-mode-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  background: rgba(9, 4, 15, 0.65);
-  padding: 3px;
-  border-radius: 9px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.reign-clean-tab {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-secondary);
-  font-size: 0.78rem;
-  font-weight: 800;
-  padding: 6px 8px;
-  border-radius: 7px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  text-align: center;
-}
-
-.reign-clean-tab:hover {
-  color: #FFFFFF;
-}
-
-.reign-clean-tab.active {
-  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
-  border-color: #FFE066;
-  color: #FFE066;
-}
-
-.reign-clean-panel {
+.reign-config-header {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 8px;
 }
 
-.reign-clean-panel-head {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-.reign-clean-head-row {
+.reign-config-title-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
-.reign-clean-panel-title {
-  font-size: 0.78rem;
-  font-weight: 900;
-  color: #FFE066;
-  letter-spacing: 0.02em;
+.reign-mode-pills-inline,
+.reign-quick-btns-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
-.reign-clean-panel-sub {
-  font-size: 0.72rem;
+.reign-config-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   color: var(--text-secondary);
-  line-height: 1.25;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
 }
 
-.reign-clean-swap-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+.reign-config-badge.is-clickable {
+  cursor: pointer;
+}
+
+.reign-config-badge.active,
+.reign-config-badge:hover {
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.26), rgba(216, 27, 183, 0.26));
+  border-color: #FFE066;
   color: #FFE066;
-  font-size: 0.78rem;
-  font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(229, 183, 0, 0.22);
+}
+
+.reign-random-btn,
+.reign-swap-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #F3E8FF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 999px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.reign-clean-swap-btn:hover {
-  background: rgba(255, 224, 102, 0.22);
+.reign-random-btn:hover,
+.reign-swap-btn:hover {
+  background: rgba(229, 183, 0, 0.2);
   border-color: #FFE066;
-}
-
-.reign-clean-single-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(11, 5, 19, 0.8);
-  border: 1px solid rgba(255, 224, 102, 0.4);
-  border-radius: 8px;
-  padding: 5px 8px;
-}
-
-.reign-clean-dual-slots {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.reign-clean-slot-item {
-  background: rgba(11, 5, 19, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 8px;
-  padding: 5px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.reign-clean-slot-item.is-editing-slot {
-  border-color: #FFE066;
-  background: rgba(229, 183, 0, 0.08);
-}
-
-.reign-clean-slot-label {
-  font-size: 0.66rem;
-  font-weight: 800;
   color: #FFE066;
-  letter-spacing: 0.03em;
 }
 
-.reign-clean-slot-control {
+.reign-config-title {
+  margin: 3px 0 0;
+  font-family: var(--font-heading);
+  font-size: 0.96rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+}
+
+.reign-config-subtitle {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+.reign-dual-steps-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Pasos 1 y 2 en la tarjeta */
+.reign-step-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reign-step-header {
   display: flex;
   align-items: center;
-  gap: 7px;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-.reign-clean-slot-thumb {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.06);
-  flex-shrink: 0;
+.reign-step-num {
+  color: #FFE066;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
-.reign-clean-select {
-  flex: 1;
-  min-width: 0;
-  background: transparent;
-  border: none;
+/* Píldora del sabor elegido (sin recortar con '...' para que se lea completo) */
+.reign-step-current {
   color: #FFFFFF;
-  font-size: 0.84rem;
-  font-weight: 700;
-  outline: none;
-  cursor: pointer;
+  font-weight: 800;
+  font-size: 0.8rem;
+  background: linear-gradient(135deg, rgba(216, 27, 183, 0.28), rgba(229, 183, 0, 0.2));
+  border: 1px solid rgba(255, 224, 102, 0.6);
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
-.reign-clean-select option {
-  background: #140821;
-  color: #FFFFFF;
-}
-
-/* Tira horizontal de tarjetas de sabores con foto real */
-.reign-mini-flavors-strip {
+/* Carrusel horizontal de sabores con fotografías */
+.reign-flavor-strip {
   display: flex;
-  gap: 6px;
+  gap: 7px;
   overflow-x: auto;
-  padding: 3px 1px 5px;
+  padding: 4px 2px 7px;
   scroll-snap-type: x mandatory;
   scrollbar-width: thin;
-  scrollbar-color: rgba(229, 183, 0, 0.45) rgba(255, 255, 255, 0.04);
+  scrollbar-color: rgba(229, 183, 0, 0.45) rgba(255, 255, 255, 0.05);
+  -webkit-overflow-scrolling: touch;
 }
 
-.reign-mini-flavors-strip::-webkit-scrollbar {
-  height: 4px;
+.reign-flavor-strip::-webkit-scrollbar {
+  height: 5px;
 }
 
-.reign-mini-flavors-strip::-webkit-scrollbar-track {
+.reign-flavor-strip::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 999px;
 }
 
-.reign-mini-flavors-strip::-webkit-scrollbar-thumb {
+.reign-flavor-strip::-webkit-scrollbar-thumb {
   background: rgba(229, 183, 0, 0.45);
   border-radius: 999px;
 }
 
-.reign-mini-flavor-card {
-  flex: 0 0 68px;
+.reign-flavor-option {
+  flex: 0 0 80px;
   scroll-snap-align: start;
-  background: rgba(14, 7, 24, 0.9);
+  background: rgba(255, 255, 255, 0.04);
   border: 1.5px solid rgba(255, 255, 255, 0.12);
-  border-radius: 9px;
-  padding: 5px 4px;
+  border-radius: 11px;
+  padding: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   cursor: pointer;
-  transition: all 0.18s ease;
-  color: #FFFFFF;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
   text-align: center;
 }
 
-.reign-mini-flavor-card:hover:not(:disabled) {
-  border-color: rgba(255, 224, 102, 0.7);
+.reign-flavor-option:hover:not(:disabled) {
+  border-color: rgba(229, 183, 0, 0.65);
   transform: translateY(-2px);
 }
 
-.reign-mini-flavor-card.is-selected {
+.reign-flavor-option.is-selected {
   background: linear-gradient(145deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
   border-color: #FFE066;
-  box-shadow: 0 0 10px rgba(255, 224, 102, 0.28);
+  box-shadow: 0 0 12px rgba(229, 183, 0, 0.35);
 }
 
-.reign-mini-flavor-card.is-disabled-duplicate {
+.reign-flavor-option.is-disabled-duplicate {
   opacity: 0.38;
   cursor: not-allowed;
 }
 
-.reign-mini-flavor-img-box {
-  width: 44px;
-  height: 44px;
-  border-radius: 7px;
-  background: rgba(255, 255, 255, 0.04);
+.reign-opt-img-wrap {
+  width: 64px;
+  height: 68px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #0D0616;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
 }
 
-.reign-mini-flavor-img-box img {
-  max-width: 92%;
-  max-height: 40px;
+.reign-opt-img {
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   display: block;
 }
 
-.reign-mini-flavor-name {
+.reign-opt-name {
   font-size: 0.68rem;
   font-weight: 700;
   line-height: 1.15;
@@ -1144,7 +1119,21 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  word-break: break-word;
+  min-height: 1.55rem;
+}
+
+.reign-opt-status {
+  font-size: 0.6rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.reign-flavor-option.is-selected .reign-opt-status {
+  background: #FFE066;
+  color: #0B0410;
 }
 
 /* Bloque de 2 Sabores en el Carrito */

@@ -2,8 +2,11 @@
  * CAPITAL VAPE - Controlador Principal
  */
 document.addEventListener('DOMContentLoaded', () => {
-  // 1. Inicializar tema
+  // 1. Inicializar tema (Modo Oscuro permanente)
   initThemeManager();
+
+  // 1.2 Inicializar configurador dual de REIGN BAR PALETTE
+  if (window.ReignPaletteConfigurator) ReignPaletteConfigurator.init();
 
   // 1.5 Inicializar sincronización en la nube (Precios y Stock Globales)
   if (window.CloudSyncService) CloudSyncService.init();
@@ -85,56 +88,16 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * GESTOR DE TEMA (CLARO / OSCURO)
+ * GESTOR DE TEMA (MODO OSCURO PERMANENTE — MODO CLARO ELIMINADO)
  */
 function initThemeManager() {
-  const themeToggleBtn = document.getElementById('themeToggleBtn');
-  const themeIcon = document.getElementById('themeToggleIcon');
-  const themeMobileBtn = document.getElementById('themeToggleMobileBtn');
-  const themeMobileIcon = document.getElementById('themeToggleMobileIcon');
-  const themeMobileText = document.getElementById('themeToggleMobileText');
-
-  const getSavedTheme = () => {
-    return localStorage.getItem('cv_theme') || 'dark';
-  };
-
-  const applyTheme = (theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    document.body.setAttribute('data-theme', theme);
-    localStorage.setItem('cv_theme', theme);
-    
-    const isLight = (theme === 'light');
-    if (themeIcon) {
-      themeIcon.textContent = isLight ? '🌙' : '☀️';
-    }
-    if (themeMobileIcon) {
-      themeMobileIcon.textContent = isLight ? '🌙' : '☀️';
-    }
-    if (themeMobileText) {
-      themeMobileText.textContent = isLight ? 'Cambiar a Modo Oscuro 🌙' : 'Cambiar a Modo Claro ☀️';
-    }
-    if (themeToggleBtn) {
-      themeToggleBtn.setAttribute('title', isLight ? 'Cambiar a Modo Oscuro' : 'Cambiar a Modo Claro');
-    }
-  };
-
-  applyTheme(getSavedTheme());
-
-  const toggleAction = () => {
-    const current = document.documentElement.getAttribute('data-theme') || 'dark';
-    const nextTheme = current === 'dark' ? 'light' : 'dark';
-    applyTheme(nextTheme);
-    if (window.Toast) {
-      Toast.show(`Modo ${nextTheme === 'light' ? 'Claro ☀️' : 'Oscuro 🌙'} activado`, 'info');
-    }
-  };
-
-  if (themeToggleBtn) {
-    themeToggleBtn.addEventListener('click', toggleAction);
-  }
-  if (themeMobileBtn) {
-    themeMobileBtn.addEventListener('click', toggleAction);
-  }
+  document.documentElement.setAttribute('data-theme', 'dark');
+  document.body.setAttribute('data-theme', 'dark');
+  document.documentElement.classList.remove('light-mode');
+  document.body.classList.remove('light-mode');
+  try {
+    localStorage.setItem('cv_theme', 'dark');
+  } catch (e) {}
 }
 
 /**

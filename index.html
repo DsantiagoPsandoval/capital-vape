@@ -9,16 +9,16 @@
   <link rel="icon" type="image/png" href="assets/logo/favicon.png">
 
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/catalog.css">
-  <link rel="stylesheet" href="css/cart.css">
-  <link rel="stylesheet" href="css/checkout.css">
-  <link rel="stylesheet" href="css/toast.css">
-  <link rel="stylesheet" href="css/wholesale.css">
-  <link rel="stylesheet" href="css/admin.css">
-  <link rel="stylesheet" href="css/responsive.css">
-  <link rel="stylesheet" href="css/halloween.css">
+  <link rel="stylesheet" href="css/main.css?v=20261103_1">
+  <link rel="stylesheet" href="css/layout.css?v=20261103_1">
+  <link rel="stylesheet" href="css/catalog.css?v=20261103_1">
+  <link rel="stylesheet" href="css/cart.css?v=20261103_1">
+  <link rel="stylesheet" href="css/checkout.css?v=20261103_1">
+  <link rel="stylesheet" href="css/toast.css?v=20261103_1">
+  <link rel="stylesheet" href="css/wholesale.css?v=20261103_1">
+  <link rel="stylesheet" href="css/admin.css?v=20261103_1">
+  <link rel="stylesheet" href="css/responsive.css?v=20261103_1">
+  <link rel="stylesheet" href="css/christmas.css?v=20261103_1">
   <link rel="stylesheet" href="css/age-verification.css?v=20261014_1">
 
   <!-- Anti-FOUC para Verificación de Mayoría de Edad (+18) -->
@@ -146,171 +146,31 @@
   </div>
 
   <!-- ==========================================================================
-       CAPA VISUAL DECORATIVA HALLOWEEN (NO INTRUSIVA & 3D WEBGL)
+       EXPERIENCIA NAVIDEÑA 3D WEBGL (NO INTRUSIVA - NIEVE 3D Y TRINEO DE PAPÁ NOEL)
        ========================================================================== -->
-  <!-- Canvas 3D Three.js para murciélagos 3D semirrealistas y partículas espectrales -->
-  <canvas id="halloweenCanvas" class="halloween-three-canvas" aria-hidden="true"></canvas>
-
-  <div class="luna"></div>
-
-  <div class="calabaza-halloween" aria-label="Calabaza de Halloween con ojos iluminados">
-    <svg class="calabaza-svg" viewBox="0 0 100 95" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <!-- Gradiente del tallo superior -->
-        <linearGradient id="calabazaTalloGrad" x1="48" y1="2" x2="56" y2="20" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#4E7028"/>
-          <stop offset="60%" stop-color="#2D4616"/>
-          <stop offset="100%" stop-color="#1E320D"/>
-        </linearGradient>
-
-        <!-- Gradiente tridimensional del cuerpo de la calabaza -->
-        <radialGradient id="calabazaCuerpoGrad" cx="50" cy="55" r="46" fx="42" fy="42" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#FFA726"/>
-          <stop offset="40%" stop-color="#FB8C00"/>
-          <stop offset="75%" stop-color="#E65100"/>
-          <stop offset="100%" stop-color="#BF360C"/>
-        </radialGradient>
-
-        <!-- Gradiente de fuego ardiente para los ojos, nariz y boca -->
-        <radialGradient id="calabazaFuegoGrad" cx="50" cy="52" r="38" fx="50" fy="46" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#FFFFFF"/>
-          <stop offset="25%" stop-color="#FFFF72"/>
-          <stop offset="55%" stop-color="#FFB300"/>
-          <stop offset="85%" stop-color="#FF6D00"/>
-          <stop offset="100%" stop-color="#DD2C00"/>
-        </radialGradient>
-
-        <!-- Filtro de resplandor para los ojos encendidos -->
-        <filter id="fuegoGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.5" result="glow"/>
-          <feMerge>
-            <feMergeNode in="glow"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-
-      <!-- Tallo superior -->
-      <path d="M48 18 C46 12 48 4 58 2 C58 6 57 11 53 14 C51 16 50 18 48 18 Z" fill="url(#calabazaTalloGrad)"/>
-
-      <!-- Cuerpo completo de la calabaza con costillas 3D -->
-      <path d="M50 16 C30 16 10 28 8 54 C6 74 24 92 50 92 C76 92 94 74 92 54 C90 28 70 16 50 16 Z" fill="url(#calabazaCuerpoGrad)"/>
-      <path d="M50 16 C35 16 20 29 18 54 C16 73 32 90 50 92 C32 90 22 73 24 54 C26 31 38 18 50 16 Z" fill="#992A00" opacity="0.32"/>
-      <path d="M50 16 C65 16 80 29 82 54 C84 73 68 90 50 92 C68 90 78 73 76 54 C74 31 62 18 50 16 Z" fill="#992A00" opacity="0.32"/>
-      <path d="M50 16 C42 16 35 30 35 55 C35 74 42 90 50 92 C43 90 38 74 38 55 C38 31 43 18 50 16 Z" fill="#992A00" opacity="0.22"/>
-      <path d="M50 16 C58 16 65 30 65 55 C65 74 58 90 50 92 C57 90 62 74 62 55 C62 31 57 18 50 16 Z" fill="#992A00" opacity="0.22"/>
-
-      <!-- Cavidad interior oscura (cuando la llama está apagada) -->
-      <g class="rasgos-interior-oscuro">
-        <polygon points="30,42 43,46 36,34" fill="#240D02"/>
-        <polygon points="70,42 57,46 64,34" fill="#240D02"/>
-        <polygon points="50,47 45,54 55,54" fill="#240D02"/>
-        <path d="M26 62 Q50 78 74 62 Q71 67 66 65 Q65 71 59 69 Q55 74 50 71 Q45 74 41 69 Q35 71 34 65 Q29 67 26 62 Z" fill="#240D02"/>
-      </g>
-
-      <!-- CAPA DE FUEGO ILUMINADA: SE ILUMINAN LOS OJOS Y DEJAN DE ILUMINAR -->
-      <g class="rasgos-fuego-luz">
-        <polygon class="rasgo-ojo rasgo-ojo-izq" points="30,42 43,46 36,34" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
-        <polygon class="rasgo-ojo rasgo-ojo-der" points="70,42 57,46 64,34" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
-        <polygon class="rasgo-nariz" points="50,47 45,54 55,54" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
-        <path class="rasgo-boca" d="M26 62 Q50 78 74 62 Q71 67 66 65 Q65 71 59 69 Q55 74 50 71 Q45 74 41 69 Q35 71 34 65 Q29 67 26 62 Z" fill="url(#calabazaFuegoGrad)" filter="url(#fuegoGlow)"/>
-      </g>
-    </svg>
-  </div>
-
-  <!-- Bruma y niebla nocturna de fondo -->
-  <div class="hw-fog-container" aria-hidden="true">
-    <div class="hw-fog-layer-1"></div>
-    <div class="hw-fog-layer-2"></div>
-  </div>
-
-  <!-- Telarañas orgánicas hiperrealistas en las esquinas -->
-  <div class="tela-halloween arriba-izquierda" aria-hidden="true">
-    <svg viewBox="0 0 160 160">
-      <path class="hilo-principal" d="M0 0 L160 0" />
-      <path class="hilo-principal" d="M0 0 L154 44" />
-      <path class="hilo-principal" d="M0 0 L138 82" />
-      <path class="hilo-principal" d="M0 0 L113 113" />
-      <path class="hilo-principal" d="M0 0 L82 138" />
-      <path class="hilo-principal" d="M0 0 L44 154" />
-      <path class="hilo-principal" d="M0 0 L0 160" />
-      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
-      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
-      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
-      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
-      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
-      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
-      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
-      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
-      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
-    </svg>
-  </div>
-
-  <div class="tela-halloween arriba-derecha" aria-hidden="true">
-    <svg viewBox="0 0 160 160">
-      <path class="hilo-principal" d="M0 0 L160 0" />
-      <path class="hilo-principal" d="M0 0 L154 44" />
-      <path class="hilo-principal" d="M0 0 L138 82" />
-      <path class="hilo-principal" d="M0 0 L113 113" />
-      <path class="hilo-principal" d="M0 0 L82 138" />
-      <path class="hilo-principal" d="M0 0 L44 154" />
-      <path class="hilo-principal" d="M0 0 L0 160" />
-      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
-      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
-      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
-      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
-      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
-      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
-      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
-      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
-      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
-    </svg>
-  </div>
-
-  <div class="tela-halloween abajo-izquierda" aria-hidden="true">
-    <svg viewBox="0 0 160 160">
-      <path class="hilo-principal" d="M0 0 L160 0" />
-      <path class="hilo-principal" d="M0 0 L154 44" />
-      <path class="hilo-principal" d="M0 0 L138 82" />
-      <path class="hilo-principal" d="M0 0 L113 113" />
-      <path class="hilo-principal" d="M0 0 L82 138" />
-      <path class="hilo-principal" d="M0 0 L44 154" />
-      <path class="hilo-principal" d="M0 0 L0 160" />
-      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
-      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
-      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
-      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
-      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
-      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
-      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
-      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
-      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
-    </svg>
-  </div>
-
-  <div class="tela-halloween abajo-derecha" aria-hidden="true">
-    <svg viewBox="0 0 160 160">
-      <path class="hilo-principal" d="M0 0 L160 0" />
-      <path class="hilo-principal" d="M0 0 L154 44" />
-      <path class="hilo-principal" d="M0 0 L138 82" />
-      <path class="hilo-principal" d="M0 0 L113 113" />
-      <path class="hilo-principal" d="M0 0 L82 138" />
-      <path class="hilo-principal" d="M0 0 L44 154" />
-      <path class="hilo-principal" d="M0 0 L0 160" />
-      <path class="hilo-espiral" d="M26 0 Q24 7 24 7 Q21 13 18 18 Q13 21 7 24 Q7 24 0 26" />
-      <path class="hilo-espiral" d="M54 0 Q50 15 51 15 Q46 27 38 38 Q27 46 15 51 Q15 50 0 54" />
-      <path class="hilo-espiral" d="M88 0 Q81 24 82 24 Q73 44 62 62 Q44 73 24 82 Q24 81 0 88" />
-      <path class="hilo-espiral" d="M124 0 Q115 34 116 34 Q104 62 88 88 Q62 104 34 116 Q34 115 0 124" />
-      <path class="hilo-espiral" d="M160 0 Q148 44 150 44 Q133 80 113 113 Q80 133 44 150 Q44 148 0 160" />
-      <circle class="nodo-rocio" cx="18" cy="18" r="1.2" />
-      <circle class="nodo-rocio" cx="38" cy="38" r="1.3" />
-      <circle class="nodo-rocio" cx="62" cy="62" r="1.4" />
-      <circle class="nodo-rocio" cx="88" cy="88" r="1.5" />
-    </svg>
-  </div>
+  <canvas id="christmasCanvas" class="christmas-three-canvas" aria-hidden="true"></canvas>
 
   <!-- NAVBAR (DESKTOP & MOBILE ADAPTED) -->
   <header class="cv-navbar">
+    <!-- Guirnalda de luces navideñas animadas en el borde inferior de la barra -->
+    <div class="xmas-navbar-lights" aria-hidden="true">
+      <span class="xmas-light-bulb gold"></span>
+      <span class="xmas-light-bulb crimson"></span>
+      <span class="xmas-light-bulb emerald"></span>
+      <span class="xmas-light-bulb magenta"></span>
+      <span class="xmas-light-bulb gold"></span>
+      <span class="xmas-light-bulb crimson"></span>
+      <span class="xmas-light-bulb emerald"></span>
+      <span class="xmas-light-bulb magenta"></span>
+      <span class="xmas-light-bulb gold"></span>
+      <span class="xmas-light-bulb crimson"></span>
+      <span class="xmas-light-bulb emerald"></span>
+      <span class="xmas-light-bulb magenta"></span>
+      <span class="xmas-light-bulb gold"></span>
+      <span class="xmas-light-bulb crimson"></span>
+      <span class="xmas-light-bulb emerald"></span>
+      <span class="xmas-light-bulb magenta"></span>
+    </div>
     <div class="container nav-container">
       <a href="#inicio" class="brand-wrapper">
         <img src="assets/logo/logo.png" alt="Capital Vape Logo" class="brand-logo-img">
@@ -337,20 +197,11 @@
           <a href="#mayoristas" class="btn btn-primary btn-block">
             <span>🔑 Portal Mayorista</span>
           </a>
-          <button type="button" class="theme-toggle-mobile-btn" id="themeToggleMobileBtn">
-            <span id="themeToggleMobileIcon">☀️</span>
-            <span id="themeToggleMobileText">Cambiar Modo</span>
-          </button>
         </div>
       </nav>
 
-      <!-- Navbar Actions (Theme, Cart & Mobile ☰) -->
+      <!-- Navbar Actions (Cart & Mobile ☰) -->
       <div class="nav-actions">
-        <!-- Theme Toggle Button -->
-        <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="Cambiar Modo de Color" title="Modo Claro/Oscuro">
-          <span id="themeToggleIcon">☀️</span>
-        </button>
-
         <!-- Retail Cart Button -->
         <button type="button" class="btn btn-secondary open-cart-btn nav-cart-btn" aria-label="Abrir Carrito">
             <img src="assets/icons/carrito.png" class="nav-cart-img" alt="Carrito">
@@ -367,25 +218,85 @@
     </div>
   </header>
 
-  <!-- LANDING / HERO SECTION (EDICIÓN ESPECIAL HALLOWEEN) -->
-  <section id="inicio" class="hero-section" style="position: relative; overflow: hidden;">
-    <!-- Halloween Ambient Elements (Elegantes, no intrusivos) -->
-    <div class="hw-cobweb-top-left" aria-hidden="true"></div>
-    <div class="hw-cobweb-top-right" aria-hidden="true"></div>
-    <div class="hw-hanging-spider" aria-hidden="true">
-      <div class="hw-spider-thread"></div>
-      <div class="hw-spider-body"></div>
-    </div>
-    <div class="hw-bats-container" aria-hidden="true">
-      <div class="hw-bat hw-bat-1"></div>
-      <div class="hw-bat hw-bat-2"></div>
-      <div class="hw-bat hw-bat-3"></div>
-    </div>
-    <div class="hw-mist-overlay" aria-hidden="true"></div>
+  <!-- ==========================================================================
+       3.4 BANNER NAVIDEÑO PRINCIPAL 3D (CAPITAL VAPE — CHRISTMAS EDITION)
+       ========================================================================== -->
+  <section id="christmasEditionBanner" class="xmas-edition-banner-section" aria-label="Capital Vape Christmas Edition">
+    <div class="container">
+      <div class="xmas-banner-card" id="christmasBannerCard">
+        <!-- Detalle de nieve acumulada superior -->
+        <div class="xmas-snow-ridge" aria-hidden="true"></div>
+        <div class="xmas-banner-glow-orb orb-1" aria-hidden="true"></div>
+        <div class="xmas-banner-glow-orb orb-2" aria-hidden="true"></div>
+        <div class="xmas-banner-glow-orb orb-3" aria-hidden="true"></div>
 
+        <div class="xmas-banner-grid">
+          <div class="xmas-banner-content">
+            <div class="xmas-banner-badge-row">
+              <div class="xmas-edition-pill">
+                <span class="xmas-pill-star">✨</span>
+                <span>TEMPORADA NAVIDEÑA 3D</span>
+              </div>
+              <button type="button" class="xmas-santa-trigger-btn" onclick="if(window.ChristmasExperience) ChristmasExperience.triggerSanta()" title="Invocar el trineo 3D de Papá Noel">
+                <span>🎅</span>
+                <span>Ver Trineo 3D de Papá Noel</span>
+              </button>
+            </div>
+
+            <h2 class="xmas-banner-title">
+              CAPITAL VAPE — <span>CHRISTMAS EDITION</span>
+            </h2>
+            <p class="xmas-banner-subtitle">La Navidad llegó a Capital Vape.</p>
+            <p class="xmas-banner-desc">
+              Celebra la temporada con nuestras <strong>3 nuevas referencias de lanzamiento</strong> encabezadas por el recomendado <strong>REIGN BAR PALETTE (50.000 Puffs • 2x $70.000 COP)</strong>, junto a <strong>U-PENDS UP9</strong> y <strong>Nimmbox FLVX</strong>.
+            </p>
+
+            <div class="xmas-banner-highlights">
+              <a href="#catalogo" class="xmas-highlight-chip is-featured">
+                <span>⭐ RECOMENDADO: REIGN BAR PALETTE (2x $70.000)</span>
+              </a>
+              <a href="#catalogo" class="xmas-highlight-chip">
+                <span>🔥 U-PENDS UP9 • 50K Puffs ($35.000)</span>
+              </a>
+              <a href="#catalogo" class="xmas-highlight-chip">
+                <span>⚡ Nimmbox FLVX • 40K Puffs ($35.000)</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Escenario 3D Interactivo: Árbol de Navidad, Estrellas, Luces y Regalos -->
+          <div class="xmas-3d-stage-wrap">
+            <canvas id="christmasTreeCanvas" class="christmas-tree-canvas" aria-label="Árbol de Navidad 3D interactivo con regalos y estrella brillante"></canvas>
+            <!-- Alternativa visual automática si WebGL no está disponible -->
+            <svg class="xmas-fallback-tree-svg" viewBox="0 0 120 140" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <polygon points="60,8 65,20 78,20 68,28 72,40 60,32 48,40 52,28 42,20 55,20" fill="#FFE066"/>
+              <polygon points="60,26 92,68 28,68" fill="#136F42"/>
+              <polygon points="60,50 100,96 20,96" fill="#0F5A35"/>
+              <polygon points="60,74 108,120 12,120" fill="#0B4729"/>
+              <rect x="52" y="120" width="16" height="14" rx="2" fill="#5C3A21"/>
+              <circle cx="48" cy="60" r="4" fill="#FF3355"/>
+              <circle cx="72" cy="64" r="4" fill="#FFD166"/>
+              <circle cx="42" cy="86" r="4.5" fill="#FF2A85"/>
+              <circle cx="64" cy="82" r="4.5" fill="#10B981"/>
+              <circle cx="78" cy="92" r="4" fill="#FFD166"/>
+              <circle cx="36" cy="110" r="5" fill="#FFD166"/>
+              <circle cx="60" cy="108" r="5" fill="#FF3355"/>
+              <circle cx="84" cy="112" r="5" fill="#FF2A85"/>
+            </svg>
+            <div class="xmas-stage-caption">
+              <span>🎄 Árbol &amp; Regalos 3D Interactivos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LANDING / HERO SECTION -->
+  <section id="inicio" class="hero-section" style="position: relative; overflow: hidden;">
     <div class="container hero-grid">
       <div class="hero-content">
-        <div class="hero-badge"><span class="hw-badge-pumpkin">🎃</span> ⚡ Vapes Premium & Mayorista Oficial</div>
+        <div class="hero-badge"><span>🎄</span> ⚡ Vapes Premium & Mayorista Oficial</div>
         <h1 class="hero-title">Tu Experiencia de Vapeo en <span>Bogotá & Colombia</span></h1>
         <p class="hero-desc">Descubre nuestra exclusiva selección de dispositivos desechables, pods recargables y baterías 510 con máxima potencia y sabores intensos.</p>
         <div class="hero-cta-group">
@@ -621,7 +532,6 @@
       </div>
     </div>
   </div>
-  <div class="hw-silhouette-divider" aria-hidden="true"></div>
 
   <!-- WHOLESALE PROMO BANNER -->
   <section class="wholesale-promo-banner-section">
@@ -663,14 +573,14 @@
       <div class="catalog-toolbar">
         <div class="toolbar-top-row">
           <div class="category-pills">
-            <button type="button" class="cat-pill-btn active" data-category="todos">Todos (36)</button>
+            <button type="button" class="cat-pill-btn active" data-category="todos">Todos (39)</button>
             <button type="button" class="cat-pill-btn" data-category="desechables">Desechables</button>
             <button type="button" class="cat-pill-btn" data-category="kits">Kits</button>
             <button type="button" class="cat-pill-btn" data-category="pods">Pods</button>
             <button type="button" class="cat-pill-btn" data-category="baterias">Baterías 510</button>
             <button type="button" class="cat-pill-btn" data-category="accesorios">Accesorios</button>
           </div>
-          <span class="products-count-label" id="productsCountDisplay">33 productos</span>
+          <span class="products-count-label" id="productsCountDisplay">39 productos</span>
         </div>
 
         <div class="toolbar-controls-row">
@@ -751,7 +661,7 @@
         <div class="catalog-toolbar">
           <div class="toolbar-top-row">
             <div class="category-pills">
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn active" data-category="todos">Todos (36)</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn active" data-category="todos">Todos (39)</button>
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="desechables">Desechables</button>
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="kits">Kits</button>
               <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="pods">Pods</button>
@@ -1365,19 +1275,20 @@
   </div>
 
   <!-- JAVASCRIPT SCRIPTS -->
-  <script src="js/vendor/three.min.js"></script>
-  <script src="js/config.js?v=20261001_4"></script>
-  <script src="js/toast.js?v=20261001_4"></script>
-  <script src="js/products-data.js?v=20261001_4"></script>
-  <script src="js/wholesale.js?v=20261001_4"></script>
-  <script src="js/cloud-sync.js?v=20261001_4"></script>
-  <script src="js/admin.js?v=20261001_4"></script>
-  <script src="js/cart.js?v=20261001_4"></script>
-  <script src="js/checkout.js?v=20261001_4"></script>
-  <script src="js/catalog.js?v=20261001_4"></script>
+  <script src="js/vendor/three.min.js" defer></script>
+  <script src="js/config.js?v=20261103_2"></script>
+  <script src="js/toast.js?v=20261103_2"></script>
+  <script src="js/products-data.js?v=20261103_2"></script>
+  <script src="js/reign-palette-configurator.js?v=20261103_2"></script>
+  <script src="js/wholesale.js?v=20261103_2"></script>
+  <script src="js/cloud-sync.js?v=20261103_2"></script>
+  <script src="js/admin.js?v=20261103_2"></script>
+  <script src="js/cart.js?v=20261103_2"></script>
+  <script src="js/checkout.js?v=20261103_2"></script>
+  <script src="js/catalog.js?v=20261103_2"></script>
   <script src="js/age-verification.js?v=20261014_1"></script>
-  <script src="js/halloween.js?v=20261001_4"></script>
-  <script src="js/main.js?v=20261001_4"></script>
+  <script src="js/christmas.js?v=20261103_2" defer></script>
+  <script src="js/main.js?v=20261103_2"></script>
 </body>
 </html>
 

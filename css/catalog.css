@@ -809,7 +809,15 @@
   filter: drop-shadow(0 8px 24px rgba(255, 255, 255, 0.25)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7));
 }
 
-/* Card Puffs Tag below Product Name */
+/* Card Puffs Tag & Specs Row below Product Name */
+.card-specs-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
 .card-puffs-tag {
   display: inline-flex;
   align-items: center;
@@ -822,5 +830,800 @@
   padding: 2px 8px;
   border-radius: var(--radius-sm);
   width: fit-content;
+}
+
+.card-battery-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(216, 27, 183, 0.14);
+  border: 1px solid rgba(216, 27, 183, 0.4);
+  color: #F8B4EE;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  width: fit-content;
+}
+
+[data-theme="light"] .card-battery-tag {
+  color: var(--accent-purple);
+  background: rgba(179, 13, 150, 0.1);
+}
+
+/* ==========================================================================
+   REIGN BAR PALETTE — PRODUCTO RECOMENDADO (JERARQUÍA VISUAL SUPERIOR)
+   ========================================================================== */
+.product-card.is-recommended {
+  border: 1.5px solid rgba(229, 183, 0, 0.78);
+  background: linear-gradient(180deg, rgba(42, 16, 62, 0.98) 0%, var(--bg-card) 55%);
+  box-shadow:
+    0 14px 40px rgba(0, 0, 0, 0.72),
+    0 0 28px rgba(229, 183, 0, 0.25),
+    0 0 18px rgba(216, 27, 183, 0.22);
+  transform: translateY(-2px);
+}
+
+[data-theme="light"] .product-card.is-recommended {
+  background: linear-gradient(180deg, #FFFDF5 0%, #FFFFFF 60%);
+  border-color: var(--accent-gold);
+  box-shadow: 0 12px 32px rgba(184, 134, 11, 0.2);
+}
+
+.product-card.is-recommended:hover {
+  transform: translateY(-7px);
+  border-color: #FFE600;
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.8),
+    0 0 36px rgba(229, 183, 0, 0.42),
+    0 0 24px rgba(216, 27, 183, 0.35);
+}
+
+.recommended-ribbon-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 6;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #FFE600 0%, #E5B700 50%, #D81BB7 100%);
+  color: #0B0410;
+  font-family: var(--font-heading);
+  font-size: 0.74rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  box-shadow: 0 4px 16px rgba(229, 183, 0, 0.55), 0 0 10px rgba(255, 230, 0, 0.45);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.card-recommended-inline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.22));
+  border: 1px solid rgba(229, 183, 0, 0.65);
+  color: var(--accent-yellow);
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+.card-pricing-block.is-recommended-pricing {
+  border-color: rgba(229, 183, 0, 0.45);
+  background: linear-gradient(135deg, rgba(20, 8, 33, 0.95), rgba(38, 14, 54, 0.92));
+}
+
+[data-theme="light"] .card-pricing-block.is-recommended-pricing {
+  background: #FFFBEB;
+}
+
+.pricing-tier-row.promo-tier {
+  padding-top: 6px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  transition: var(--transition);
+}
+
+.pricing-tier-row.promo-tier:hover {
+  transform: translateX(2px);
+}
+
+.pricing-tier-row.promo-tier.promo-tier-highlighted {
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.18), rgba(216, 27, 183, 0.16));
+  border: 1px solid rgba(229, 183, 0, 0.55);
+  border-radius: var(--radius-sm);
+  padding: 7px 8px;
   margin-top: 2px;
+  box-shadow: 0 0 14px rgba(229, 183, 0, 0.2);
+}
+
+.pricing-tier-row.promo-tier.promo-tier-highlighted .tier-badge-tag.duo {
+  background: linear-gradient(135deg, #FFE600, #E5B700);
+  color: #0B0410;
+  border-color: #FFE600;
+  font-weight: 900;
+}
+
+/* ==========================================================================
+   ESPACIO PREPARADO PARA IMÁGENES ORIGINALES (SIN FOTOS INVENTADAS)
+   ========================================================================== */
+.card-image-wrapper.is-placeholder-space,
+.flavor-card-img-wrap.is-placeholder-space {
+  background:
+    radial-gradient(circle at 50% 35%, rgba(216, 27, 183, 0.18) 0%, rgba(229, 183, 0, 0.08) 45%, rgba(16, 7, 26, 0.96) 85%);
+}
+
+.product-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.photo-placeholder-frame {
+  width: 100%;
+  height: 100%;
+  border: 1.5px dashed rgba(229, 183, 0, 0.42);
+  border-radius: var(--radius-md);
+  background: rgba(11, 4, 16, 0.55);
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 14px 12px;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.product-card:hover .photo-placeholder-frame {
+  border-color: var(--accent-gold);
+  background: rgba(20, 8, 33, 0.72);
+  box-shadow: inset 0 0 22px rgba(216, 27, 183, 0.18);
+}
+
+.photo-placeholder-icon {
+  width: 34px;
+  height: 34px;
+  color: var(--accent-gold);
+  opacity: 0.88;
+  filter: drop-shadow(0 0 8px rgba(229, 183, 0, 0.35));
+}
+
+.photo-placeholder-title {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+}
+
+.photo-placeholder-specs {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent-yellow);
+  background: rgba(229, 183, 0, 0.12);
+  border: 1px solid rgba(229, 183, 0, 0.28);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.photo-placeholder-status {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* ==========================================================================
+   REIGN BAR PALETTE — CONFIGURADOR VISUAL DE 2 SABORES Y COMPOSICIÓN EN VIVO
+   ========================================================================== */
+.card-image-wrapper.is-reign-composite-stage {
+  position: relative;
+  padding: 6px;
+  background: radial-gradient(circle at 50% 45%, rgba(53, 83, 246, 0.22), rgba(216, 27, 183, 0.18), #0B0512 85%);
+}
+
+.reign-live-preview-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  background: rgba(11, 5, 18, 0.85);
+  border: 1px solid rgba(255, 224, 102, 0.55);
+  color: #FFE066;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+
+.reign-composite-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 14px;
+  transition: transform 0.3s ease;
+}
+
+.card-image-wrapper.is-reign-composite-stage:hover .reign-composite-canvas {
+  transform: scale(1.02);
+}
+
+/* Bloque Configurador dentro de la tarjeta REIGN BAR PALETTE */
+.reign-configurator-box {
+  background: linear-gradient(160deg, rgba(22, 10, 36, 0.96), rgba(13, 6, 23, 0.98));
+  border: 1px solid rgba(229, 183, 0, 0.38);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.reign-config-header {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 6px;
+}
+
+.reign-config-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.reign-config-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
+  border: 1px solid rgba(229, 183, 0, 0.55);
+  color: #FFE066;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.reign-random-btn,
+.reign-swap-btn {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #F3E8FF;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reign-random-btn:hover,
+.reign-swap-btn:hover {
+  background: rgba(229, 183, 0, 0.2);
+  border-color: #FFE066;
+  color: #FFE066;
+}
+
+.reign-config-title {
+  margin: 2px 0 0;
+  font-family: var(--font-heading);
+  font-size: 0.84rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+  color: #FFFFFF;
+}
+
+.reign-config-subtitle {
+  margin: 0;
+  font-size: 0.71rem;
+  color: var(--text-secondary);
+  line-height: 1.3;
+}
+
+/* Pasos 1 y 2 en la tarjeta */
+.reign-step-block {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.reign-step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 0.68rem;
+}
+
+.reign-step-num {
+  color: #FFE066;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.reign-step-current {
+  color: #FFFFFF;
+  font-weight: 700;
+  background: rgba(216, 27, 183, 0.2);
+  border: 1px solid rgba(216, 27, 183, 0.45);
+  padding: 1px 6px;
+  border-radius: 6px;
+  max-width: 125px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Carrusel horizontal de sabores con fotografías */
+.reign-flavor-strip {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 3px 2px 6px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(229, 183, 0, 0.45) rgba(255, 255, 255, 0.05);
+}
+
+.reign-flavor-strip::-webkit-scrollbar {
+  height: 5px;
+}
+
+.reign-flavor-strip::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.reign-flavor-strip::-webkit-scrollbar-thumb {
+  background: rgba(229, 183, 0, 0.45);
+  border-radius: 999px;
+}
+
+.reign-flavor-option {
+  flex: 0 0 74px;
+  scroll-snap-align: start;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+.reign-flavor-option:hover {
+  border-color: rgba(229, 183, 0, 0.65);
+  transform: translateY(-2px);
+}
+
+.reign-flavor-option.is-selected {
+  background: linear-gradient(145deg, rgba(229, 183, 0, 0.22), rgba(216, 27, 183, 0.22));
+  border-color: #FFE066;
+  box-shadow: 0 0 12px rgba(229, 183, 0, 0.35);
+}
+
+.reign-opt-img-wrap {
+  width: 58px;
+  height: 64px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #0D0616;
+}
+
+.reign-opt-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.reign-opt-name {
+  font-size: 0.62rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: #FFFFFF;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 1.45rem;
+}
+
+.reign-opt-status {
+  font-size: 0.56rem;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+}
+
+.reign-flavor-option.is-selected .reign-opt-status {
+  background: #FFE066;
+  color: #0B0410;
+}
+
+/* Resumen de configuración (Sección 4) */
+.reign-config-summary-card {
+  background: rgba(9, 4, 16, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.reign-summary-modules-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.reign-summary-module-pill {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+
+.reign-summary-f1-img,
+.reign-summary-f2-img {
+  width: 28px;
+  height: 34px;
+  border-radius: 5px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.reign-summary-pill-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.reign-pill-label {
+  font-size: 0.58rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.reign-summary-pill-text strong {
+  font-size: 0.68rem;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reign-summary-plus {
+  font-weight: 900;
+  color: #FFE066;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.reign-summary-details-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 0.7rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  padding-top: 5px;
+}
+
+.reign-summary-detail-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-secondary);
+}
+
+.reign-summary-detail-line strong {
+  color: #FFFFFF;
+  text-align: right;
+}
+
+.reign-summary-price-val {
+  color: #FFE066 !important;
+  font-weight: 900;
+}
+
+.reign-qty-toggle-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.reign-qty-opt-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  padding: 5px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.reign-qty-opt-btn span {
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+.reign-qty-opt-btn strong {
+  font-size: 0.72rem;
+  color: #FFFFFF;
+}
+
+.reign-qty-opt-btn.active {
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.22), rgba(216, 27, 183, 0.2));
+  border-color: #FFE066;
+  color: #FFE066;
+}
+
+.btn-open-full-configurator {
+  width: 100%;
+  background: rgba(216, 27, 183, 0.16);
+  border: 1px solid rgba(216, 27, 183, 0.45);
+  color: #F5D0FE;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-open-full-configurator:hover {
+  background: rgba(216, 27, 183, 0.28);
+  border-color: #FFE066;
+  color: #FFFFFF;
+}
+
+/* ==========================================================================
+   ESTUDIO COMPLETO EN MODAL (PERSONALIZA TU REIGN BAR)
+   ========================================================================== */
+#flavorModal.is-reign-modal-active .flavor-modal-card {
+  max-width: 1120px;
+  width: 96%;
+}
+
+.flavor-modal-grid.is-reign-studio-grid {
+  display: block;
+  padding: 4px 0;
+}
+
+.reign-modal-studio {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.reign-modal-preview-panel {
+  position: sticky;
+  top: 0;
+  background: linear-gradient(160deg, rgba(22, 10, 36, 0.96), rgba(11, 5, 19, 0.98));
+  border: 1.5px solid rgba(229, 183, 0, 0.45);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.reign-modal-preview-header {
+  text-align: center;
+}
+
+.reign-modal-preview-sub {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.reign-modal-canvas-stage {
+  width: 100%;
+  aspect-ratio: 13 / 12;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #0B0512;
+}
+
+.reign-modal-quick-controls {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.reign-modal-selectors-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.reign-modal-step-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.reign-modal-step-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.reign-step-badge-pill {
+  display: inline-block;
+  background: rgba(229, 183, 0, 0.2);
+  border: 1px solid rgba(229, 183, 0, 0.55);
+  color: #FFE066;
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.reign-step-badge-pill.step-2 {
+  background: rgba(216, 27, 183, 0.22);
+  border-color: rgba(216, 27, 183, 0.6);
+  color: #F5D0FE;
+}
+
+.reign-modal-step-heading {
+  margin: 3px 0 0;
+  font-size: 1rem;
+  color: #FFFFFF;
+}
+
+.reign-modal-selected-indicator {
+  background: rgba(229, 183, 0, 0.16);
+  border: 1px solid rgba(229, 183, 0, 0.5);
+  color: #FFE066;
+  font-size: 0.78rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.reign-modal-flavors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(112px, 1fr));
+  gap: 10px;
+}
+
+.reign-modal-flavor-card {
+  background: rgba(14, 7, 24, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.reign-modal-flavor-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(229, 183, 0, 0.65);
+}
+
+.reign-modal-flavor-card.is-selected {
+  background: linear-gradient(145deg, rgba(229, 183, 0, 0.24), rgba(216, 27, 183, 0.24));
+  border-color: #FFE066;
+  box-shadow: 0 0 16px rgba(229, 183, 0, 0.35);
+}
+
+.reign-modal-card-img-box {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #09040F;
+}
+
+.reign-modal-card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.reign-modal-card-Name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #FFFFFF;
+}
+
+/* Bloque de 2 Sabores en el Carrito */
+.cart-dual-flavor-box {
+  background: rgba(229, 183, 0, 0.06);
+  border: 1px solid rgba(229, 183, 0, 0.26);
+  border-radius: 8px;
+  padding: 7px 8px;
+  margin: 6px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cart-dual-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.cart-dual-composite-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 7px;
+  object-fit: cover;
+  border: 1px solid rgba(229, 183, 0, 0.45);
+  flex-shrink: 0;
+}
+
+.cart-dual-summary-lines {
+  font-size: 0.74rem;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.cart-dual-summary-lines strong {
+  color: #FFFFFF;
+}
+
+.dual-slot-tag {
+  color: #FFE066;
+  font-weight: 700;
 }

@@ -22,6 +22,16 @@ const Cart = {
       const normalized = [];
       rawItems.forEach(item => {
         if (!item || !item.productId) return;
+
+        // Recuperar metadatos de doble sabor si corresponde a REIGN BAR PALETTE
+        let isDualFlavor = !!item.isDualFlavor || item.productId === 'reign-bar-palette';
+        let flavor1 = item.flavor1 || '';
+        let flavor2 = item.flavor2 || '';
+        if (isDualFlavor && (!flavor1 || !flavor2) && item.variant && item.variant.includes(' + ')) {
+          const parts = item.variant.split(' + ');
+          flavor1 = parts[0].trim();
+          flavor2 = parts[1].trim();
+        }
         
         if (item.type === 'mayorista') {
           const qty = Number(item.qty || item.packQty || 1);
@@ -38,6 +48,12 @@ const Cart = {
               subtitulo: item.subtitulo || '',
               imagen: item.imagen,
               variant: item.variant || 'Surtido / A convenir',
+              isDualFlavor: isDualFlavor,
+              flavor1: flavor1,
+              flavor2: flavor2,
+              flavor1Img: item.flavor1Img || '',
+              flavor2Img: item.flavor2Img || '',
+              compositeImg: item.compositeImg || '',
               qty: qty
             });
           }
@@ -58,6 +74,12 @@ const Cart = {
               precio: item.precio,
               precio_promo_2: item.precio_promo_2,
               variant: item.variant || '',
+              isDualFlavor: isDualFlavor,
+              flavor1: flavor1,
+              flavor2: flavor2,
+              flavor1Img: item.flavor1Img || '',
+              flavor2Img: item.flavor2Img || '',
+              compositeImg: item.compositeImg || '',
               qty: qty
             });
           }
@@ -134,18 +156,54 @@ const Cart = {
   },
 
   // 1. Agregar Producto al Detal
-  addItem(product, variant, qty = 1) {
+  addItem(product, variant, qty = 1, extraMeta = null) {
     if (typeof product === 'string') {
       const found = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === product) : null;
       if (!found) return;
       product = found;
     }
 
-    const itemKey = `detal__${product.id}__${variant || 'default'}`;
+    let resolvedVariant = variant || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : ''));
+    let isDualFlavor = !!(extraMeta && extraMeta.isDualFlavor) || product.id === 'reign-bar-palette';
+    let flavor1 = (extraMeta && extraMeta.flavor1) || '';
+    let flavor2 = (extraMeta && extraMeta.flavor2) || '';
+    let flavor1Img = (extraMeta && extraMeta.flavor1Img) || '';
+    let flavor2Img = (extraMeta && extraMeta.flavor2Img) || '';
+    let compositeImg = (extraMeta && extraMeta.compositeImg) || '';
+
+    if (isDualFlavor && (!flavor1 || !flavor2)) {
+      if (resolvedVariant && resolvedVariant.includes(' + ')) {
+        const parts = resolvedVariant.split(' + ');
+        flavor1 = parts[0].trim();
+        flavor2 = parts[1].trim();
+      } else if (typeof ReignPaletteConfigurator !== 'undefined') {
+        flavor1 = ReignPaletteConfigurator.flavor1;
+        flavor2 = ReignPaletteConfigurator.flavor2;
+        resolvedVariant = `${flavor1} + ${flavor2}`;
+        compositeImg = ReignPaletteConfigurator.lastCompositeDataUrl || '';
+      } else if (product.sabores && product.sabores.length > 0) {
+        flavor1 = product.sabores[0].nombre;
+        flavor2 = (product.sabores[1] || product.sabores[0]).nombre;
+        resolvedVariant = `${flavor1} + ${flavor2}`;
+      }
+      if (product.sabores) {
+        const f1Obj = product.sabores.find(s => s.nombre === flavor1);
+        const f2Obj = product.sabores.find(s => s.nombre === flavor2);
+        if (f1Obj && f1Obj.img) flavor1Img = f1Obj.img;
+        if (f2Obj && f2Obj.img) flavor2Img = f2Obj.img;
+      }
+    }
+
+    const itemKey = `detal__${product.id}__${resolvedVariant || 'default'}`;
     const existing = this.items.find(i => i.key === itemKey);
 
     if (existing) {
       existing.qty += qty;
+      if (compositeImg) existing.compositeImg = compositeImg;
+      if (flavor1) existing.flavor1 = flavor1;
+      if (flavor2) existing.flavor2 = flavor2;
+      if (flavor1Img) existing.flavor1Img = flavor1Img;
+      if (flavor2Img) existing.flavor2Img = flavor2Img;
     } else {
       this.items.push({
         key: itemKey,
@@ -153,17 +211,23 @@ const Cart = {
         productId: product.id,
         nombre: product.nombre,
         subtitulo: product.subtitulo || '',
-        imagen: product.imagen,
+        imagen: compositeImg || flavor1Img || product.imagen,
         precio: product.precio,
         precio_promo_2: product.precio_promo_2,
-        variant: variant || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : '')),
+        variant: resolvedVariant,
+        isDualFlavor: isDualFlavor,
+        flavor1: flavor1,
+        flavor2: flavor2,
+        flavor1Img: flavor1Img,
+        flavor2Img: flavor2Img,
+        compositeImg: compositeImg,
         qty: qty
       });
     }
 
     this.saveToStorage();
     this.updateUI();
-    Toast.show(`✓ ¡"${product.nombre} ${variant ? '(' + variant + ')' : ''}" agregado al carrito Detal!`, 'success');
+    Toast.show(`✓ ¡"${product.nombre} ${resolvedVariant ? '(' + resolvedVariant + ')' : ''}" agregado al carrito Detal!`, 'success');
     this.pulseCartBadge();
   },
 
@@ -173,12 +237,42 @@ const Cart = {
     if (!product) return;
 
     const qtyToAdd = Number(packQty) || 5;
-    const flavor = (typeof WholesaleCatalog !== 'undefined' && WholesaleCatalog.selectedVariants[productId]) 
+    const isDualFlavor = product.id === 'reign-bar-palette';
+    let flavor = (typeof WholesaleCatalog !== 'undefined' && WholesaleCatalog.selectedVariants[productId]) 
       || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : 'Surtido / A convenir'));
 
+    let flavor1 = '';
+    let flavor2 = '';
+    let flavor1Img = '';
+    let flavor2Img = '';
+    let compositeImg = '';
+
+    if (isDualFlavor) {
+      if (typeof ReignPaletteConfigurator !== 'undefined') {
+        flavor1 = ReignPaletteConfigurator.flavor1;
+        flavor2 = ReignPaletteConfigurator.flavor2;
+        flavor = `${flavor1} + ${flavor2}`;
+        compositeImg = ReignPaletteConfigurator.lastCompositeDataUrl || '';
+      } else if (flavor && flavor.includes(' + ')) {
+        const parts = flavor.split(' + ');
+        flavor1 = parts[0].trim();
+        flavor2 = parts[1].trim();
+      } else if (product.sabores && product.sabores.length > 0) {
+        flavor1 = product.sabores[0].nombre;
+        flavor2 = (product.sabores[1] || product.sabores[0]).nombre;
+        flavor = `${flavor1} + ${flavor2}`;
+      }
+      if (product.sabores) {
+        const f1Obj = product.sabores.find(s => s.nombre === flavor1);
+        const f2Obj = product.sabores.find(s => s.nombre === flavor2);
+        if (f1Obj && f1Obj.img) flavor1Img = f1Obj.img;
+        if (f2Obj && f2Obj.img) flavor2Img = f2Obj.img;
+      }
+    }
+
     // Determine image for variant
-    let img = product.imagen;
-    if (product.sabores) {
+    let img = compositeImg || flavor1Img || product.imagen;
+    if (!isDualFlavor && product.sabores) {
       const f = product.sabores.find(s => s.nombre === flavor);
       if (f && f.img) img = f.img;
     } else if (product.colores) {
@@ -200,6 +294,12 @@ const Cart = {
         subtitulo: product.subtitulo || '',
         imagen: img,
         variant: flavor,
+        isDualFlavor: isDualFlavor,
+        flavor1: flavor1,
+        flavor2: flavor2,
+        flavor1Img: flavor1Img,
+        flavor2Img: flavor2Img,
+        compositeImg: compositeImg,
         qty: qtyToAdd,
         unitPrice: 0,
         subtotal: 0
@@ -313,6 +413,55 @@ const Cart = {
     }
   },
 
+  changeDualFlavor(itemKey, slot, newFlavor) {
+    const item = this.items.find(i => i.key === itemKey);
+    if (!item) return;
+
+    let f1 = item.flavor1 || (item.variant ? item.variant.split(' + ')[0] : '');
+    let f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1] : f1);
+
+    if (Number(slot) === 1) {
+      f1 = newFlavor;
+    } else {
+      f2 = newFlavor;
+    }
+
+    const product = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
+    let f1Img = item.flavor1Img || '';
+    let f2Img = item.flavor2Img || '';
+    if (product && product.sabores) {
+      const s1 = product.sabores.find(s => s.nombre === f1);
+      const s2 = product.sabores.find(s => s.nombre === f2);
+      if (s1 && s1.img) f1Img = s1.img;
+      if (s2 && s2.img) f2Img = s2.img;
+    }
+
+    const newVariant = `${f1} + ${f2}`;
+    const prefix = item.type === 'mayorista' ? 'mayorista' : 'detal';
+    const newKey = `${prefix}__${item.productId}__${newVariant}`;
+    const existingTarget = this.items.find(i => i.key === newKey && i.key !== itemKey);
+
+    if (existingTarget) {
+      existingTarget.qty += item.qty;
+      this.items = this.items.filter(i => i.key !== itemKey);
+    } else {
+      item.key = newKey;
+      item.variant = newVariant;
+      item.isDualFlavor = true;
+      item.flavor1 = f1;
+      item.flavor2 = f2;
+      item.flavor1Img = f1Img;
+      item.flavor2Img = f2Img;
+    }
+
+    if (item.type === 'mayorista') {
+      this.recalculateWholesalePrices();
+    }
+    this.saveToStorage();
+    this.updateUI();
+    Toast.show(`Combinación actualizada: ${f1} + ${f2}`, 'success');
+  },
+
   getDetalItems() {
     return this.items.filter(i => i.type !== 'mayorista');
   },
@@ -325,18 +474,55 @@ const Cart = {
     return this.getWholesaleItems().reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
   },
 
-  getDetalSubtotal() {
-    return this.getDetalItems().reduce((sum, item) => {
-      let itemTotal = 0;
-      if (item.precio_promo_2 && item.qty >= 2) {
-        const pairs = Math.floor(item.qty / 2);
-        const remainder = item.qty % 2;
-        itemTotal = (pairs * item.precio_promo_2) + (remainder * item.precio);
+  /**
+   * Calcula precios al detal agrupando por referencia de producto (productId)
+   * para que la promoción de 2 unidades (ej: REIGN BAR PALETTE 2x $70.000)
+   * aplique tanto si lleva 2 unidades con la misma combinación como si lleva
+   * 2 unidades con combinaciones de sabores diferentes.
+   */
+  recalculateDetalPrices() {
+    const detalItems = this.getDetalItems();
+    const byProduct = {};
+    detalItems.forEach(item => {
+      if (!byProduct[item.productId]) byProduct[item.productId] = [];
+      byProduct[item.productId].push(item);
+    });
+
+    Object.values(byProduct).forEach(group => {
+      const first = group[0];
+      const unitRegular = Number(first.precio) || 0;
+      const promo2 = Number(first.precio_promo_2) || 0;
+      const totalQty = group.reduce((s, i) => s + (Number(i.qty) || 0), 0);
+
+      if (promo2 > 0 && promo2 < unitRegular * 2 && totalQty >= 2) {
+        const pairs = Math.floor(totalQty / 2);
+        let promoUnitsRemaining = pairs * 2;
+        const promoUnitRate = promo2 / 2;
+
+        group.forEach(item => {
+          const q = Number(item.qty) || 0;
+          const promoUnitsForItem = Math.min(q, promoUnitsRemaining);
+          const regularUnitsForItem = q - promoUnitsForItem;
+          promoUnitsRemaining -= promoUnitsForItem;
+
+          item.calculatedLinePrice = (promoUnitsForItem * promoUnitRate) + (regularUnitsForItem * unitRegular);
+          item.hasPromoApplied = promoUnitsForItem > 0;
+          item.effectiveUnitPrice = q > 0 ? Math.round(item.calculatedLinePrice / q) : unitRegular;
+        });
       } else {
-        itemTotal = item.qty * item.precio;
+        group.forEach(item => {
+          const q = Number(item.qty) || 0;
+          item.calculatedLinePrice = q * unitRegular;
+          item.hasPromoApplied = false;
+          item.effectiveUnitPrice = unitRegular;
+        });
       }
-      return sum + itemTotal;
-    }, 0);
+    });
+  },
+
+  getDetalSubtotal() {
+    this.recalculateDetalPrices();
+    return this.getDetalItems().reduce((sum, item) => sum + (Number(item.calculatedLinePrice) || 0), 0);
   },
 
   getWholesaleSubtotal() {
@@ -579,16 +765,14 @@ const Cart = {
           `;
 
           html += detalItems.map(item => {
-            let linePrice = item.precio * item.qty;
-            let promoNote = '';
-            if (item.precio_promo_2 && item.qty >= 2) {
-              const pairs = Math.floor(item.qty / 2);
-              const rem = item.qty % 2;
-              linePrice = (pairs * item.precio_promo_2) + (rem * item.precio);
-              promoNote = '<span class="item-promo-tag">🔥 Promo 2x</span>';
-            }
+            const linePrice = (typeof item.calculatedLinePrice === 'number') ? item.calculatedLinePrice : (item.precio * item.qty);
+            const promoNote = item.hasPromoApplied ? '<span class="item-promo-tag">🔥 Promo 2x</span>' : '';
 
             const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
+            const isDual = !!(item.isDualFlavor || item.productId === 'reign-bar-palette');
+            let f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
+            let f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
+
             let variantOptionsHtml = '';
             if (prodObj) {
               let varList = [];
@@ -597,7 +781,32 @@ const Cart = {
               } else if (prodObj.colores && prodObj.colores.length > 0) {
                 varList = prodObj.colores.map(c => c.nombre);
               }
-              if (varList.length > 1) {
+
+              if (isDual && varList.length > 0) {
+                variantOptionsHtml = `
+                  <div class="cart-dual-flavor-box">
+                    <div class="cart-dual-preview-header">
+                      ${item.compositeImg ? `<img src="${item.compositeImg}" alt="${item.nombre}" class="cart-dual-composite-thumb">` : ''}
+                      <div class="cart-dual-summary-lines">
+                        <div><span class="dual-slot-tag">Primer sabor:</span> <strong>${f1}</strong></div>
+                        <div><span class="dual-slot-tag">Segundo sabor:</span> <strong>${f2}</strong></div>
+                      </div>
+                    </div>
+                    <div class="cart-flavor-select-row">
+                      <label>1° Sabor:</label>
+                      <select class="cart-flavor-dropdown" onchange="Cart.changeDualFlavor('${item.key}', 1, this.value)">
+                        ${varList.map(v => `<option value="${v}" ${v === f1 ? 'selected' : ''}>${v}</option>`).join('')}
+                      </select>
+                    </div>
+                    <div class="cart-flavor-select-row">
+                      <label>2° Sabor:</label>
+                      <select class="cart-flavor-dropdown" onchange="Cart.changeDualFlavor('${item.key}', 2, this.value)">
+                        ${varList.map(v => `<option value="${v}" ${v === f2 ? 'selected' : ''}>${v}</option>`).join('')}
+                      </select>
+                    </div>
+                  </div>
+                `;
+              } else if (varList.length > 1) {
                 variantOptionsHtml = `
                   <div class="cart-flavor-select-row">
                     <label>Sabor/Color:</label>
@@ -627,7 +836,7 @@ const Cart = {
                     <button type="button" class="btn-qty-mini" onclick="Cart.updateQty('${item.key}', 1)" title="Sumar 1">+</button>
                   </div>
                   <div class="item-subtotal-block">
-                    <div class="item-unit-price">${this.formatCOP(item.precio)} c/u ${promoNote}</div>
+                    <div class="item-unit-price">${this.formatCOP(item.effectiveUnitPrice || item.precio)} c/u ${promoNote}</div>
                     <div class="item-total-price">${this.formatCOP(linePrice)}</div>
                   </div>
                 </div>
@@ -694,6 +903,10 @@ const Cart = {
 
             group.items.forEach(item => {
               const prodObj = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === item.productId) : null;
+              const isDual = !!(item.isDualFlavor || item.productId === 'reign-bar-palette');
+              let f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
+              let f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
+
               let variantOptionsHtml = '';
               if (prodObj) {
                 let varList = [];
@@ -702,7 +915,24 @@ const Cart = {
                 } else if (prodObj.colores && prodObj.colores.length > 0) {
                   varList = prodObj.colores.map(c => c.nombre);
                 }
-                if (varList.length > 1) {
+                if (isDual && varList.length > 0) {
+                  variantOptionsHtml = `
+                    <div class="cart-dual-flavor-box" style="margin: 4px 0;">
+                      <div class="cart-flavor-select-row" style="margin: 3px 0;">
+                        <label style="font-size: 0.74rem;">1° Sabor:</label>
+                        <select class="cart-flavor-dropdown" onchange="Cart.changeDualFlavor('${item.key}', 1, this.value)">
+                          ${varList.map(v => `<option value="${v}" ${v === f1 ? 'selected' : ''}>${v}</option>`).join('')}
+                        </select>
+                      </div>
+                      <div class="cart-flavor-select-row" style="margin: 3px 0;">
+                        <label style="font-size: 0.74rem;">2° Sabor:</label>
+                        <select class="cart-flavor-dropdown" onchange="Cart.changeDualFlavor('${item.key}', 2, this.value)">
+                          ${varList.map(v => `<option value="${v}" ${v === f2 ? 'selected' : ''}>${v}</option>`).join('')}
+                        </select>
+                      </div>
+                    </div>
+                  `;
+                } else if (varList.length > 1) {
                   variantOptionsHtml = `
                     <div class="cart-flavor-select-row" style="margin: 4px 0;">
                       <label style="font-size: 0.75rem;">Sabor:</label>

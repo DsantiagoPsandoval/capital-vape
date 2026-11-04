@@ -77,15 +77,24 @@ const CheckoutController = {
       itemsHtml += `
         <div class="checkout-sec-divider">🛒 PRODUCTOS AL DETAL</div>
       `;
-      itemsHtml += detalItems.map(item => `
+      itemsHtml += detalItems.map(item => {
+        const lineTotal = (typeof item.calculatedLinePrice === 'number') ? item.calculatedLinePrice : (item.precio * item.qty);
+        const isDual = !!(item.isDualFlavor || item.productId === 'reign-bar-palette');
+        const f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
+        const f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
+
+        return `
         <div class="checkout-item-line">
           <div>
             <strong>${item.nombre}</strong> (x${item.qty})
-            ${item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant}</small>` : ''}
+            ${isDual ? `
+              <br><small class="text-secondary">Primer sabor: <strong>${f1}</strong> | Segundo sabor: <strong>${f2}</strong></small>
+            ` : (item.variant ? `<br><small class="text-secondary">Sabor: ${item.variant}</small>` : '')}
           </div>
-          <div>${Cart.formatCOP(item.precio * item.qty)}</div>
+          <div>${Cart.formatCOP(lineTotal)}</div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     if (wsItems.length > 0) {
@@ -250,15 +259,25 @@ const CheckoutController = {
     if (detalItems.length > 0) {
       msg += `🛒 *PRODUCTOS AL DETAL:*\n`;
       detalItems.forEach((item, idx) => {
-        let lineSub = item.precio * item.qty;
-        if (item.precio_promo_2 && item.qty >= 2) {
-          const pairs = Math.floor(item.qty / 2);
-          const rem = item.qty % 2;
-          lineSub = (pairs * item.precio_promo_2) + (rem * item.precio);
+        const lineSub = (typeof item.calculatedLinePrice === 'number') ? item.calculatedLinePrice : (item.precio * item.qty);
+        const unitEff = item.effectiveUnitPrice || (item.qty > 0 ? Math.round(lineSub / item.qty) : item.precio);
+        const isDual = !!(item.isDualFlavor || item.productId === 'reign-bar-palette');
+        const f1 = item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant);
+        const f2 = item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1);
+
+        if (isDual) {
+          msg += `${idx + 1}. *${item.nombre}*\n`;
+          msg += `   - Primer sabor: ${f1}\n`;
+          msg += `   - Segundo sabor: ${f2}\n`;
+          msg += `   - Cantidad: ${item.qty}\n`;
+          msg += `   - Precio unitario: ${Cart.formatCOP(unitEff)} COP\n`;
+          msg += `   - Total: ${Cart.formatCOP(lineSub)} COP\n`;
+        } else {
+          msg += `${idx + 1}. *${item.nombre}* x${item.qty}\n`;
+          if (item.variant) msg += `   - Sabor/Color: ${item.variant}\n`;
+          msg += `   - Precio unitario: ${Cart.formatCOP(unitEff)} COP\n`;
+          msg += `   - Subtotal: ${Cart.formatCOP(lineSub)} COP\n`;
         }
-        msg += `${idx + 1}. *${item.nombre}* x${item.qty}\n`;
-        if (item.variant) msg += `   - Sabor/Color: ${item.variant}\n`;
-        msg += `   - Subtotal: ${Cart.formatCOP(lineSub)}\n`;
       });
       msg += `*Subtotal Detal: ${Cart.formatCOP(detalSubtotal)}*\n\n`;
     }
@@ -288,7 +307,14 @@ const CheckoutController = {
       Object.values(wsGroups).forEach(group => {
         msg += `${gIdx}. *${group.nombre}* — ${group.refTotalQty} unidades (Rango +${group.activeTier} • ${Cart.formatCOP(group.unitPrice)} c/u):\n`;
         group.items.forEach(i => {
-          msg += `   • ${i.variant} ×${i.qty} uds (${Cart.formatCOP(i.subtotal)})\n`;
+          const isDual = !!(i.isDualFlavor || i.productId === 'reign-bar-palette');
+          if (isDual) {
+            const f1 = i.flavor1 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[0].trim() : i.variant);
+            const f2 = i.flavor2 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[1].trim() : f1);
+            msg += `   • Combinación: Primer sabor: ${f1} | Segundo sabor: ${f2} — Cantidad: ${i.qty} uds (${Cart.formatCOP(i.subtotal)})\n`;
+          } else {
+            msg += `   • ${i.variant} ×${i.qty} uds (${Cart.formatCOP(i.subtotal)})\n`;
+          }
         });
         msg += `   Subtotal ${group.nombre}: ${Cart.formatCOP(group.refSubtotal)}\n\n`;
         gIdx++;

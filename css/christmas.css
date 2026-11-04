@@ -1,0 +1,544 @@
+/* ==========================================================================
+   CAPITAL VAPE — EXPERIENCIA NAVIDEÑA 3D (THREE.JS + WEBGL + CSS3D)
+   Identidad visual coherente: Morado Medianoche, Dorado Metálico, Rojo Carmesí,
+   Verde Pino Esmeralda y Blanco Nieve Cristalina.
+   ========================================================================== */
+
+:root {
+  --xmas-crimson: #E11D48;
+  --xmas-crimson-deep: #9F1239;
+  --xmas-crimson-glow: rgba(225, 29, 72, 0.42);
+  --xmas-emerald: #10B981;
+  --xmas-emerald-deep: #065F46;
+  --xmas-emerald-glow: rgba(16, 185, 129, 0.38);
+  --xmas-gold: #FACC15;
+  --xmas-gold-warm: #E5B700;
+  --xmas-snow: #F8FAFC;
+  --xmas-ice: #BAE6FD;
+}
+
+/* ==========================================================================
+   1. CANVAS GLOBAL WEBGL 3D (NIEVE MULTICAPA 3D + PAPÁ NOEL EN TRINEO 3D)
+   No bloquea botones, productos ni navegación (pointer-events: none)
+   ========================================================================== */
+.christmas-three-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 24;
+  pointer-events: none !important;
+  display: block;
+}
+
+/* ==========================================================================
+   2. LUCES NAVIDEÑAS ANIMADAS EN EL BORDE SUPERIOR (NAVBAR GARLAND)
+   ========================================================================== */
+.xmas-navbar-lights {
+  position: fixed;
+  top: 68px;
+  left: 0;
+  width: 100%;
+  height: 18px;
+  z-index: 998;
+  pointer-events: none !important;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  overflow: hidden;
+  padding: 0 8px;
+}
+
+.xmas-navbar-lights::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(229, 183, 0, 0.35), rgba(216, 27, 183, 0.35), rgba(255,255,255,0.08));
+}
+
+.xmas-light-bulb {
+  position: relative;
+  width: 8px;
+  height: 11px;
+  border-radius: 50% 50% 55% 55%;
+  margin-top: 2px;
+  transform-origin: top center;
+  animation: xmasBulbTwinkle 2.8s ease-in-out infinite alternate;
+}
+
+.xmas-light-bulb::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 2px;
+  width: 4px;
+  height: 3px;
+  background: #475569;
+  border-radius: 1px;
+}
+
+.xmas-light-bulb.gold {
+  background: radial-gradient(circle at 35% 35%, #FFFBEB, #FACC15 65%, #CA8A04);
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.85), 0 0 20px rgba(250, 204, 21, 0.45);
+}
+
+.xmas-light-bulb.crimson {
+  background: radial-gradient(circle at 35% 35%, #FFE4E6, #F43F5E 65%, #9F1239);
+  box-shadow: 0 0 10px rgba(244, 63, 94, 0.85), 0 0 20px rgba(244, 63, 94, 0.45);
+  animation-delay: -0.7s;
+}
+
+.xmas-light-bulb.emerald {
+  background: radial-gradient(circle at 35% 35%, #D1FAE5, #10B981 65%, #065F46);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.85), 0 0 20px rgba(16, 185, 129, 0.45);
+  animation-delay: -1.4s;
+}
+
+.xmas-light-bulb.magenta {
+  background: radial-gradient(circle at 35% 35%, #FAE8FF, #D81BB7 65%, #86198F);
+  box-shadow: 0 0 10px rgba(216, 27, 183, 0.85), 0 0 20px rgba(216, 27, 183, 0.45);
+  animation-delay: -2.1s;
+}
+
+@keyframes xmasBulbTwinkle {
+  0% {
+    opacity: 0.48;
+    transform: scale(0.92) rotate(-2deg);
+    filter: brightness(0.85);
+  }
+  50% {
+    opacity: 0.92;
+    transform: scale(1.02) rotate(1deg);
+    filter: brightness(1.15);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.08) rotate(2deg);
+    filter: brightness(1.3);
+  }
+}
+
+/* ==========================================================================
+   3. BANNER NAVIDEÑO PRINCIPAL 3D (CAPITAL VAPE — CHRISTMAS EDITION)
+   ========================================================================== */
+.xmas-edition-banner-section {
+  position: relative;
+  padding: 28px 0 18px;
+  overflow: hidden;
+  perspective: 1200px;
+  z-index: 15;
+}
+
+.xmas-banner-3d-card {
+  position: relative;
+  background:
+    radial-gradient(circle at 82% 45%, rgba(16, 185, 129, 0.16) 0%, transparent 50%),
+    radial-gradient(circle at 18% 25%, rgba(225, 29, 72, 0.18) 0%, transparent 55%),
+    radial-gradient(circle at 50% 50%, rgba(216, 27, 183, 0.15) 0%, transparent 70%),
+    linear-gradient(135deg, rgba(16, 7, 26, 0.96) 0%, rgba(28, 11, 43, 0.94) 55%, rgba(15, 23, 36, 0.96) 100%);
+  border: 1.5px solid rgba(229, 183, 0, 0.55);
+  border-radius: 24px;
+  padding: 28px 34px;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.75),
+    0 0 35px rgba(229, 183, 0, 0.18),
+    0 0 25px rgba(225, 29, 72, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transform-style: preserve-3d;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease;
+  overflow: hidden;
+}
+
+[data-theme="light"] .xmas-banner-3d-card {
+  background:
+    radial-gradient(circle at 82% 45%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 18% 25%, rgba(225, 29, 72, 0.1) 0%, transparent 55%),
+    linear-gradient(135deg, #1E0B30 0%, #2B1142 60%, #142230 100%);
+  color: #FFFFFF;
+}
+
+/* Nieve acumulada en el borde superior del banner */
+.xmas-snow-ridge {
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 16px;
+  pointer-events: none;
+  z-index: 4;
+  background:
+    radial-gradient(ellipse 38px 10px at 8% 0%, rgba(248, 250, 252, 0.9) 0%, rgba(226, 232, 240, 0.7) 65%, transparent 100%),
+    radial-gradient(ellipse 65px 12px at 24% 0%, rgba(248, 250, 252, 0.92) 0%, rgba(226, 232, 240, 0.65) 70%, transparent 100%),
+    radial-gradient(ellipse 52px 9px at 46% 0%, rgba(248, 250, 252, 0.85) 0%, rgba(226, 232, 240, 0.6) 65%, transparent 100%),
+    radial-gradient(ellipse 75px 13px at 70% 0%, rgba(248, 250, 252, 0.92) 0%, rgba(226, 232, 240, 0.7) 70%, transparent 100%),
+    radial-gradient(ellipse 48px 11px at 91% 0%, rgba(248, 250, 252, 0.88) 0%, rgba(226, 232, 240, 0.65) 68%, transparent 100%);
+  filter: drop-shadow(0 2px 4px rgba(186, 230, 253, 0.35));
+}
+
+.xmas-banner-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 28px;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+}
+
+.xmas-banner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transform: translateZ(20px);
+}
+
+.xmas-edition-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.xmas-season-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, rgba(225, 29, 72, 0.28), rgba(229, 183, 0, 0.25));
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  color: #FEF08A;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  box-shadow: 0 0 18px rgba(225, 29, 72, 0.3);
+}
+
+.xmas-santa-trigger-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #F8FAFC;
+  font-size: 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.xmas-santa-trigger-btn:hover {
+  background: linear-gradient(135deg, var(--xmas-crimson), var(--accent-purple));
+  border-color: var(--xmas-gold);
+  color: #FFFFFF;
+  box-shadow: 0 0 15px rgba(225, 29, 72, 0.5);
+  transform: translateY(-1px);
+}
+
+.xmas-banner-title {
+  font-family: var(--font-heading);
+  font-size: 2.35rem;
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  text-shadow:
+    0 2px 0 rgba(15, 23, 42, 0.9),
+    0 6px 24px rgba(0, 0, 0, 0.65),
+    0 0 28px rgba(229, 183, 0, 0.28);
+  margin: 0;
+}
+
+.xmas-banner-title span {
+  background: linear-gradient(135deg, #FFFBEB 0%, #FACC15 38%, #FB7185 75%, #D81BB7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  filter: drop-shadow(0 2px 10px rgba(250, 204, 21, 0.3));
+}
+
+.xmas-banner-subtitle {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #E2E8F0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.xmas-banner-desc {
+  font-size: 0.92rem;
+  color: #CBD5E1;
+  line-height: 1.5;
+  max-width: 620px;
+  margin: 0;
+}
+
+/* Tarjetas rápidas de los 3 nuevos lanzamientos dentro del banner */
+.xmas-new-releases-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.xmas-release-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(11, 4, 16, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #F8FAFC;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.xmas-release-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--xmas-gold);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45), 0 0 14px rgba(250, 204, 21, 0.28);
+}
+
+.xmas-release-chip.is-recommended-chip {
+  background: linear-gradient(135deg, rgba(229, 183, 0, 0.22), rgba(216, 27, 183, 0.2));
+  border-color: rgba(250, 204, 21, 0.75);
+  box-shadow: 0 0 18px rgba(229, 183, 0, 0.22);
+}
+
+.xmas-chip-badge {
+  background: linear-gradient(135deg, #FFE600, #E5B700);
+  color: #0B0410;
+  font-size: 0.66rem;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.xmas-chip-price {
+  color: var(--xmas-gold);
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   4. ESCENARIO 3D DEL ÁRBOL DE NAVIDAD, ESTRELLA Y REGALOS (#christmasTreeCanvas)
+   ========================================================================== */
+.xmas-3d-stage-wrap {
+  position: relative;
+  width: 100%;
+  height: 270px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(250, 204, 21, 0.18) 0%, rgba(16, 185, 129, 0.12) 38%, rgba(11, 4, 16, 0.55) 80%);
+  border: 1px solid rgba(250, 204, 21, 0.28);
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.55);
+  overflow: hidden;
+  transform: translateZ(30px);
+}
+
+.christmas-tree-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  cursor: grab;
+}
+
+.christmas-tree-canvas:active {
+  cursor: grabbing;
+}
+
+.xmas-stage-caption {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(11, 4, 16, 0.75);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(250, 204, 21, 0.35);
+  color: #FEF08A;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   5. DETALLES DE NIEVE ACUMULADA EN TARJETAS DE PRODUCTO Y DECORACIÓN
+   ========================================================================== */
+.xmas-card-snow-cap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 64px;
+  height: 18px;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0.78;
+  filter: drop-shadow(0 2px 4px rgba(186, 230, 253, 0.3));
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.xmas-card-snow-cap svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.product-card:hover .xmas-card-snow-cap {
+  opacity: 0.95;
+  transform: scale(1.04);
+}
+
+/* Notificación visual flotante sutil cuando Papá Noel cruza la pantalla */
+.xmas-santa-toast-indicator {
+  position: fixed;
+  top: 92px;
+  right: 22px;
+  z-index: 995;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(159, 18, 57, 0.92), rgba(26, 11, 44, 0.94));
+  border: 1px solid rgba(250, 204, 21, 0.7);
+  color: #FFFFFF;
+  padding: 8px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55), 0 0 18px rgba(250, 204, 21, 0.35);
+  opacity: 0;
+  transform: translateY(-12px) scale(0.95);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.xmas-santa-toast-indicator.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ==========================================================================
+   6. ALTERNATIVA VISUAL SI WEBGL NO ESTÁ DISPONIBLE (body.no-webgl)
+   ========================================================================== */
+.xmas-fallback-tree-svg {
+  display: none;
+  width: 160px;
+  height: 200px;
+}
+
+body.no-webgl .christmas-tree-canvas {
+  display: none !important;
+}
+
+body.no-webgl .xmas-fallback-tree-svg {
+  display: block;
+  animation: xmasFallbackFloat 4s ease-in-out infinite alternate;
+}
+
+@keyframes xmasFallbackFloat {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-6px) scale(1.03); }
+}
+
+/* ==========================================================================
+   7. RESPONSIVE (COMPUTADORES, PORTÁTILES, ANDROID E IPHONE)
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .xmas-banner-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .xmas-banner-content {
+    align-items: center;
+  }
+
+  .xmas-edition-pill-row,
+  .xmas-new-releases-strip {
+    justify-content: center;
+  }
+
+  .xmas-banner-subtitle {
+    justify-content: center;
+  }
+
+  .xmas-3d-stage-wrap {
+    height: 230px;
+    max-width: 440px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .xmas-navbar-lights {
+    top: 52px;
+    height: 14px;
+  }
+
+  .xmas-light-bulb:nth-child(even) {
+    display: none;
+  }
+
+  .xmas-edition-banner-section {
+    padding: 14px 0 8px;
+  }
+
+  .xmas-banner-3d-card {
+    padding: 18px 14px;
+    border-radius: 18px;
+  }
+
+  .xmas-banner-title {
+    font-size: 1.55rem;
+  }
+
+  .xmas-banner-subtitle {
+    font-size: 0.96rem;
+  }
+
+  .xmas-banner-desc {
+    font-size: 0.82rem;
+  }
+
+  .xmas-release-chip {
+    font-size: 0.72rem;
+    padding: 6px 10px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .xmas-3d-stage-wrap {
+    height: 200px;
+  }
+
+  .xmas-santa-toast-indicator {
+    top: 66px;
+    right: 12px;
+    font-size: 0.7rem;
+    padding: 6px 11px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .xmas-light-bulb,
+  .xmas-fallback-tree-svg {
+    animation: none !important;
+  }
+}

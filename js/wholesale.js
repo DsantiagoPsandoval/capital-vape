@@ -6,6 +6,27 @@ const WHOLESALE_PASSWORD = "CV-MAYORISTA-2026";
 
 const WholesaleService = {
   PRICES: {
+    "reign-bar-palette": {
+        "5": 25000,
+        "10": 19500,
+        "20": 18500,
+        "50": 18000,
+        "100": 17500
+    },
+    "u-pends-up9": {
+        "5": 20000,
+        "10": 16500,
+        "20": 15500,
+        "50": 15000,
+        "100": 14000
+    },
+    "nimmbox-flvx": {
+        "5": 20000,
+        "10": 16500,
+        "20": 15500,
+        "50": 15000,
+        "100": 14000
+    },
     "bang-leader": {
         "5": 30000,
         "10": 21000,
@@ -627,15 +648,20 @@ const WholesaleCatalog = {
       const priceAtMax = prices[String(maxTier)];
       const savingPerUnit = priceAtMin - priceAtMax;
 
-      const defaultVariant = product.sabores && product.sabores.length > 0 
-        ? product.sabores[0].nombre 
-        : (product.colores && product.colores.length > 0 ? product.colores[0].nombre : null);
+      const isReignPalette = product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined';
+      const defaultVariant = isReignPalette
+        ? ReignPaletteConfigurator.getCombinedVariantLabel()
+        : (product.sabores && product.sabores.length > 0 
+            ? product.sabores[0].nombre 
+            : (product.colores && product.colores.length > 0 ? product.colores[0].nombre : null));
 
       if (!this.selectedVariants[product.id] && defaultVariant) {
         this.selectedVariants[product.id] = defaultVariant;
       }
 
-      const currentSelected = this.selectedVariants[product.id] || defaultVariant || '';
+      const currentSelected = isReignPalette
+        ? ReignPaletteConfigurator.getCombinedVariantLabel()
+        : (this.selectedVariants[product.id] || defaultVariant || '');
 
       let currentImage = product.imagen;
       if (product.sabores) {
@@ -656,9 +682,9 @@ const WholesaleCatalog = {
             <button type="button" 
                     class="btn-open-flavor-modal" 
                     onclick="CatalogController.openFlavorModal('${product.id}', true)"
-                    title="Ver sabores y detalles">
+                    title="${isReignPalette ? 'Personalizar 2 sabores de REIGN BAR PALETTE' : 'Ver sabores y detalles'}">
               <span class="flavor-picker-label">
-                <span>${isColor ? '🎨' : '⚡'} ${isColor ? 'Colores' : 'Sabores'} (${totalVariants})</span>
+                <span>${isReignPalette ? '⚡ Combinar 2 Sabores' : `${isColor ? '🎨 Colores' : '⚡ Sabores'}`} (${totalVariants})</span>
               </span>
               <span class="flavor-current-tag">${currentSelected}</span>
             </button>
@@ -712,16 +738,38 @@ const WholesaleCatalog = {
         }
       }
 
+      const isPlaceholderImage = !!(product.imagen_pendiente && !currentImage);
+
       return `
-        <article class="product-card ws-product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-product-agotado' : '')}" id="ws-card-${product.id}" data-product-id="${product.id}">
-          <div class="card-image-wrapper" ${!product.coming_soon ? `onclick="CatalogController.openFlavorModal('${product.id}', true)"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Ver sabores y detalles'}">
+        <article class="product-card ws-product-card ${product.recomendado ? 'is-recommended' : ''} ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-product-agotado' : '')}" id="ws-card-${product.id}" data-product-id="${product.id}">
+          ${product.recomendado ? `<div class="recommended-ribbon-badge"><span>⭐</span> RECOMENDADO</div>` : ''}
+          <div class="card-image-wrapper ${isReignPalette ? 'is-reign-composite-stage' : ''} ${isPlaceholderImage ? 'is-placeholder-space' : ''}" ${!product.coming_soon ? `onclick="CatalogController.openFlavorModal('${product.id}', true)"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Ver sabores y detalles'}">
             ${product.coming_soon ? `<span class="product-agotado-badge" style="background:#EAB308;color:#000;">COMING SOON</span>` : (product.agotado ? `<span class="product-agotado-badge">AGOTADO</span>` : '')}
-            <img src="${currentImage || 'assets/logo/logo.png'}" alt="${product.nombre}" class="product-img-real" loading="lazy">
+            ${isReignPalette ? `
+              <div class="reign-live-preview-badge">⚡ COMBINACIÓN 2 SABORES</div>
+              <canvas id="reignWsCompositeCanvas" class="reign-composite-canvas" width="420" height="380" aria-label="Vista previa combinada de REIGN BAR PALETTE"></canvas>
+            ` : (isPlaceholderImage ? `
+              <div class="product-photo-placeholder" data-folder="${product.carpeta_imagenes || ''}">
+                <div class="photo-placeholder-frame">
+                  <svg class="photo-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="16" rx="3" />
+                    <circle cx="8.5" cy="9.5" r="1.8" />
+                    <path d="M21 15l-4.5-4.5a2 2 0 0 0-2.8 0L6 18" />
+                  </svg>
+                  <span class="photo-placeholder-title">${product.nombre}</span>
+                  <span class="photo-placeholder-specs">⚡ ${puffsBadgeText}${product.bateria ? ` • 🔋 ${product.bateria}` : ''}</span>
+                  <span class="photo-placeholder-status">Espacio preparado para imagen original</span>
+                </div>
+              </div>
+            ` : `
+              <img src="${currentImage || 'assets/logo/logo.png'}" alt="${product.nombre}" class="product-img-real" loading="lazy">
+            `)}
           </div>
 
           <div class="card-body">
             <div class="card-meta-row">
               <span class="card-rating-badge"><span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}</span>
+              ${product.recomendado ? `<span class="card-recommended-inline-pill">⭐ RECOMENDADO</span>` : ''}
               ${savingPerUnit > 0 ? `<span class="ws-save-pill">Ahorro ${WholesaleService.formatCOP(savingPerUnit)}/u</span>` : ''}
               ${product.coming_soon 
                 ? `<span class="card-stock-badge out" style="background: rgba(234, 179, 8, 0.2); color: #EAB308; border-color: rgba(234, 179, 8, 0.4);">⏳ COMING SOON</span>`
@@ -732,7 +780,10 @@ const WholesaleCatalog = {
 
             <div class="card-header-info">
               <h3 class="card-title">${product.nombre}</h3>
-              <div class="card-puffs-tag">⚡ ${puffsBadgeText}</div>
+              <div class="card-specs-row">
+                <div class="card-puffs-tag">⚡ ${puffsBadgeText}</div>
+                ${product.bateria ? `<div class="card-battery-tag">🔋 ${product.bateria}</div>` : ''}
+              </div>
             </div>
 
             ${variantsHtml}
@@ -776,6 +827,10 @@ const WholesaleCatalog = {
         </article>
       `;
     }).join('');
+
+    if (typeof ReignPaletteConfigurator !== 'undefined') {
+      ReignPaletteConfigurator.refreshAllCanvases();
+    }
   },
 
   bindEvents() {

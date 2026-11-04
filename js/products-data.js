@@ -3,6 +3,410 @@
  */
 const PRODUCTS_DATA = [
   {
+    "id": "reign-bar-palette",
+    "nombre": "REIGN BAR PALETTE",
+    "categoria": "desechables",
+    "recomendado": true,
+    "es_combinable_2_sabores": true,
+    "etiqueta_recomendado": "⭐ RECOMENDADO",
+    "subtitulo": "50.000 Puffs • 1200 mAh • Sistema Dual 2 Sabores",
+    "puffs": 50000,
+    "bateria": "1200 mAh",
+    "precio": 40000,
+    "precio_promo_2": 70000,
+    "ahorro_2": 10000,
+    "rating": 5.0,
+    "ventas": 5850,
+    "imagen": "REIGN BAR PALETTE/b-4.webp",
+    "imagen_pendiente": false,
+    "carpeta_imagenes": "REIGN BAR PALETTE",
+    "descripcion": "REIGN BAR PALETTE es nuestra referencia recomendada: dispositivo modular dual que te permite combinar 2 sabores independientes en un solo equipo con hasta 50.000 Puffs y batería de 1200 mAh. Aprovecha su promoción especial de 2 unidades por $70.000 COP.",
+    "agotado": false,
+    "coming_soon": false,
+    "tipo_variante": "sabor",
+    "precios_mayoristas": {
+      "5": 25000,
+      "10": 19500,
+      "20": 18500,
+      "50": 18000,
+      "100": 17500
+    },
+    "sabores": [
+      {
+        "nombre": "Strawberry Banana",
+        "img": "REIGN BAR PALETTE/b-1.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-1.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#EC2E68",
+        "colorSecondary": "#F48FB1",
+        "desc": "Fresas maduras combinadas con banano cremoso."
+      },
+      {
+        "nombre": "Raspberry Lemonade",
+        "img": "REIGN BAR PALETTE/b-2.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-2.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#7B1EC8",
+        "colorSecondary": "#A78BFA",
+        "desc": "Limonada refrescante con frambuesas silvestres."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "REIGN BAR PALETTE/b-3.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-3.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#08B6A6",
+        "colorSecondary": "#7AE068",
+        "desc": "Menta fresca estilo Miami con toque helado."
+      },
+      {
+        "nombre": "Blue Razz Ice",
+        "img": "REIGN BAR PALETTE/b-4.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-4.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#3553F6",
+        "colorSecondary": "#38BDF8",
+        "desc": "Frambuesa azul intensa con final ultra helado."
+      },
+      {
+        "nombre": "Mexico Mango",
+        "img": "REIGN BAR PALETTE/b-5.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-5.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#F5B700",
+        "colorSecondary": "#FDE047",
+        "desc": "Mango dulce tropical estilo mexicano."
+      },
+      {
+        "nombre": "Fcuking Fab",
+        "img": "REIGN BAR PALETTE/b-6.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-6.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FF4713",
+        "colorSecondary": "#38BDF8",
+        "desc": "Mezcla exótica de frutas tropicales y bayas dulces."
+      },
+      {
+        "nombre": "Watermelon Ice",
+        "img": "REIGN BAR PALETTE/b-7.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-7.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#F92C1C",
+        "colorSecondary": "#FB923C",
+        "desc": "Sandía jugosa y refrescante con toque frío."
+      },
+      {
+        "nombre": "OMG B Pop",
+        "img": "REIGN BAR PALETTE/b-8.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-8.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#E136F5",
+        "colorSecondary": "#F472B6",
+        "desc": "Paleta dulce de frutos del bosque y caramelo."
+      },
+      {
+        "nombre": "Caramel Cream",
+        "img": "REIGN BAR PALETTE/b-9.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-9.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#A97538",
+        "colorSecondary": "#E5E7EB",
+        "desc": "Crema suave con notas cálidas de caramelo."
+      },
+      {
+        "nombre": "Virginia Tobacco",
+        "img": "REIGN BAR PALETTE/b-10.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-10.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#5C3B1E",
+        "colorSecondary": "#374151",
+        "desc": "Tabaco rubio Virginia clásico, suave y aromático."
+      },
+      {
+        "nombre": "Ice Coffee",
+        "img": "REIGN BAR PALETTE/b-11.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-11.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#6B441B",
+        "colorSecondary": "#374151",
+        "desc": "Café espresso helado con notas tostadas."
+      },
+      {
+        "nombre": "Root Beer",
+        "img": "REIGN BAR PALETTE/b-12.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-12.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#F59E0B",
+        "colorSecondary": "#FB7185",
+        "desc": "Refresco clásico de zarzaparrilla espumosa."
+      },
+      {
+        "nombre": "Vanilla Ice Cream",
+        "img": "REIGN BAR PALETTE/b-13.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-13.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#3E5924",
+        "colorSecondary": "#F3F4F6",
+        "desc": "Helado cremoso de vainilla gourmet."
+      },
+      {
+        "nombre": "Cheese Cake",
+        "img": "REIGN BAR PALETTE/b-14.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-14.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#F5C400",
+        "colorSecondary": "#FACC15",
+        "desc": "Postre cremoso de cheesecake tradicional."
+      },
+      {
+        "nombre": "Strawberry",
+        "img": "REIGN BAR PALETTE/b-15.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-15.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FB5E9B",
+        "colorSecondary": "#F9A8D4",
+        "desc": "Fresa natural dulce y jugosa."
+      },
+      {
+        "nombre": "Cherry Lemon",
+        "img": "REIGN BAR PALETTE/b-16.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-16.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#880D2B",
+        "colorSecondary": "#FB923C",
+        "desc": "Cereza roja intensa con un toque cítrico de limón."
+      },
+      {
+        "nombre": "Cool Mint",
+        "img": "REIGN BAR PALETTE/b-17.webp",
+        "archivo_original": "REIGN BAR PALETTE/b-17.webp",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#00AD5A",
+        "colorSecondary": "#F3F4F6",
+        "desc": "Hoja de menta pura y refrescante."
+      }
+    ]
+  },
+  {
+    "id": "u-pends-up9",
+    "nombre": "U-PENDS UP9 Disposable Vape Kit",
+    "categoria": "desechables",
+    "subtitulo": "50.000 Puffs • 1000 mAh",
+    "puffs": 50000,
+    "bateria": "1000 mAh",
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.9,
+    "ventas": 4620,
+    "imagen": "U-PENDS UP9/blue razz ice.jpg",
+    "imagen_pendiente": false,
+    "carpeta_imagenes": "U-PENDS UP9",
+    "descripcion": "U-PENDS UP9 Disposable Vape Kit ofrece hasta 50.000 Puffs con tanque visible y una potente batería de 1000 mAh. Llévalo por $35.000 COP la unidad o en promoción de 2 unidades por $60.000 COP.",
+    "agotado": false,
+    "coming_soon": false,
+    "tipo_variante": "sabor",
+    "precios_mayoristas": {
+      "5": 20000,
+      "10": 16500,
+      "20": 15500,
+      "50": 15000,
+      "100": 14000
+    },
+    "sabores": [
+      {
+        "nombre": "Blue Razz Ice",
+        "img": "U-PENDS UP9/blue razz ice.jpg",
+        "archivo_original": "U-PENDS UP9/blue razz ice.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Frambuesa azul intensa con toque helado refrescante."
+      },
+      {
+        "nombre": "Cool Mint",
+        "img": "U-PENDS UP9/cool mint upends.jpg",
+        "archivo_original": "U-PENDS UP9/cool mint upends.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Menta fresca y cristalina de máxima pureza."
+      },
+      {
+        "nombre": "Grape Gush",
+        "img": "U-PENDS UP9/grape gush.jpg",
+        "archivo_original": "U-PENDS UP9/grape gush.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Explosión jugosa de uvas dulces maduras."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "U-PENDS UP9/miami mint.jpg",
+        "archivo_original": "U-PENDS UP9/miami mint.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Menta suave estilo Miami con frescura prolongada."
+      },
+      {
+        "nombre": "Orange Slush",
+        "img": "U-PENDS UP9/orange slush.jpg",
+        "archivo_original": "U-PENDS UP9/orange slush.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Granizado cítrico de naranja dulce y helada."
+      },
+      {
+        "nombre": "Sour Apple Ice",
+        "img": "U-PENDS UP9/sour apple ice.jpg",
+        "archivo_original": "U-PENDS UP9/sour apple ice.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Manzana verde ácida con acabado frío."
+      },
+      {
+        "nombre": "Straw Melon",
+        "img": "U-PENDS UP9/straw melon.jpg",
+        "archivo_original": "U-PENDS UP9/straw melon.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Combinación equilibrada de fresa dulce y sandía."
+      },
+      {
+        "nombre": "Strawberry Kiwi",
+        "img": "U-PENDS UP9/strawberry kiwi.jpg",
+        "archivo_original": "U-PENDS UP9/strawberry kiwi.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Clásico dúo frutal de fresas frescas y kiwi tropical."
+      },
+      {
+        "nombre": "Watermelon Ice",
+        "img": "U-PENDS UP9/watermelon ice.jpg",
+        "archivo_original": "U-PENDS UP9/watermelon ice.jpg",
+        "imagenes_adicionales": [],
+        "desc": "Sandía jugosa con sensación helada."
+      }
+    ]
+  },
+  {
+    "id": "nimmbox-flvx",
+    "nombre": "Nimmbox FLVX",
+    "categoria": "desechables",
+    "subtitulo": "40.000 Puffs • 700 mAh",
+    "puffs": 40000,
+    "bateria": "700 mAh",
+    "precio": 35000,
+    "precio_promo_2": 60000,
+    "ahorro_2": 10000,
+    "rating": 4.9,
+    "ventas": 4480,
+    "imagen": "NIMMBOX FLVX/Baja Splash.png",
+    "imagen_pendiente": false,
+    "carpeta_imagenes": "NIMMBOX FLVX",
+    "descripcion": "Nimmbox FLVX combina hasta 40.000 Puffs de vapor denso con una batería eficiente de 700 mAh. Disponible a $35.000 COP la unidad o 2 unidades por $60.000 COP.",
+    "agotado": false,
+    "coming_soon": false,
+    "tipo_variante": "sabor",
+    "precios_mayoristas": {
+      "5": 20000,
+      "10": 16500,
+      "20": 15500,
+      "50": 15000,
+      "100": 14000
+    },
+    "sabores": [
+      {
+        "nombre": "Baja Splash",
+        "img": "NIMMBOX FLVX/Baja Splash.png",
+        "archivo_original": "NIMMBOX FLVX/Baja Splash.png",
+        "imagenes_adicionales": [],
+        "desc": "Refrescante cóctel tropical cítrico estilo Baja."
+      },
+      {
+        "nombre": "Blue Razz Ice",
+        "img": "NIMMBOX FLVX/Blue Razz Ice.png",
+        "archivo_original": "NIMMBOX FLVX/Blue Razz Ice.png",
+        "imagenes_adicionales": [],
+        "desc": "Frambuesa azul dulce con golpe de hielo."
+      },
+      {
+        "nombre": "Clear",
+        "img": "NIMMBOX FLVX/Clear.png",
+        "archivo_original": "NIMMBOX FLVX/Clear.png",
+        "imagenes_adicionales": [],
+        "desc": "Vapor puro, neutro y cristalino con frescura limpia."
+      },
+      {
+        "nombre": "Cookies & Cream",
+        "img": "NIMMBOX FLVX/Cookies&Cream.png",
+        "archivo_original": "NIMMBOX FLVX/Cookies&Cream.png",
+        "imagenes_adicionales": [],
+        "desc": "Galleta de chocolate crujiente con crema de vainilla."
+      },
+      {
+        "nombre": "Frozen Strawberry",
+        "img": "NIMMBOX FLVX/Frozen Strawberry.png",
+        "archivo_original": "NIMMBOX FLVX/Frozen Strawberry.png",
+        "imagenes_adicionales": [],
+        "desc": "Fresas maduras congeladas con frescura intensa."
+      },
+      {
+        "nombre": "Juicy Grape",
+        "img": "NIMMBOX FLVX/Juicy Grape.png",
+        "archivo_original": "NIMMBOX FLVX/Juicy Grape.png",
+        "imagenes_adicionales": [],
+        "desc": "Uva morada jugosa y dulce en cada calada."
+      },
+      {
+        "nombre": "Melon Blossom",
+        "img": "NIMMBOX FLVX/Melon Blossom.png",
+        "archivo_original": "NIMMBOX FLVX/Melon Blossom.png",
+        "imagenes_adicionales": [],
+        "desc": "Melón dulce aromático con notas florales suaves."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "NIMMBOX FLVX/Miami Mint.png",
+        "archivo_original": "NIMMBOX FLVX/Miami Mint.png",
+        "imagenes_adicionales": [],
+        "desc": "Menta refrescante con toque cítrico suave."
+      },
+      {
+        "nombre": "Sour Apple Ice",
+        "img": "NIMMBOX FLVX/Sour Apple Ice.png",
+        "archivo_original": "NIMMBOX FLVX/Sour Apple Ice.png",
+        "imagenes_adicionales": [],
+        "desc": "Manzana verde ácida con final helado."
+      },
+      {
+        "nombre": "Sour Mango Pineapple",
+        "img": "NIMMBOX FLVX/Sour Mango Pineapple.png",
+        "archivo_original": "NIMMBOX FLVX/Sour Mango Pineapple.png",
+        "imagenes_adicionales": [],
+        "desc": "Fusión tropical de mango ácido y piña jugosa."
+      },
+      {
+        "nombre": "Super Lemon",
+        "img": "NIMMBOX FLVX/Super Lemon.png",
+        "archivo_original": "NIMMBOX FLVX/Super Lemon.png",
+        "imagenes_adicionales": [],
+        "desc": "Limón cítrico vibrante e intenso."
+      },
+      {
+        "nombre": "Tobacco",
+        "img": "NIMMBOX FLVX/Tobacco.png",
+        "archivo_original": "NIMMBOX FLVX/Tobacco.png",
+        "imagenes_adicionales": [],
+        "desc": "Tabaco clásico de cuerpo suave y tostado."
+      },
+      {
+        "nombre": "Watermelon Ice",
+        "img": "NIMMBOX FLVX/Wtermelon Ice.png",
+        "archivo_original": "NIMMBOX FLVX/Wtermelon Ice.png",
+        "imagenes_adicionales": [],
+        "desc": "Sandía roja dulce con frescura helada."
+      },
+      {
+        "nombre": "White Peach Ice",
+        "img": "NIMMBOX FLVX/White Peach Ice.png",
+        "archivo_original": "NIMMBOX FLVX/White Peach Ice.png",
+        "imagenes_adicionales": [],
+        "desc": "Durazno blanco delicado y jugoso con toque frío."
+      }
+    ]
+  },
+  {
     "id": "bang-leader",
     "nombre": "BANG LEADER",
     "categoria": "desechables",

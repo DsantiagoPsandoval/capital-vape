@@ -208,6 +208,7 @@ const CatalogController = {
     const modal = document.getElementById('flavorModal');
     if (modal) {
       modal.style.display = 'none';
+      modal.classList.remove('is-reign-modal-active');
       document.body.style.overflow = '';
     }
     this.activeModalProductId = null;
@@ -223,6 +224,17 @@ const CatalogController = {
 
     const product = PRODUCTS_DATA.find(p => p.id === this.activeModalProductId);
     if (!product) return;
+
+    const modal = document.getElementById('flavorModal');
+    if (product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined') {
+      if (modal) modal.classList.add('is-reign-modal-active');
+      grid.classList.add('is-reign-studio-grid');
+      ReignPaletteConfigurator.renderModalConfigurator(grid, filterText, this.activeModalIsWholesale);
+      return;
+    } else {
+      if (modal) modal.classList.remove('is-reign-modal-active');
+      grid.classList.remove('is-reign-studio-grid');
+    }
 
     const currentSelected = this.selectedVariants[product.id] || (
       product.sabores && product.sabores.length > 0 ? product.sabores[0].nombre :
@@ -267,14 +279,28 @@ const CatalogController = {
     grid.innerHTML = items.map(item => {
       const isSelected = item.name === currentSelected;
       const isAgotado = item.agotado || product.agotado;
+      const isItemPlaceholder = !!(product.imagen_pendiente && !item.img);
       return `
         <div class="flavor-card-item ${isSelected ? 'is-selected' : ''} ${isAgotado ? 'is-flavor-agotado' : ''}" data-product-id="${product.id}" data-variant-name="${item.name}">
-          <div class="flavor-card-img-wrap" ${!isAgotado ? `onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')"` : ''}>
-            <img src="${item.img || 'assets/logo/logo.png'}" 
-                 alt="${item.name}" 
-                 class="flavor-card-img"
-                 loading="lazy"
-                 onerror="this.src='assets/logo/logo.png';">
+          <div class="flavor-card-img-wrap ${isItemPlaceholder ? 'is-placeholder-space' : ''}" ${!isAgotado ? `onclick="CatalogController.selectAndApplyVariant('${product.id}', '${item.name}')"` : ''}>
+            ${isItemPlaceholder ? `
+              <div class="product-photo-placeholder is-modal-placeholder">
+                <div class="photo-placeholder-frame">
+                  <svg class="photo-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="16" rx="3" />
+                    <circle cx="8.5" cy="9.5" r="1.8" />
+                    <path d="M21 15l-4.5-4.5a2 2 0 0 0-2.8 0L6 18" />
+                  </svg>
+                  <span class="photo-placeholder-status">Espacio para imagen original</span>
+                </div>
+              </div>
+            ` : `
+              <img src="${item.img || 'assets/logo/logo.png'}" 
+                   alt="${item.name}" 
+                   class="flavor-card-img"
+                   loading="lazy"
+                   onerror="this.src='assets/logo/logo.png';">
+            `}
           </div>
           <div class="flavor-card-name">${item.name}</div>
           <div class="flavor-card-desc">${item.desc || 'Sabor premium exclusivo de Capital Vape.'}</div>
@@ -318,16 +344,22 @@ const CatalogController = {
     this.closeFlavorModal();
   },
 
-  addProductToCart(productId) {
+  addProductToCart(productId, qty = 1) {
     const product = PRODUCTS_DATA.find(p => p.id === productId);
     if (!product || product.agotado || product.coming_soon) return;
+
+    if (product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined') {
+      const targetQty = (arguments.length >= 2 && qty !== null) ? Number(qty) : (ReignPaletteConfigurator.selectedQty || 1);
+      ReignPaletteConfigurator.addConfiguredToCart(targetQty, false);
+      return;
+    }
 
     const variant = this.selectedVariants[productId] || (
       product.sabores && product.sabores.length > 0 ? product.sabores[0].nombre :
       (product.colores && product.colores.length > 0 ? product.colores[0].nombre : '')
     );
 
-    Cart.addItem(product, variant, 1);
+    Cart.addItem(product, variant, Number(qty) || 1);
   },
 
   getFilteredAndSortedProducts() {
@@ -432,16 +464,38 @@ const CatalogController = {
         ? `${Number(product.puffs).toLocaleString('es-CO')} Puffs` 
         : (product.categoria === 'accesorios' ? 'Original' : 'Batería 510');
 
+      const isPlaceholderImage = !!(product.imagen_pendiente && !currentImage);
+      const isReignPalette = product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined';
+
       return `
-        <article class="product-card ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-out' : '')}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
-          <!-- 1. INDEPENDENT IMAGE -->
-          <div class="card-image-wrapper" ${!product.coming_soon ? `onclick="CatalogController.openFlavorModal('${product.id}')"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Ver sabores y detalles'}">
+        <article class="product-card ${product.recomendado ? 'is-recommended' : ''} ${isReignPalette ? 'is-reign-palette-card' : ''} ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-out' : '')}" id="card-${product.id}" data-category="${product.categoria}" data-product-id="${product.id}">
+          ${product.recomendado ? `<div class="recommended-ribbon-badge"><span>⭐</span> RECOMENDADO</div>` : ''}
+          <!-- 1. INDEPENDENT IMAGE / COMPOSITE STAGE -->
+          <div class="card-image-wrapper ${isReignPalette ? 'is-reign-composite-stage' : ''} ${isPlaceholderImage ? 'is-placeholder-space' : ''}" ${!product.coming_soon ? `onclick="CatalogController.openFlavorModal('${product.id}')"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Ver sabores y detalles'}">
             ${product.coming_soon ? `<span class="product-agotado-badge" style="background:#EAB308;color:#000;">COMING SOON</span>` : ''}
-            <img src="${currentImage || 'assets/logo/logo.png'}" 
-                 alt="${product.nombre}" 
-                 class="product-img-real" 
-                 loading="lazy" 
-                 onerror="this.src='assets/logo/logo.png';">
+            ${isReignPalette ? `
+              <div class="reign-live-preview-badge">⚡ VISTA COMBINADA EN VIVO</div>
+              <canvas id="reignCardCompositeCanvas" class="reign-composite-canvas" width="460" height="420" aria-label="Vista previa combinada de REIGN BAR PALETTE"></canvas>
+            ` : (isPlaceholderImage ? `
+              <div class="product-photo-placeholder" data-folder="${product.carpeta_imagenes || ''}">
+                <div class="photo-placeholder-frame">
+                  <svg class="photo-placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                    <rect x="3" y="4" width="18" height="16" rx="3" />
+                    <circle cx="8.5" cy="9.5" r="1.8" />
+                    <path d="M21 15l-4.5-4.5a2 2 0 0 0-2.8 0L6 18" />
+                  </svg>
+                  <span class="photo-placeholder-title">${product.nombre}</span>
+                  <span class="photo-placeholder-specs">⚡ ${puffsText}${product.bateria ? ` • 🔋 ${product.bateria}` : ''}</span>
+                  <span class="photo-placeholder-status">Espacio preparado para imagen original</span>
+                </div>
+              </div>
+            ` : `
+              <img src="${currentImage || 'assets/logo/logo.png'}" 
+                   alt="${product.nombre}" 
+                   class="product-img-real" 
+                   loading="lazy" 
+                   onerror="this.src='assets/logo/logo.png';">
+            `)}
           </div>
 
           <!-- 2. CARD BODY -->
@@ -450,7 +504,9 @@ const CatalogController = {
               <span class="card-rating-badge">
                 <span class="star-icon">★</span> ${(product.rating || 4.9).toFixed(1)}
               </span>
-              ${(product.ventas && product.ventas > 3000) ? `<span class="card-top-seller-pill">🔥 Top Ventas</span>` : ''}
+              ${product.recomendado 
+                ? `<span class="card-recommended-inline-pill">⭐ RECOMENDADO</span>` 
+                : ((product.ventas && product.ventas > 3000) ? `<span class="card-top-seller-pill">🔥 Top Ventas</span>` : '')}
               ${product.coming_soon 
                 ? `<span class="card-stock-badge out" style="background: rgba(234, 179, 8, 0.2); color: #EAB308; border-color: rgba(234, 179, 8, 0.4);">⏳ COMING SOON</span>`
                 : (product.agotado 
@@ -458,14 +514,17 @@ const CatalogController = {
                   : `<span class="card-stock-badge in">🟢 Disponible</span>`)}
             </div>
 
-            <!-- Title & Puffs Tag Below Title -->
+            <!-- Title & Puffs + Battery Tag Below Title -->
             <div class="card-header-info">
               <h3 class="card-title">${product.nombre}</h3>
-              <div class="card-puffs-tag">⚡ ${puffsText}</div>
+              <div class="card-specs-row">
+                <div class="card-puffs-tag">⚡ ${puffsText}</div>
+                ${product.bateria ? `<div class="card-battery-tag">🔋 ${product.bateria}</div>` : ''}
+              </div>
             </div>
 
-            <!-- FLAVOR PICKER BUTTON -->
-            ${totalVariants > 0 ? `
+            <!-- FLAVOR PICKER / REIGN BAR PALETTE CONFIGURATOR -->
+            ${isReignPalette ? ReignPaletteConfigurator.renderCardConfiguratorHTML(product) : (totalVariants > 0 ? `
               <div class="card-flavor-picker-block">
                 <button type="button" 
                         class="btn-open-flavor-modal" 
@@ -476,11 +535,11 @@ const CatalogController = {
                   <span class="flavor-current-tag">${currentSelected}</span>
                 </button>
               </div>
-            ` : ''}
+            ` : '')}
 
             <!-- Organized Pricing -->
             ${!product.coming_soon ? `
-              <div class="card-pricing-block">
+              <div class="card-pricing-block ${product.recomendado ? 'is-recommended-pricing' : ''}">
                 <div class="pricing-tier-row">
                   <div class="tier-label-group">
                     <span class="tier-badge-tag">1 UNIDAD</span>
@@ -490,9 +549,9 @@ const CatalogController = {
                 </div>
 
                 ${hasDuoPromo ? `
-                  <div class="pricing-tier-row promo-tier">
+                  <div class="pricing-tier-row promo-tier ${product.recomendado ? 'promo-tier-highlighted' : ''}" onclick="CatalogController.addProductToCart('${product.id}', 2)" title="Clic para llevar la promoción de 2 unidades por ${this.formatCOP(product.precio_promo_2)}" style="cursor: pointer;">
                     <div class="tier-label-group">
-                      <span class="tier-badge-tag duo">2 UNIDADES</span>
+                      <span class="tier-badge-tag duo">${product.recomendado ? '🔥 PROMO 2 UNIDADES' : '2 UNIDADES'}</span>
                       <span class="tier-save-tag">Ahorras ${this.formatCOP(ahorroDuo)}</span>
                     </div>
                     <div class="tier-price-val promo">${this.formatCOP(product.precio_promo_2)}</div>
@@ -516,8 +575,8 @@ const CatalogController = {
                   ⚠️ Agotado
                 </button>
               ` : `
-                <button type="button" class="btn btn-primary btn-add-cart" onclick="CatalogController.addProductToCart('${product.id}')">
-                  <span><img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito</span>
+                <button type="button" class="btn btn-primary btn-add-cart" onclick="CatalogController.addProductToCart('${product.id}', ${isReignPalette ? 'null' : '1'})">
+                  <span><img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> ${isReignPalette ? 'Agregar Combinación al Carrito' : 'Agregar al Carrito'}</span>
                 </button>
               `)}
             </div>
@@ -525,6 +584,10 @@ const CatalogController = {
         </article>
       `;
     }).join('');
+
+    if (typeof ReignPaletteConfigurator !== 'undefined') {
+      ReignPaletteConfigurator.refreshAllCanvases();
+    }
   },
 
   resetFilters() {

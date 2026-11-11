@@ -1,11 +1,11 @@
 /**
  * CAPITAL VAPE - Panel de Administración y Control de Stock / Precios
- * Credenciales por defecto: admin / CapitalVape2026*
+ * Credenciales por defecto: admin / Admin2026#
  */
 const AdminService = {
   CREDENTIALS: {
     user: 'admin',
-    pass: 'CapitalVape2026*'
+    pass: 'Admin2026#'
   },
   SESSION_KEY: 'cv_admin_logged_in_session',
 

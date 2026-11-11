@@ -289,6 +289,65 @@ AdminService.toggleFlavorStock('reign-bar-palette', 'Miami Mint'); // Reactivar
 Cart.addItem('reign-bar-palette', 'Miami Mint', 1);
 assert(Cart.items.length === 1, 'Permite agregar al carrito sabor disponible');
 
+// ----------------------------------------------------
+// TEST SUITE 6: Nuevas Referencias DOJO X y AiRMEZ 10000
+// ----------------------------------------------------
+console.log('\n--- TEST SUITE 6: Nuevas Referencias DOJO X y AiRMEZ 10000 ---');
+const dojoXProduct = PRODUCTS_DATA.find(p => p.id === 'dojo-x');
+assert(!!dojoXProduct, 'DOJO X existe en PRODUCTS_DATA');
+assert(dojoXProduct.precio === 33000, 'DOJO X precio individual es $33.000');
+assert(dojoXProduct.precio_promo_2 === 55000, 'DOJO X promo 2x es $55.000');
+assert(dojoXProduct.bateria === '1300 mAh', 'DOJO X batería es 1300 mAh');
+assert(dojoXProduct.puffs === 20000, 'DOJO X puffs es 20000');
+assert(dojoXProduct.sabores.length === 15, 'DOJO X tiene 15 sabores cargados');
+for (const s of dojoXProduct.sabores) {
+  assert(fs.existsSync(s.img), `DOJO X imagen existe para sabor: ${s.nombre}`);
+}
+
+const airmezProduct = PRODUCTS_DATA.find(p => p.id === 'airmez-10000');
+assert(!!airmezProduct, 'AiRMEZ 10000 existe en PRODUCTS_DATA');
+assert(airmezProduct.precio === 20000, 'AiRMEZ 10000 precio individual es $20.000');
+assert(airmezProduct.precio_promo_2 === 32000, 'AiRMEZ 10000 promo 2x es $32.000');
+assert(airmezProduct.puffs === 10000, 'AiRMEZ 10000 puffs es 10000');
+assert(airmezProduct.sabores.length === 12, 'AiRMEZ 10000 tiene 12 sabores cargados');
+for (const s of airmezProduct.sabores) {
+  assert(fs.existsSync(s.img), `AiRMEZ 10000 imagen existe para sabor: ${s.nombre}`);
+}
+
+// Probar mensaje de WhatsApp con compra combinada de DOJO X y AiRMEZ
+const multiOrder = {
+  customer: {
+    nombre: 'Carlos Gómez',
+    telefono: '3159876543',
+    direccion: 'Carrera 15 #85-12',
+    ciudad: 'Bogotá'
+  },
+  detalItems: [
+    {
+      productId: 'dojo-x',
+      nombre: 'DOJO X',
+      variant: 'Baja Smash',
+      qty: 2,
+      precio: 27500 // 2x55000 promo
+    },
+    {
+      productId: 'airmez-10000',
+      nombre: 'AiRMEZ 10000',
+      variant: 'Blue Razz Ice',
+      qty: 2,
+      precio: 16000 // 2x32000 promo
+    }
+  ],
+  wsItems: [],
+  shipping: { cost: 0, isFree: true },
+  total: 87000
+};
+
+const multiMsg = OrderMessageBuilder.build(multiOrder);
+assert(multiMsg.includes('• 2x Baja Smash - $27.500 c/u'), 'Mensaje incluye DOJO X con formato correcto');
+assert(multiMsg.includes('• 2x Blue Razz Ice - $16.000 c/u'), 'Mensaje incluye AiRMEZ con formato correcto');
+assert(multiMsg.includes('💰 TOTAL: $87.000'), 'Mensaje incluye total combinado exacto');
+
 console.log('\n=============================================');
 console.log(`RESULTADOS: ${testsPassed} Pasadas, ${testsFailed} Fallidas`);
 console.log('=============================================\n');

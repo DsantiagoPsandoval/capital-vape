@@ -15,7 +15,7 @@ const PRODUCTS_DATA = [
     "precio": 40000,
     "precio_promo_2": 70000,
     "ahorro_2": 10000,
-    "rating": 5.0,
+    "rating": 5,
     "ventas": 5850,
     "imagen": "REIGN BAR PALETTE/b-4.webp",
     "imagen_pendiente": false,
@@ -276,6 +276,313 @@ const PRODUCTS_DATA = [
         "archivo_original": "U-PENDS UP9/watermelon ice.jpg",
         "imagenes_adicionales": [],
         "desc": "Sandía jugosa con sensación helada."
+      }
+    ]
+  },
+  {
+    "id": "dojo-x",
+    "nombre": "DOJO X",
+    "categoria": "desechables",
+    "recomendado": false,
+    "es_combinable_2_sabores": false,
+    "etiqueta_recomendado": "",
+    "subtitulo": "20.000 Puffs • 1300 mAh • Pantalla Digital & Power Mode",
+    "puffs": 20000,
+    "bateria": "1300 mAh",
+    "precio": 33000,
+    "precio_promo_2": 55000,
+    "ahorro_2": 11000,
+    "rating": 4.9,
+    "ventas": 1450,
+    "imagen": "DOJO X/dojo_imate_x_20k_disposable_-_screen.png",
+    "imagen_pendiente": false,
+    "carpeta_imagenes": "DOJO X",
+    "descripcion": "DOJO X ofrece hasta 20.000 Puffs, potente batería de 1300 mAh con tecnología Vaporesso, pantalla digital con visualización de líquido/batería y modo Power. 1 unidad por .000 COP o lleva 2 por .000 COP.",
+    "agotado": false,
+    "coming_soon": false,
+    "tipo_variante": "sabor",
+    "precios_mayoristas": {
+      "5": 22000,
+      "10": 17500,
+      "20": 17000,
+      "50": 16000,
+      "100": 15500
+    },
+    "sabores": [
+      {
+        "nombre": "Baja Smash",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_baja_smash_mtd_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_baja_smash_mtd_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#00B4D8",
+        "colorSecondary": "#90E0EF",
+        "desc": "Explosión cítrica refrescante estilo Baja con toque tropical."
+      },
+      {
+        "nombre": "Blue Razz Ice",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_blue_razz_ice_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_blue_razz_ice_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#1E88E5",
+        "colorSecondary": "#64B5F6",
+        "desc": "Frambuesa azul vibrante con toque helado y refrescante."
+      },
+      {
+        "nombre": "Blue Straw Splash",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_blue_straw_splash_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_blue_straw_splash_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#3949AB",
+        "colorSecondary": "#F06292",
+        "desc": "Fresas dulces combinadas con frambuesa azul y un golpe jugoso."
+      },
+      {
+        "nombre": "Hawaii Dream",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_hawaii_dream_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_hawaii_dream_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FFA000",
+        "colorSecondary": "#FFD54F",
+        "desc": "Sueño tropical hawaiano de piña dulce, mango y frutas de la pasión."
+      },
+      {
+        "nombre": "Mango Straw",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_mango_straw_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_mango_straw_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FB8C00",
+        "colorSecondary": "#E91E63",
+        "desc": "Mango maduro combinado con fresas jugosas."
+      },
+      {
+        "nombre": "Miami Mint",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_miami_mint_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_miami_mint_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#00897B",
+        "colorSecondary": "#80CBC4",
+        "desc": "Menta fresca vigorizante con toque helado estilo costero."
+      },
+      {
+        "nombre": "Peachy Smash",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_peachy_smash_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_peachy_smash_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FF7043",
+        "colorSecondary": "#FFAB91",
+        "desc": "Durazno dulce y aterciopelado con explosión frutal intensa."
+      },
+      {
+        "nombre": "Pink Lemonade",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_pink_lemonade_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_pink_lemonade_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#EC407A",
+        "colorSecondary": "#F48FB1",
+        "desc": "Limonada rosa ácida y dulce con toque burbujeante."
+      },
+      {
+        "nombre": "Sour Apple B-Pop",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_sour_apple_b-pop_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_sour_apple_b-pop_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#7CB342",
+        "colorSecondary": "#C0CA33",
+        "desc": "Manzana ácida intensa con fondo de caramelo dulce estilo paleta."
+      },
+      {
+        "nombre": "Sour Batch Watermelon Peach",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_sour_batch_watermelon_peach_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_sour_batch_watermelon_peach_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#E53935",
+        "colorSecondary": "#FFA726",
+        "desc": "Mezcla ácida y dulce de sandía jugosa y durazno suave."
+      },
+      {
+        "nombre": "Sour Cranapple",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_sour_cranapple_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_sour_cranapple_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#D81B60",
+        "colorSecondary": "#8BC34A",
+        "desc": "Arándanos agridulces combinados con manzana crujiente."
+      },
+      {
+        "nombre": "Sour Gush",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_sour_gush_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_sour_gush_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#8E24AA",
+        "colorSecondary": "#BA68C8",
+        "desc": "Explosión ultra ácida de frutas con final jugoso."
+      },
+      {
+        "nombre": "Strawberry Slam Dunk",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_strawberry_slam_dunk_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_strawberry_slam_dunk_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#E53935",
+        "colorSecondary": "#FFCDD2",
+        "desc": "Fresas rojas maduras con un impacto frutal dulce e inolvidable."
+      },
+      {
+        "nombre": "Watermelon Ice",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_watermelon_ice_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_watermelon_ice_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#E53935",
+        "colorSecondary": "#81C784",
+        "desc": "Sandía helada jugosa, refrescante y dulce."
+      },
+      {
+        "nombre": "White Grape Ice",
+        "img": "DOJO X/dojo_imate_x_20k_disposable_-_white_grape_ice_1_1.png",
+        "archivo_original": "DOJO X/dojo_imate_x_20k_disposable_-_white_grape_ice_1_1.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#7E57C2",
+        "colorSecondary": "#B39DDB",
+        "desc": "Uvas blancas selectas con toque ultra frío y cristalino."
+      }
+    ]
+  },
+  {
+    "id": "airmez-10000",
+    "nombre": "AiRMEZ 10000",
+    "categoria": "desechables",
+    "recomendado": false,
+    "es_combinable_2_sabores": false,
+    "etiqueta_recomendado": "",
+    "subtitulo": "10.000 Puffs • Pantalla LED • Batería Recargable",
+    "puffs": 10000,
+    "bateria": "650 mAh",
+    "precio": 20000,
+    "precio_promo_2": 32000,
+    "ahorro_2": 8000,
+    "rating": 4.8,
+    "ventas": 980,
+    "imagen": "Airmez/airmez_blue_razz_ice.png",
+    "imagen_pendiente": false,
+    "carpeta_imagenes": "Airmez",
+    "descripcion": "AiRMEZ 10000 Disposable te brinda hasta 10.000 Puffs con pantalla LED inteligente para monitorear líquido y batería en tiempo real. 1 unidad por .000 COP o promoción especial de 2 unidades por .000 COP.",
+    "agotado": false,
+    "coming_soon": false,
+    "tipo_variante": "sabor",
+    "precios_mayoristas": {
+      "5": 14000,
+      "10": 11000,
+      "20": 10500,
+      "50": 10000,
+      "100": 9500
+    },
+    "sabores": [
+      {
+        "nombre": "Blue Razz Ice",
+        "img": "Airmez/airmez_blue_razz_ice.png",
+        "archivo_original": "Airmez/airmez_blue_razz_ice.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#00B4D8",
+        "colorSecondary": "#90E0EF",
+        "desc": "Immerse yourself in the refreshing embrace of tangy blue raspberries, complemented by a chilly wave of menthol. This invigorating blend strikes the perfect balance between sweet and icy, offering a delightful vaping experience."
+      },
+      {
+        "nombre": "Cherry Strazz",
+        "img": "Airmez/airmez_cherry_strazz.png",
+        "archivo_original": "Airmez/airmez_cherry_strazz.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#E91E63",
+        "colorSecondary": "#F48FB1",
+        "desc": "Indulge in the symphony of flavors as succulent cherries mingle with the zesty essence of ripe strawberries. The Cherry Strazz promises a harmonious dance of fruity notes that will tantalize your taste buds."
+      },
+      {
+        "nombre": "Cranberry Grape",
+        "img": "Airmez/airmez_cranberry_grape.png",
+        "archivo_original": "Airmez/airmez_cranberry_grape.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#8E24AA",
+        "colorSecondary": "#CE93D8",
+        "desc": "Experience the vibrant burst of tart cranberries harmonizing with the lush richness of juicy grapes. This exquisite combination offers a unique and well-balanced flavor profile, perfect for those who appreciate a touch of tartness."
+      },
+      {
+        "nombre": "Frost Ice Berry",
+        "img": "Airmez/airmez_frost_ice_berry.png",
+        "archivo_original": "Airmez/airmez_frost_ice_berry.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#00ACC1",
+        "colorSecondary": "#80DEEA",
+        "desc": "Brace yourself for a whirlwind of flavor as an assortment of mixed berries collide with a rush of menthol. The Frost Ice Berry delivers a refreshing and satisfying vaping experience that will leave you craving more."
+      },
+      {
+        "nombre": "Ice Pop",
+        "img": "Airmez/airmez_ice_pop.png",
+        "archivo_original": "Airmez/airmez_ice_pop.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#03A9F4",
+        "colorSecondary": "#FF4081",
+        "desc": "Relive the nostalgia of your favorite childhood treats with the Ice Pop flavor. This delightful concoction combines a medley of fruity flavors with a cool undertone, providing a taste of pure nostalgia in every puff."
+      },
+      {
+        "nombre": "Kiwi Dragon Berry",
+        "img": "Airmez/airmez_kiwi_dragon_berry.png",
+        "archivo_original": "Airmez/airmez_kiwi_dragon_berry.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#4CAF50",
+        "colorSecondary": "#E91E63",
+        "desc": "Embark on a tropical journey with the tantalizing fusion of exotic kiwi, succulent dragon fruit, and ripe mixed berries. This flavor profile promises a symphony of sweet and tangy notes that will transport you to paradise."
+      },
+      {
+        "nombre": "NRG Berry Ice",
+        "img": "Airmez/airmez_nrg_berry_ice.png",
+        "archivo_original": "Airmez/airmez_nrg_berry_ice.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FF5722",
+        "colorSecondary": "#00E5FF",
+        "desc": "Ignite your senses with the electrifying combination of energetic berries and a revitalizing blast of menthol. NRG Berry Ice is a dynamic flavor that will invigorate your palate and leave you feeling refreshed."
+      },
+      {
+        "nombre": "Orange Mango",
+        "img": "Airmez/airmez_orange_mango.png",
+        "archivo_original": "Airmez/airmez_orange_mango.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FF9800",
+        "colorSecondary": "#FFD54F",
+        "desc": "Savor the luscious harmony of zesty oranges and tropical mangoes. This flavor profile delivers a burst of citrusy brightness complemented by the smooth, velvety sweetness of ripe mangoes."
+      },
+      {
+        "nombre": "Pineapple Coconut",
+        "img": "Airmez/airmez_pineapple_coconut.png",
+        "archivo_original": "Airmez/airmez_pineapple_coconut.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FDD835",
+        "colorSecondary": "#FFF9C4",
+        "desc": "Transport yourself to a tropical paradise with the delightful fusion of juicy pineapple and creamy coconut. This flavor combination offers a perfect balance of sweet and creamy, making it an ideal choice for those seeking a taste of the tropics."
+      },
+      {
+        "nombre": "Polar Mint Ice",
+        "img": "Airmez/airmez_polar_mint_ice.png",
+        "archivo_original": "Airmez/airmez_polar_mint_ice.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#00BFA5",
+        "colorSecondary": "#A7FFEB",
+        "desc": "Immerse yourself in the invigorating embrace of Polar Mint Ice. This menthol-infused flavor delivers a blast of icy freshness, providing a crisp and revitalizing vaping experience."
+      },
+      {
+        "nombre": "Rainbow Cloudz",
+        "img": "Airmez/airmez_rainbow_cloudz.png",
+        "archivo_original": "Airmez/airmez_rainbow_cloudz.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#FF4081",
+        "colorSecondary": "#7C4DFF",
+        "desc": "Experience a kaleidoscope of flavors with Rainbow Cloudz. This vibrant and playful blend offers a symphony of fruity notes, ensuring each puff is a delightful burst of color and taste."
+      },
+      {
+        "nombre": "Turkish Coffee",
+        "img": "Airmez/airmez_turkish_coffee.png",
+        "archivo_original": "Airmez/airmez_turkish_coffee.png",
+        "imagenes_adicionales": [],
+        "colorPrimary": "#6D4C41",
+        "colorSecondary": "#D7CCC8",
+        "desc": "Indulge in the rich and aromatic essence of Turkish coffee. This bold and robust flavor offers a sophisticated vaping experience, perfect for those who appreciate the depth and complexity of a good cup of coffee."
       }
     ]
   },

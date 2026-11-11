@@ -163,7 +163,51 @@ const Cart = {
       product = found;
     }
 
-    let resolvedVariant = variant || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : ''));
+    if (product.agotado) {
+      if (typeof Toast !== 'undefined') Toast.show('Este producto se encuentra agotado.', 'error');
+      return;
+    }
+
+    const availableFlavors = (product.sabores || []).filter(s => s && s.visible !== false && !s.agotado);
+    const availableColors = (product.colores || []).filter(c => c && c.visible !== false && !c.agotado);
+    const hasAnyVariants = (product.sabores && product.sabores.length > 0) || (product.colores && product.colores.length > 0);
+
+    if (hasAnyVariants && availableFlavors.length === 0 && availableColors.length === 0) {
+      if (typeof Toast !== 'undefined') Toast.show('No hay opciones disponibles para este producto.', 'error');
+      return;
+    }
+
+    let defaultVar = availableFlavors.length > 0 
+      ? (typeof availableFlavors[0] === 'string' ? availableFlavors[0] : availableFlavors[0].nombre)
+      : (availableColors.length > 0 ? (typeof availableColors[0] === 'string' ? availableColors[0] : availableColors[0].nombre) : '');
+
+    let resolvedVariant = variant || defaultVar;
+
+    // Verificar si el sabor/variante está agotado
+    if (resolvedVariant) {
+      if (resolvedVariant.includes(' + ')) {
+        const parts = resolvedVariant.split(' + ').map(p => p.trim());
+        const hasAgotado = parts.some(part => {
+          const s = (product.sabores || []).find(f => (typeof f === 'string' ? f : f.nombre) === part);
+          return s && s.agotado;
+        });
+        if (hasAgotado) {
+          if (typeof Toast !== 'undefined') Toast.show('Uno de los sabores seleccionados no está disponible.', 'error');
+          return;
+        }
+      } else {
+        const s = (product.sabores || []).find(f => (typeof f === 'string' ? f : f.nombre) === resolvedVariant);
+        if (s && s.agotado) {
+          if (typeof Toast !== 'undefined') Toast.show(`El sabor "${resolvedVariant}" no está disponible.`, 'error');
+          return;
+        }
+        const c = (product.colores || []).find(f => (typeof f === 'string' ? f : f.nombre) === resolvedVariant);
+        if (c && c.agotado) {
+          if (typeof Toast !== 'undefined') Toast.show(`La opción "${resolvedVariant}" no está disponible.`, 'error');
+          return;
+        }
+      }
+    }
     let isDualFlavor = (extraMeta && typeof extraMeta.isDualFlavor === 'boolean')
       ? extraMeta.isDualFlavor
       : (product.id === 'reign-bar-palette' && (!resolvedVariant || resolvedVariant.includes(' + ')));
@@ -243,15 +287,60 @@ const Cart = {
     const product = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === productId) : null;
     if (!product) return;
 
+    if (product.agotado) {
+      if (typeof Toast !== 'undefined') Toast.show('Este producto se encuentra agotado.', 'error');
+      return;
+    }
+
+    const availableFlavors = (product.sabores || []).filter(s => s && s.visible !== false && !s.agotado);
+    const availableColors = (product.colores || []).filter(c => c && c.visible !== false && !c.agotado);
+    const hasAnyVariants = (product.sabores && product.sabores.length > 0) || (product.colores && product.colores.length > 0);
+
+    if (hasAnyVariants && availableFlavors.length === 0 && availableColors.length === 0) {
+      if (typeof Toast !== 'undefined') Toast.show('No hay opciones disponibles para este producto.', 'error');
+      return;
+    }
+
     const qtyToAdd = Number(packQty) || 5;
     let isDualFlavor = product.id === 'reign-bar-palette'
       ? (typeof ReignPaletteConfigurator !== 'undefined' ? ReignPaletteConfigurator.mode !== 'single' : true)
       : false;
+
+    let defaultFlavor = availableFlavors.length > 0 
+      ? (typeof availableFlavors[0] === 'string' ? availableFlavors[0] : availableFlavors[0].nombre)
+      : (availableColors.length > 0 ? (typeof availableColors[0] === 'string' ? availableColors[0] : availableColors[0].nombre) : 'Surtido / A convenir');
+
     let flavor = (typeof WholesaleCatalog !== 'undefined' && WholesaleCatalog.selectedVariants[productId]) 
-      || (product.sabores && product.sabores[0] ? product.sabores[0].nombre : (product.colores && product.colores[0] ? product.colores[0].nombre : 'Surtido / A convenir'));
+      || defaultFlavor;
 
     if (product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined' && !isDualFlavor) {
       flavor = ReignPaletteConfigurator.singleFlavor || flavor;
+    }
+
+    // Validar disponibilidad del sabor en mayorista
+    if (flavor && flavor !== 'Surtido / A convenir') {
+      if (flavor.includes(' + ')) {
+        const parts = flavor.split(' + ').map(p => p.trim());
+        const hasAgotado = parts.some(part => {
+          const s = (product.sabores || []).find(f => (typeof f === 'string' ? f : f.nombre) === part);
+          return s && s.agotado;
+        });
+        if (hasAgotado) {
+          if (typeof Toast !== 'undefined') Toast.show('Uno de los sabores seleccionados no está disponible.', 'error');
+          return;
+        }
+      } else {
+        const s = (product.sabores || []).find(f => (typeof f === 'string' ? f : f.nombre) === flavor);
+        if (s && s.agotado) {
+          if (typeof Toast !== 'undefined') Toast.show(`El sabor "${flavor}" no está disponible.`, 'error');
+          return;
+        }
+        const c = (product.colores || []).find(f => (typeof f === 'string' ? f : f.nombre) === flavor);
+        if (c && c.agotado) {
+          if (typeof Toast !== 'undefined') Toast.show(`La opción "${flavor}" no está disponible.`, 'error');
+          return;
+        }
+      }
     }
 
     let flavor1 = '';

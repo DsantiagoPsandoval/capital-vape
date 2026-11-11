@@ -60,6 +60,23 @@ const CatalogController = {
   },
 
   selectVariant(productId, variantName) {
+    const product = PRODUCTS_DATA.find(p => p.id === productId);
+    if (!product) return;
+
+    if (product.sabores) {
+      const found = product.sabores.find(s => (typeof s === 'string' ? s : s.nombre) === variantName);
+      if (found && found.agotado) {
+        if (typeof Toast !== 'undefined') Toast.show(`El sabor "${variantName}" no está disponible.`, 'error');
+        return;
+      }
+    } else if (product.colores) {
+      const found = product.colores.find(c => (typeof c === 'string' ? c : c.nombre) === variantName);
+      if (found && found.agotado) {
+        if (typeof Toast !== 'undefined') Toast.show(`El color "${variantName}" no está disponible.`, 'error');
+        return;
+      }
+    }
+
     this.selectedVariants[productId] = variantName;
 
     // 1. Update standard card
@@ -229,27 +246,34 @@ const CatalogController = {
     if (modal) modal.classList.remove('is-reign-modal-active');
     grid.classList.remove('is-reign-studio-grid');
 
-    const currentSelected = this.selectedVariants[product.id] || (
-      product.sabores && product.sabores.length > 0 ? product.sabores[0].nombre :
-      (product.colores && product.colores.length > 0 ? product.colores[0].nombre : '')
-    );
+    // Filtrar únicamente los sabores/colores activos y disponibles
+    const availableFlavors = (product.sabores || []).filter(s => s && s.visible !== false && !s.agotado);
+    const availableColors = (product.colores || []).filter(c => c && c.visible !== false && !c.agotado);
+    const isColor = product.tipo_variante === 'color';
+    const availableVariants = isColor ? availableColors : availableFlavors;
+
+    const defaultVariant = availableVariants.length > 0 ? availableVariants[0].nombre : '';
+
+    let currentSelected = this.selectedVariants[product.id];
+    if (!currentSelected || !availableVariants.some(v => v.nombre === currentSelected)) {
+      currentSelected = defaultVariant;
+      this.selectedVariants[product.id] = currentSelected;
+    }
 
     let items = [];
     if (product.sabores && product.sabores.length > 0) {
-      items = product.sabores.filter(s => s.visible !== false).map(s => ({
+      items = availableFlavors.map(s => ({
         name: typeof s === 'string' ? s : s.nombre,
         desc: s.desc || '',
         img: s.img || product.imagen,
-        type: 'sabor',
-        agotado: !!s.agotado
+        type: 'sabor'
       }));
     } else if (product.colores && product.colores.length > 0) {
-      items = product.colores.map(c => ({
+      items = availableColors.map(c => ({
         name: typeof c === 'string' ? c : c.nombre,
         desc: c.sabores ? `Incluye: ${c.sabores.join(', ')}` : '',
         img: c.img || product.imagen,
-        type: 'color',
-        agotado: !!c.agotado
+        type: 'color'
       }));
     }
 
@@ -263,7 +287,7 @@ const CatalogController = {
     if (items.length === 0) {
       grid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: var(--text-muted);">
-          🔍 No se encontraron sabores que coincidan con "${filterText}".
+          ${filterText ? `🔍 No se encontraron sabores disponibles que coincidan con "${filterText}".` : '❌ No hay sabores disponibles actualmente para esta referencia.'}
         </div>
       `;
       return;
@@ -271,12 +295,11 @@ const CatalogController = {
 
     grid.innerHTML = items.map(item => {
       const isSelected = item.name === currentSelected;
-      const isAgotado = item.agotado || product.agotado;
       const isItemPlaceholder = !!(product.imagen_pendiente && !item.img);
       const safeItemName = String(item.name || '').replace(/'/g, "\\'");
       return `
-        <div class="flavor-card-item ${isSelected ? 'is-selected' : ''} ${isAgotado ? 'is-flavor-agotado' : ''}" data-product-id="${product.id}" data-variant-name="${item.name}">
-          <div class="flavor-card-img-wrap ${isItemPlaceholder ? 'is-placeholder-space' : ''}" ${!isAgotado ? `onclick="CatalogController.selectAndApplyVariant('${product.id}', '${safeItemName}')"` : ''}>
+        <div class="flavor-card-item ${isSelected ? 'is-selected' : ''}" data-product-id="${product.id}" data-variant-name="${item.name}">
+          <div class="flavor-card-img-wrap ${isItemPlaceholder ? 'is-placeholder-space' : ''}" onclick="CatalogController.selectAndApplyVariant('${product.id}', '${safeItemName}')">
             ${isItemPlaceholder ? `
               <div class="product-photo-placeholder is-modal-placeholder">
                 <div class="photo-placeholder-frame">
@@ -291,33 +314,26 @@ const CatalogController = {
             ` : `
               <img src="${item.img || 'assets/logo/logo.png'}" 
                    alt="${item.name}" 
-                   class="flavor-card-img"
-                   loading="lazy"
+                   class="flavor-card-img" 
+                   loading="lazy" 
                    onerror="this.src='assets/logo/logo.png';">
             `}
           </div>
           <div class="flavor-card-name">${item.name}</div>
           <div class="flavor-card-desc">${item.desc || 'Sabor premium exclusivo de Capital Vape.'}</div>
-          ${isAgotado ? `<span class="flavor-agotado-tag">❌ AGOTADO</span>` : ''}
           <div class="flavor-card-actions">
-            ${isAgotado ? `
-              <button type="button" class="btn-flavor-select" disabled style="opacity: 0.5; cursor: not-allowed;">
-                Agotado
-              </button>
-            ` : `
+            <button type="button" 
+                    class="btn-flavor-select" 
+                    onclick="CatalogController.selectAndApplyVariant('${product.id}', '${safeItemName}')">
+              ${isSelected ? '✓ Seleccionado' : 'Seleccionar sabor'}
+            </button>
+            ${!this.activeModalIsWholesale && !product.agotado ? `
               <button type="button" 
-                      class="btn-flavor-select" 
-                      onclick="CatalogController.selectAndApplyVariant('${product.id}', '${safeItemName}')">
-                ${isSelected ? '✓ Seleccionado' : 'Seleccionar sabor'}
+                      class="btn-flavor-add-cart" 
+                      onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${safeItemName}')">
+                <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito
               </button>
-              ${!this.activeModalIsWholesale && !product.agotado ? `
-                <button type="button" 
-                        class="btn-flavor-add-cart" 
-                        onclick="CatalogController.addFlavorDirectToCart('${product.id}', '${safeItemName}')">
-                  <img src="assets/icons/carrito.png" class="btn-inline-icon" alt="Carrito"> Agregar al Carrito
-                </button>
-              ` : ''}
-            `}
+            ` : ''}
           </div>
         </div>
       `;
@@ -348,10 +364,20 @@ const CatalogController = {
       return;
     }
 
-    const variant = this.selectedVariants[productId] || (
-      product.sabores && product.sabores.length > 0 ? product.sabores[0].nombre :
-      (product.colores && product.colores.length > 0 ? product.colores[0].nombre : '')
-    );
+    const availableFlavors = (product.sabores || []).filter(s => s && s.visible !== false && !s.agotado);
+    const availableColors = (product.colores || []).filter(c => c && c.visible !== false && !c.agotado);
+    const availableVariants = (product.tipo_variante === 'color' ? availableColors : availableFlavors);
+
+    if (((product.sabores && product.sabores.length > 0) || (product.colores && product.colores.length > 0)) && availableVariants.length === 0) {
+      if (typeof Toast !== 'undefined') Toast.show('Este producto no tiene opciones disponibles en este momento.', 'error');
+      return;
+    }
+
+    let variant = this.selectedVariants[productId];
+    if (!variant || !availableVariants.some(v => (typeof v === 'string' ? v : v.nombre) === variant)) {
+      variant = availableVariants.length > 0 ? (typeof availableVariants[0] === 'string' ? availableVariants[0] : availableVariants[0].nombre) : '';
+      this.selectedVariants[productId] = variant;
+    }
 
     Cart.addItem(product, variant, Number(qty) || 1);
   },
@@ -426,30 +452,34 @@ const CatalogController = {
     }
 
     container.innerHTML = products.map(product => {
-      const defaultVariant = product.sabores && product.sabores.length > 0 
-        ? product.sabores[0].nombre 
-        : (product.colores && product.colores.length > 0 ? product.colores[0].nombre : null);
+      const isColor = product.tipo_variante === 'color';
+      const availableFlavors = (product.sabores || []).filter(s => s && s.visible !== false && !s.agotado);
+      const availableColors = (product.colores || []).filter(c => c && c.visible !== false && !c.agotado);
+      const availableVariants = isColor ? availableColors : availableFlavors;
+      const totalVariants = availableVariants.length;
+      const hasAnyVariantsConfigured = (product.sabores && product.sabores.length > 0) || (product.colores && product.colores.length > 0);
+      const isAllVariantsAgotado = hasAnyVariantsConfigured && totalVariants === 0;
+      const isProductOutOfStock = product.agotado || isAllVariantsAgotado;
 
-      if (!this.selectedVariants[product.id] && defaultVariant) {
-        this.selectedVariants[product.id] = defaultVariant;
+      const defaultVariant = availableVariants.length > 0 
+        ? (typeof availableVariants[0] === 'string' ? availableVariants[0] : availableVariants[0].nombre)
+        : null;
+
+      let currentSelected = this.selectedVariants[product.id];
+      if (!currentSelected || !availableVariants.some(v => (typeof v === 'string' ? v : v.nombre) === currentSelected)) {
+        currentSelected = defaultVariant || '';
+        this.selectedVariants[product.id] = currentSelected;
       }
-
-      const currentSelected = this.selectedVariants[product.id] || defaultVariant || '';
 
       // Determine initial image for flavor
       let currentImage = product.imagen;
       if (product.sabores) {
-        const found = product.sabores.find(s => s.nombre === currentSelected);
+        const found = availableFlavors.find(s => (typeof s === 'string' ? s : s.nombre) === currentSelected);
         if (found && found.img) currentImage = found.img;
       } else if (product.colores) {
-        const found = product.colores.find(c => c.nombre === currentSelected);
+        const found = availableColors.find(c => (typeof c === 'string' ? c : c.nombre) === currentSelected);
         if (found && found.img) currentImage = found.img;
       }
-
-      // Count variants
-      const totalVariants = product.sabores ? product.sabores.filter(s => s.visible !== false).length :
-                            (product.colores ? product.colores.length : 0);
-      const isColor = product.tipo_variante === 'color';
 
       const hasDuoPromo = product.precio_promo_2 && product.precio_promo_2 < (product.precio * 2);
       const ahorroDuo = hasDuoPromo ? (product.ahorro_2 || ((product.precio * 2) - product.precio_promo_2)) : 0;
@@ -500,7 +530,7 @@ const CatalogController = {
                 : ((product.ventas && product.ventas > 3000) ? `<span class="card-top-seller-pill">🔥 Top Ventas</span>` : '')}
               ${product.coming_soon 
                 ? `<span class="card-stock-badge out" style="background: rgba(234, 179, 8, 0.2); color: #EAB308; border-color: rgba(234, 179, 8, 0.4);">⏳ COMING SOON</span>`
-                : (product.agotado 
+                : (isProductOutOfStock 
                   ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
                   : `<span class="card-stock-badge in">🟢 Disponible</span>`)}
             </div>
@@ -561,9 +591,9 @@ const CatalogController = {
                 <button type="button" class="btn btn-secondary btn-block" disabled style="opacity: 0.7; cursor: not-allowed; border-color: #EAB308; color: #EAB308; font-weight: 700;">
                   ⏳ COMING SOON
                 </button>
-              ` : (product.agotado ? `
+              ` : (isProductOutOfStock ? `
                 <button type="button" class="btn btn-secondary btn-block" disabled>
-                  ⚠️ Agotado
+                  🔴 Agotado
                 </button>
               ` : `
                 <button type="button" class="btn btn-primary btn-add-cart" onclick="CatalogController.addProductToCart('${product.id}', ${isReignPalette ? 'null' : '1'})">

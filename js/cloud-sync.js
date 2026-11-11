@@ -171,46 +171,52 @@ const CloudSyncService = {
   applyOverridesToMemory() {
     if (typeof PRODUCTS_DATA !== 'undefined' && Array.isArray(PRODUCTS_DATA)) {
       PRODUCTS_DATA.forEach(product => {
-        const pOverride = this.overrides.products[product.id];
-        if (pOverride) {
-          // Disponibilidad general del producto
-          if (typeof pOverride.agotado === 'boolean') {
-            product.agotado = pOverride.agotado;
-          }
-          // Precios al detal
-          if (pOverride.precio && Number(pOverride.precio) > 0) {
-            product.precio = Number(pOverride.precio);
-          }
-          if (pOverride.precio_promo_2 && Number(pOverride.precio_promo_2) > 0) {
-            product.precio_promo_2 = Number(pOverride.precio_promo_2);
-          }
+        const pOverride = this.overrides && this.overrides.products ? this.overrides.products[product.id] : null;
 
-          // Disponibilidad de sabores/colores individuales
-          if (pOverride.sabores && typeof pOverride.sabores === 'object') {
-            if (product.sabores && Array.isArray(product.sabores)) {
-              product.sabores.forEach(s => {
-                const sName = typeof s === 'string' ? s : s.nombre;
-                if (pOverride.sabores[sName] && typeof pOverride.sabores[sName].agotado === 'boolean') {
-                  s.agotado = pOverride.sabores[sName].agotado;
-                }
-              });
+        // Disponibilidad general del producto
+        if (pOverride && typeof pOverride.agotado === 'boolean') {
+          product.agotado = pOverride.agotado;
+        } else {
+          product.agotado = false;
+        }
+
+        // Precios al detal
+        if (pOverride && pOverride.precio && Number(pOverride.precio) > 0) {
+          product.precio = Number(pOverride.precio);
+        }
+        if (pOverride && pOverride.precio_promo_2 && Number(pOverride.precio_promo_2) > 0) {
+          product.precio_promo_2 = Number(pOverride.precio_promo_2);
+        }
+
+        // Disponibilidad de sabores individuales
+        if (product.sabores && Array.isArray(product.sabores)) {
+          product.sabores.forEach(s => {
+            const sName = typeof s === 'string' ? s : s.nombre;
+            if (pOverride && pOverride.sabores && pOverride.sabores[sName] && typeof pOverride.sabores[sName].agotado === 'boolean') {
+              s.agotado = pOverride.sabores[sName].agotado;
+            } else {
+              s.agotado = false;
             }
-            if (product.colores && Array.isArray(product.colores)) {
-              product.colores.forEach(c => {
-                const cName = typeof c === 'string' ? c : c.nombre;
-                if (pOverride.sabores[cName] && typeof pOverride.sabores[cName].agotado === 'boolean') {
-                  c.agotado = pOverride.sabores[cName].agotado;
-                }
-              });
+          });
+        }
+
+        // Disponibilidad de colores individuales
+        if (product.colores && Array.isArray(product.colores)) {
+          product.colores.forEach(c => {
+            const cName = typeof c === 'string' ? c : c.nombre;
+            if (pOverride && pOverride.sabores && pOverride.sabores[cName] && typeof pOverride.sabores[cName].agotado === 'boolean') {
+              c.agotado = pOverride.sabores[cName].agotado;
+            } else {
+              c.agotado = false;
             }
-          }
+          });
         }
       });
     }
 
     // Sobreescrituras de Precios Mayoristas
     if (typeof WholesaleService !== 'undefined' && WholesaleService.PRICES) {
-      if (this.overrides.wholesale) {
+      if (this.overrides && this.overrides.wholesale) {
         Object.keys(this.overrides.wholesale).forEach(prodId => {
           if (WholesaleService.PRICES[prodId]) {
             WholesaleService.PRICES[prodId] = Object.assign(
@@ -229,6 +235,14 @@ const CloudSyncService = {
    */
   triggerCatalogRerender() {
     try {
+      if (typeof ReignPaletteConfigurator !== 'undefined') {
+        if (typeof ReignPaletteConfigurator.initDefaults === 'function') {
+          ReignPaletteConfigurator.initDefaults();
+        }
+        if (typeof ReignPaletteConfigurator.updateUI === 'function') {
+          ReignPaletteConfigurator.updateUI();
+        }
+      }
       if (typeof CatalogController !== 'undefined' && typeof CatalogController.renderCatalog === 'function') {
         CatalogController.renderCatalog();
       }

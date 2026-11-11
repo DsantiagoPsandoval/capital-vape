@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. Inicializar tema (Modo Oscuro permanente)
   initThemeManager();
 
+  // 1.1 Inicializar sincronización en la nube (Precios y Stock Globales desde caché/nube)
+  try { if (window.CloudSyncService) CloudSyncService.init(); } catch (e) { console.error(e); }
+
   // 1.2 Inicializar configurador dual de REIGN BAR PALETTE
   try { if (window.ReignPaletteConfigurator && typeof ReignPaletteConfigurator.init === 'function') ReignPaletteConfigurator.init(); } catch (e) { console.error(e); }
-
-  // 1.5 Inicializar sincronización en la nube (Precios y Stock Globales)
-  try { if (window.CloudSyncService) CloudSyncService.init(); } catch (e) { console.error(e); }
 
   // 2. Inicializar Carrito y Catálogos
   try { if (window.Cart) Cart.init(); } catch (e) { console.error(e); }

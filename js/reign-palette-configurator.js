@@ -22,7 +22,7 @@ const ReignPaletteConfigurator = {
   getFlavors() {
     const prod = this.getProduct();
     if (!prod || !Array.isArray(prod.sabores)) return [];
-    return prod.sabores.filter(s => s && s.visible !== false && s.img);
+    return prod.sabores.filter(s => s && s.visible !== false && !s.agotado && s.img);
   },
 
   init() {

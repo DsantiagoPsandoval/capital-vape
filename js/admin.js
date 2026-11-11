@@ -11,6 +11,7 @@ const AdminService = {
 
   currentCategory: 'all',
   searchQuery: '',
+  openAccordions: new Set(),
   draftOverrides: {
     products: {},
     wholesale: {}
@@ -107,8 +108,10 @@ const AdminService = {
     const modal = document.getElementById('adminDashboardModal');
     if (!modal) return;
 
-    // Clonar sobreescrituras actuales en draft
+    // Clonar sobreescrituras actuales desde la base de datos local
     if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.loadFromCache();
+      CloudSyncService.applyOverridesToMemory();
       this.draftOverrides = JSON.parse(JSON.stringify(CloudSyncService.overrides || { products: {}, wholesale: {} }));
     }
 
@@ -188,17 +191,7 @@ const AdminService = {
     }
 
     // Stats
-    const totalProd = PRODUCTS_DATA.length;
-    const outOfStockProd = PRODUCTS_DATA.filter(p => this.isProductOutOfStock(p.id)).length;
-    const inStockProd = totalProd - outOfStockProd;
-
-    if (statsContainer) {
-      statsContainer.innerHTML = `
-        <div class="stat-badge">Total Productos: <strong>${totalProd}</strong></div>
-        <div class="stat-badge in-stock">Disponibles: <strong>${inStockProd}</strong></div>
-        <div class="stat-badge out-stock">Agotados: <strong>${outOfStockProd}</strong></div>
-      `;
-    }
+    this.updateStatsBar();
 
     if (list.length === 0) {
       container.innerHTML = `
@@ -210,6 +203,21 @@ const AdminService = {
     }
 
     container.innerHTML = list.map(prod => this.renderProductCard(prod)).join('');
+  },
+
+  updateStatsBar() {
+    const statsContainer = document.getElementById('adminStatsBar');
+    if (!statsContainer || typeof PRODUCTS_DATA === 'undefined') return;
+
+    const totalProd = PRODUCTS_DATA.length;
+    const outOfStockProd = PRODUCTS_DATA.filter(p => this.isProductOutOfStock(p.id)).length;
+    const inStockProd = totalProd - outOfStockProd;
+
+    statsContainer.innerHTML = `
+      <div class="stat-badge">Total Productos: <strong>${totalProd}</strong></div>
+      <div class="stat-badge in-stock">Disponibles: <strong>${inStockProd}</strong></div>
+      <div class="stat-badge out-stock">Agotados: <strong>${outOfStockProd}</strong></div>
+    `;
   },
 
   isProductOutOfStock(productId) {
@@ -326,7 +334,7 @@ const AdminService = {
           </div>
 
           <!-- Wholesale Tiers Form (Collapsible) -->
-          <div class="admin-collapsible-box" id="wsBox_${prod.id}" style="display: none;">
+          <div class="admin-collapsible-box" id="wsBox_${prod.id}" style="display: ${this.openAccordions.has(`wsBox_${prod.id}`) ? 'block' : 'none'};">
             <div class="admin-section-subtitle">Tarifas Mayoristas por Rango de Volumen ($ c/u):</div>
             <div class="admin-ws-tiers-grid">
               <div class="admin-input-group">
@@ -354,18 +362,19 @@ const AdminService = {
 
           <!-- Flavors Stock Management (Collapsible) -->
           ${hasFlavors ? `
-            <div class="admin-collapsible-box" id="flavorsBox_${prod.id}" style="display: none;">
+            <div class="admin-collapsible-box" id="flavorsBox_${prod.id}" style="display: ${this.openAccordions.has(`flavorsBox_${prod.id}`) ? 'block' : 'none'};">
               <div class="admin-section-subtitle">Disponibilidad de Sabores Individuales:</div>
               <div class="admin-flavors-grid">
                 ${flavors.map(fl => {
                   const fName = typeof fl === 'string' ? fl : fl.nombre;
                   const fOut = this.isFlavorOutOfStock(prod.id, fName);
+                  const safeName = fName.replace(/'/g, "\\'");
                   return `
-                    <div class="admin-flavor-item ${fOut ? 'is-out' : ''}">
+                    <div class="admin-flavor-item ${fOut ? 'is-out' : ''}" data-flavor-name="${fName}">
                       <span class="admin-flavor-name">${fName}</span>
                       <button type="button" 
                               class="admin-flavor-toggle-btn ${fOut ? 'state-agotado' : 'state-disponible'}" 
-                              onclick="AdminService.toggleFlavorStock('${prod.id}', '${fName}')">
+                              onclick="AdminService.toggleFlavorStock('${prod.id}', '${safeName}')">
                         ${fOut ? 'Agotado' : 'Disponible'}
                       </button>
                     </div>
@@ -382,7 +391,13 @@ const AdminService = {
   toggleAccordion(boxId) {
     const el = document.getElementById(boxId);
     if (el) {
-      el.style.display = el.style.display === 'none' ? 'block' : 'none';
+      const isClosed = el.style.display === 'none';
+      el.style.display = isClosed ? 'block' : 'none';
+      if (isClosed) {
+        this.openAccordions.add(boxId);
+      } else {
+        this.openAccordions.delete(boxId);
+      }
     }
   },
 
@@ -391,8 +406,33 @@ const AdminService = {
       this.draftOverrides.products[productId] = {};
     }
     const current = this.isProductOutOfStock(productId);
-    this.draftOverrides.products[productId].agotado = !current;
-    this.renderProductList();
+    const newAgotado = !current;
+    this.draftOverrides.products[productId].agotado = newAgotado;
+
+    // 1. Guardar de inmediato en la base de datos y memoria
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCloud(this.draftOverrides);
+    }
+
+    // 2. Actualización dirigida en la tarjeta sin destruir el DOM
+    const card = document.getElementById(`adminCard_${productId}`);
+    if (card) {
+      card.classList.toggle('is-out-of-stock', newAgotado);
+      const btn = card.querySelector('.admin-stock-toggle-btn');
+      if (btn) {
+        btn.className = `admin-stock-toggle-btn ${newAgotado ? 'state-agotado' : 'state-disponible'}`;
+        btn.textContent = newAgotado ? '❌ AGOTADO' : '✅ DISPONIBLE';
+      }
+    }
+
+    this.updateStatsBar();
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show(
+        newAgotado ? '✓ Producto marcado como agotado.' : '✓ Producto marcado como disponible.',
+        newAgotado ? 'warning' : 'success'
+      );
+    }
   },
 
   updateProductPrice(productId, field, value) {
@@ -400,6 +440,12 @@ const AdminService = {
       this.draftOverrides.products[productId] = {};
     }
     this.draftOverrides.products[productId][field] = Number(value);
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCloud(this.draftOverrides);
+    }
+    if (typeof Toast !== 'undefined') {
+      Toast.show('✓ Precio actualizado y sincronizado.', 'success');
+    }
   },
 
   updateWholesalePrice(productId, tier, value) {
@@ -407,6 +453,12 @@ const AdminService = {
       this.draftOverrides.wholesale[productId] = {};
     }
     this.draftOverrides.wholesale[productId][String(tier)] = Number(value);
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCloud(this.draftOverrides);
+    }
+    if (typeof Toast !== 'undefined') {
+      Toast.show('✓ Tarifa mayorista actualizada y sincronizada.', 'success');
+    }
   },
 
   toggleFlavorStock(productId, flavorName) {
@@ -417,10 +469,43 @@ const AdminService = {
       this.draftOverrides.products[productId].sabores = {};
     }
     const current = this.isFlavorOutOfStock(productId, flavorName);
+    const newAgotado = !current;
     this.draftOverrides.products[productId].sabores[flavorName] = {
-      agotado: !current
+      agotado: newAgotado
     };
-    this.renderProductList();
+
+    // 1. Guardar inmediatamente en la base de datos / almacenamiento
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCloud(this.draftOverrides);
+    }
+
+    // 2. Actualizar ÚNICAMENTE el botón y el item de sabor en el DOM del admin
+    // NO destruir el DOM, NO cerrar el acordeón, NO mover el scroll
+    const box = document.getElementById(`flavorsBox_${productId}`);
+    if (box) {
+      const items = box.querySelectorAll('.admin-flavor-item');
+      items.forEach(item => {
+        const nameEl = item.querySelector('.admin-flavor-name');
+        if (nameEl && nameEl.textContent.trim() === flavorName.trim()) {
+          item.classList.toggle('is-out', newAgotado);
+          const btn = item.querySelector('.admin-flavor-toggle-btn');
+          if (btn) {
+            btn.className = `admin-flavor-toggle-btn ${newAgotado ? 'state-agotado' : 'state-disponible'}`;
+            btn.textContent = newAgotado ? 'Agotado' : 'Disponible';
+          }
+        }
+      });
+    }
+
+    // 3. Pequeña confirmación visual indicando que se guardó correctamente
+    if (typeof Toast !== 'undefined') {
+      Toast.show(
+        newAgotado 
+          ? `✓ Sabor "${flavorName}" desactivado y ocultado en la tienda.` 
+          : `✓ Sabor "${flavorName}" activado y visible en la tienda.`,
+        newAgotado ? 'warning' : 'success'
+      );
+    }
   },
 
   /**

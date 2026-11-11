@@ -539,6 +539,17 @@ const WholesaleCatalog = {
   },
 
   selectVariant(productId, variantName) {
+    const product = PRODUCTS_DATA.find(p => p.id === productId);
+    if (!product) return;
+
+    if (product.sabores) {
+      const found = product.sabores.find(s => (typeof s === 'string' ? s : s.nombre) === variantName);
+      if (found && found.agotado) return;
+    } else if (product.colores) {
+      const found = product.colores.find(c => (typeof c === 'string' ? c : c.nombre) === variantName);
+      if (found && found.agotado) return;
+    }
+
     this.selectedVariants[productId] = variantName;
     const card = document.getElementById('ws-card-' + productId);
     if (card) {
@@ -648,33 +659,44 @@ const WholesaleCatalog = {
       const priceAtMax = prices[String(maxTier)];
       const savingPerUnit = priceAtMin - priceAtMax;
 
+      const isColor = product.tipo_variante === 'color';
+      const availableFlavors = (product.sabores || []).filter(s => s && s.visible !== false && !s.agotado);
+      const availableColors = (product.colores || []).filter(c => c && c.visible !== false && !c.agotado);
+      const availableVariants = isColor ? availableColors : availableFlavors;
+      const totalVariants = availableVariants.length;
+      const hasAnyVariantsConfigured = (product.sabores && product.sabores.length > 0) || (product.colores && product.colores.length > 0);
+      const isAllVariantsAgotado = hasAnyVariantsConfigured && totalVariants === 0;
+      const isProductOutOfStock = product.agotado || isAllVariantsAgotado;
+
       const isReignPalette = product.id === 'reign-bar-palette' && typeof ReignPaletteConfigurator !== 'undefined';
       const defaultVariant = isReignPalette
         ? ReignPaletteConfigurator.getCombinedVariantLabel()
-        : (product.sabores && product.sabores.length > 0 
-            ? product.sabores[0].nombre 
-            : (product.colores && product.colores.length > 0 ? product.colores[0].nombre : null));
+        : (availableVariants.length > 0 
+            ? (typeof availableVariants[0] === 'string' ? availableVariants[0] : availableVariants[0].nombre) 
+            : null);
 
       if (!this.selectedVariants[product.id] && defaultVariant) {
         this.selectedVariants[product.id] = defaultVariant;
       }
 
-      const currentSelected = isReignPalette
+      let currentSelected = isReignPalette
         ? ReignPaletteConfigurator.getCombinedVariantLabel()
         : (this.selectedVariants[product.id] || defaultVariant || '');
 
+      if (!isReignPalette && (!currentSelected || !availableVariants.some(v => (typeof v === 'string' ? v : v.nombre) === currentSelected))) {
+        currentSelected = defaultVariant || '';
+        this.selectedVariants[product.id] = currentSelected;
+      }
+
       let currentImage = product.imagen;
       if (product.sabores) {
-        const found = product.sabores.find(s => s.nombre === currentSelected);
+        const found = availableFlavors.find(s => (typeof s === 'string' ? s : s.nombre) === currentSelected);
         if (found && found.img) currentImage = found.img;
       } else if (product.colores) {
-        const found = product.colores.find(c => c.nombre === currentSelected);
+        const found = availableColors.find(c => (typeof c === 'string' ? c : c.nombre) === currentSelected);
         if (found && found.img) currentImage = found.img;
       }
 
-      const totalVariants = product.sabores ? product.sabores.filter(s => s.visible !== false).length :
-                            (product.colores ? product.colores.length : 0);
-      const isColor = product.tipo_variante === 'color';
       let variantsHtml = '';
       if (totalVariants > 0) {
         variantsHtml = `
@@ -741,10 +763,10 @@ const WholesaleCatalog = {
       const isPlaceholderImage = !!(product.imagen_pendiente && !currentImage);
 
       return `
-        <article class="product-card ws-product-card ${product.recomendado ? 'is-recommended' : ''} ${isReignPalette ? 'is-reign-palette-card' : ''} ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (product.agotado ? 'is-product-agotado' : '')}" id="ws-card-${product.id}" data-product-id="${product.id}">
+        <article class="product-card ws-product-card ${product.recomendado ? 'is-recommended' : ''} ${isReignPalette ? 'is-reign-palette-card' : ''} ${product.id === 'bugatti' ? 'is-bugatti' : ''} ${product.coming_soon ? 'is-coming-soon' : (isProductOutOfStock ? 'is-product-agotado' : '')}" id="ws-card-${product.id}" data-product-id="${product.id}">
           ${product.recomendado ? `<div class="recommended-ribbon-badge"><span>⭐</span> RECOMENDADO</div>` : ''}
-          <div class="card-image-wrapper ${isReignPalette ? 'is-reign-composite-stage' : ''} ${isPlaceholderImage ? 'is-placeholder-space' : ''}" ${(!product.coming_soon && !isReignPalette) ? `onclick="CatalogController.openFlavorModal('${product.id}', true)"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Vista del producto'}">
-            ${product.coming_soon ? `<span class="product-agotado-badge" style="background:#EAB308;color:#000;">COMING SOON</span>` : (product.agotado ? `<span class="product-agotado-badge">AGOTADO</span>` : '')}
+          <div class="card-image-wrapper ${isReignPalette ? 'is-reign-composite-stage' : ''} ${isPlaceholderImage ? 'is-placeholder-space' : ''}" ${(!product.coming_soon && !isProductOutOfStock && !isReignPalette) ? `onclick="CatalogController.openFlavorModal('${product.id}', true)"` : ''} title="${product.coming_soon ? 'Próximamente' : 'Vista del producto'}">
+            ${product.coming_soon ? `<span class="product-agotado-badge" style="background:#EAB308;color:#000;">COMING SOON</span>` : (isProductOutOfStock ? `<span class="product-agotado-badge">AGOTADO</span>` : '')}
             ${isReignPalette ? ReignPaletteConfigurator.renderCardImageStageHTML(product, 'ws') : (isPlaceholderImage ? `
               <div class="product-photo-placeholder" data-folder="${product.carpeta_imagenes || ''}">
                 <div class="photo-placeholder-frame">
@@ -770,7 +792,7 @@ const WholesaleCatalog = {
               ${savingPerUnit > 0 ? `<span class="ws-save-pill">Ahorro ${WholesaleService.formatCOP(savingPerUnit)}/u</span>` : ''}
               ${product.coming_soon 
                 ? `<span class="card-stock-badge out" style="background: rgba(234, 179, 8, 0.2); color: #EAB308; border-color: rgba(234, 179, 8, 0.4);">⏳ COMING SOON</span>`
-                : (product.agotado 
+                : (isProductOutOfStock 
                   ? `<span class="card-stock-badge out">🔴 Agotado</span>` 
                   : `<span class="card-stock-badge in">🟢 Mayorista</span>`)}
             </div>
@@ -791,10 +813,10 @@ const WholesaleCatalog = {
                   ⏳ COMING SOON
                 </button>
               </div>
-            ` : (product.agotado ? `
+            ` : (isProductOutOfStock ? `
               <div style="padding: 16px 0; text-align: center;">
                 <button type="button" class="btn btn-secondary btn-block" disabled style="opacity: 0.6; cursor: not-allowed;">
-                  ⚠️ Producto Agotado
+                  🔴 Producto Agotado
                 </button>
               </div>
             ` : `

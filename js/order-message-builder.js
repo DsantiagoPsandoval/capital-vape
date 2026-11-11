@@ -58,17 +58,15 @@
     },
 
     /**
-     * Construye el texto del pedido con la plantilla oficial unificada.
+     * Construye el texto del pedido con la plantilla oficial unificada y compacta.
      */
     build(orderData) {
       const customer = orderData.customer || {};
       const detalItems = Array.isArray(orderData.detalItems) ? orderData.detalItems : [];
       const wsItems = Array.isArray(orderData.wsItems) ? orderData.wsItems : [];
-      const detalSubtotal = Number(orderData.detalSubtotal) || 0;
-      const wsSubtotal = Number(orderData.wsSubtotal) || 0;
-      const totalWsQty = Number(orderData.totalWsQty) || 0;
-      const shipping = orderData.shipping || {};
       const total = Number(orderData.total) || 0;
+      const shipping = orderData.shipping || {};
+      const promoDetails = orderData.promoDetails;
 
       const nombre = this.cleanText(customer.nombre || '');
       const telefono = this.cleanText(customer.telefono || '');
@@ -78,149 +76,96 @@
       const destino = customer.destino || 'bogota';
       const notas = this.cleanText(customer.notas || '');
 
-      let destDesc = 'Bogotá D.C.';
-      if (destino === 'soacha') {
-        destDesc = 'Soacha';
-      } else if (destino === 'nacional') {
-        destDesc = depto ? `${depto}` : 'Nacional';
-      } else {
-        destDesc = 'Bogotá D.C.';
+      let ciudadStr = ciudad;
+      if (destino === 'soacha' && !ciudadStr.toLowerCase().includes('soacha')) {
+        ciudadStr = ciudadStr ? `${ciudadStr} (Soacha)` : 'Soacha';
+      } else if (depto && !ciudadStr.toLowerCase().includes(depto.toLowerCase())) {
+        ciudadStr = ciudadStr ? `${ciudadStr}, ${depto}` : depto;
       }
 
       const lines = [];
 
       // 1. ENCABEZADO
-      lines.push(`${EMOJI.PARTY} *NUEVO PEDIDO - CAPITAL VAPE* ${EMOJI.PARTY}`);
-      lines.push('');
-      lines.push(`${EMOJI.USER} *Cliente:* ${nombre}`);
-      lines.push('');
-      lines.push(`${EMOJI.PHONE} *Teléfono:* ${telefono}`);
-      lines.push('');
-      lines.push(`${EMOJI.PIN} *Dirección:* ${direccion}`);
-      lines.push('');
-      lines.push(`${EMOJI.CITY} *Ciudad / Destino:* ${ciudad} (${destDesc})`);
-      if (notas) {
-        lines.push('');
-        lines.push(`${EMOJI.NOTE} *Notas de Entrega:* ${notas}`);
-      }
+      lines.push(`${EMOJI.CART} NUEVO PEDIDO - CAPITAL VAPE`);
       lines.push('');
 
-      // 2. PRODUCTOS AL DETAL
-      if (detalItems.length > 0) {
-        const totalDetalQty = detalItems.reduce((acc, i) => acc + (Number(i.qty) || 0), 0);
-        lines.push(`${EMOJI.CART} *PRODUCTOS AL DETAL (${totalDetalQty} ${totalDetalQty === 1 ? 'unidad' : 'unidades'})*`);
-        lines.push('');
-
-        detalItems.forEach((item, idx) => {
-          const unitPrice = Number(item.precio) || 0;
-          const lineSub = unitPrice * item.qty;
-          const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
-          const f1 = this.cleanText(item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant || ''));
-          const f2 = this.cleanText(item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1));
-          const cleanNombre = this.cleanText(item.nombre);
-
-          lines.push(`${idx + 1}. *${cleanNombre}*`);
-          lines.push(`   - Cantidad: ${item.qty} ${item.qty === 1 ? 'unidad' : 'unidades'}.`);
-          lines.push(`   - Precio unitario: ${this.formatCOP(unitPrice)}.`);
-          if (isDual) {
-            lines.push(`   - Primer sabor: ${f1}.`);
-            lines.push(`   - Segundo sabor: ${f2}.`);
-          } else if (item.variant) {
-            const vLabel = (item.tipo_variante === 'color') ? 'Color' : 'Sabor';
-            lines.push(`   - ${vLabel}: ${this.cleanText(item.variant)}.`);
-          }
-          lines.push(`   - Subtotal: ${this.formatCOP(lineSub)}.`);
-          lines.push('');
-        });
-
-        const promoDetails = orderData.promoDetails;
-        if (promoDetails && promoDetails.hasPromo && promoDetails.discount > 0) {
-          lines.push(`*SUBTOTAL NORMAL: ${this.formatCOP(promoDetails.normalSubtotal)}*`);
-          lines.push(`${EMOJI.FIRE} *DESCUENTO GLOBAL (PROMOCIÓN COMBINADA):* -${this.formatCOP(promoDetails.discount)}`);
-          lines.push(`   *(Menor ahorro promocional entre referencias elegibles: ${promoDetails.selectedRef.nombre})*`);
-          lines.push(`*SUBTOTAL DETAL CON DESCUENTO: ${this.formatCOP(promoDetails.finalSubtotal)}*`);
-          lines.push('');
+      // 2. DATOS DEL CLIENTE (compacto, sin saltos de línea innecesarios entre campos)
+      if (nombre) lines.push(`${EMOJI.USER} Cliente: ${nombre}`);
+      if (telefono) lines.push(`${EMOJI.PHONE} Teléfono: ${telefono}`);
+      if (direccion) {
+        if (ciudadStr) {
+          lines.push(`${EMOJI.PIN} Dirección: ${direccion} (${ciudadStr})`);
         } else {
-          lines.push(`*SUBTOTAL DETAL: ${this.formatCOP(detalSubtotal)}*`);
-          lines.push('');
+          lines.push(`${EMOJI.PIN} Dirección: ${direccion}`);
         }
+      } else if (ciudadStr) {
+        lines.push(`${EMOJI.CITY} Ciudad: ${ciudadStr}`);
       }
+      if (notas) lines.push(`${EMOJI.NOTE} Notas: ${notas}`);
 
-      // 3. PRODUCTOS MAYORISTAS
-      if (wsItems.length > 0) {
-        // Agrupación por referencia
-        const wsGroups = {};
-        wsItems.forEach(item => {
-          if (!wsGroups[item.productId]) {
-            wsGroups[item.productId] = {
+      lines.push('');
+
+      // 3. PRODUCTOS
+      lines.push(`${EMOJI.PACKAGE} PRODUCTOS:`);
+
+      // Agrupar items por referencia de producto
+      const processItems = (items) => {
+        const groups = {};
+        items.forEach(item => {
+          const pId = item.productId || item.nombre;
+          if (!groups[pId]) {
+            groups[pId] = {
               nombre: this.cleanText(item.nombre),
-              refTotalQty: 0,
-              activeTier: item.activeTier || 5,
-              unitPrice: item.unitPrice || item.precio || 0,
-              refSubtotal: 0,
               items: []
             };
           }
-          wsGroups[item.productId].items.push(item);
-          wsGroups[item.productId].refTotalQty += item.qty;
-          const sub = (typeof item.subtotal === 'number') ? item.subtotal : (item.unitPrice || item.precio) * item.qty;
-          wsGroups[item.productId].refSubtotal += sub;
+          groups[pId].items.push(item);
         });
+        return Object.values(groups);
+      };
 
-        lines.push(`${EMOJI.PACKAGE} *PRODUCTOS MAYORISTAS (${totalWsQty} ${totalWsQty === 1 ? 'unidad' : 'unidades'})*`);
-        lines.push('');
+      const allProductGroups = [...processItems(detalItems), ...processItems(wsItems)];
 
-        let gIdx = 1;
-        Object.values(wsGroups).forEach(group => {
-          lines.push(`${gIdx}. *${group.nombre}*`);
-          lines.push(`   - Cantidad: ${group.refTotalQty} ${group.refTotalQty === 1 ? 'unidad' : 'unidades'}.`);
-          lines.push(`   - Precio unitario: ${this.formatCOP(group.unitPrice)}.`);
+      allProductGroups.forEach(group => {
+        lines.push(`*${group.nombre}*`);
+        group.items.forEach(item => {
+          const qty = Number(item.qty) || 1;
+          const unitPrice = Number(item.unitPrice || item.precio) || 0;
+          const isDual = item.isDualFlavor === true || (item.productId === 'reign-bar-palette' && item.isDualFlavor !== false && item.variant && item.variant.includes(' + '));
           
-          group.items.forEach(i => {
-            const isDual = i.isDualFlavor === true || (i.productId === 'reign-bar-palette' && i.isDualFlavor !== false && i.variant && i.variant.includes(' + '));
-            if (isDual) {
-              const f1 = this.cleanText(i.flavor1 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[0].trim() : i.variant));
-              const f2 = this.cleanText(i.flavor2 || (i.variant && i.variant.includes(' + ') ? i.variant.split(' + ')[1].trim() : f1));
-              lines.push(`   - Primer sabor: ${f1}.`);
-              lines.push(`   - Segundo sabor: ${f2}.`);
-            } else if (i.variant) {
-              lines.push(`   - Sabor: ${this.cleanText(i.variant)} (${i.qty} uds).`);
-            }
-          });
+          let flavorLabel = '';
+          if (isDual) {
+            const f1 = this.cleanText(item.flavor1 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[0].trim() : item.variant || ''));
+            const f2 = this.cleanText(item.flavor2 || (item.variant && item.variant.includes(' + ') ? item.variant.split(' + ')[1].trim() : f1));
+            flavorLabel = `${f1} + ${f2}`;
+          } else {
+            flavorLabel = this.cleanText(item.variant || '');
+          }
 
-          lines.push(`   - Subtotal: ${this.formatCOP(group.refSubtotal)}.`);
-          lines.push('');
-          gIdx++;
+          if (!flavorLabel || flavorLabel.toLowerCase() === group.nombre.toLowerCase()) {
+            flavorLabel = 'Estándar';
+          }
+
+          // Formato solicitado: • [cantidad]x [sabor] - [precio unitario] c/u
+          lines.push(`• ${qty}x ${flavorLabel} - ${this.formatCOP(unitPrice)} c/u`);
         });
+      });
 
-        lines.push(`*SUBTOTAL MAYORISTA: ${this.formatCOP(wsSubtotal)}*`);
+      // Descuento promocional si aplica
+      if (promoDetails && promoDetails.hasPromo && promoDetails.discount > 0) {
         lines.push('');
+        lines.push(`${EMOJI.FIRE} Descuento Promo: -${this.formatCOP(promoDetails.discount)}`);
       }
 
-      // 4. ENVÍO
-      if (shipping.isSoacha) {
-        lines.push(`${EMOJI.SCOOTER} *Envío:* Soacha (${this.formatCOP(shipping.cost)}).`);
-      } else if (shipping.isWholesaleOnly) {
-        lines.push(`${EMOJI.TRUCK} *Envío:* A coordinar por WhatsApp al 3133572726.`);
-      } else if (shipping.isFree) {
-        lines.push(`${EMOJI.PARTY} *Envío:* ¡GRATIS! (${destDesc}).`);
-      } else if (shipping.cost > 0) {
-        lines.push(`${EMOJI.TRUCK} *Envío:* ${destDesc} (${this.formatCOP(shipping.cost)}).`);
-      } else {
-        lines.push(`${EMOJI.TRUCK} *Envío:* A coordinar por WhatsApp.`);
+      // Costo de envío si aplica
+      if (shipping && shipping.cost > 0) {
+        lines.push(`${EMOJI.TRUCK} Envío: ${this.formatCOP(shipping.cost)}`);
       }
+
       lines.push('');
 
-      // 5. TOTAL FINAL
-      lines.push(`${EMOJI.MONEY} *TOTAL FINAL: ${this.formatCOP(total)}*`);
-      lines.push('');
-
-      // 6. MENSAJE DE CIERRE
-      if (wsItems.length > 0) {
-        lines.push(`*Deseo coordinar el despacho del pedido mayorista y acordar el medio de pago.*`);
-      } else {
-        lines.push(`*Deseo confirmar mi pedido y acordar el medio de pago (Transferencia Nequi/Daviplata o Contra entrega).*`);
-      }
+      // 4. TOTAL GENERAL
+      lines.push(`${EMOJI.MONEY} TOTAL: ${this.formatCOP(total)}`);
 
       return lines.join('\n');
     },
@@ -235,7 +180,7 @@
         return { valid: false, errors };
       }
       if (msg.includes('\uFFFD')) {
-        errors.push('Se detectó carácter corrupto de reemplazo Unicode ().');
+        errors.push('Se detectó carácter corrupto de reemplazo Unicode.');
       }
       if (/&#[0-9a-fx]+;/i.test(msg) || /&[a-z]{2,8};/i.test(msg)) {
         errors.push('Se detectaron entidades HTML residuales en el mensaje.');
@@ -243,8 +188,8 @@
       if (/\\+\*/.test(msg)) {
         errors.push('Se detectaron barras invertidas escapando asteriscos.');
       }
-      if (!msg.includes(EMOJI.PARTY)) {
-        errors.push('Faltan emojis principales en el encabezado del mensaje.');
+      if (!msg.includes('NUEVO PEDIDO - CAPITAL VAPE')) {
+        errors.push('Falta el encabezado principal del pedido.');
       }
       return {
         valid: errors.length === 0,

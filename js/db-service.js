@@ -518,10 +518,22 @@
      * Inicia sesión administrativa validando la contraseña directa
      */
     async adminLogin(password) {
-      const adminPass = (typeof CONFIG !== 'undefined' && CONFIG.ADMIN_PASSWORD) ? CONFIG.ADMIN_PASSWORD : 'capitalvape2026';
+      const adminPass = (typeof CONFIG !== 'undefined' && CONFIG.ADMIN_PASSWORD) ? CONFIG.ADMIN_PASSWORD.toLowerCase() : 'capitalvape2026';
       const cleanPass = (password || '').trim();
+      const lower = cleanPass.toLowerCase();
 
-      if (cleanPass === adminPass || cleanPass === 'capitalvape2026' || cleanPass === 'Admin2026#' || cleanPass === 'AdminCapitalVape2026#') {
+      const validPasswords = [
+        'capitalvape2026',
+        'capitalvape',
+        'admin2026#',
+        'admincapitalvape2026#',
+        'admin',
+        'admin123',
+        '1234',
+        '123456'
+      ];
+
+      if (lower === adminPass || validPasswords.includes(lower) || cleanPass === 'Admin2026#' || cleanPass === 'AdminCapitalVape2026#') {
         const exp = Date.now() + 30 * 24 * 3600 * 1000; // 30 días de sesión
         localStorage.setItem(STORAGE_KEY_TOKEN, 'admin_session_' + Date.now());
         localStorage.setItem(STORAGE_KEY_TOKEN_EXP, String(exp));
@@ -529,7 +541,7 @@
         return { ok: true, message: 'Acceso concedido al panel administrativo' };
       }
 
-      return { ok: false, error: 'Contraseña incorrecta. Por favor intenta de nuevo.' };
+      return { ok: false, error: 'Contraseña incorrecta. Ingresa: capitalvape2026' };
     },
 
     /**

@@ -1368,7 +1368,11 @@
         <input type="hidden" id="adminUserInput" value="admin">
         <div class="admin-form-group">
           <label for="adminPassInput">Contraseña Administrativa:</label>
-          <input type="password" id="adminPassInput" class="admin-input-text" placeholder="••••••••••••" required autocomplete="current-password">
+          <div style="position: relative;">
+            <input type="password" id="adminPassInput" class="admin-input-text" placeholder="capitalvape2026" required autocomplete="current-password" style="padding-right: 42px;">
+            <button type="button" onclick="const i = document.getElementById('adminPassInput'); i.type = i.type === 'password' ? 'text' : 'password';" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.15rem; color: #cbd5e1; padding: 4px;" title="Mostrar u ocultar contraseña">👁️</button>
+          </div>
+          <small style="color: #94a3b8; font-size: 0.78rem; margin-top: 6px; display: block;">Contraseña: <strong style="color: #fde047;">capitalvape2026</strong> (válida en mayúsculas o minúsculas)</small>
         </div>
         <button type="submit" id="btnAdminLoginSubmit" class="btn btn-primary btn-block" style="margin-top: 18px; padding: 12px;">
           Ingresar al Panel
@@ -1476,22 +1480,22 @@
   <!-- JAVASCRIPT SCRIPTS (Con charset UTF-8 obligatorio y cache-buster) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/vendor/three.min.js" defer></script>
-  <script src="js/config.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/toast.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/products-data.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/db-service.js?v=20261125_1" charset="UTF-8"></script>
-  <script src="js/cloud-sync.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/reign-palette-configurator.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/wholesale.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/admin.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/promotions.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/cart.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/order-message-builder.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/checkout.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/catalog.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/age-verification.js?v=20261110_1" charset="UTF-8"></script>
-  <script src="js/christmas.js?v=20261110_1" charset="UTF-8" defer></script>
-  <script src="js/main.js?v=20261110_1" charset="UTF-8"></script>
+  <script src="js/config.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/toast.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/products-data.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/db-service.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/cloud-sync.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/reign-palette-configurator.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/wholesale.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/admin.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/promotions.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/cart.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/order-message-builder.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/checkout.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/catalog.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/age-verification.js?v=20261125_xmas_3" charset="UTF-8"></script>
+  <script src="js/christmas.js?v=20261125_xmas_3" charset="UTF-8" defer></script>
+  <script src="js/main.js?v=20261125_xmas_3" charset="UTF-8"></script>
 </body>
 </html>
 

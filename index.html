@@ -1254,22 +1254,19 @@
       <button type="button" class="modal-close-btn" onclick="AdminService.closeLoginModal()">&times;</button>
       <div class="admin-login-header">
         <div style="font-size: 2.2rem; margin-bottom: 6px;">🔐</div>
-        <h3 class="admin-login-title">Panel de Administración</h3>
-        <p class="admin-login-sub">Ingresa tus credenciales para gestionar stock y precios en la nube</p>
+        <h3 class="admin-login-title">Acceso Administrativo</h3>
+        <p class="admin-login-sub">Ingresa la contraseña única del propietario para gestionar productos y precios en tiempo real</p>
       </div>
 
       <div id="adminLoginAlert" class="admin-alert-box" style="display: none;"></div>
 
       <form onsubmit="AdminService.login(event)">
+        <input type="hidden" id="adminUserInput" value="admin">
         <div class="admin-form-group">
-          <label for="adminUserInput">Usuario:</label>
-          <input type="text" id="adminUserInput" class="admin-input-text" placeholder="admin" required autocomplete="username">
+          <label for="adminPassInput">Contraseña Administrativa:</label>
+          <input type="password" id="adminPassInput" class="admin-input-text" placeholder="••••••••••••" required autocomplete="current-password">
         </div>
-        <div class="admin-form-group">
-          <label for="adminPassInput">Contraseña:</label>
-          <input type="password" id="adminPassInput" class="admin-input-text" placeholder="••••••••" required autocomplete="current-password">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 18px; padding: 12px;">
+        <button type="submit" id="btnAdminLoginSubmit" class="btn btn-primary btn-block" style="margin-top: 18px; padding: 12px;">
           Ingresar al Panel
         </button>
       </form>
@@ -1311,11 +1308,45 @@
     </div>
   </div>
 
+  <!-- ADMIN PRICE HISTORY MODAL -->
+  <div id="adminHistoryModal" class="admin-modal-overlay" style="display: none;">
+    <div class="admin-history-card">
+      <div class="admin-dash-header">
+        <div class="admin-dash-title-box">
+          <h3 class="admin-dash-title" id="adminHistoryTitle">📜 Historial de Precios y Auditoría</h3>
+          <span id="adminHistorySubtitle" class="admin-history-subtitle">Registro inmutable de cambios y variaciones de precio</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="AdminService.closeHistoryModal()">&times;</button>
+      </div>
+      <div class="admin-history-body" id="adminHistoryBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ADMIN CREATE / EDIT PRODUCT MODAL -->
+  <div id="adminProductModal" class="admin-modal-overlay" style="display: none;">
+    <div class="admin-product-modal-card">
+      <div class="admin-dash-header">
+        <div class="admin-dash-title-box">
+          <h3 class="admin-dash-title" id="adminProductModalTitle">➕ Crear Nuevo Producto</h3>
+          <span class="admin-history-subtitle">Administración de catálogo, precios e inventario</span>
+        </div>
+        <button type="button" class="modal-close-btn" onclick="AdminService.closeProductModal()">&times;</button>
+      </div>
+      <div class="admin-product-modal-body" id="adminProductModalBody">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
   <!-- JAVASCRIPT SCRIPTS (Con charset UTF-8 obligatorio y cache-buster) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/vendor/three.min.js" defer></script>
   <script src="js/config.js?v=20261110_1" charset="UTF-8"></script>
   <script src="js/toast.js?v=20261110_1" charset="UTF-8"></script>
   <script src="js/products-data.js?v=20261110_1" charset="UTF-8"></script>
+  <script src="js/db-service.js?v=20261125_1" charset="UTF-8"></script>
   <script src="js/cloud-sync.js?v=20261110_1" charset="UTF-8"></script>
   <script src="js/reign-palette-configurator.js?v=20261110_1" charset="UTF-8"></script>
   <script src="js/wholesale.js?v=20261110_1" charset="UTF-8"></script>

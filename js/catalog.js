@@ -383,7 +383,24 @@ const CatalogController = {
   },
 
   getFilteredAndSortedProducts() {
-    let list = [...PRODUCTS_DATA];
+    let list = (typeof DBService !== 'undefined')
+      ? DBService.getProducts({ includeDeleted: false }).map(p => {
+          const orig = (typeof PRODUCTS_DATA !== 'undefined' ? PRODUCTS_DATA.find(x => x.id === p.id) : null) || {};
+          return {
+            ...orig,
+            ...p,
+            nombre: p.name,
+            precio: p.price,
+            precio_promo_2: p.price_two_units,
+            categoria: p.category,
+            imagen: p.image_url,
+            agotado: p.status === 'agotado' || p.stock <= 0
+          };
+        })
+      : [...PRODUCTS_DATA];
+
+    // Excluir productos descontinuados u ocultos de la vista pública
+    list = list.filter(p => !p.is_deleted && p.status !== 'descontinuado' && p.status !== 'oculto_temporalmente');
 
     if (this.activeCategory !== 'todos') {
       list = list.filter(p => p.categoria === this.activeCategory);

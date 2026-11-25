@@ -163,7 +163,9 @@ const Cart = {
       product = found;
     }
 
-    if (product.agotado) {
+    const dbP = (typeof DBService !== 'undefined') ? DBService.getProductById(product.id) : null;
+    const isOutOfStock = product.agotado || product.status === 'agotado' || (typeof product.stock === 'number' && product.stock <= 0) || (dbP && (dbP.status === 'agotado' || dbP.stock <= 0 || dbP.is_deleted || dbP.status === 'descontinuado' || dbP.status === 'oculto_temporalmente'));
+    if (isOutOfStock) {
       if (typeof Toast !== 'undefined') Toast.show('Este producto se encuentra agotado.', 'error');
       return;
     }
@@ -287,7 +289,9 @@ const Cart = {
     const product = (typeof PRODUCTS_DATA !== 'undefined') ? PRODUCTS_DATA.find(p => p.id === productId) : null;
     if (!product) return;
 
-    if (product.agotado) {
+    const dbP = (typeof DBService !== 'undefined') ? DBService.getProductById(product.id) : null;
+    const isOutOfStock = product.agotado || product.status === 'agotado' || (typeof product.stock === 'number' && product.stock <= 0) || (dbP && (dbP.status === 'agotado' || dbP.stock <= 0 || dbP.is_deleted || dbP.status === 'descontinuado' || dbP.status === 'oculto_temporalmente'));
+    if (isOutOfStock) {
       if (typeof Toast !== 'undefined') Toast.show('Este producto se encuentra agotado.', 'error');
       return;
     }

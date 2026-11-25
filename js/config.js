@@ -18,11 +18,23 @@ const CONFIG = {
     NACIONAL_FREE_THRESHOLD: 220000,
     NACIONAL_STANDARD_COST: 18000
   },
+  SUPABASE: {
+    // Configuración oficial de Supabase con SDK v2 y Realtime
+    URL: 'https://gkbzabubivjfzlefcnnq.supabase.co',
+    PUBLISHABLE_KEY: 'sb_publishable_5AQ9IzW8DHRowyT5mVF5og_FRVMFRdA',
+    ANON_KEY: 'sb_publishable_5AQ9IzW8DHRowyT5mVF5og_FRVMFRdA',
+    FUNCTIONS_URL: 'https://gkbzabubivjfzlefcnnq.supabase.co/functions/v1/admin-api',
+    ENABLED: true
+  },
   STORAGE_KEYS: {
     CART: 'cv_cart_items_v2',
     SHIPPING_DEST: 'cv_shipping_dest_v2',
     WHOLESALE_AUTH: 'wholesaleAuthenticated',
-    THEME: 'cv_theme'
+    THEME: 'cv_theme',
+    PRODUCTS: 'cv_db_products_v3',
+    PRICE_HISTORY: 'cv_db_price_history_v3',
+    ADMIN_SESSION_TOKEN: 'cv_admin_session_token_v3',
+    ADMIN_SESSION_EXP: 'cv_admin_session_exp_v3'
   },
   SOCIAL: {
     INSTAGRAM: 'https://www.instagram.com/capitalvap/',

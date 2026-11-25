@@ -578,3 +578,368 @@
   display: inline-block;
   margin-top: 4px;
 }
+
+/* ==========================================================================
+   CAPITAL VAPE - EXTENSIONES DEL PANEL DE ADMINISTRACIÓN Y AUDITORÍA
+   ========================================================================== */
+
+/* Botón Nuevo Producto en Toolbar */
+.btn-admin-create-prod {
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+  border: 1px solid #34D399;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.btn-admin-create-prod:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.5);
+  transform: translateY(-1px);
+}
+
+/* Filtros de Estado en Toolbar */
+.admin-status-filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.admin-status-filter-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+
+.admin-filter-pill.state-filter.active {
+  background: var(--accent-gold);
+  color: #000000;
+  font-weight: 800;
+}
+
+/* Acciones rápidas de la tarjeta del producto */
+.admin-card-quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.admin-status-select {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-status-select:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+.admin-status-select.state-disponible {
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34D399;
+}
+
+.admin-status-select.state-agotado {
+  border-color: rgba(239, 68, 68, 0.5);
+  color: #F87171;
+}
+
+.admin-status-select.state-descontinuado {
+  border-color: rgba(156, 163, 175, 0.5);
+  color: #9CA3AF;
+}
+
+.admin-status-select.state-oculto {
+  border-color: rgba(234, 179, 8, 0.5);
+  color: #FBBF24;
+}
+
+/* Control de Inventario (Stock) */
+.admin-stock-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-stock-control-group label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+}
+
+.admin-stock-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.admin-input-stock {
+  width: 75px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.admin-input-stock:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+/* Botones de Acción de Tarjeta */
+.btn-admin-action {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-admin-action:hover {
+  background: rgba(229, 183, 0, 0.15);
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.btn-admin-action.btn-history {
+  border-color: rgba(59, 130, 246, 0.4);
+  color: #93C5FD;
+}
+
+.btn-admin-action.btn-history:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: #60A5FA;
+}
+
+.btn-admin-action.btn-danger {
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #F87171;
+}
+
+.btn-admin-action.btn-danger:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #EF4444;
+}
+
+.btn-admin-action.btn-restore {
+  border-color: rgba(16, 185, 129, 0.4);
+  color: #34D399;
+}
+
+.btn-admin-action.btn-restore:hover {
+  background: rgba(16, 185, 129, 0.2);
+  border-color: #10B981;
+}
+
+/* Modal de Historial de Auditoría */
+.admin-history-card {
+  width: 100%;
+  max-width: 980px;
+  max-height: 90vh;
+  background: var(--bg-dark);
+  border: 1.5px solid var(--accent-gold);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9), 0 0 30px var(--accent-gold-glow);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.admin-history-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.admin-history-body {
+  overflow-y: auto;
+  margin-top: 16px;
+  flex: 1;
+}
+
+/* Tabla de Historial */
+.admin-history-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.admin-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.admin-history-table th {
+  background: var(--bg-surface);
+  color: var(--accent-gold);
+  padding: 10px 14px;
+  font-weight: 800;
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.admin-history-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.admin-history-table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-hist-diff-positive {
+  color: #34D399;
+  font-weight: 800;
+}
+
+.admin-hist-diff-negative {
+  color: #F87171;
+  font-weight: 800;
+}
+
+.admin-hist-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.admin-hist-badge.type-price {
+  background: rgba(229, 183, 0, 0.15);
+  color: var(--accent-gold);
+}
+
+.admin-hist-badge.type-promo {
+  background: rgba(168, 85, 247, 0.15);
+  color: #C084FC;
+}
+
+.admin-hist-badge.type-wholesale {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93C5FD;
+}
+
+.admin-hist-badge.type-stock {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+
+.admin-hist-badge.type-status {
+  background: rgba(239, 68, 68, 0.15);
+  color: #FCA5A5;
+}
+
+.admin-hist-badge.type-create {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34D399;
+}
+
+/* Modal de Creación / Edición de Producto */
+.admin-product-modal-card {
+  width: 100%;
+  max-width: 820px;
+  max-height: 90vh;
+  background: var(--bg-dark);
+  border: 1.5px solid var(--accent-gold);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.9), 0 0 30px var(--accent-gold-glow);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.admin-product-modal-body {
+  overflow-y: auto;
+  margin-top: 16px;
+  flex: 1;
+  padding-right: 4px;
+}
+
+.admin-form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.admin-form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 640px) {
+  .admin-form-grid-2,
+  .admin-form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.admin-form-textarea {
+  width: 100%;
+  background: var(--bg-input);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 70px;
+}
+
+.admin-form-textarea:focus {
+  outline: none;
+  border-color: var(--accent-gold);
+}
+
+.admin-checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-primary);
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+}

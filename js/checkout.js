@@ -445,6 +445,20 @@ const CheckoutController = {
       }
     }
 
+    // 0. Validación de seguridad contra la base de datos oficial de Capital Vape
+    if (typeof DBService !== 'undefined') {
+      const allCartItems = [...detalItems, ...wsItems];
+      const dbCheck = DBService.validateCartItems(allCartItems);
+      if (dbCheck.errors && dbCheck.errors.length > 0) {
+        console.warn('[Checkout] Validación de precios y disponibilidad DB:', dbCheck.errors);
+        Cart.items = dbCheck.correctedItems;
+        Cart.saveToStorage();
+        Cart.updateUI();
+        detalItems = Cart.getDetalItems();
+        wsItems = Cart.getWholesaleItems();
+      }
+    }
+
     const orderData = {
       customer: {
         nombre,

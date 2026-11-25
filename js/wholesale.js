@@ -294,10 +294,11 @@ const WholesaleService = {
    * Obtiene el precio unitario de un producto según la cantidad TOTAL de unidades mayoristas
    */
   getProductWholesaleUnitPrice(productId, totalWholesaleQty) {
-    const prices = this.PRICES[productId] || (typeof PRODUCTS_DATA !== 'undefined' ? (PRODUCTS_DATA.find(p => p.id === productId)?.precios_mayoristas) : null);
+    const dbProduct = (typeof DBService !== 'undefined') ? DBService.getProductById(productId) : null;
+    const prices = (dbProduct && dbProduct.wholesale_prices) || this.PRICES[productId] || (typeof PRODUCTS_DATA !== 'undefined' ? (PRODUCTS_DATA.find(p => p.id === productId)?.precios_mayoristas) : null);
     if (!prices) {
-      const p = typeof PRODUCTS_DATA !== 'undefined' ? PRODUCTS_DATA.find(x => x.id === productId) : null;
-      return p ? p.precio : 0;
+      const p = dbProduct || (typeof PRODUCTS_DATA !== 'undefined' ? PRODUCTS_DATA.find(x => x.id === productId) : null);
+      return p ? (p.price || p.precio || 0) : 0;
     }
     const tier = this.getWholesaleTier(totalWholesaleQty);
     if (prices[String(tier)]) {
@@ -582,7 +583,24 @@ const WholesaleCatalog = {
   },
 
   getProducts() {
-    let list = [...PRODUCTS_DATA];
+    let list = (typeof DBService !== 'undefined')
+      ? DBService.getProducts({ includeDeleted: false }).map(p => {
+          const orig = (typeof PRODUCTS_DATA !== 'undefined' ? PRODUCTS_DATA.find(x => x.id === p.id) : null) || {};
+          return {
+            ...orig,
+            ...p,
+            nombre: p.name,
+            precio: p.price,
+            precio_promo_2: p.price_two_units,
+            categoria: p.category,
+            imagen: p.image_url,
+            agotado: p.status === 'agotado' || p.stock <= 0
+          };
+        })
+      : [...PRODUCTS_DATA];
+
+    // Excluir productos descontinuados u ocultos de la vista pública mayorista
+    list = list.filter(p => !p.is_deleted && p.status !== 'descontinuado' && p.status !== 'oculto_temporalmente');
 
     if (this.activeCategory !== 'todos') {
       list = list.filter(p => p.categoria === this.activeCategory);
@@ -649,7 +667,8 @@ const WholesaleCatalog = {
     }
 
     container.innerHTML = products.map(product => {
-      const prices = WholesaleService.PRICES[product.id] || product.precios_mayoristas;
+      const dbProd = (typeof DBService !== 'undefined') ? DBService.getProductById(product.id) : null;
+      const prices = (dbProd && dbProd.wholesale_prices) || WholesaleService.PRICES[product.id] || product.precios_mayoristas;
       if (!prices) return '';
 
       const tierKeys = Object.keys(prices).map(Number).sort((a, b) => a - b);

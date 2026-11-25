@@ -6,7 +6,7 @@
 const AdminService = {
   CREDENTIALS: {
     user: 'admin',
-    pass: 'Admin2026#'
+    pass: 'capitalvape2026'
   },
   SESSION_KEY: 'cv_admin_logged_in_session',
 

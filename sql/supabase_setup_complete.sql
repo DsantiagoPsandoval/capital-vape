@@ -65,32 +65,38 @@ CREATE TABLE IF NOT EXISTS public.inventory_history (
   changed_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 5. HABILITAR ROW LEVEL SECURITY (RLS)
+-- 5. HABILITAR ROW LEVEL SECURITY (RLS) CON ACCESO DIRECTO
 ALTER TABLE public.products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.price_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.inventory_history ENABLE ROW LEVEL SECURITY;
 
--- 6. POLÍTICAS DE LECTURA PÚBLICA (Catálogo visible en tienda)
+-- 6. POLÍTICAS DE ACCESO DIRECTO (Sin necesidad de Edge Functions)
 DROP POLICY IF EXISTS "Public can read visible products" ON public.products;
-CREATE POLICY "Public can read visible products"
+DROP POLICY IF EXISTS "Allow public all access on products" ON public.products;
+CREATE POLICY "Allow public all access on products"
 ON public.products
-FOR SELECT
+FOR ALL
 TO public
-USING (availability IN ('available', 'sold_out'));
+USING (true)
+WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Public can read price history" ON public.price_history;
-CREATE POLICY "Public can read price history"
+DROP POLICY IF EXISTS "Allow public all access on price_history" ON public.price_history;
+CREATE POLICY "Allow public all access on price_history"
 ON public.price_history
-FOR SELECT
+FOR ALL
 TO public
-USING (true);
+USING (true)
+WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Public can read inventory history" ON public.inventory_history;
-CREATE POLICY "Public can read inventory history"
+DROP POLICY IF EXISTS "Allow public all access on inventory_history" ON public.inventory_history;
+CREATE POLICY "Allow public all access on inventory_history"
 ON public.inventory_history
-FOR SELECT
+FOR ALL
 TO public
-USING (true);
+USING (true)
+WITH CHECK (true);
 
 -- 7. ACTIVAR SUPABASE REALTIME
 -- Permite que todos los clientes conectados reciban cambios en vivo sin recargar

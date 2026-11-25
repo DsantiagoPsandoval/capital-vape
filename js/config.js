@@ -2,6 +2,7 @@
  * CAPITAL VAPE - Configuración Oficial
  */
 const CONFIG = {
+  ADMIN_PASSWORD: 'capitalvape2026',
   APP_NAME: 'CAPITAL VAPE',
   TAGLINE: 'Vapes Premium & Distribución Mayorista en Colombia',
   WHATSAPP_PRIMARY: '573133572726',

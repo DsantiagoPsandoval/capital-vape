@@ -3098,3 +3098,12 @@ const PRODUCTS_DATA = [
     "puffs": null
   }
 ];
+
+// Orden curado oficial de referencias de Capital Vape (secuencia original recomendada)
+const CURATED_PRODUCT_ORDER = PRODUCTS_DATA.map(p => p.id);
+if (typeof window !== 'undefined') window.CURATED_PRODUCT_ORDER = CURATED_PRODUCT_ORDER;
+if (typeof globalThis !== 'undefined') globalThis.CURATED_PRODUCT_ORDER = CURATED_PRODUCT_ORDER;
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { PRODUCTS_DATA, CURATED_PRODUCT_ORDER };
+}
+

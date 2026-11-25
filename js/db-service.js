@@ -304,7 +304,7 @@
         if (rawProds) {
           const parsed = JSON.parse(rawProds);
           if (Array.isArray(parsed) && parsed.length > 0) {
-            this.products = parsed;
+            this.products = this.sortProductsByCuratedOrder(parsed);
           }
         }
 
@@ -483,13 +483,37 @@
     },
 
     /**
+     * Ordena una lista de productos preservando el orden curado oficial de Capital Vape (no alfabético)
+     */
+    sortProductsByCuratedOrder(prods = this.products) {
+      if (!Array.isArray(prods)) return prods;
+      const orderList = (typeof CURATED_PRODUCT_ORDER !== 'undefined' && Array.isArray(CURATED_PRODUCT_ORDER))
+        ? CURATED_PRODUCT_ORDER
+        : ((typeof PRODUCTS_DATA !== 'undefined' && Array.isArray(PRODUCTS_DATA)) ? PRODUCTS_DATA.map(p => p.id) : []);
+
+      const getOrderIndex = (p) => {
+        const id = p.slug || p.id;
+        const rawId = p.id;
+        let idx = orderList.indexOf(id);
+        if (idx === -1 && rawId) idx = orderList.indexOf(rawId);
+        if (idx === -1 && typeof PRODUCTS_DATA !== 'undefined' && Array.isArray(PRODUCTS_DATA)) {
+          const pIdx = PRODUCTS_DATA.findIndex(x => x.id === id || x.id === rawId || (x.slug && (x.slug === id || x.slug === rawId)));
+          if (pIdx !== -1) return pIdx;
+        }
+        return idx !== -1 ? idx : 999;
+      };
+
+      return prods.sort((a, b) => getOrderIndex(a) - getOrderIndex(b));
+    },
+
+    /**
      * Sincronización con Supabase (Consulta el catálogo en PostgreSQL)
      */
     async syncWithSupabase() {
       try {
         const cfg = CONFIG.SUPABASE;
         const key = cfg.PUBLISHABLE_KEY || cfg.ANON_KEY;
-        const res = await fetch(`${cfg.URL}/rest/v1/products?select=*&order=name.asc`, {
+        const res = await fetch(`${cfg.URL}/rest/v1/products?select=*`, {
           headers: {
             'apikey': key,
             'Authorization': `Bearer ${key}`,
@@ -500,9 +524,10 @@
         if (res.ok) {
           const remoteProds = await res.json();
           if (Array.isArray(remoteProds) && remoteProds.length > 0) {
-            this.products = remoteProds.map(rp => this.normalizeSupabaseRow(rp));
+            const mapped = remoteProds.map(rp => this.normalizeSupabaseRow(rp));
+            this.products = this.sortProductsByCuratedOrder(mapped);
             this.saveToStorage();
-            console.log(`[DBService] Catálogo sincronizado exitosamente con Supabase (${this.products.length} productos).`);
+            console.log(`[DBService] Catálogo sincronizado exitosamente con Supabase (${this.products.length} productos) en orden curado oficial.`);
           }
         }
       } catch (err) {
@@ -645,7 +670,7 @@
         onlyAvailable = false
       } = options;
 
-      return this.products.filter(p => {
+      const filtered = this.products.filter(p => {
         if (!includeDeleted && p.is_deleted) return false;
         if (onlyAvailable && (p.status !== 'disponible' || p.stock <= 0)) return false;
 
@@ -673,6 +698,8 @@
 
         return true;
       });
+
+      return this.sortProductsByCuratedOrder(filtered);
     },
 
     /**

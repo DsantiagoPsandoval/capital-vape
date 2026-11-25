@@ -643,7 +643,18 @@ const WholesaleCatalog = {
       case 'mas_vendidos':
         list.sort((a, b) => (b.ventas || 0) - (a.ventas || 0));
         break;
+      case 'relevancia':
       default:
+        if (typeof DBService !== 'undefined' && typeof DBService.sortProductsByCuratedOrder === 'function') {
+          list = DBService.sortProductsByCuratedOrder(list);
+        } else {
+          const orderList = (typeof CURATED_PRODUCT_ORDER !== 'undefined') ? CURATED_PRODUCT_ORDER : [];
+          list.sort((a, b) => {
+            const idxA = orderList.indexOf(a.id || a.slug);
+            const idxB = orderList.indexOf(b.id || b.slug);
+            return (idxA !== -1 ? idxA : 999) - (idxB !== -1 ? idxB : 999);
+          });
+        }
         break;
     }
 

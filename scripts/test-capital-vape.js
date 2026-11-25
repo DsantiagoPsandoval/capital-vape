@@ -515,6 +515,33 @@ assert(validationResult.valid === false, 'El sistema detecta precio adulterado e
 assert(validationResult.correctedItems[0].unitPrice === 33000, 'El sistema corrige el precio al valor oficial de la base de datos ($33.000)');
 assert(validationResult.correctedItems[0].subtotal === 66000, 'El subtotal se recalcula al valor oficial seguro ($66.000)');
 
+// ============================================================================
+// TEST SUITE 12: Preservación del Orden Curado Oficial (No Alfabético)
+// ============================================================================
+console.log('\n--- TEST SUITE 12: Orden Curado Oficial de Referencias ---');
+
+const catalogList = CatalogController.getFilteredAndSortedProducts();
+assert(catalogList[0].id === 'reign-bar-palette', 'Primer producto del catálogo es REIGN BAR PALETTE');
+assert(catalogList[1].id === 'u-pends-up9', 'Segundo producto del catálogo es U-PENDS UP9');
+assert(catalogList[2].id === 'dojo-x', 'Tercer producto del catálogo es DOJO X');
+assert(catalogList[3].id === 'airmez-10000', 'Cuarto producto del catálogo es AiRMEZ 10000');
+assert(catalogList[4].id === 'nimmbox-flvx', 'Quinto producto del catálogo es Nimmbox FLVX');
+assert(catalogList[5].id === 'bang-leader', 'Sexto producto del catálogo es BANG LEADER');
+assert(catalogList[6].id === 'dojo', 'Séptimo producto del catálogo es DOJO SPHERE S 40K');
+
+const wholesaleList = WholesaleCatalog.getProducts();
+assert(wholesaleList[0].id === 'reign-bar-palette', 'Primer producto mayorista es REIGN BAR PALETTE');
+assert(wholesaleList[1].id === 'u-pends-up9', 'Segundo producto mayorista es U-PENDS UP9');
+assert(wholesaleList[2].id === 'dojo-x', 'Tercer producto mayorista es DOJO X');
+
+// Probar reordenamiento de lista desordenada/alfabética
+const jumbled = [...DBService.products].sort((a, b) => a.name.localeCompare(b.name));
+const reordered = DBService.sortProductsByCuratedOrder(jumbled);
+assert(reordered[0].id === 'reign-bar-palette', 'sortProductsByCuratedOrder restaura REIGN BAR PALETTE a la posición 1');
+assert(reordered[1].id === 'u-pends-up9', 'sortProductsByCuratedOrder restaura U-PENDS UP9 a la posición 2');
+assert(reordered[2].id === 'dojo-x', 'sortProductsByCuratedOrder restaura DOJO X a la posición 3');
+
+
 console.log('\n=============================================');
 console.log(`RESULTADOS: ${testsPassed} Pasadas, ${testsFailed} Fallidas`);
 console.log('=============================================\n');

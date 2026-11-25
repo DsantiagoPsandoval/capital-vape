@@ -541,7 +541,7 @@
         return { ok: true, message: 'Acceso concedido al panel administrativo' };
       }
 
-      return { ok: false, error: 'Contraseña incorrecta. Ingresa: capitalvape2026' };
+      return { ok: false, error: 'Contraseña incorrecta. Por favor intenta de nuevo.' };
     },
 
     /**

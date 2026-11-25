@@ -69,6 +69,47 @@
 <body>
 
   <!-- ==========================================================================
+       PANTALLA DE CARGA INICIAL (PRELOADER) — CAPITAL VAPE CHRISTMAS EDITION
+       Elegante, rápida, con tiempo de expiración seguro (máx 900ms)
+       ========================================================================== -->
+  <div id="cvAppPreloader" class="cv-app-preloader" role="status" aria-live="polite" aria-label="Cargando Capital Vape">
+    <div class="cv-preloader-backdrop" aria-hidden="true">
+      <div class="cv-preloader-glow-ruby"></div>
+      <div class="cv-preloader-glow-gold"></div>
+    </div>
+    <div class="cv-preloader-card">
+      <div class="cv-preloader-logo-ring">
+        <div class="cv-preloader-ring-glow"></div>
+        <img src="assets/logo/logo.png" alt="Capital Vape" class="cv-preloader-logo-img">
+        <span class="cv-preloader-sparkle s1">✨</span>
+        <span class="cv-preloader-sparkle s2">❄️</span>
+        <span class="cv-preloader-sparkle s3">⭐</span>
+      </div>
+      <div class="cv-preloader-brand">
+        <span class="brand-title">CAPITAL<span class="gold-text">VAPE</span></span>
+        <span class="edition-tag">🎄 CHRISTMAS EDITION · 2026</span>
+      </div>
+      <div class="cv-preloader-progress-track">
+        <div class="cv-preloader-progress-bar"></div>
+      </div>
+      <span class="cv-preloader-status-text">Cargando experiencia navideña...</span>
+    </div>
+  </div>
+  <script>
+    (function() {
+      function dismissPreloader() {
+        var p = document.getElementById('cvAppPreloader');
+        if (p && !p.classList.contains('is-hidden')) {
+          p.classList.add('is-hidden');
+          setTimeout(function() { try { p.remove(); } catch(e){} }, 550);
+        }
+      }
+      window.addEventListener('load', function() { setTimeout(dismissPreloader, 300); });
+      setTimeout(dismissPreloader, 900);
+    })();
+  </script>
+
+  <!-- ==========================================================================
        PANTALLA DE VERIFICACIÓN DE MAYORÍA DE EDAD (+18) - CAPITAL VAPE
        Cumplimiento Ley 124/1994, Ley 1335/2009 y Código de Infancia y Adolescencia
        ========================================================================== -->
@@ -274,22 +315,78 @@
   </header>
 
   <!-- ==========================================================================
-       3.4 BANNER NAVIDEÑO PRINCIPAL 3D (CAPITAL VAPE — CHRISTMAS EDITION)
+       3.4 BANNER NAVIDEÑO PRINCIPAL (CAPITAL VAPE — CHRISTMAS EDITION)
        ========================================================================== -->
   <section id="christmasEditionBanner" class="xmas-edition-banner-section" aria-label="Capital Vape Christmas Edition">
     <div class="container">
       <div class="xmas-banner-card xmas-banner-3d-card" id="christmasBannerCard">
         <div class="xmas-snow-ridge" aria-hidden="true"></div>
+        <div class="xmas-banner-ambient-glow" aria-hidden="true"></div>
+
         <div class="xmas-banner-content xmas-banner-centered">
-          <div class="xmas-edition-pill">
-            <span>🎄</span>
-            <span>CHRISTMAS EDITION</span>
-            <span>✨</span>
+          <!-- Festive Top Badges Row -->
+          <div class="xmas-banner-badges-row">
+            <div class="xmas-edition-pill">
+              <span class="xmas-icon-spin">🎄</span>
+              <span>CHRISTMAS EDITION · 2026</span>
+              <span class="xmas-sparkle-blink">✨</span>
+            </div>
+            <div class="xmas-season-badge">
+              <span>❄️</span>
+              <span>Colección Exclusiva de Temporada</span>
+            </div>
           </div>
+
+          <!-- Main Title with Liquid Gold Gradient -->
           <h2 class="xmas-banner-title">
-            CAPITAL VAPE — <span>CHRISTMAS EDITION</span>
+            CAPITAL VAPE — <span class="xmas-gold-metallic">CHRISTMAS EDITION</span>
           </h2>
-          <p class="xmas-banner-subtitle">LA NAVIDAD LLEGÓ A CAPITAL VAPE</p>
+
+          <p class="xmas-banner-subtitle">
+            <span>✨</span> LA NAVIDAD LLEGÓ A CAPITAL VAPE · VAPES PREMIUM & DISTRIBUCIÓN EXCLUSIVA <span>✨</span>
+          </p>
+
+          <p class="xmas-banner-desc">
+            Disfruta la temporada más festiva con referencias importadas de alta gama, promociones especiales dúo por 2 unidades, precios mayoristas directos y despachos prioritarios a toda Colombia.
+          </p>
+
+          <!-- Interactive Action Buttons -->
+          <div class="xmas-banner-actions">
+            <button type="button" class="btn btn-primary xmas-btn-deals" onclick="CatalogController.filterByDeals()">
+              <span>🎁 Ver Ofertas Navideñas</span>
+            </button>
+            <a href="#catalogo" class="btn btn-secondary xmas-btn-catalog">
+              <span>⚡ Explorar Todo el Catálogo</span>
+            </a>
+            <button type="button" class="btn btn-xmas-magic" onclick="window.ChristmasExperience && window.ChristmasExperience.triggerSanta && window.ChristmasExperience.triggerSanta()" title="Disparar vuelo de Papá Noel y nieve mágica">
+              <span>❄️ Nieve Mágica &amp; Trineo 3D</span>
+            </button>
+          </div>
+
+          <!-- Trust Holiday Highlights -->
+          <div class="xmas-banner-perks-row">
+            <div class="xmas-perk-item">
+              <span class="xmas-perk-icon">🚚</span>
+              <div class="xmas-perk-info">
+                <strong>Envíos Inmediatos</strong>
+                <span>Bogotá el mismo día & Nacional</span>
+              </div>
+            </div>
+            <div class="xmas-perk-item">
+              <span class="xmas-perk-icon">🔥</span>
+              <div class="xmas-perk-info">
+                <strong>Promos 2 Unidades</strong>
+                <span>Ahorra hasta $15.000 por dúo</span>
+              </div>
+            </div>
+            <div class="xmas-perk-item">
+              <span class="xmas-perk-icon">💎</span>
+              <div class="xmas-perk-info">
+                <strong>100% Originales</strong>
+                <span>Garantía en cada referencia</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -583,7 +680,14 @@
             <button type="button" class="cat-pill-btn" data-category="baterias">Baterías 510</button>
             <button type="button" class="cat-pill-btn" data-category="accesorios">Accesorios</button>
           </div>
-          <span class="products-count-label" id="productsCountDisplay">39 productos</span>
+          <div class="toolbar-meta-indicators">
+            <span class="products-count-label" id="productsCountDisplay">39 productos</span>
+            <div id="cvRealtimeLiveBadge" class="cv-realtime-live-badge" title="Sincronizado en tiempo real con Supabase">
+              <span class="realtime-pulsing-dot"></span>
+              <span class="realtime-label">Catálogo en Vivo</span>
+              <span class="realtime-sparkle">⚡</span>
+            </div>
+          </div>
         </div>
 
         <div class="toolbar-controls-row">
@@ -1339,6 +1443,35 @@
       </div>
     </div>
   </div>
+
+  <!-- ==========================================================================
+       BARRA DE NAVEGACIÓN RÁPIDA MÓVIL (BOTTOM THUMB BAR)
+       ========================================================================== -->
+  <nav class="cv-mobile-bottom-bar" aria-label="Navegación móvil rápida">
+    <a href="#inicio" class="cv-mobile-bottom-item active">
+      <span class="mobile-item-icon">🏠</span>
+      <span class="mobile-item-label">Inicio</span>
+    </a>
+    <a href="#catalogo" class="cv-mobile-bottom-item">
+      <span class="mobile-item-icon">🛍️</span>
+      <span class="mobile-item-label">Catálogo</span>
+    </a>
+    <button type="button" class="cv-mobile-bottom-item cv-mobile-cart-trigger open-cart-btn" aria-label="Ver Carrito">
+      <div class="mobile-cart-icon-wrapper">
+        <img src="assets/icons/carrito.png" alt="Carrito" class="mobile-cart-icon">
+        <span class="cart-count-badge mobile-bottom-cart-badge" style="display: none;">0</span>
+      </div>
+      <span class="mobile-item-label">Carrito</span>
+    </button>
+    <a href="#mayoristas" class="cv-mobile-bottom-item">
+      <span class="mobile-item-icon">💼</span>
+      <span class="mobile-item-label">Mayoristas</span>
+    </a>
+    <a href="https://api.whatsapp.com/send?phone=573133572726" target="_blank" rel="noopener noreferrer" class="cv-mobile-bottom-item cv-mobile-wa-item" aria-label="WhatsApp">
+      <span class="mobile-item-icon">💬</span>
+      <span class="mobile-item-label">WhatsApp</span>
+    </a>
+  </nav>
 
   <!-- JAVASCRIPT SCRIPTS (Con charset UTF-8 obligatorio y cache-buster) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>

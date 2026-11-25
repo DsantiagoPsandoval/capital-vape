@@ -457,11 +457,11 @@ const CatalogController = {
     if (products.length === 0) {
       container.innerHTML = `
         <div class="catalog-no-results">
-          <span class="no-results-icon">🔍</span>
+          <span class="no-results-icon" style="font-size: 2.8rem; display: block; margin-bottom: 12px;">🎄 🔍</span>
           <h3>No encontramos productos que coincidan con tu búsqueda</h3>
-          <p>Prueba con otros términos o restablece los filtros.</p>
-          <button type="button" class="btn btn-secondary btn-sm" onclick="CatalogController.resetFilters()">
-            Restablecer Filtros
+          <p>Prueba con otros términos, explora otras categorías o restablece los filtros para ver la colección completa.</p>
+          <button type="button" class="btn btn-primary btn-sm" onclick="CatalogController.resetFilters()" style="margin-top: 14px;">
+            <span>✨ Ver Todo el Catálogo</span>
           </button>
         </div>
       `;
@@ -532,7 +532,9 @@ const CatalogController = {
                    alt="${product.nombre}" 
                    class="product-img-real" 
                    loading="lazy" 
-                   onerror="this.src='assets/logo/logo.png';">
+                   decoding="async"
+                   onload="this.classList.add('is-loaded')"
+                   onerror="this.src='assets/logo/logo.png'; this.classList.add('is-loaded');">
             `)}
           </div>
 
@@ -646,6 +648,27 @@ const CatalogController = {
     });
 
     this.renderCatalog();
+  },
+
+  filterByDeals() {
+    this.resetFilters();
+    this.sortBy = 'ofertas';
+
+    const sortSelect = document.getElementById('catalogSortSelect');
+    if (sortSelect) sortSelect.value = 'ofertas';
+
+    this.renderCatalog();
+
+    const el = document.getElementById('catalogo');
+    if (el) {
+      const headerOffset = 76;
+      const elPos = el.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: elPos, behavior: 'smooth' });
+    }
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show('🎁 Mostrando las mejores ofertas dúo de Navidad', 'info');
+    }
   },
 
   bindEvents() {

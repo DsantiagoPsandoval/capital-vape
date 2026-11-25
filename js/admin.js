@@ -701,6 +701,15 @@ const AdminService = {
           if (c && typeof c === 'object') c.agotado = newAgotado;
         }
         DBService.saveToStorage();
+        // Sincronizar actualización de sabores/colores en Supabase en tiempo real
+        DBService.executeAdminAction('update_product', {
+          id: prod.id,
+          slug: prod.slug || prod.id,
+          updates: {
+            sabores: prod.sabores,
+            colores: prod.colores
+          }
+        });
       }
     }
 

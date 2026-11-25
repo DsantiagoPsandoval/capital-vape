@@ -199,7 +199,13 @@
           this.products[index] = updated;
           this.saveToStorage();
 
-          // Notificar visualmente al usuario
+          // Notificar visualmente al usuario y animar indicador en vivo
+          const liveBadge = document.getElementById('cvRealtimeLiveBadge');
+          if (liveBadge) {
+            liveBadge.classList.add('is-updating');
+            setTimeout(() => liveBadge.classList.remove('is-updating'), 2500);
+          }
+
           if (typeof Toast !== 'undefined') {
             Toast.show(`⚡ Actualización en vivo: "${updated.name}" actualizado en tiempo real.`, 'info');
           }
@@ -567,25 +573,45 @@
         try {
           if (action === 'update_product') {
             const { id, updates } = payload;
-            const target = this.getProductById(id);
-            const filterCol = (target && target.db_id) ? 'id' : 'slug';
-            const filterVal = (target && target.db_id) ? target.db_id : (target ? target.slug : id);
-            await this.supabaseClient.from('products').update(updates).eq(filterCol, filterVal);
+            const target = this.getProductById(id) || this.getProductById(payload.slug);
+            const targetDbId = target && target.db_id;
+            const targetSlug = (target && (target.slug || target.id)) || payload.slug || id;
+
+            let updated = false;
+            if (targetDbId) {
+              const res = await this.supabaseClient.from('products').update(updates).eq('id', targetDbId);
+              if (!res.error) updated = true;
+            }
+            if (!updated && targetSlug) {
+              const res2 = await this.supabaseClient.from('products').update(updates).eq('slug', targetSlug);
+              if (!res2.error) updated = true;
+            }
+            if (!updated && typeof id === 'string') {
+              await this.supabaseClient.from('products').update(updates).eq('name', target ? target.name : id);
+            }
           } else if (action === 'create_product') {
             const { product } = payload;
             await this.supabaseClient.from('products').insert([product]);
           } else if (action === 'delete_product') {
             const { id } = payload;
-            const target = this.getProductById(id);
-            const filterCol = (target && target.db_id) ? 'id' : 'slug';
-            const filterVal = (target && target.db_id) ? target.db_id : (target ? target.slug : id);
-            await this.supabaseClient.from('products').update({ availability: 'discontinued' }).eq(filterCol, filterVal);
+            const target = this.getProductById(id) || this.getProductById(payload.slug);
+            const targetDbId = target && target.db_id;
+            const targetSlug = (target && (target.slug || target.id)) || payload.slug || id;
+            if (targetDbId) {
+              await this.supabaseClient.from('products').update({ availability: 'discontinued' }).eq('id', targetDbId);
+            } else if (targetSlug) {
+              await this.supabaseClient.from('products').update({ availability: 'discontinued' }).eq('slug', targetSlug);
+            }
           } else if (action === 'restore_product') {
             const { id } = payload;
-            const target = this.getProductById(id);
-            const filterCol = (target && target.db_id) ? 'id' : 'slug';
-            const filterVal = (target && target.db_id) ? target.db_id : (target ? target.slug : id);
-            await this.supabaseClient.from('products').update({ availability: 'available' }).eq(filterCol, filterVal);
+            const target = this.getProductById(id) || this.getProductById(payload.slug);
+            const targetDbId = target && target.db_id;
+            const targetSlug = (target && (target.slug || target.id)) || payload.slug || id;
+            if (targetDbId) {
+              await this.supabaseClient.from('products').update({ availability: 'available' }).eq('id', targetDbId);
+            } else if (targetSlug) {
+              await this.supabaseClient.from('products').update({ availability: 'available' }).eq('slug', targetSlug);
+            }
           }
         } catch (e) {
           console.warn('[DBService] Advertencia de sincronización Supabase:', e);

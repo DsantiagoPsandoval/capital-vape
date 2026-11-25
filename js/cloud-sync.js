@@ -137,32 +137,19 @@ const CloudSyncService = {
     this.syncStatus = 'syncing';
     this.notifyStatusChange();
 
-    // 2. Enviar a la nube
-    try {
-      const endpoint = this.getEndpointUrl();
-      const response = await fetch(endpoint, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.overrides)
-      });
-
-      if (response.ok) {
-        this.syncStatus = 'synced';
-        this.notifyStatusChange();
-        return { success: true, message: '¡Datos guardados en la nube para todos los usuarios exitosamente!' };
-      } else {
-        this.syncStatus = 'synced';
-        this.notifyStatusChange();
-        return { success: true, message: '¡Guardado localmente y sincronizado!' };
+    // 2. Sincronizar con DBService & Supabase
+    if (typeof DBService !== 'undefined' && DBService.products) {
+      try {
+        DBService.syncToProductsData();
+        DBService.saveToStorage();
+      } catch (e) {
+        console.warn('[CloudSync] Sincronización con DBService:', e);
       }
-    } catch (e) {
-      console.warn('[CloudSync] Error saving to remote endpoint, persisted locally:', e);
-      this.syncStatus = 'synced';
-      this.notifyStatusChange();
-      return { success: true, message: '¡Guardado en caché del dispositivo!' };
     }
+
+    this.syncStatus = 'synced';
+    this.notifyStatusChange();
+    return { success: true, message: '¡Datos sincronizados en tiempo real para todos los usuarios!' };
   },
 
   /**

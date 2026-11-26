@@ -401,8 +401,20 @@
       <div id="sidebarStoreBadge" class="sidebar-store-pill pill-retail">
         <span>🏪</span> TIENDA RETAIL
       </div>
-      <button type="button" class="btn-switch-store" onclick="StoreMode.showSelector()" title="Cambiar entre Tienda Retail y Catálogo Mayorista">
-        <span>⇄</span> Cambiar de tienda
+      <!-- Botón Destacado: Cambiar de Tienda (Retail / Mayorista) -->
+      <button type="button" class="btn-switch-store lux-switch-store-btn" id="btnSwitchStoreDesktop" onclick="StoreMode.showSelector()" title="Cambiar entre Tienda Retail y Catálogo Mayorista">
+        <span class="switch-store-glow-fx" aria-hidden="true"></span>
+        <span class="switch-store-icon-box" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/>
+          </svg>
+        </span>
+        <div class="switch-store-text-group">
+          <span class="switch-store-kicker">MODALIDAD COMERCIAL</span>
+          <strong class="switch-store-title" id="switchStoreBtnTitle">CAMBIAR TIENDA</strong>
+          <span class="switch-store-badge-tag" id="switchStoreBtnSub">RETAIL ⇄ MAYORISTA</span>
+        </div>
+        <span class="switch-store-chevron" aria-hidden="true">➔</span>
       </button>
     </div>
 
@@ -474,8 +486,20 @@
           </button>
         </div>
 
-        <button type="button" class="btn-switch-store btn-switch-store-mobile" onclick="StoreMode.showSelector()">
-          <span>⇄</span> Cambiar de Tienda (Retail / Mayorista)
+        <!-- Botón Ultra-Destacado: Cambiar Modalidad Comercial (Mobile Drawer) -->
+        <button type="button" class="btn-switch-store lux-switch-store-btn lux-switch-store-drawer" id="btnSwitchStoreMobileDrawer" onclick="StoreMode.showSelector()" title="Cambiar entre Tienda Retail y Catálogo Mayorista">
+          <span class="switch-store-glow-fx" aria-hidden="true"></span>
+          <span class="switch-store-icon-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/>
+            </svg>
+          </span>
+          <div class="switch-store-text-group">
+            <span class="switch-store-kicker">MODALIDAD COMERCIAL</span>
+            <strong class="switch-store-title" id="switchStoreDrawerTitle">CAMBIAR TIENDA</strong>
+            <span class="switch-store-badge-tag" id="switchStoreDrawerSub">RETAIL ⇄ MAYORISTA</span>
+          </div>
+          <span class="switch-store-chevron" aria-hidden="true">➔</span>
         </button>
 
         <div class="lux-menu-divider" aria-hidden="true"><span>◆</span></div>
@@ -508,9 +532,11 @@
           <span class="cart-count-badge" style="display: none;">0</span>
         </button>
 
-        <!-- Switch Store Button Mobile -->
-        <button type="button" class="btn btn-secondary nav-switch-store-btn" onclick="StoreMode.showSelector()" title="Cambiar de tienda">
-          <span>⇄ Tienda</span>
+        <!-- Switch Store Button Mobile / Navbar (Ultra-destacado con pulso neón) -->
+        <button type="button" class="btn nav-switch-store-btn lux-nav-switch-store" id="navSwitchStoreBtn" onclick="StoreMode.showSelector()" title="Cambiar entre Tienda Retail y Catálogo Mayorista">
+          <span class="nav-switch-pulse-dot" aria-hidden="true"></span>
+          <span class="nav-switch-icon" aria-hidden="true">⇄</span>
+          <span class="nav-switch-label" id="navSwitchStoreLabel">Cambiar Tienda</span>
         </button>
         
         <!-- Mobile 3-Bars Hamburger Button -->

@@ -562,29 +562,307 @@ body.store-selector-open {
   box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
 }
 
-/* Botón Cambiar Tienda */
-.btn-switch-store {
+/* ==========================================================================
+   BOTÓN ULTRA-DESTACADO: CAMBIAR DE TIENDA (RETAIL ⇄ MAYORISTA)
+   Diseño futurista de alto impacto visual, bordes neón, reflejo animado y micro-copy dinámico
+   ========================================================================== */
+
+.btn-switch-store.lux-switch-store-btn {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 14px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: radial-gradient(circle at 15% 25%, rgba(147, 51, 234, 0.22) 0%, rgba(14, 11, 24, 0.95) 75%);
+  border: 1.5px solid rgba(168, 85, 247, 0.45);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55), 0 0 16px rgba(147, 51, 234, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  z-index: 2;
+}
+
+/* Efecto de barrido de luz animado (Light sheen) */
+.lux-switch-store-btn .switch-store-glow-fx {
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.25) 50%, transparent 100%);
+  transform: skewX(-25deg);
+  animation: luxSwitchStoreShine 4.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+@keyframes luxSwitchStoreShine {
+  0%, 70% {
+    left: -130%;
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    left: 170%;
+    opacity: 0;
+  }
+}
+
+/* Icon Box con relieve 3D y rotación suave */
+.lux-switch-store-btn .switch-store-icon-box {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #E4E4E7;
-  padding: 8px 14px;
-  border-radius: 10px;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
-  margin-top: 10px;
-  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.3s ease, border-color 0.3s ease;
+}
+
+.lux-switch-store-btn .switch-store-icon-box svg {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.4s ease;
+}
+
+.lux-switch-store-btn:hover .switch-store-icon-box {
+  transform: scale(1.1) rotate(180deg);
+}
+
+/* Grupo de texto y jerarquía visual */
+.lux-switch-store-btn .switch-store-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.lux-switch-store-btn .switch-store-kicker {
+  font-size: 0.63rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #A1A1AA;
+}
+
+.lux-switch-store-btn .switch-store-title {
+  font-size: 0.94rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.lux-switch-store-btn .switch-store-badge-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 999px;
+  margin-top: 2px;
   transition: all 0.25s ease;
 }
 
-.btn-switch-store:hover {
-  background: rgba(255, 255, 255, 0.08);
+/* Flecha interactiva */
+.lux-switch-store-btn .switch-store-chevron {
+  flex-shrink: 0;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: #A1A1AA;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.lux-switch-store-btn:hover {
+  transform: translateY(-2px);
+}
+
+.lux-switch-store-btn:hover .switch-store-chevron {
+  transform: translateX(4px);
+}
+
+/* ==========================================================================
+   ESTILOS DINÁMICOS POR MODO (RETAIL vs MAYORISTA)
+   ========================================================================== */
+
+/* Cuando estamos en RETAIL -> El botón invita con estilo DORADO al MAYORISTA */
+body.mode-retail .lux-switch-store-btn {
+  background: radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.25) 0%, rgba(14, 11, 24, 0.96) 80%);
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(212, 175, 55, 0.28), inset 0 1px 0 rgba(250, 204, 21, 0.25);
+}
+
+body.mode-retail .lux-switch-store-btn:hover {
+  border-color: rgba(250, 204, 21, 0.85);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 28px rgba(212, 175, 55, 0.45), inset 0 1px 0 rgba(250, 204, 21, 0.4);
+}
+
+body.mode-retail .lux-switch-store-btn .switch-store-icon-box {
+  background: rgba(212, 175, 55, 0.15);
   border-color: rgba(212, 175, 55, 0.4);
   color: #FACC15;
+}
+
+body.mode-retail .lux-switch-store-btn .switch-store-kicker {
+  color: #E4D396;
+}
+
+body.mode-retail .lux-switch-store-btn .switch-store-title {
+  color: #FFFFFF;
+}
+
+body.mode-retail .lux-switch-store-btn .switch-store-badge-tag {
+  background: rgba(212, 175, 55, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  color: #FDE047;
+}
+
+body.mode-retail .lux-switch-store-btn .switch-store-chevron {
+  color: #FACC15;
+}
+
+/* Cuando estamos en MAYORISTA -> El botón invita con estilo MORADO al RETAIL */
+body.mode-wholesale .lux-switch-store-btn {
+  background: radial-gradient(circle at 15% 25%, rgba(147, 51, 234, 0.28) 0%, rgba(14, 11, 24, 0.96) 80%);
+  border-color: rgba(168, 85, 247, 0.6);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 20px rgba(147, 51, 234, 0.32), inset 0 1px 0 rgba(192, 132, 252, 0.25);
+}
+
+body.mode-wholesale .lux-switch-store-btn:hover {
+  border-color: rgba(192, 132, 252, 0.9);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7), 0 0 28px rgba(147, 51, 234, 0.5), inset 0 1px 0 rgba(192, 132, 252, 0.45);
+}
+
+body.mode-wholesale .lux-switch-store-btn .switch-store-icon-box {
+  background: rgba(147, 51, 234, 0.18);
+  border-color: rgba(168, 85, 247, 0.45);
+  color: #D8B4FE;
+}
+
+body.mode-wholesale .lux-switch-store-btn .switch-store-kicker {
+  color: #D8B4FE;
+}
+
+body.mode-wholesale .lux-switch-store-btn .switch-store-title {
+  color: #FFFFFF;
+}
+
+body.mode-wholesale .lux-switch-store-btn .switch-store-badge-tag {
+  background: rgba(147, 51, 234, 0.2);
+  border: 1px solid rgba(168, 85, 247, 0.5);
+  color: #E9D5FF;
+}
+
+body.mode-wholesale .lux-switch-store-btn .switch-store-chevron {
+  color: #C084FC;
+}
+
+/* Versión Mobile Drawer */
+.lux-switch-store-drawer {
+  margin: 12px 0 16px 0 !important;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   BOTÓN ULTRA-DESTACADO EN NAVBAR / MÓVIL (.lux-nav-switch-store)
+   ========================================================================== */
+
+.nav-switch-store-btn.lux-nav-switch-store {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 13px !important;
+  border-radius: 999px !important;
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  background: rgba(18, 14, 28, 0.9) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(212, 175, 55, 0.6) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 14px rgba(212, 175, 55, 0.28) !important;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.lux-nav-switch-store .nav-switch-pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #FACC15;
+  box-shadow: 0 0 8px #FACC15;
+  animation: luxNavDotPulse 1.8s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes luxNavDotPulse {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.7;
+    box-shadow: 0 0 4px #FACC15;
+  }
+  50% {
+    transform: scale(1.3);
+    opacity: 1;
+    box-shadow: 0 0 12px #FACC15, 0 0 20px rgba(250, 204, 21, 0.6);
+  }
+  100% {
+    transform: scale(0.9);
+    opacity: 0.7;
+    box-shadow: 0 0 4px #FACC15;
+  }
+}
+
+.lux-nav-switch-store .nav-switch-icon {
+  font-weight: 900;
+  font-size: 0.88rem;
+  color: #FACC15;
+}
+
+.lux-nav-switch-store .nav-switch-label {
+  text-transform: uppercase;
+}
+
+.lux-nav-switch-store:hover {
+  transform: translateY(-2px);
+  border-color: rgba(250, 204, 21, 0.9) !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.65), 0 0 22px rgba(212, 175, 55, 0.45) !important;
+}
+
+/* Modo Wholesale en el navbar */
+body.mode-wholesale .lux-nav-switch-store {
+  border-color: rgba(168, 85, 247, 0.65) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55), 0 0 14px rgba(147, 51, 234, 0.3) !important;
+}
+
+body.mode-wholesale .lux-nav-switch-store .nav-switch-pulse-dot {
+  background: #C084FC;
+  box-shadow: 0 0 8px #C084FC;
+}
+
+body.mode-wholesale .lux-nav-switch-store .nav-switch-icon {
+  color: #C084FC;
+}
+
+body.mode-wholesale .lux-nav-switch-store:hover {
+  border-color: rgba(192, 132, 252, 0.9) !important;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.65), 0 0 22px rgba(147, 51, 234, 0.5) !important;
 }
 
 /* Enlaces del Menú Lateral */

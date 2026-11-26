@@ -82,6 +82,19 @@ const StoreMode = (function() {
         mobileHeaderBadge.innerHTML = '<span>🏪</span> Retail';
       }
 
+      // Actualizar botón ultra-destacado para invitar al modo Mayorista
+      const switchTitleDesktop = document.getElementById('switchStoreBtnTitle');
+      const switchSubDesktop = document.getElementById('switchStoreBtnSub');
+      const switchTitleDrawer = document.getElementById('switchStoreDrawerTitle');
+      const switchSubDrawer = document.getElementById('switchStoreDrawerSub');
+      const navSwitchLabel = document.getElementById('navSwitchStoreLabel');
+
+      if (switchTitleDesktop) switchTitleDesktop.textContent = 'IR A MAYORISTA';
+      if (switchSubDesktop) switchSubDesktop.textContent = 'PRECIOS POR MAYOR ➔';
+      if (switchTitleDrawer) switchTitleDrawer.textContent = 'IR A MAYORISTA';
+      if (switchSubDrawer) switchSubDrawer.textContent = 'PRECIOS POR MAYOR ➔';
+      if (navSwitchLabel) navSwitchLabel.textContent = 'Ir a Mayorista';
+
       // Desencadenar render de retail
       if (typeof CatalogController !== 'undefined') {
         CatalogController.renderCatalog();
@@ -100,6 +113,19 @@ const StoreMode = (function() {
         mobileHeaderBadge.className = 'header-store-pill pill-wholesale';
         mobileHeaderBadge.innerHTML = '<span>📦</span> Mayorista';
       }
+
+      // Actualizar botón ultra-destacado para invitar al modo Retail
+      const switchTitleDesktop = document.getElementById('switchStoreBtnTitle');
+      const switchSubDesktop = document.getElementById('switchStoreBtnSub');
+      const switchTitleDrawer = document.getElementById('switchStoreDrawerTitle');
+      const switchSubDrawer = document.getElementById('switchStoreDrawerSub');
+      const navSwitchLabel = document.getElementById('navSwitchStoreLabel');
+
+      if (switchTitleDesktop) switchTitleDesktop.textContent = 'IR A RETAIL';
+      if (switchSubDesktop) switchSubDesktop.textContent = 'COMPRA AL DETAL ➔';
+      if (switchTitleDrawer) switchTitleDrawer.textContent = 'IR A RETAIL';
+      if (switchSubDrawer) switchSubDrawer.textContent = 'COMPRA AL DETAL ➔';
+      if (navSwitchLabel) navSwitchLabel.textContent = 'Ir a Retail';
 
       // Asegurar vista desbloqueada en mayoristas
       const wsLocked = document.getElementById('wholesaleLockedView');

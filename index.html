@@ -115,72 +115,71 @@
        Cumplimiento Ley 124/1994, Ley 1335/2009 y Código de Infancia y Adolescencia
        ========================================================================== -->
   <div id="ageVerificationOverlay" class="age-gate-overlay" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
-    <!-- Escenario Futurista Urbano Times Square (Pantallas LED, Letreros Neón y Reflejos en Pavimento) -->
-    <div class="ts-city-backdrop" aria-hidden="true">
-      <canvas id="tsAgeGateCityCanvas" class="ts-city-canvas"></canvas>
+    <!-- Escenario Futurista Urbano Times Square (Fotografía Cinematográfica Real + Reflejos en Pavimento) -->
+    <div class="ts-city-backdrop ts-photo-city-backdrop" aria-hidden="true">
+      <div class="ts-city-photo-layer"></div>
       <div class="ts-city-atmosphere"></div>
       <div class="ts-wet-pavement-reflection"></div>
       <div class="ts-digital-scanlines"></div>
       <div class="ts-cinema-vignette"></div>
     </div>
 
-    <div class="age-gate-wrapper">
-      <!-- VISTA PRINCIPAL: PREGUNTA DE VERIFICACIÓN -->
-      <div id="ageGateMainView" class="age-gate-card">
+    <div class="age-gate-wrapper ts-ref-age-gate-wrapper">
+      <!-- VISTA PRINCIPAL: PREGUNTA DE VERIFICACIÓN (DISEÑO EXACTO REFERENCIA) -->
+      <div id="ageGateMainView" class="age-gate-card ts-ref-age-card">
         <div class="age-gate-card-inner">
-          <!-- Logo Oficial de Capital Vape -->
-          <div class="age-gate-brand">
-            <img src="assets/logo/logo.png" alt="Capital Vape Logo" class="age-gate-logo">
-            <div class="age-gate-brand-name">CAPITAL<span>VAPE</span></div>
+          <!-- Logo Oficial Original de Capital Vape -->
+          <div class="age-gate-brand ts-ref-brand">
+            <img src="assets/logo/logo.png" alt="Capital Vape Logo" class="age-gate-logo ts-ref-logo">
+            <div class="age-gate-brand-name ts-ref-brand-name">CAPITAL<span>VAPE</span></div>
           </div>
 
-          <!-- Símbolo Visual 18+ Grande con Resplandor Neón -->
-          <div class="age-gate-badge-wrapper">
-            <div class="age-gate-badge-18">
-              <span class="age-badge-glow"></span>
-              <span class="age-badge-text">18+</span>
-            </div>
+          <div class="ts-ref-welcome">BIENVENIDO A</div>
+          <h1 class="ts-ref-main-title">CAPITAL <span>VAPE</span></h1>
+          <p class="ts-ref-exclusive-text">EXCLUSIVAMENTE PARA PERSONAS<br>MAYORES DE 18 AÑOS</p>
+          <h2 id="ageGateTitle" class="age-gate-title ts-ref-question">¿ERES MAYOR DE 18 AÑOS?</h2>
+
+          <!-- Botones de Decisión Idénticos a la Referencia -->
+          <div class="age-gate-actions ts-ref-actions-row">
+            <!-- BOTÓN 1: SÍ, SOY MAYOR DE 18 AÑOS (MORADO NEÓN CON EMBLEMA 18+) -->
+            <button type="button" id="btnAgeConfirm" class="age-btn age-btn-confirm ts-ref-btn-purple">
+              <span class="ts-ref-shield-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span class="shield-text">18+</span>
+              </span>
+              <span class="btn-text-content">
+                <strong>SÍ, SOY MAYOR</strong>
+                <small>DE 18 AÑOS</small>
+              </span>
+            </button>
+
+            <!-- BOTÓN 2: NO, SOY MENOR DE 18 AÑOS (DORADO CON EMBLEMA 18+) -->
+            <button type="button" id="btnAgeReject" class="age-btn age-btn-reject ts-ref-btn-gold">
+              <span class="ts-ref-shield-icon shield-gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span class="shield-text">18-</span>
+              </span>
+              <span class="btn-text-content">
+                <strong>NO, SOY MENOR</strong>
+                <small>DE 18 AÑOS</small>
+              </span>
+            </button>
           </div>
 
-          <!-- Título Oficial -->
-          <h2 id="ageGateTitle" class="age-gate-title">¿ERES MAYOR DE 18 AÑOS?</h2>
-
-          <!-- Texto Introductorio -->
-          <p class="age-gate-intro">
-            <strong>Bienvenido a Capital Vape.</strong> El acceso a nuestro catálogo y comercialización de productos está reservado exclusivamente para mayores de 18 años.
-          </p>
+          <!-- Mensaje de seguridad al pie de botones -->
+          <div class="ts-ref-security-note">
+            <span class="ts-shield-mini">🛡️</span> Tu respuesta será registrada para tu seguridad.
+          </div>
 
           <!-- Aviso Legal Oficial Visible (Colombia) -->
-          <div class="age-gate-legal-box">
-            <div class="age-gate-legal-header">
-              <svg class="age-legal-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                <path d="m9 12 2 2 4-4"/>
-              </svg>
-              <span class="age-legal-badge">Aviso Legal Colombia (+18)</span>
-            </div>
+          <div class="age-gate-legal-box ts-ref-legal-note">
             <p class="age-gate-legal-text">
-              En Colombia, la exhibición y venta de vaporizadores, accesorios y productos afines está prohibida a menores de edad conforme a la Ley 124 de 1994, Ley 1335 de 2009 y Ley 2354 de 2024.
+              Capital Vape cumple con la Ley 124 de 1994, Ley 1335 de 2009 y Ley 2354 de 2024 de la República de Colombia.
             </p>
-            <p class="age-gate-legal-note">
-              Al confirmar, declaras bajo gravedad de juramento tener 18 años de edad cumplidos o más.
-            </p>
-          </div>
-
-          <!-- Botones de Decisión -->
-          <div class="age-gate-actions">
-            <!-- BOTÓN 1: SÍ, SOY MAYOR DE 18 AÑOS -->
-            <button type="button" id="btnAgeConfirm" class="age-btn age-btn-confirm">
-              <svg class="age-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <polyline points="20 6 9 17 4 12"></polyline>
-              </svg>
-              <span>SÍ, SOY MAYOR DE 18 AÑOS</span>
-            </button>
-
-            <!-- BOTÓN 2: NO, SOY MENOR DE 18 AÑOS -->
-            <button type="button" id="btnAgeReject" class="age-btn age-btn-reject">
-              <span>NO, SOY MENOR DE 18 AÑOS</span>
-            </button>
           </div>
         </div>
       </div>
@@ -227,58 +226,63 @@
        PANTALLA 2: SELECCIÓN DE TIENDA ("ELIGE TU TIENDA")
        ========================================================================== -->
   <div id="storeSelectorOverlay" class="store-selector-overlay is-hidden" role="dialog" aria-modal="true" aria-labelledby="storeSelectorTitle">
-    <!-- Escenario Futurista Urbano Times Square (Selector de Modalidad) -->
-    <div class="ts-city-backdrop" aria-hidden="true">
-      <canvas id="tsStoreSelectorCityCanvas" class="ts-city-canvas"></canvas>
+    <!-- Escenario Futurista Urbano Times Square (Fotografía Cinematográfica Real + Reflejos en Pavimento) -->
+    <div class="ts-city-backdrop ts-photo-city-backdrop" aria-hidden="true">
+      <div class="ts-city-photo-layer"></div>
       <div class="ts-city-atmosphere"></div>
       <div class="ts-wet-pavement-reflection"></div>
       <div class="ts-digital-scanlines"></div>
       <div class="ts-cinema-vignette"></div>
     </div>
 
-    <div class="store-selector-container">
-      <div class="selector-header">
-        <div class="selector-brand-badge">
-          <img src="assets/logo/logo.png" alt="Capital Vape" class="selector-logo-mini">
-          <span class="selector-brand-title">CAPITAL<span>VAPE</span></span>
+    <div class="store-selector-container ts-ref-selector-container">
+      <div class="selector-header ts-ref-selector-header">
+        <!-- Logo Oficial Original de Capital Vape -->
+        <div class="age-gate-brand ts-ref-brand" style="margin-bottom: 8px;">
+          <img src="assets/logo/logo.png" alt="Capital Vape" class="age-gate-logo ts-ref-logo" style="width: 52px; height: 52px;">
+          <div class="age-gate-brand-name ts-ref-brand-name" style="font-size: 1.3rem;">CAPITAL<span>VAPE</span></div>
         </div>
-        <span class="selector-kicker">ELIGE TU TIENDA</span>
-        <h2 id="storeSelectorTitle" class="selector-title">¿Cómo quieres comprar?</h2>
-        <p class="selector-desc">Selecciona el catálogo que deseas consultar según tu modalidad de compra.</p>
+        <span class="selector-kicker ts-ref-kicker">ELIGE TU TIENDA</span>
+        <h2 id="storeSelectorTitle" class="selector-title ts-ref-selector-title">¿Cómo quieres comprar?</h2>
+        <p class="selector-desc ts-ref-selector-desc">Selecciona el catálogo que deseas consultar</p>
       </div>
 
-      <div class="selector-cards-grid">
-        <!-- TARJETA 1 — TIENDA RETAIL -->
-        <article class="store-card store-card-retail">
-          <div class="store-card-icon-wrap" aria-hidden="true">
-            <span>🏪</span>
+      <div class="selector-cards-grid ts-ref-cards-grid">
+        <!-- TARJETA 1 — TIENDA RETAIL (IDÉNTICA A REFERENCIA 2) -->
+        <article class="store-card store-card-retail ts-ref-card-retail">
+          <div class="ts-ref-card-icon-box icon-purple">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
           </div>
-          <span class="store-card-badge">Consumidor Final</span>
-          <h3 class="store-card-title">TIENDA RETAIL</h3>
-          <p class="store-card-desc">Productos y precios al detal con promociones especiales dúo por 2 unidades.</p>
-          <div class="store-card-condition">
-            <span>✨</span> Compra desde 1 unidad
+          <h3 class="store-card-title ts-ref-card-title">TIENDA RETAIL</h3>
+          <p class="store-card-desc ts-ref-card-desc">Productos y precios al detal</p>
+          <div class="store-card-condition ts-ref-card-cond">
+            <span>🟣</span> Compra desde 1 unidad
           </div>
-          <button type="button" class="store-card-btn" onclick="StoreMode.enterRetail()">
+          <button type="button" class="store-card-btn ts-ref-btn-enter-retail" onclick="StoreMode.enterRetail()">
             <span>ENTRAR</span>
-            <span aria-hidden="true">➔</span>
           </button>
         </article>
 
-        <!-- TARJETA 2 — CATÁLOGO MAYORISTA -->
-        <article class="store-card store-card-wholesale">
-          <div class="store-card-icon-wrap" aria-hidden="true">
-            <span>📦</span>
+        <!-- TARJETA 2 — CATÁLOGO MAYORISTA (IDÉNTICA A REFERENCIA 2) -->
+        <article class="store-card store-card-wholesale ts-ref-card-wholesale">
+          <div class="ts-ref-card-icon-box icon-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+              <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            </svg>
           </div>
-          <span class="store-card-badge">Distribuidores & Negocios</span>
-          <h3 class="store-card-title">CATÁLOGO MAYORISTA</h3>
-          <p class="store-card-desc">Productos y precios por volumen con calculadora de presupuesto y márgenes.</p>
-          <div class="store-card-condition">
-            <span>💼</span> Compra mínima desde 5 unidades
+          <h3 class="store-card-title ts-ref-card-title">CATÁLOGO MAYORISTA</h3>
+          <p class="store-card-desc ts-ref-card-desc">Productos y precios por volumen</p>
+          <div class="store-card-condition ts-ref-card-cond">
+            <span>🟡</span> Compra mínima desde 5 unidades
           </div>
-          <button type="button" class="store-card-btn" onclick="StoreMode.enterWholesale()">
+          <button type="button" class="store-card-btn ts-ref-btn-enter-wholesale" onclick="StoreMode.enterWholesale()">
             <span>ENTRAR</span>
-            <span aria-hidden="true">➔</span>
           </button>
         </article>
       </div>

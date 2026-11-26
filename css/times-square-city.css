@@ -89,11 +89,409 @@
   pointer-events: none;
 }
 
-/* Vignette cinematográfica para garantizar legibilidad del modal central */
-.ts-cinema-vignette {
+/* Capa de Fotografía Cinematográfica Real de Times Square Cyberpunk */
+.ts-photo-city-backdrop .ts-city-photo-layer {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 50%, rgba(5, 4, 10, 0.2) 0%, rgba(3, 2, 7, 0.75) 75%, rgba(1, 1, 4, 0.92) 100%);
-  z-index: 5;
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/bg/times-square-cyberpunk.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  filter: brightness(0.92) contrast(1.15) saturate(1.2);
+  transform: scale(1.02);
+  animation: tsPhotoGentleZoom 24s ease-in-out infinite alternate;
 }
+
+@keyframes tsPhotoGentleZoom {
+  0% { transform: scale(1.02) translateY(0); }
+  100% { transform: scale(1.06) translateY(-8px); }
+}
+
+/* ==========================================================================
+   ESTILOS EXACTOS DE LA REFERENCIA 1: PANTALLA VERIFICACIÓN +18
+   ========================================================================== */
+.ts-ref-age-gate-wrapper {
+  max-width: 680px !important;
+  width: 92% !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.ts-ref-age-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 10px 16px !important;
+}
+
+.ts-ref-brand {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  margin-bottom: 24px !important;
+}
+
+.ts-ref-logo {
+  width: 72px !important;
+  height: 72px !important;
+  object-fit: contain !important;
+  filter: drop-shadow(0 0 16px rgba(212, 175, 55, 0.6)) !important;
+}
+
+.ts-ref-brand-name {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 1.55rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.18em !important;
+  color: #FFFFFF !important;
+  text-shadow: 0 0 20px rgba(0, 0, 0, 0.9);
+}
+
+.ts-ref-brand-name span {
+  color: #D4AF37 !important;
+}
+
+.ts-ref-welcome {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: 4px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+}
+
+.ts-ref-main-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2.3rem, 5.5vw, 3.8rem);
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  color: #FFFFFF;
+  margin: 0 0 8px 0;
+  text-shadow: 0 0 35px rgba(147, 51, 234, 0.7), 0 4px 20px rgba(0, 0, 0, 0.95);
+}
+
+.ts-ref-main-title span {
+  background: linear-gradient(135deg, #A855F7 0%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.ts-ref-exclusive-text {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+.ts-ref-question {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.3rem, 3vw, 1.85rem) !important;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 26px !important;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.9);
+}
+
+.ts-ref-actions-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  max-width: 580px;
+  margin: 0 auto 16px auto;
+}
+
+@media (max-width: 600px) {
+  .ts-ref-actions-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.ts-ref-btn-purple,
+.ts-ref-btn-gold {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+  padding: 14px 22px !important;
+  border-radius: 18px !important;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  text-align: left !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+.ts-ref-btn-purple {
+  background: linear-gradient(135deg, rgba(88, 28, 135, 0.92) 0%, rgba(147, 51, 234, 0.88) 100%) !important;
+  border: 1.5px solid rgba(192, 132, 252, 0.6) !important;
+  box-shadow: 0 10px 30px rgba(147, 51, 234, 0.45) !important;
+}
+
+.ts-ref-btn-purple:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: #FFFFFF !important;
+  box-shadow: 0 15px 40px rgba(147, 51, 234, 0.7) !important;
+}
+
+.ts-ref-btn-gold {
+  background: linear-gradient(135deg, rgba(113, 63, 18, 0.85) 0%, rgba(180, 83, 9, 0.82) 100%) !important;
+  border: 1.5px solid rgba(250, 204, 21, 0.5) !important;
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.35) !important;
+}
+
+.ts-ref-btn-gold:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: #FFFFFF !important;
+  box-shadow: 0 15px 40px rgba(250, 204, 21, 0.6) !important;
+}
+
+.ts-ref-shield-icon {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.ts-ref-shield-icon svg {
+  width: 26px;
+  height: 26px;
+  color: #FFFFFF;
+}
+
+.ts-ref-shield-icon .shield-text {
+  position: absolute;
+  font-size: 0.68rem;
+  font-weight: 900;
+  color: #FFFFFF;
+}
+
+.btn-text-content {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.btn-text-content strong {
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: #FFFFFF;
+}
+
+.btn-text-content small {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.ts-ref-security-note {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ts-ref-legal-note {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.ts-ref-legal-note .age-gate-legal-text {
+  font-size: 0.72rem !important;
+  color: rgba(255, 255, 255, 0.5) !important;
+  line-height: 1.4 !important;
+}
+
+/* ==========================================================================
+   ESTILOS EXACTOS DE LA REFERENCIA 2: SELECTOR DE TIENDA
+   ========================================================================== */
+.ts-ref-selector-container {
+  max-width: 820px !important;
+  position: relative !important;
+  z-index: 10 !important;
+}
+
+.ts-ref-selector-header {
+  margin-bottom: 28px !important;
+}
+
+.ts-ref-kicker {
+  font-size: 0.88rem !important;
+  letter-spacing: 0.28em !important;
+  color: #D4AF37 !important;
+}
+
+.ts-ref-selector-title {
+  font-size: clamp(2rem, 4.5vw, 2.8rem) !important;
+  margin: 4px 0 6px 0 !important;
+}
+
+.ts-ref-selector-desc {
+  font-size: 1rem !important;
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.ts-ref-cards-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+@media (max-width: 680px) {
+  .ts-ref-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.ts-ref-card-retail,
+.ts-ref-card-wholesale {
+  background: rgba(14, 8, 22, 0.72) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-radius: 22px !important;
+  padding: 32px 24px 28px !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+}
+
+.ts-ref-card-retail {
+  border: 1.5px solid rgba(147, 51, 234, 0.6) !important;
+}
+
+.ts-ref-card-retail:hover {
+  border-color: #C084FC !important;
+  box-shadow: 0 25px 60px rgba(147, 51, 234, 0.4), inset 0 0 25px rgba(147, 51, 234, 0.25) !important;
+  transform: translateY(-6px);
+}
+
+.ts-ref-card-wholesale {
+  border: 1.5px solid rgba(212, 175, 55, 0.6) !important;
+}
+
+.ts-ref-card-wholesale:hover {
+  border-color: #FDE047 !important;
+  box-shadow: 0 25px 60px rgba(212, 175, 55, 0.4), inset 0 0 25px rgba(212, 175, 55, 0.25) !important;
+  transform: translateY(-6px);
+}
+
+.ts-ref-card-icon-box {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.ts-ref-card-icon-box.icon-purple {
+  background: rgba(147, 51, 234, 0.2);
+  border: 1.5px solid rgba(168, 85, 247, 0.6);
+  color: #C084FC;
+}
+
+.ts-ref-card-icon-box.icon-purple svg {
+  width: 28px;
+  height: 28px;
+}
+
+.ts-ref-card-icon-box.icon-gold {
+  background: rgba(212, 175, 55, 0.2);
+  border: 1.5px solid rgba(250, 204, 21, 0.6);
+  color: #FACC15;
+}
+
+.ts-ref-card-icon-box.icon-gold svg {
+  width: 28px;
+  height: 28px;
+}
+
+.ts-ref-card-title {
+  font-size: 1.25rem !important;
+  letter-spacing: 0.06em !important;
+  margin-bottom: 6px !important;
+  color: #FFFFFF !important;
+}
+
+.ts-ref-card-desc {
+  font-size: 0.88rem !important;
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin-bottom: 16px !important;
+}
+
+.ts-ref-card-cond {
+  font-size: 0.78rem !important;
+  font-weight: 700 !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 999px !important;
+  padding: 5px 14px !important;
+  margin-bottom: 24px !important;
+}
+
+.ts-ref-btn-enter-retail {
+  width: 100% !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #7928CA 0%, #9333EA 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 0.95rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.12em !important;
+  border: 1px solid rgba(192, 132, 252, 0.5) !important;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(147, 51, 234, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.ts-ref-btn-enter-retail:hover {
+  background: linear-gradient(135deg, #9333EA 0%, #A855F7 100%) !important;
+  box-shadow: 0 12px 30px rgba(147, 51, 234, 0.6) !important;
+}
+
+.ts-ref-btn-enter-wholesale {
+  width: 100% !important;
+  padding: 12px 24px !important;
+  border-radius: 12px !important;
+  background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%) !important;
+  color: #FFFFFF !important;
+  font-size: 0.95rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.12em !important;
+  border: 1px solid rgba(250, 204, 21, 0.5) !important;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+.ts-ref-btn-enter-wholesale:hover {
+  background: linear-gradient(135deg, #FACC15 0%, #D4AF37 100%) !important;
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.6) !important;
+}
+

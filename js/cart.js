@@ -895,8 +895,15 @@ const Cart = {
           html += `
             <div class="cart-section-block detal-block">
               <div class="cart-section-header">
-                <span class="cart-sec-tag">🛒 PRODUCTOS DETAL</span>
+                <span class="cart-sec-tag">🛒 MI CARRITO — RETAIL</span>
                 <span class="cart-sec-subtotal">Subtotal: ${this.formatCOP(detalSubtotal)}</span>
+              </div>
+              <div class="ref-cart-table-head">
+                <span>PRODUCTO</span>
+                <span>PRECIO</span>
+                <span style="text-align: center;">CANTIDAD</span>
+                <span style="text-align: right;">SUBTOTAL</span>
+                <span></span>
               </div>
               <div class="cart-items-group">
           `;
@@ -1016,10 +1023,17 @@ const Cart = {
             <div class="cart-section-block wholesale-block">
               <div class="cart-section-header wholesale-header">
                 <div class="ws-header-tag-wrap">
-                  <span class="cart-sec-tag wholesale-tag">📦 PEDIDO MAYORISTA</span>
+                  <span class="cart-sec-tag wholesale-tag">📦 MI CARRITO — MAYORISTA</span>
                   <span class="ws-header-tier-pill">${totalWsQty} uds totales</span>
                 </div>
                 <span class="cart-sec-subtotal">Subtotal: ${this.formatCOP(wsSubtotal)}</span>
+              </div>
+              <div class="ref-cart-table-head">
+                <span>PRODUCTO</span>
+                <span style="text-align: center;">CANTIDAD</span>
+                <span>PRECIO UNITARIO</span>
+                <span style="text-align: right;">SUBTOTAL</span>
+                <span></span>
               </div>
 
               <div class="cart-items-group">
@@ -1194,10 +1208,14 @@ const Cart = {
             </div>
           </div>
           <div class="cart-footer-btns">
-            <button type="button" class="btn btn-primary btn-block btn-checkout" onclick="CheckoutController.openModal()">
-              <span>Proceder al Checkout (Retail) ➔</span>
+            <button type="button" class="btn btn-primary btn-block btn-checkout ref-btn-order-purple" onclick="CheckoutController.openModal()">
+              <span>REALIZAR PEDIDO 💬</span>
             </button>
-            <div class="cart-secondary-actions">
+            <div class="ref-cart-lines-footer" style="margin-top: 10px;">
+              <div class="ref-line-item">📞 Línea 1: +57 313 357 2726</div>
+              <div class="ref-line-item">📞 Línea 2: +57 324 801 2914</div>
+            </div>
+            <div class="cart-secondary-actions" style="margin-top: 8px;">
               <button type="button" class="btn-link" onclick="Cart.closeDrawer()">Continuar Comprando</button>
               <button type="button" class="btn-link text-muted" onclick="Cart.clearCart()">Vaciar Carrito</button>
             </div>
@@ -1225,10 +1243,14 @@ const Cart = {
             </div>
           </div>
           <div class="cart-footer-btns">
-            <button type="button" class="btn btn-primary btn-block btn-checkout" style="background: linear-gradient(135deg, #FACC15 0%, #D4AF37 100%); color: #07040A; font-weight: 800;" onclick="CheckoutController.openModal()">
-              <span>Confirmar Pedido Mayorista ➔</span>
+            <button type="button" class="btn btn-primary btn-block btn-checkout ref-btn-order-gold" onclick="CheckoutController.openModal()">
+              <span>REALIZAR PEDIDO 💬</span>
             </button>
-            <div class="cart-secondary-actions">
+            <div class="ref-cart-lines-footer" style="margin-top: 10px;">
+              <div class="ref-line-item gold-line">📞 Línea Mayorista: +57 313 357 2726</div>
+              <div class="ref-min-notice">🟡 Compra mínima desde 5 unidades por producto</div>
+            </div>
+            <div class="cart-secondary-actions" style="margin-top: 8px;">
               <button type="button" class="btn-link" onclick="Cart.closeDrawer()">Continuar Comprando</button>
               <button type="button" class="btn-link text-muted" onclick="Cart.clearCart()">Vaciar Carrito</button>
             </div>

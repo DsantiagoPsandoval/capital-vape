@@ -1,0 +1,281 @@
+/* ==========================================================================
+   CAPITAL VAPE — DISEÑO 6: CARRITOS INDEPENDIENTES (RETAIL & MAYORISTA)
+   Diseño de tabla tabular + bloque resumen con WhatsApp oficial (Screens 5 & 6)
+   ========================================================================== */
+
+/* Contenedor Modal Amplio para Carrito en Escritorio */
+@media (min-width: 860px) {
+  .cv-cart-drawer.ref-cart-modal-mode {
+    max-width: 960px !important;
+    width: 92% !important;
+    height: auto !important;
+    max-height: 88vh !important;
+    top: 50% !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translate(-50%, -46%) scale(0.96) !important;
+    border-radius: 22px !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(147, 51, 234, 0.25) !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  }
+
+  .cv-cart-drawer.ref-cart-modal-mode.open {
+    transform: translate(-50%, -50%) scale(1) !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+}
+
+/* Encabezado del Carrito */
+.cv-cart-header {
+  padding: 20px 24px !important;
+  background: rgba(12, 8, 18, 0.95) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+.cv-cart-title {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 900 !important;
+  letter-spacing: 0.06em !important;
+}
+
+/* Disposición de 2 Columnas (Tabla de Productos a la Izquierda / Resumen a la Derecha) */
+.cart-modal-grid-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  padding: 20px 24px 28px;
+  overflow-y: auto;
+  max-height: calc(88vh - 80px);
+}
+
+@media (max-width: 860px) {
+  .cart-modal-grid-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 14px 14px 40px;
+    max-height: none;
+  }
+}
+
+/* Encabezado de Columnas de la Tabla */
+.ref-cart-table-head {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.2fr 40px;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+}
+
+/* Fila de Producto en la Tabla */
+.ref-cart-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.2fr 40px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+
+.ref-cart-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.ref-cart-col-prod {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ref-cart-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  padding: 2px;
+}
+
+.ref-cart-prod-info strong {
+  display: block;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.92rem;
+  color: #FFFFFF;
+}
+
+.ref-cart-prod-info small {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ref-cart-col-price,
+.ref-cart-col-sub {
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFFFFF;
+}
+
+.ref-cart-col-sub {
+  color: #C084FC;
+}
+
+.ref-cart-row.ws-row .ref-cart-col-sub {
+  color: #FACC15;
+}
+
+/* Botón de Borrar */
+.ref-btn-del {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.ref-btn-del:hover {
+  color: #EF4444;
+}
+
+/* ==========================================================================
+   TARJETA RESUMEN LATERAL (DISEÑOS 5 Y 6)
+   ========================================================================== */
+.ref-cart-summary-card {
+  background: rgba(14, 9, 22, 0.88);
+  border: 1.5px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+.ref-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.ref-summary-row strong {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  color: #FFFFFF;
+}
+
+.ref-summary-row.total-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  padding-top: 14px;
+  margin-top: 4px;
+}
+
+.ref-summary-row.total-row strong.total-price {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #FFFFFF;
+}
+
+.ref-summary-row.total-row strong.gold-total {
+  color: #FACC15;
+}
+
+/* Botón Morado de Realizar Pedido (Retail) */
+.ref-btn-order-purple {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7928CA 0%, #9333EA 100%);
+  border: 1px solid rgba(192, 132, 252, 0.6);
+  color: #FFFFFF;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(147, 51, 234, 0.45);
+  transition: all 0.2s ease;
+}
+
+.ref-btn-order-purple:hover {
+  background: linear-gradient(135deg, #9333EA 0%, #A855F7 100%);
+  box-shadow: 0 12px 35px rgba(147, 51, 234, 0.65);
+  transform: translateY(-2px);
+}
+
+/* Botón Dorado de Realizar Pedido (Mayorista) */
+.ref-btn-order-gold {
+  width: 100%;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #D4AF37 0%, #B45309 100%);
+  border: 1px solid rgba(250, 204, 21, 0.6);
+  color: #07040A;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(212, 175, 55, 0.45);
+  transition: all 0.2s ease;
+}
+
+.ref-btn-order-gold:hover {
+  background: linear-gradient(135deg, #FACC15 0%, #D4AF37 100%);
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.65);
+  transform: translateY(-2px);
+}
+
+/* Pie de Contacto Oficial */
+.ref-cart-lines-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+  text-align: center;
+}
+
+.ref-line-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ref-line-item.gold-line {
+  color: #D4AF37;
+  font-weight: 700;
+}
+
+.ref-min-notice {
+  font-size: 0.74rem;
+  color: #F59E0B;
+  font-weight: 700;
+}

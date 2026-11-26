@@ -42,6 +42,7 @@
   <meta name="twitter:image:alt" content="Capital Vape - Tienda y catálogo">
 
   <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/design-system.css?v=20261125_1">
   <link rel="stylesheet" href="css/main.css?v=20261125_2">
   <link rel="stylesheet" href="css/layout.css?v=20261125_2">
   <link rel="stylesheet" href="css/catalog.css?v=20261125_2">
@@ -50,11 +51,15 @@
   <link rel="stylesheet" href="css/toast.css?v=20261125_2">
   <link rel="stylesheet" href="css/wholesale.css?v=20261125_2">
   <link rel="stylesheet" href="css/admin.css?v=20261125_2">
-  <link rel="stylesheet" href="css/responsive.css?v=20261125_2">
   <link rel="stylesheet" href="css/luxury-menu.css?v=20261125_2">
   <link rel="stylesheet" href="css/age-verification.css?v=20261125_2">
   <link rel="stylesheet" href="css/store-selector.css?v=20261125_2">
-  <link rel="stylesheet" href="css/times-square-city.css?v=20261125_1">
+  <link rel="stylesheet" href="css/wholesale-access.css?v=20261125_1">
+  <link rel="stylesheet" href="css/retail-catalog.css?v=20261125_1">
+  <link rel="stylesheet" href="css/wholesale-catalog.css?v=20261125_1">
+  <link rel="stylesheet" href="css/cart-design.css?v=20261125_1">
+  <link rel="stylesheet" href="css/times-square-city.css?v=20261125_2">
+  <link rel="stylesheet" href="css/responsive.css?v=20261125_3">
 
   <!-- Anti-FOUC para Verificación de Mayoría de Edad (+18) -->
   <script>
@@ -792,24 +797,37 @@
     </div>
   </section>
 
-  <!-- CATALOG SECTION (DETAL) -->
+  <!-- CATALOG SECTION (DETAL - DISEÑO 4) -->
   <section id="catalogo" class="catalog-section">
     <div class="container">
-      <div class="section-header">
-        <h2 class="section-title">Catálogo Oficial</h2>
-        <p class="section-subtitle">Selecciona tu producto y sabor favorito para agregarlo a tu pedido.</p>
+      <!-- Encabezado de Tienda Retail (Diseño 4 de Referencia) -->
+      <div class="store-top-header retail-header">
+        <div class="store-top-info">
+          <h2 class="store-top-title">TIENDA RETAIL</h2>
+          <p class="store-top-sub">Productos y precios al detal</p>
+        </div>
+        <div class="store-top-search">
+          <input type="text" id="catalogSearch" class="search-input retail-search" placeholder="🔍 Buscar productos...">
+        </div>
+        <div class="store-top-cart-btn-wrap">
+          <button type="button" class="btn-store-cart retail-cart-pill open-cart-btn" aria-label="Abrir Carrito Retail">
+            <span>🛒 MI CARRITO</span>
+            <span class="cart-count-badge" style="display: none;">0</span>
+          </button>
+        </div>
       </div>
 
       <!-- Filters, Sort & Search Toolbar -->
       <div class="catalog-toolbar">
         <div class="toolbar-top-row">
           <div class="category-pills">
-            <button type="button" class="cat-pill-btn active" data-category="todos">Todos (39)</button>
-            <button type="button" class="cat-pill-btn" data-category="desechables">Desechables</button>
-            <button type="button" class="cat-pill-btn" data-category="kits">Kits</button>
-            <button type="button" class="cat-pill-btn" data-category="pods">Pods</button>
-            <button type="button" class="cat-pill-btn" data-category="baterias">Baterías 510</button>
-            <button type="button" class="cat-pill-btn" data-category="accesorios">Accesorios</button>
+            <button type="button" class="cat-pill-btn active" data-category="todos">TODOS</button>
+            <button type="button" class="cat-pill-btn" data-category="desechables">DESECHABLES</button>
+            <button type="button" class="cat-pill-btn" data-category="pods">PODS</button>
+            <button type="button" class="cat-pill-btn" data-category="e-liquidos">E-LÍQUIDOS</button>
+            <button type="button" class="cat-pill-btn" data-category="accesorios">ACCESORIOS</button>
+            <button type="button" class="cat-pill-btn" data-category="coils">COILS</button>
+            <button type="button" class="cat-pill-btn" data-category="baterias">BATERÍAS</button>
           </div>
           <div class="toolbar-meta-indicators">
             <span class="products-count-label" id="productsCountDisplay">39 productos</span>
@@ -822,11 +840,7 @@
         </div>
 
         <div class="toolbar-controls-row">
-          <div class="search-box">
-            <input type="text" id="catalogSearch" class="search-input" placeholder="Buscar por nombre, sabor, marca o especificación...">
-          </div>
-
-          <div class="sort-box">
+          <div class="sort-box" style="margin-left: auto;">
             <label for="catalogSortSelect" class="sort-label">Ordenar por:</label>
             <select id="catalogSortSelect" class="sort-select">
               <option value="relevancia">Relevancia</option>
@@ -883,33 +897,35 @@
 
       <!-- Unlocked Platform Screen -->
       <div id="wholesaleUnlockedView" style="display: none;">
-        <div class="ws-unlocked-header">
-          <div class="ws-unlocked-title">
-            <span style="font-size: 1.8rem;">📦</span>
-            <div>
-              <h3>Plataforma Mayorista Activa</h3>
-              <p style="color: var(--text-secondary); font-size: 0.85rem;">Haz clic en <strong>+5, +10, +20, +50 o +100</strong> en cada producto para agregar ese paquete a tu pedido.</p>
-            </div>
+        <!-- Encabezado de Catálogo Mayorista (Diseño 5 de Referencia) -->
+        <div class="store-top-header wholesale-header">
+          <div class="store-top-info">
+            <h2 class="store-top-title wholesale-title">CATÁLOGO <span>MAYORISTA</span></h2>
+            <p class="store-top-sub wholesale-sub">Productos y precios por volumen</p>
           </div>
-          <div class="ws-unlocked-actions">
-            <button type="button" class="btn btn-secondary open-ws-cart-btn">
-              <span>📦 Ver Pedido Mayorista</span>
-              <span class="wholesale-cart-count-badge cart-count-badge" style="display: none; position: static; margin-left: 6px;">0</span>
+          <div class="store-top-search">
+            <input type="text" id="wsCatalogSearch" class="search-input wholesale-search" placeholder="🔍 Buscar productos...">
+          </div>
+          <div class="store-top-cart-btn-wrap" style="display: flex; gap: 8px; align-items: center;">
+            <button type="button" class="btn-store-cart wholesale-cart-pill open-ws-cart-btn" aria-label="Abrir Carrito Mayorista">
+              <span>🛒 MI CARRITO</span>
+              <span class="wholesale-cart-count-badge cart-count-badge" style="display: none;">0</span>
             </button>
-            <button type="button" id="btnExitWholesale" class="btn btn-secondary" style="border-color: #EF4444; color: #EF4444; font-weight: 700;">🔒 Cerrar Sesión Mayorista</button>
+            <button type="button" id="btnExitWholesale" class="btn btn-secondary btn-sm" style="border-color: #EF4444; color: #EF4444; font-weight: 700; border-radius: 999px; padding: 6px 12px; font-size: 0.78rem;" title="Cerrar sesión mayorista">🔒 Salir</button>
           </div>
         </div>
 
         <!-- Wholesale Filters, Budget & Search -->
         <div class="catalog-toolbar">
           <div class="toolbar-top-row">
-            <div class="category-pills">
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn active" data-category="todos">Todos (39)</button>
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="desechables">Desechables</button>
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="kits">Kits</button>
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="pods">Pods</button>
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="baterias">Baterías 510</button>
-              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="accesorios">Accesorios</button>
+            <div class="category-pills ws-cat-pills-row">
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn active" data-category="todos">TODOS</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="desechables">DESECHABLES</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="pods">PODS</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="e-liquidos">E-LÍQUIDOS</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="accesorios">ACCESORIOS</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="coils">COILS</button>
+              <button type="button" class="cat-pill-btn ws-cat-pill-btn" data-category="baterias">BATERÍAS</button>
             </div>
           </div>
 

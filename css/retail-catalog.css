@@ -1,0 +1,297 @@
+/* ==========================================================================
+   CAPITAL VAPE — DISEÑO 4: CATÁLOGO RETAIL (DETAL)
+   Identidad visual morada y tecnológica, tarjetas uniformes, promociones dúo
+   ========================================================================== */
+
+/* Encabezado Superior de Tienda Retail */
+.store-top-header.retail-header,
+.catalog-toolbar .retail-main-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.store-top-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.store-top-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  color: #FFFFFF;
+  margin: 0 0 4px 0;
+  text-shadow: 0 0 25px rgba(147, 51, 234, 0.45);
+}
+
+.store-top-sub {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* Buscador de Tienda Retail */
+.store-top-search {
+  flex: 1;
+  max-width: 480px;
+  min-width: 240px;
+}
+
+.store-top-search input,
+.search-box input.retail-search {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(14, 10, 22, 0.85);
+  border: 1.5px solid rgba(147, 51, 234, 0.4);
+  border-radius: 999px;
+  padding: 12px 20px 12px 42px;
+  font-size: 0.92rem;
+  color: #FFFFFF;
+  outline: none;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+.store-top-search input:focus,
+.search-box input.retail-search:focus {
+  border-color: #C084FC;
+  box-shadow: 0 0 20px rgba(147, 51, 234, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Botón de Carrito Superior Retail */
+.btn-store-cart.retail-cart-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(14, 10, 22, 0.9);
+  border: 1.5px solid rgba(147, 51, 234, 0.6);
+  border-radius: 999px;
+  padding: 10px 18px;
+  color: #FFFFFF;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(147, 51, 234, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-store-cart.retail-cart-pill:hover {
+  background: rgba(147, 51, 234, 0.2);
+  border-color: #C084FC;
+  box-shadow: 0 6px 24px rgba(147, 51, 234, 0.55);
+  transform: translateY(-2px);
+}
+
+.btn-store-cart.retail-cart-pill .cart-count-badge {
+  background: linear-gradient(135deg, #7928CA 0%, #9333EA 100%);
+  color: #FFFFFF;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+/* Filtros de Categorías Retail */
+.category-pills .cat-pill-btn {
+  background: rgba(14, 10, 22, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.category-pills .cat-pill-btn:hover {
+  border-color: rgba(192, 132, 252, 0.5);
+  color: #FFFFFF;
+  background: rgba(147, 51, 234, 0.15);
+}
+
+.category-pills .cat-pill-btn.active {
+  background: linear-gradient(135deg, #7928CA 0%, #9333EA 100%) !important;
+  border-color: #C084FC !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 0 16px rgba(147, 51, 234, 0.55);
+}
+
+/* Tarjetas de Productos Retail */
+.mode-retail .product-card,
+#retailStoreView .product-card {
+  background: rgba(14, 9, 22, 0.82) !important;
+  border: 1.5px solid rgba(147, 51, 234, 0.3) !important;
+  border-radius: 18px !important;
+  padding: 16px !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.7), inset 0 1px 1px rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-retail .product-card:hover,
+#retailStoreView .product-card:hover {
+  border-color: rgba(192, 132, 252, 0.75) !important;
+  box-shadow: 0 18px 45px rgba(147, 51, 234, 0.35), inset 0 0 20px rgba(147, 51, 234, 0.15) !important;
+  transform: translateY(-5px);
+}
+
+/* Imagen del Producto */
+.mode-retail .card-image-wrapper,
+#retailStoreView .card-image-wrapper {
+  position: relative;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  background: radial-gradient(circle at 50% 50%, rgba(147, 51, 234, 0.1) 0%, transparent 70%);
+}
+
+.mode-retail .card-image-wrapper img,
+#retailStoreView .card-image-wrapper img {
+  max-height: 160px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.8));
+  transition: transform 0.25s ease;
+}
+
+.mode-retail .product-card:hover .card-image-wrapper img {
+  transform: scale(1.04);
+}
+
+/* Badge de Promoción Dúo (2x) */
+.card-promo-duo-badge,
+.hero-promo-box .hero-promo-badge-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #7928CA 0%, #9333EA 100%);
+  border: 1px solid rgba(192, 132, 252, 0.6);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(147, 51, 234, 0.5);
+  letter-spacing: 0.04em;
+  z-index: 5;
+}
+
+/* Información de Precios Retail */
+.mode-retail .card-title,
+#retailStoreView .card-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 10px 0 6px 0;
+  line-height: 1.25;
+}
+
+.mode-retail .card-retail-price-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.mode-retail .card-price-cop {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  letter-spacing: 0.02em;
+}
+
+.mode-retail .card-price-unit-sub {
+  font-size: 0.74rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Footer de la Tarjeta Retail: Selector de Cantidad + Botón Morado de Carrito */
+.mode-retail .card-retail-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mode-retail .card-qty-pill {
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  padding: 3px 6px;
+  gap: 8px;
+}
+
+.mode-retail .card-qty-pill button {
+  background: transparent;
+  border: none;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.15s;
+}
+
+.mode-retail .card-qty-pill button:hover {
+  background: rgba(147, 51, 234, 0.3);
+}
+
+.mode-retail .card-qty-pill span {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  min-width: 16px;
+  text-align: center;
+}
+
+.mode-retail .btn-add-retail-cart {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #7928CA 0%, #9333EA 100%);
+  border: 1px solid rgba(192, 132, 252, 0.5);
+  color: #FFFFFF;
+  font-size: 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(147, 51, 234, 0.45);
+  transition: all 0.2s ease;
+}
+
+.mode-retail .btn-add-retail-cart:hover {
+  background: linear-gradient(135deg, #9333EA 0%, #A855F7 100%);
+  box-shadow: 0 8px 24px rgba(147, 51, 234, 0.65);
+  transform: scale(1.05);
+}

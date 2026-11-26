@@ -89,11 +89,11 @@ const CatalogController = {
       if (product) {
         let flavorImg = null;
         if (product.sabores) {
-          const found = product.sabores.find(s => s.nombre === variantName);
-          if (found && found.img) flavorImg = found.img;
+          const found = product.sabores.find(s => (typeof s === 'string' ? s : s.nombre) === variantName);
+          if (found && (found.img || found.imagen)) flavorImg = found.img || found.imagen;
         } else if (product.colores) {
-          const found = product.colores.find(c => c.nombre === variantName);
-          if (found && found.img) flavorImg = found.img;
+          const found = product.colores.find(c => (typeof c === 'string' ? c : c.nombre) === variantName);
+          if (found && (found.img || found.imagen)) flavorImg = found.img || found.imagen;
         }
 
         if (flavorImg) {
@@ -119,11 +119,11 @@ const CatalogController = {
       if (product) {
         let flavorImg = null;
         if (product.sabores) {
-          const found = product.sabores.find(s => s.nombre === variantName);
-          if (found && found.img) flavorImg = found.img;
+          const found = product.sabores.find(s => (typeof s === 'string' ? s : s.nombre) === variantName);
+          if (found && (found.img || found.imagen)) flavorImg = found.img || found.imagen;
         } else if (product.colores) {
-          const found = product.colores.find(c => c.nombre === variantName);
-          if (found && found.img) flavorImg = found.img;
+          const found = product.colores.find(c => (typeof c === 'string' ? c : c.nombre) === variantName);
+          if (found && (found.img || found.imagen)) flavorImg = found.img || found.imagen;
         }
 
         if (flavorImg) {

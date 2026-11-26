@@ -288,6 +288,7 @@
         tipo_variante: 'sabor',
         sabores: row.sabores || [],
         colores: row.colores || [],
+        galeria: Array.isArray(row.galeria) ? row.galeria : [],
         created_at: row.created_at || new Date().toISOString(),
         updated_at: row.updated_at || new Date().toISOString()
       };
@@ -384,6 +385,7 @@
           tipo_variante: p.tipo_variante || 'sabor',
           sabores: p.sabores || [],
           colores: p.colores || [],
+          galeria: Array.isArray(p.galeria) ? p.galeria : [],
           created_at: nowIso,
           updated_at: nowIso
         };
@@ -466,7 +468,8 @@
               tipo_variante: dbProd.tipo_variante || 'sabor',
               precios_mayoristas: dbProd.wholesale_prices,
               sabores: dbProd.sabores || [],
-              colores: dbProd.colores || []
+              colores: dbProd.colores || [],
+              galeria: dbProd.galeria || []
             });
           }
         });
@@ -852,6 +855,7 @@
         tipo_variante: data.tipo_variante || 'sabor',
         sabores: Array.isArray(data.sabores) ? data.sabores : [],
         colores: Array.isArray(data.colores) ? data.colores : [],
+        galeria: Array.isArray(data.galeria) ? data.galeria : [],
         created_at: nowIso,
         updated_at: nowIso
       };
@@ -897,7 +901,8 @@
           puffs: newProduct.puffs,
           bateria: newProduct.bateria,
           sabores: newProduct.sabores,
-          colores: newProduct.colores
+          colores: newProduct.colores,
+          galeria: newProduct.galeria
         },
         reason: data.change_reason || 'Creación de producto'
       });
@@ -928,6 +933,7 @@
       if (updates.is_featured !== undefined) prod.is_featured = !!updates.is_featured;
       if (updates.sabores !== undefined) prod.sabores = updates.sabores;
       if (updates.colores !== undefined) prod.colores = updates.colores;
+      if (updates.galeria !== undefined) prod.galeria = Array.isArray(updates.galeria) ? updates.galeria : [];
 
       let priceChanged = false;
       let promoChanged = false;
@@ -1035,6 +1041,7 @@
           bateria: prod.bateria,
           sabores: prod.sabores,
           colores: prod.colores,
+          galeria: prod.galeria || [],
           updated_at: nowIso
         },
         reason: reason
@@ -1346,6 +1353,500 @@
       this.seedInitialCatalog();
       this.syncToProductsData();
       return true;
+    },
+
+    // =========================================================================
+    // GESTIÓN REAL DE IMÁGENES Y ARCHIVOS CON SUPABASE STORAGE
+    // =========================================================================
+
+    /**
+     * Valida formato y peso del archivo antes de subirlo a Supabase Storage
+     */
+    validateImageFile(file) {
+      if (!file) {
+        return { valid: false, error: 'No se seleccionó ningún archivo.' };
+      }
+
+      const allowedTypes = (typeof CONFIG !== 'undefined' && CONFIG.STORAGE && CONFIG.STORAGE.ALLOWED_IMAGE_TYPES)
+        ? CONFIG.STORAGE.ALLOWED_IMAGE_TYPES
+        : ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'];
+
+      const maxBytes = (typeof CONFIG !== 'undefined' && CONFIG.STORAGE && CONFIG.STORAGE.MAX_IMAGE_SIZE_BYTES)
+        ? CONFIG.STORAGE.MAX_IMAGE_SIZE_BYTES
+        : 5 * 1024 * 1024; // 5 MB
+
+      const fileType = (file.type || '').toLowerCase();
+      const fileName = (file.name || '').toLowerCase();
+      const ext = fileName.split('.').pop();
+      const validExt = ['jpg', 'jpeg', 'png', 'webp'].includes(ext);
+
+      if (!allowedTypes.includes(fileType) && !validExt) {
+        return {
+          valid: false,
+          error: `Formato de imagen no permitido (.${ext || 'desconocido'}). Solo se admiten JPG, PNG y WEBP.`
+        };
+      }
+
+      if (file.size > maxBytes) {
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(2);
+        const maxMb = (maxBytes / (1024 * 1024)).toFixed(0);
+        return {
+          valid: false,
+          error: `El archivo supera el tamaño máximo permitido (${sizeMb} MB de ${maxMb} MB).`
+        };
+      }
+
+      return { valid: true };
+    },
+
+    /**
+     * Obtiene el nombre del bucket configurado
+     */
+    getStorageBucket() {
+      return (typeof CONFIG !== 'undefined' && CONFIG.STORAGE && CONFIG.STORAGE.BUCKET_NAME)
+        ? CONFIG.STORAGE.BUCKET_NAME
+        : 'capital-vape-products';
+    },
+
+    /**
+     * Construye la URL pública permanente para un path en Supabase Storage
+     */
+    getStoragePublicUrl(filePath) {
+      if (!filePath) return 'assets/logo/logo.png';
+      if (filePath.startsWith('http://') || filePath.startsWith('https://')) return filePath;
+      if (filePath.startsWith('assets/') || filePath.startsWith('/') || filePath.includes('/')) {
+        if (!filePath.startsWith('products/') && !filePath.startsWith('flavors/') && !filePath.startsWith('gallery/')) {
+          return filePath;
+        }
+      }
+
+      const cfg = (typeof CONFIG !== 'undefined' && CONFIG.SUPABASE) ? CONFIG.SUPABASE : null;
+      if (!cfg || !cfg.URL) return filePath;
+
+      const bucket = this.getStorageBucket();
+      const cleanPath = filePath.replace(/^\/+/, '');
+      return `${cfg.URL}/storage/v1/object/public/${bucket}/${cleanPath}`;
+    },
+
+    /**
+     * Sube un archivo a Supabase Storage con reporte de progreso
+     */
+    async uploadImageToStorage(file, subfolder = 'products', customName = '', onProgress = null) {
+      const validation = this.validateImageFile(file);
+      if (!validation.valid) {
+        throw new Error(validation.error);
+      }
+
+      if (typeof onProgress === 'function') onProgress(10, 'Iniciando subida...');
+
+      const cfg = (typeof CONFIG !== 'undefined' && CONFIG.SUPABASE) ? CONFIG.SUPABASE : null;
+      if (!cfg || !cfg.URL) {
+        throw new Error('Supabase no está configurado adecuadamente.');
+      }
+
+      const key = cfg.PUBLISHABLE_KEY || cfg.ANON_KEY;
+      const bucket = this.getStorageBucket();
+
+      // Sanitizar nombre de archivo
+      const originalExt = (file.name || 'image.jpg').split('.').pop().toLowerCase() || 'jpg';
+      const cleanExt = ['jpg', 'jpeg', 'png', 'webp'].includes(originalExt) ? originalExt : 'jpg';
+      const baseClean = customName
+        ? customName.toLowerCase().replace(/[^a-z0-9_-]/g, '_')
+        : (file.name || 'image').replace(/\.[^/.]+$/, '').toLowerCase().replace(/[^a-z0-9_-]/g, '_');
+
+      const uniqueSuffix = Date.now() + '_' + Math.random().toString(36).substring(2, 6);
+      const filePath = `${subfolder}/${baseClean}_${uniqueSuffix}.${cleanExt}`;
+
+      if (typeof onProgress === 'function') onProgress(30, 'Enviando a Supabase Storage...');
+
+      // 1. Intento directo mediante SDK de Supabase si está disponible
+      if (this.supabaseClient && this.supabaseClient.storage) {
+        try {
+          const { data, error } = await this.supabaseClient.storage
+            .from(bucket)
+            .upload(filePath, file, {
+              cacheControl: '3600',
+              upsert: true,
+              contentType: file.type || `image/${cleanExt}`
+            });
+
+          if (!error && data) {
+            if (typeof onProgress === 'function') onProgress(90, 'Obteniendo enlace público...');
+            const { data: pubData } = this.supabaseClient.storage.from(bucket).getPublicUrl(filePath);
+            const publicUrl = pubData && pubData.publicUrl ? pubData.publicUrl : this.getStoragePublicUrl(filePath);
+            if (typeof onProgress === 'function') onProgress(100, 'Subida completada.');
+            return {
+              ok: true,
+              path: filePath,
+              url: publicUrl,
+              bucket: bucket,
+              name: file.name
+            };
+          } else if (error) {
+            console.warn('[DBService] Storage SDK upload error, probando REST directo:', error);
+          }
+        } catch (sdkErr) {
+          console.warn('[DBService] Excepción en SDK Storage upload:', sdkErr);
+        }
+      }
+
+      // 2. Intento directo mediante REST API de Supabase Storage
+      try {
+        if (typeof onProgress === 'function') onProgress(50, 'Transfiriendo por REST API...');
+        const uploadUrl = `${cfg.URL}/storage/v1/object/${bucket}/${encodeURIComponent(filePath).replace(/%2F/g, '/')}`;
+        const res = await fetch(uploadUrl, {
+          method: 'POST',
+          headers: {
+            'apikey': key,
+            'Authorization': `Bearer ${key}`,
+            'x-upsert': 'true',
+            'Content-Type': file.type || `image/${cleanExt}`
+          },
+          body: file
+        });
+
+        if (res.ok) {
+          if (typeof onProgress === 'function') onProgress(90, 'Generando enlace público...');
+          const publicUrl = this.getStoragePublicUrl(filePath);
+          if (typeof onProgress === 'function') onProgress(100, 'Subida completada exitosamente.');
+          return {
+            ok: true,
+            path: filePath,
+            url: publicUrl,
+            bucket: bucket,
+            name: file.name
+          };
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          console.warn('[DBService] Error en REST Storage upload:', res.status, errData);
+
+          // 3. Fallback a Edge Function admin-api
+          if (typeof onProgress === 'function') onProgress(70, 'Reintentando mediante Edge Function...');
+          return await this.uploadViaEdgeFunction(file, subfolder, filePath, onProgress);
+        }
+      } catch (err) {
+        console.warn('[DBService] Error en subida directa, recurriendo a Edge Function:', err);
+        return await this.uploadViaEdgeFunction(file, subfolder, filePath, onProgress);
+      }
+    },
+
+    /**
+     * Sube archivo mediante la Edge Function admin-api en base64
+     */
+    async uploadViaEdgeFunction(file, subfolder, filePath, onProgress) {
+      const cfg = (typeof CONFIG !== 'undefined' && CONFIG.SUPABASE) ? CONFIG.SUPABASE : null;
+      const key = cfg.PUBLISHABLE_KEY || cfg.ANON_KEY;
+      const bucket = this.getStorageBucket();
+
+      const base64Data = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const res = reader.result;
+          const commaIdx = res.indexOf(',');
+          resolve(commaIdx !== -1 ? res.substring(commaIdx + 1) : res);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      if (typeof onProgress === 'function') onProgress(80, 'Sincronizando con backend seguro...');
+
+      const efUrl = `${cfg.URL}/functions/v1/admin-api`;
+      const response = await fetch(efUrl, {
+        method: 'POST',
+        headers: {
+          'apikey': key,
+          'Authorization': `Bearer ${key}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'storage_upload_image',
+          file_base64: base64Data,
+          file_name: file.name,
+          mime_type: file.type || 'image/jpeg',
+          subfolder: subfolder,
+          path: filePath,
+          bucket: bucket
+        })
+      });
+
+      if (!response.ok) {
+        const errJson = await response.json().catch(() => ({}));
+        throw new Error(errJson.error || `Error al subir imagen (${response.status})`);
+      }
+
+      const resData = await response.json();
+      if (typeof onProgress === 'function') onProgress(100, 'Subida completada.');
+
+      return {
+        ok: true,
+        path: resData.path || filePath,
+        url: resData.url || this.getStoragePublicUrl(resData.path || filePath),
+        bucket: bucket,
+        name: file.name
+      };
+    },
+
+    /**
+     * Elimina un archivo de Supabase Storage de forma segura
+     */
+    async deleteImageFromStorage(filePathOrUrl) {
+      if (!filePathOrUrl) return { ok: false, error: 'Ruta no especificada.' };
+
+      // Solo borrar si es un archivo de Supabase Storage de las carpetas de Capital Vape
+      const bucket = this.getStorageBucket();
+      let storagePath = filePathOrUrl;
+
+      if (filePathOrUrl.includes(`/public/${bucket}/`)) {
+        storagePath = filePathOrUrl.split(`/public/${bucket}/`)[1];
+      } else if (filePathOrUrl.includes(`/${bucket}/`)) {
+        storagePath = filePathOrUrl.split(`/${bucket}/`)[1];
+      }
+
+      // No eliminar recursos locales o assets del sistema
+      if (!storagePath.startsWith('products/') && !storagePath.startsWith('flavors/') && !storagePath.startsWith('gallery/')) {
+        console.log('[DBService] Archivo protegido o local, no se elimina de Storage:', filePathOrUrl);
+        return { ok: true, skipped: true };
+      }
+
+      const cfg = (typeof CONFIG !== 'undefined' && CONFIG.SUPABASE) ? CONFIG.SUPABASE : null;
+      if (!cfg || !cfg.URL) return { ok: false, error: 'Supabase no configurado.' };
+
+      const key = cfg.PUBLISHABLE_KEY || cfg.ANON_KEY;
+
+      // 1. Intentar con SDK
+      if (this.supabaseClient && this.supabaseClient.storage) {
+        try {
+          const { error } = await this.supabaseClient.storage.from(bucket).remove([storagePath]);
+          if (!error) return { ok: true, path: storagePath };
+        } catch (e) {
+          console.warn('[DBService] Error al eliminar vía SDK:', e);
+        }
+      }
+
+      // 2. Intentar vía Edge Function admin-api
+      try {
+        const efUrl = `${cfg.URL}/functions/v1/admin-api`;
+        const res = await fetch(efUrl, {
+          method: 'POST',
+          headers: {
+            'apikey': key,
+            'Authorization': `Bearer ${key}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'storage_delete_image',
+            bucket: bucket,
+            path: storagePath
+          })
+        });
+
+        if (res.ok) return { ok: true, path: storagePath };
+      } catch (err) {
+        console.warn('[DBService] Error al eliminar de Storage vía Edge Function:', err);
+      }
+
+      return { ok: true, path: storagePath };
+    },
+
+    /**
+     * Actualiza la imagen principal de un producto en Storage y en la Base de Datos
+     */
+    async updateProductMainImage(productId, fileOrUrl, onProgress = null) {
+      const prod = this.getProductById(productId);
+      if (!prod) throw new Error(`Producto ${productId} no encontrado.`);
+
+      let newUrl = '';
+      let newPath = '';
+
+      if (typeof fileOrUrl === 'string') {
+        newUrl = fileOrUrl;
+      } else if (fileOrUrl instanceof File || fileOrUrl instanceof Blob) {
+        const uploadRes = await this.uploadImageToStorage(fileOrUrl, 'products', prod.slug || prod.id, onProgress);
+        newUrl = uploadRes.url;
+        newPath = uploadRes.path;
+      } else {
+        throw new Error('Archivo o URL de imagen inválida.');
+      }
+
+      const oldImageUrl = prod.image_url;
+
+      // Actualizar producto en DB y memoria
+      await this.updateProduct(productId, { image_url: newUrl }, 'Administrador', 'Actualización de imagen principal');
+
+      // Borrar de forma segura la imagen anterior si pertenecía a Supabase Storage
+      if (oldImageUrl && oldImageUrl !== newUrl && !oldImageUrl.startsWith('assets/')) {
+        try {
+          await this.deleteImageFromStorage(oldImageUrl);
+        } catch (delErr) {
+          console.warn('[DBService] No se pudo borrar imagen antigua tras reemplazo:', delErr);
+        }
+      }
+
+      this.refreshStoreUI();
+      return { ok: true, url: newUrl, path: newPath };
+    },
+
+    /**
+     * Asigna o reemplaza la imagen de un sabor específico de un producto
+     */
+    async assignFlavorImage(productId, flavorName, fileOrUrl, onProgress = null) {
+      const prod = this.getProductById(productId);
+      if (!prod) throw new Error(`Producto ${productId} no encontrado.`);
+
+      let newUrl = '';
+      if (typeof fileOrUrl === 'string') {
+        newUrl = fileOrUrl;
+      } else if (fileOrUrl instanceof File || fileOrUrl instanceof Blob) {
+        const customName = `${prod.slug || prod.id}_flavor_${flavorName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`;
+        const uploadRes = await this.uploadImageToStorage(fileOrUrl, 'flavors', customName, onProgress);
+        newUrl = uploadRes.url;
+      }
+
+      const sabores = Array.isArray(prod.sabores) ? JSON.parse(JSON.stringify(prod.sabores)) : [];
+      let found = false;
+      let oldFlavorImg = '';
+
+      for (let i = 0; i < sabores.length; i++) {
+        const item = sabores[i];
+        const sName = typeof item === 'string' ? item : item.nombre;
+        if (sName && sName.trim().toLowerCase() === flavorName.trim().toLowerCase()) {
+          found = true;
+          if (typeof item === 'string') {
+            sabores[i] = { nombre: sName, imagen: newUrl, visible: true, agotado: false };
+          } else {
+            oldFlavorImg = item.imagen || '';
+            sabores[i].imagen = newUrl;
+          }
+          break;
+        }
+      }
+
+      if (!found) {
+        sabores.push({ nombre: flavorName.trim(), imagen: newUrl, visible: true, agotado: false });
+      }
+
+      await this.updateProduct(productId, { sabores: sabores }, 'Administrador', `Asignación de imagen para sabor "${flavorName}"`);
+
+      // Limpiar imagen previa de sabor si correspondía a Storage
+      if (oldFlavorImg && oldFlavorImg !== newUrl && !oldFlavorImg.startsWith('assets/')) {
+        this.deleteImageFromStorage(oldFlavorImg).catch(() => {});
+      }
+
+      this.refreshStoreUI();
+      return { ok: true, url: newUrl, sabores: sabores };
+    },
+
+    /**
+     * Agrega una imagen a la galería del producto
+     */
+    async addGalleryImage(productId, fileOrUrl, onProgress = null) {
+      const prod = this.getProductById(productId);
+      if (!prod) throw new Error(`Producto ${productId} no encontrado.`);
+
+      let newUrl = '';
+      let newPath = '';
+      let imgName = 'Foto de galería';
+
+      if (typeof fileOrUrl === 'string') {
+        newUrl = fileOrUrl;
+      } else if (fileOrUrl instanceof File || fileOrUrl instanceof Blob) {
+        imgName = fileOrUrl.name || 'Galería';
+        const customName = `${prod.slug || prod.id}_gallery`;
+        const uploadRes = await this.uploadImageToStorage(fileOrUrl, 'gallery', customName, onProgress);
+        newUrl = uploadRes.url;
+        newPath = uploadRes.path;
+      }
+
+      const galeria = Array.isArray(prod.galeria) ? JSON.parse(JSON.stringify(prod.galeria)) : [];
+      const newImgItem = {
+        id: 'gal_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+        url: newUrl,
+        path: newPath,
+        name: imgName,
+        sort_order: galeria.length,
+        created_at: new Date().toISOString()
+      };
+
+      galeria.push(newImgItem);
+
+      await this.updateProduct(productId, { galeria: galeria }, 'Administrador', 'Imagen añadida a galería');
+      this.refreshStoreUI();
+
+      return { ok: true, item: newImgItem, galeria: galeria };
+    },
+
+    /**
+     * Elimina una imagen de la galería
+     */
+    async deleteGalleryImage(productId, imageId) {
+      const prod = this.getProductById(productId);
+      if (!prod) throw new Error(`Producto ${productId} no encontrado.`);
+
+      const galeria = Array.isArray(prod.galeria) ? JSON.parse(JSON.stringify(prod.galeria)) : [];
+      const itemToDelete = galeria.find(g => g.id === imageId || g.url === imageId);
+
+      if (!itemToDelete) return { ok: false, error: 'Imagen no encontrada en galería.' };
+
+      const updatedGaleria = galeria.filter(g => g.id !== itemToDelete.id);
+      // Reindexar orden
+      updatedGaleria.forEach((g, idx) => { g.sort_order = idx; });
+
+      await this.updateProduct(productId, { galeria: updatedGaleria }, 'Administrador', 'Imagen eliminada de galería');
+
+      if (itemToDelete.path || itemToDelete.url) {
+        await this.deleteImageFromStorage(itemToDelete.path || itemToDelete.url);
+      }
+
+      this.refreshStoreUI();
+      return { ok: true, galeria: updatedGaleria };
+    },
+
+    /**
+     * Reordena las imágenes de la galería
+     */
+    async reorderGalleryImages(productId, orderedIds) {
+      const prod = this.getProductById(productId);
+      if (!prod) throw new Error(`Producto ${productId} no encontrado.`);
+
+      const galeria = Array.isArray(prod.galeria) ? JSON.parse(JSON.stringify(prod.galeria)) : [];
+      const reordered = [];
+
+      orderedIds.forEach((id, idx) => {
+        const item = galeria.find(g => g.id === id);
+        if (item) {
+          item.sort_order = idx;
+          reordered.push(item);
+        }
+      });
+
+      // Añadir los que no estuvieran en la lista ordenada
+      galeria.forEach(item => {
+        if (!orderedIds.includes(item.id)) {
+          item.sort_order = reordered.length;
+          reordered.push(item);
+        }
+      });
+
+      await this.updateProduct(productId, { galeria: reordered }, 'Administrador', 'Reordenamiento de galería');
+      this.refreshStoreUI();
+      return { ok: true, galeria: reordered };
+    },
+
+    /**
+     * Reemplaza de forma segura una imagen de producto
+     */
+    async replaceProductImage(productId, oldUrlOrPath, newFile, onProgress = null) {
+      const uploadRes = await this.uploadImageToStorage(newFile, 'products', productId, onProgress);
+      if (!uploadRes.ok) throw new Error('Error al subir la nueva imagen.');
+
+      await this.updateProductMainImage(productId, uploadRes.url, null);
+
+      if (oldUrlOrPath && oldUrlOrPath !== uploadRes.url) {
+        await this.deleteImageFromStorage(oldUrlOrPath);
+      }
+
+      return uploadRes;
     }
   };
 
@@ -1355,7 +1856,7 @@
     module.exports = DBService;
   }
 
-  if (typeof window !== 'undefined') {
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => DBService.init());
     } else {

@@ -434,6 +434,105 @@ serve(async (req) => {
       });
     }
 
+    // 8. STORAGE: Subir imagen de producto a Supabase Storage (capital-vape-products)
+    if (action === "storage_upload_image") {
+      const { filePath, base64Data, contentType } = body;
+      if (!filePath || !base64Data) {
+        return new Response(JSON.stringify({ ok: false, error: "Parámetros filePath y base64Data requeridos." }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      // Asegurar existencia del bucket capital-vape-products
+      const bucketName = "capital-vape-products";
+      const { data: buckets } = await adminSupabase.storage.listBuckets();
+      const bucketExists = buckets && buckets.some((b: any) => b.id === bucketName || b.name === bucketName);
+
+      if (!bucketExists) {
+        await adminSupabase.storage.createBucket(bucketName, {
+          public: true,
+          fileSizeLimit: 5242880,
+          allowedMimeTypes: ["image/jpeg", "image/png", "image/webp", "image/jpg"],
+        });
+      }
+
+      // Decodificar Base64 a Uint8Array
+      const rawBase64 = base64Data.replace(/^data:[^;]+;base64,/, "");
+      const binaryString = atob(rawBase64);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+
+      const { data: uploadData, error: uploadError } = await adminSupabase.storage
+        .from(bucketName)
+        .upload(filePath, bytes, {
+          contentType: contentType || "image/jpeg",
+          upsert: true,
+        });
+
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = adminSupabase.storage
+        .from(bucketName)
+        .getPublicUrl(filePath);
+
+      return new Response(
+        JSON.stringify({
+          ok: true,
+          path: uploadData.path,
+          publicUrl: urlData.publicUrl,
+        }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // 9. STORAGE: Eliminar imagen de Supabase Storage
+    if (action === "storage_delete_image") {
+      const { filePath } = body;
+      const bucketName = "capital-vape-products";
+
+      if (!filePath) {
+        return new Response(JSON.stringify({ ok: false, error: "Parámetro filePath requerido." }), {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+
+      const { data: removeData, error: removeError } = await adminSupabase.storage
+        .from(bucketName)
+        .remove([filePath]);
+
+      if (removeError) throw removeError;
+
+      return new Response(
+        JSON.stringify({ ok: true, removed: removeData }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // 10. STORAGE: Listar imágenes del bucket
+    if (action === "storage_list_images") {
+      const { folder } = body;
+      const bucketName = "capital-vape-products";
+
+      const { data: listData, error: listError } = await adminSupabase.storage
+        .from(bucketName)
+        .list(folder || "", {
+          limit: 100,
+          offset: 0,
+          sortBy: { column: "created_at", order: "desc" },
+        });
+
+      if (listError) throw listError;
+
+      return new Response(
+        JSON.stringify({ ok: true, files: listData }),
+        { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
     return new Response(JSON.stringify({ ok: false, error: `Acción desconocida: ${action}` }), {
       status: 400,
       headers: { ...corsHeaders, "Content-Type": "application/json" },

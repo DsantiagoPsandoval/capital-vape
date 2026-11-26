@@ -25,7 +25,15 @@ const CONFIG = {
     PUBLISHABLE_KEY: 'sb_publishable_5AQ9IzW8DHRowyT5mVF5og_FRVMFRdA',
     ANON_KEY: 'sb_publishable_5AQ9IzW8DHRowyT5mVF5og_FRVMFRdA',
     FUNCTIONS_URL: 'https://gkbzabubivjfzlefcnnq.supabase.co/functions/v1/admin-api',
+    STORAGE_BUCKET: 'capital-vape-products',
+    MAX_IMAGE_SIZE_BYTES: 5242880, // 5 MB
+    ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'],
     ENABLED: true
+  },
+  STORAGE: {
+    BUCKET_NAME: 'capital-vape-products',
+    MAX_IMAGE_SIZE_BYTES: 5242880,
+    ALLOWED_IMAGE_TYPES: ['image/jpeg', 'image/png', 'image/webp', 'image/jpg']
   },
   STORAGE_KEYS: {
     CART: 'cv_cart_items_v2',

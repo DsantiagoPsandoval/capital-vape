@@ -473,6 +473,10 @@ const AdminService = {
   // =========================================================================
   // TAB 3: GESTIÓN DE IMÁGENES (SUBIDA DESDE DISPOSITIVO Y VISTA PREVIA)
   // =========================================================================
+  // TAB 3: ESTUDIO INTEGRAL DE IMÁGENES Y SUPABASE STORAGE
+  // =========================================================================
+  selectedStudioProductId: null,
+
   renderImagesTab(container) {
     let prods = [];
     if (typeof DBService !== 'undefined' && DBService.products) {
@@ -481,68 +485,169 @@ const AdminService = {
       prods = PRODUCTS_DATA;
     }
 
+    if (!this.selectedStudioProductId && prods.length > 0) {
+      this.selectedStudioProductId = prods[0].id;
+    }
+
+    const currentProd = prods.find(p => p.id === this.selectedStudioProductId) || prods[0] || null;
+    const bucketName = (typeof DBService !== 'undefined' && DBService.getStorageBucket) ? DBService.getStorageBucket() : 'capital-vape-products';
+
     container.innerHTML = `
       <div class="admin-images-tab-wrapper">
         <div class="admin-section-header-box">
-          <div>
-            <h3 class="admin-tab-title">🖼️ Gestión y Carga de Imágenes</h3>
-            <p class="admin-tab-subtitle">Sube fotografías directamente desde tu computador o celular, con vista previa en vivo y asignación a productos o sabores.</p>
-          </div>
-        </div>
-
-        <!-- ZONA DE CARGA DE ARCHIVO LOCAL -->
-        <div class="admin-image-upload-card">
-          <div class="admin-upload-dropzone" onclick="document.getElementById('adminImageUploaderInput').click()">
-            <input type="file" id="adminImageUploaderInput" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="AdminService.handleImageFileUpload(event)">
-            <div class="upload-dropzone-icon">📁</div>
-            <h4 class="upload-dropzone-title">Haz clic aquí para seleccionar una imagen desde tu dispositivo</h4>
-            <p class="upload-dropzone-subtitle">Archivos permitidos: PNG, JPG, JPEG, WEBP. Vista previa instantánea sin recargar la página.</p>
-          </div>
-
-          <!-- Vista Previa y Asignación de Imagen -->
-          <div id="adminImageUploadPreviewArea" class="admin-upload-preview-area" style="display: none;">
-            <div class="preview-box-col">
-              <div class="preview-img-container">
-                <img id="adminImagePreviewImg" src="" alt="Vista previa">
-              </div>
-              <div id="adminImageFileInfo" class="preview-file-info"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <h3 class="admin-tab-title">🖼️ Estudio de Imágenes & Supabase Storage</h3>
+              <p class="admin-tab-subtitle">Almacenamiento real y permanente en la nube (Bucket: <strong style="color: var(--accent-gold);">${bucketName}</strong>). Formatos: JPG, PNG, WEBP (hasta 5 MB).</p>
             </div>
-
-            <div class="preview-assign-col">
-              <h4 style="color: var(--accent-gold); margin: 0 0 10px;">Asignar Imagen al Catálogo:</h4>
-              <div class="admin-form-group">
-                <label for="adminImageTargetProd">Selecciona el Producto de Destino *:</label>
-                <select id="adminImageTargetProd" class="admin-input-text">
-                  ${prods.map(p => `<option value="${p.id || p.nombre}">${p.name || p.nombre} (${p.brand || 'Vape'})</option>`).join('')}
-                </select>
-              </div>
-
-              <div class="admin-form-group">
-                <label for="adminImageFlavorName">Nombre de Sabor / Variante (Opcional):</label>
-                <input type="text" id="adminImageFlavorName" class="admin-input-text" placeholder="Ej: Miami Mint, Blue Razz Ice...">
-              </div>
-
-              <div class="preview-actions-row">
-                <button type="button" class="btn-admin-create-prod" onclick="AdminService.saveUploadedImageToProduct(false)">
-                  📸 Asignar como Foto Principal
-                </button>
-                <button type="button" class="btn-admin-action" onclick="AdminService.saveUploadedImageToProduct(true)">
-                  🍓 Asignar a Sabor Específico
-                </button>
-                <button type="button" class="btn-admin-secondary" onclick="document.getElementById('adminImageUploadPreviewArea').style.display = 'none';">
-                  ✕ Cancelar
-                </button>
-              </div>
+            <div class="storage-status-badge">
+              <span class="status-dot-pulse"></span>
+              <span>Supabase Storage Activo</span>
             </div>
           </div>
         </div>
 
-        <!-- GALERÍA DE IMÁGENES DEL CATÁLOGO -->
-        <div class="admin-catalog-gallery-box">
+        <!-- SELECTOR DE PRODUCTO ACTIVO PARA GESTIÓN DE FOTOGRAFÍAS -->
+        <div class="admin-studio-selector-bar">
+          <label for="adminStudioProdSelect"><strong>🎯 Producto a Gestionar:</strong></label>
+          <select id="adminStudioProdSelect" class="admin-input-text" style="max-width: 450px;" onchange="AdminService.selectStudioProduct(this.value)">
+            ${prods.map(p => `<option value="${p.id}" ${currentProd && currentProd.id === p.id ? 'selected' : ''}>${p.name || p.nombre} (${p.brand || 'Vape'})</option>`).join('')}
+          </select>
+          <span style="color: var(--text-muted); font-size: 0.85rem;">ID: <code>${currentProd ? currentProd.id : '-'}</code></span>
+        </div>
+
+        ${currentProd ? `
+        <!-- PANEL DE FOTO PRINCIPAL Y SUBIDA EN VIVO -->
+        <div class="admin-studio-grid">
+          <!-- Columna 1: Foto Principal Actual y Reemplazo -->
+          <div class="admin-studio-card">
+            <h4 class="studio-card-title">📸 Fotografía Principal</h4>
+            <div class="studio-main-preview-wrap">
+              <img id="studioMainImg" src="${currentProd.image_url || currentProd.imagen || 'assets/logo/logo.png'}" alt="${currentProd.name || currentProd.nombre}" onerror="this.src='assets/logo/logo.png'">
+            </div>
+            <div class="studio-img-meta">
+              <div class="studio-meta-url" title="${currentProd.image_url || ''}">
+                <strong>URL:</strong> <span>${(currentProd.image_url || currentProd.imagen || '').slice(-40) || 'Sin asignar'}</span>
+              </div>
+            </div>
+
+            <!-- Botones de Acción para Foto Principal -->
+            <div class="studio-actions-stack">
+              <input type="file" id="studioMainFileInput" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="AdminService.handleStudioMainUpload(event)">
+              <button type="button" class="btn-admin-create-prod" onclick="document.getElementById('studioMainFileInput').click()" style="width: 100%;">
+                ☁️ Subir / Reemplazar Foto Principal
+              </button>
+              <div style="display: flex; gap: 8px;">
+                <button type="button" class="btn-admin-action btn-sm" style="flex: 1;" onclick="AdminService.copyImageUrl('${currentProd.image_url || currentProd.imagen || ''}')">
+                  📋 Copiar Enlace
+                </button>
+                <button type="button" class="btn-admin-action btn-danger btn-sm" onclick="AdminService.removeProductMainImage('${currentProd.id}')">
+                  🗑️ Quitar
+                </button>
+              </div>
+            </div>
+
+            <!-- Barra de Progreso en Vivo -->
+            <div id="studioMainProgressWrap" class="studio-progress-wrap" style="display: none;">
+              <div class="studio-progress-bar"><div id="studioMainProgressBar" class="studio-progress-fill" style="width: 0%;"></div></div>
+              <span id="studioMainProgressText" class="studio-progress-text">Iniciando carga...</span>
+            </div>
+          </div>
+
+          <!-- Columna 2: Galería de Múltiples Imágenes (JSONB) -->
+          <div class="admin-studio-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <h4 class="studio-card-title" style="margin: 0;">🎞️ Galería de Fotografías (${(currentProd.galeria || []).length})</h4>
+              <input type="file" id="studioGalleryFileInput" multiple accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="AdminService.handleStudioGalleryUpload(event)">
+              <button type="button" class="btn-admin-action btn-sm" onclick="document.getElementById('studioGalleryFileInput').click()">
+                ➕ Añadir a Galería
+              </button>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 12px;">Sube varias fotos simultáneas. Reordena la secuencia con las flechas o elimina imágenes.</p>
+
+            <div id="studioGalleryProgressWrap" class="studio-progress-wrap" style="display: none; margin-bottom: 10px;">
+              <div class="studio-progress-bar"><div id="studioGalleryProgressBar" class="studio-progress-fill" style="width: 0%;"></div></div>
+              <span id="studioGalleryProgressText" class="studio-progress-text">Subiendo a galería...</span>
+            </div>
+
+            <div class="admin-gallery-items-grid" id="studioGalleryItemsGrid">
+              ${(currentProd.galeria && currentProd.galeria.length > 0) ? currentProd.galeria.map((item, idx) => `
+                <div class="studio-gallery-item-card" data-gallery-id="${item.id}">
+                  <img src="${item.url}" alt="${item.name || 'Galería'}" onerror="this.src='assets/logo/logo.png'">
+                  <div class="gallery-item-overlay">
+                    <span class="gallery-item-order">#${idx + 1}</span>
+                    <div class="gallery-item-btn-row">
+                      ${idx > 0 ? `<button type="button" class="gallery-nav-btn" onclick="AdminService.moveGalleryImage('${currentProd.id}', '${item.id}', -1)" title="Mover a la izquierda">◀</button>` : ''}
+                      ${idx < currentProd.galeria.length - 1 ? `<button type="button" class="gallery-nav-btn" onclick="AdminService.moveGalleryImage('${currentProd.id}', '${item.id}', 1)" title="Mover a la derecha">▶</button>` : ''}
+                      <button type="button" class="gallery-nav-btn btn-del" onclick="AdminService.deleteGalleryItem('${currentProd.id}', '${item.id}')" title="Eliminar de galería">✕</button>
+                    </div>
+                  </div>
+                </div>
+              `).join('') : `
+                <div class="studio-empty-gallery">
+                  <span>📷</span>
+                  <p>Este producto aún no tiene fotos en su galería.</p>
+                  <small>Haz clic en "➕ Añadir a Galería" para subir fotos adicionales.</small>
+                </div>
+              `}
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLA DE ASIGNACIÓN DE FOTOGRAFÍAS A SABORES / COLORES -->
+        <div class="admin-studio-card" style="margin-top: 18px;">
+          <h4 class="studio-card-title">🍓 Fotografías de Sabores & Variantes</h4>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">Asigna una imagen específica de Supabase Storage a cada sabor para que cambie automáticamente al seleccionarlo en la tienda.</p>
+
+          ${(currentProd.sabores && currentProd.sabores.length > 0) ? `
+            <div class="studio-flavors-table">
+              <div class="flavors-table-header">
+                <span>Miniatura</span>
+                <span>Nombre del Sabor</span>
+                <span>Estado de Imagen</span>
+                <span>Acciones</span>
+              </div>
+              ${currentProd.sabores.map((s, idx) => {
+                const sName = typeof s === 'string' ? s : s.nombre;
+                const sImg = (typeof s === 'object' && s.imagen) ? s.imagen : '';
+                return `
+                  <div class="flavor-photo-row">
+                    <div class="flavor-thumb-box">
+                      <img src="${sImg || 'assets/logo/logo.png'}" alt="${sName}" onerror="this.src='assets/logo/logo.png'">
+                    </div>
+                    <div class="flavor-name-cell">
+                      <strong>${sName}</strong>
+                    </div>
+                    <div class="flavor-status-cell">
+                      ${sImg ? `<span class="pill-has-photo">✓ Foto personalizada</span>` : `<span class="pill-no-photo">Hereda foto principal</span>`}
+                    </div>
+                    <div class="flavor-action-cell">
+                      <input type="file" id="flavorFileInput_${idx}" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="AdminService.handleFlavorPhotoUpload(event, '${currentProd.id}', '${sName.replace(/'/g, "\\'")}')">
+                      <button type="button" class="btn-admin-action btn-sm" onclick="document.getElementById('flavorFileInput_${idx}').click()">
+                        📷 ${sImg ? 'Cambiar Foto' : 'Asignar Foto'}
+                      </button>
+                      ${sImg ? `
+                        <button type="button" class="btn-admin-action btn-danger btn-sm" onclick="AdminService.removeFlavorPhoto('${currentProd.id}', '${sName.replace(/'/g, "\\'")}')">
+                          ✕
+                        </button>
+                      ` : ''}
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          ` : `
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Este producto no tiene variantes o sabores configurados.</p>
+          `}
+        </div>
+        ` : ''}
+
+        <!-- GALERÍA GENERAL DE PRODUCTOS EN TIENDA -->
+        <div class="admin-catalog-gallery-box" style="margin-top: 24px;">
           <div class="gallery-header-row">
-            <h4>📦 Galería de Referencias Existentes (${prods.length} productos)</h4>
+            <h4>📦 Catálogo Completo (${prods.length} referencias)</h4>
             <div class="gallery-search-box">
-              <input type="text" class="admin-input-search" placeholder="🔍 Filtrar fotos por referencia..." oninput="AdminService.filterGallery(this.value)">
+              <input type="text" class="admin-input-search" placeholder="🔍 Filtrar por nombre..." oninput="AdminService.filterGallery(this.value)">
             </div>
           </div>
 
@@ -551,18 +656,19 @@ const AdminService = {
               const imgSrc = p.image_url || p.imagen || 'assets/logo/logo.png';
               const name = p.name || p.nombre;
               const safeId = p.id;
+              const isSelected = currentProd && currentProd.id === safeId;
               return `
-                <div class="admin-gallery-card" data-gallery-name="${name.toLowerCase()}">
+                <div class="admin-gallery-card ${isSelected ? 'is-selected-card' : ''}" data-gallery-name="${name.toLowerCase()}" onclick="AdminService.selectStudioProduct('${safeId}')">
                   <div class="gallery-card-img-wrap">
                     <img src="${imgSrc}" alt="${name}" loading="lazy" onerror="this.src='assets/logo/logo.png'">
                   </div>
                   <div class="gallery-card-info">
                     <strong class="gallery-card-name">${name}</strong>
-                    <span class="gallery-card-path" title="${imgSrc}">${imgSrc.length > 30 ? '...' + imgSrc.slice(-28) : imgSrc}</span>
+                    <span class="gallery-card-path" title="${imgSrc}">${imgSrc.includes('capital-vape-products') ? '☁️ Supabase Storage' : (imgSrc.length > 25 ? '...' + imgSrc.slice(-23) : imgSrc)}</span>
                   </div>
                   <div class="gallery-card-actions">
-                    <button type="button" class="btn-admin-action btn-sm" onclick="AdminService.openProductModal('${safeId}')" title="Editar producto">✏️ Editar</button>
-                    <button type="button" class="btn-admin-action btn-sm" onclick="AdminService.promptImageChange('${safeId}')" title="Cambiar foto de este producto">📷 Cambiar</button>
+                    <button type="button" class="btn-admin-action btn-sm" onclick="event.stopPropagation(); AdminService.openProductModal('${safeId}')" title="Editar producto">✏️ Editar</button>
+                    <button type="button" class="btn-admin-action btn-sm btn-gold" onclick="event.stopPropagation(); AdminService.selectStudioProduct('${safeId}')" title="Gestionar imágenes de este producto">🎨 Gestionar</button>
                   </div>
                 </div>
               `;
@@ -573,95 +679,193 @@ const AdminService = {
     `;
   },
 
+  // Compatibilidad con subida y lectura previa local
   handleImageFileUpload(event) {
+    return this.handleStudioMainUpload(event);
+  },
+
+  selectStudioProduct(prodId) {
+    this.selectedStudioProductId = prodId;
+    this.renderImagesTab(document.getElementById('adminTabContent'));
+  },
+
+  async handleStudioMainUpload(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target.result;
-      const previewArea = document.getElementById('adminImageUploadPreviewArea');
-      const previewImg = document.getElementById('adminImagePreviewImg');
-      const fileInfo = document.getElementById('adminImageFileInfo');
-
-      if (previewImg) previewImg.src = dataUrl;
-      if (fileInfo) {
-        const sizeKb = Math.round(file.size / 1024);
-        fileInfo.innerHTML = `<strong>${file.name}</strong> • ${sizeKb} KB • ${file.type}`;
-      }
-      if (previewArea) {
-        previewArea.style.display = 'grid';
-        previewArea.setAttribute('data-current-dataurl', dataUrl);
-      }
-      if (typeof Toast !== 'undefined') {
-        Toast.show(`✓ Imagen "${file.name}" cargada. Elige a qué producto asignarla.`, 'info');
-      }
-    };
-    reader.readAsDataURL(file);
-  },
-
-  saveUploadedImageToProduct(isFlavor = false) {
-    const previewArea = document.getElementById('adminImageUploadPreviewArea');
-    const targetSelect = document.getElementById('adminImageTargetProd');
-    const flavorInput = document.getElementById('adminImageFlavorName');
-
-    if (!previewArea) return;
-    const dataUrl = previewArea.getAttribute('data-current-dataurl');
-    const prodId = targetSelect ? targetSelect.value : null;
-    const flavorName = flavorInput ? flavorInput.value.trim() : '';
-
-    if (!dataUrl || !prodId) {
-      if (typeof Toast !== 'undefined') Toast.show('Por favor selecciona una imagen y un producto.', 'error');
+    const prodId = this.selectedStudioProductId;
+    if (!prodId) {
+      if (typeof Toast !== 'undefined') Toast.show('Selecciona un producto primero.', 'error');
       return;
     }
 
-    if (typeof DBService !== 'undefined') {
-      const prod = DBService.getProductById(prodId);
-      if (prod) {
-        if (isFlavor && flavorName) {
-          if (!prod.sabores) prod.sabores = [];
-          const existingFlavor = prod.sabores.find(s => (typeof s === 'string' ? s : s.nombre).toLowerCase() === flavorName.toLowerCase());
-          if (existingFlavor && typeof existingFlavor === 'object') {
-            existingFlavor.imagen = dataUrl;
-          } else {
-            prod.sabores.push({ nombre: flavorName, imagen: dataUrl, visible: true, agotado: false });
-          }
-        } else {
-          prod.image_url = dataUrl;
-          prod.imagen = dataUrl;
-        }
-        prod.updated_at = new Date().toISOString();
-        DBService.saveToCache();
+    const progressWrap = document.getElementById('studioMainProgressWrap');
+    const progressBar = document.getElementById('studioMainProgressBar');
+    const progressText = document.getElementById('studioMainProgressText');
+
+    if (progressWrap) progressWrap.style.display = 'block';
+
+    try {
+      if (typeof DBService === 'undefined') throw new Error('Servicio de base de datos no disponible.');
+
+      const result = await DBService.updateProductMainImage(prodId, file, (percent, statusText) => {
+        if (progressBar) progressBar.style.width = `${percent}%`;
+        if (progressText) progressText.textContent = `${statusText} (${percent}%)`;
+      });
+
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`✓ Imagen principal guardada permanentemente en Supabase Storage.`, 'success');
       }
-    }
 
-    if (typeof PRODUCTS_DATA !== 'undefined') {
-      const pData = PRODUCTS_DATA.find(p => p.id === prodId);
-      if (pData) {
-        if (isFlavor && flavorName) {
-          if (!pData.sabores) pData.sabores = [];
-          const sf = pData.sabores.find(s => (typeof s === 'string' ? s : s.nombre).toLowerCase() === flavorName.toLowerCase());
-          if (sf && typeof sf === 'object') {
-            sf.imagen = dataUrl;
-          } else {
-            pData.sabores.push({ nombre: flavorName, imagen: dataUrl, visible: true, agotado: false });
-          }
-        } else {
-          pData.imagen = dataUrl;
-        }
+      this.renderImagesTab(document.getElementById('adminTabContent'));
+    } catch (err) {
+      console.error('[AdminStudio] Error al subir foto principal:', err);
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Error al subir imagen: ${err.message}`, 'error');
       }
+      if (progressWrap) progressWrap.style.display = 'none';
     }
+  },
 
-    if (typeof CloudSyncService !== 'undefined') {
-      CloudSyncService.saveToCache();
+  async handleStudioGalleryUpload(event) {
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
+
+    const prodId = this.selectedStudioProductId;
+    if (!prodId) return;
+
+    const progressWrap = document.getElementById('studioGalleryProgressWrap');
+    const progressBar = document.getElementById('studioGalleryProgressBar');
+    const progressText = document.getElementById('studioGalleryProgressText');
+
+    if (progressWrap) progressWrap.style.display = 'block';
+
+    const total = files.length;
+    let completed = 0;
+
+    try {
+      for (let i = 0; i < total; i++) {
+        const file = files[i];
+        if (progressText) progressText.textContent = `Subiendo foto ${i + 1} de ${total}: "${file.name}"...`;
+        await DBService.addGalleryImage(prodId, file, (p) => {
+          const overall = Math.round(((i / total) * 100) + (p / total));
+          if (progressBar) progressBar.style.width = `${overall}%`;
+        });
+        completed++;
+      }
+
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`✓ ${completed} imagen(es) agregada(s) a la galería en Supabase Storage.`, 'success');
+      }
+
+      this.renderImagesTab(document.getElementById('adminTabContent'));
+    } catch (err) {
+      console.error('[AdminStudio] Error en galería:', err);
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Error al cargar imágenes a galería: ${err.message}`, 'error');
+      }
+      if (progressWrap) progressWrap.style.display = 'none';
     }
+  },
 
-    if (typeof Toast !== 'undefined') {
-      Toast.show(`✓ Imagen asignada exitosamente a ${prodId}.`, 'success');
-    }
+  async moveGalleryImage(prodId, imageId, direction) {
+    const prod = (typeof DBService !== 'undefined') ? DBService.getProductById(prodId) : null;
+    if (!prod || !Array.isArray(prod.galeria)) return;
 
-    previewArea.style.display = 'none';
+    const galeria = [...prod.galeria];
+    const index = galeria.findIndex(g => g.id === imageId);
+    if (index === -1) return;
+
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= galeria.length) return;
+
+    // Intercambiar
+    const temp = galeria[index];
+    galeria[index] = galeria[targetIndex];
+    galeria[targetIndex] = temp;
+
+    const orderedIds = galeria.map(g => g.id);
+    await DBService.reorderGalleryImages(prodId, orderedIds);
     this.renderImagesTab(document.getElementById('adminTabContent'));
+  },
+
+  async deleteGalleryItem(prodId, imageId) {
+    if (!confirm('¿Deseas eliminar esta fotografía de la galería?')) return;
+
+    try {
+      await DBService.deleteGalleryImage(prodId, imageId);
+      if (typeof Toast !== 'undefined') {
+        Toast.show('✓ Fotografía eliminada de la galería.', 'info');
+      }
+      this.renderImagesTab(document.getElementById('adminTabContent'));
+    } catch (err) {
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Error al eliminar: ${err.message}`, 'error');
+      }
+    }
+  },
+
+  async handleFlavorPhotoUpload(event, prodId, flavorName) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    try {
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Subiendo fotografía para sabor "${flavorName}" a Supabase Storage...`, 'info');
+      }
+      await DBService.assignFlavorImage(prodId, flavorName, file);
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`✓ Fotografía asignada a "${flavorName}" con éxito.`, 'success');
+      }
+      this.renderImagesTab(document.getElementById('adminTabContent'));
+    } catch (err) {
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Error al asignar foto: ${err.message}`, 'error');
+      }
+    }
+  },
+
+  async removeFlavorPhoto(prodId, flavorName) {
+    if (!confirm(`¿Restablecer la fotografía del sabor "${flavorName}" para usar la foto principal?`)) return;
+
+    try {
+      await DBService.assignFlavorImage(prodId, flavorName, '');
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`✓ Fotografía de "${flavorName}" eliminada.`, 'info');
+      }
+      this.renderImagesTab(document.getElementById('adminTabContent'));
+    } catch (err) {
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Error: ${err.message}`, 'error');
+      }
+    }
+  },
+
+  async removeProductMainImage(prodId) {
+    if (!confirm('¿Deseas quitar la imagen principal y restablecer el logotipo por defecto?')) return;
+
+    try {
+      await DBService.updateProductMainImage(prodId, 'assets/logo/logo.png');
+      if (typeof Toast !== 'undefined') {
+        Toast.show('✓ Imagen principal restablecida a valor por defecto.', 'info');
+      }
+      this.renderImagesTab(document.getElementById('adminTabContent'));
+    } catch (err) {
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Error: ${err.message}`, 'error');
+      }
+    }
+  },
+
+  copyImageUrl(url) {
+    if (!url) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(() => {
+        if (typeof Toast !== 'undefined') Toast.show('✓ Enlace copiado al portapapeles.', 'success');
+      });
+    } else {
+      prompt('Copia el enlace de la imagen:', url);
+    }
   },
 
   filterGallery(query) {
@@ -1235,23 +1439,45 @@ const AdminService = {
     }
   },
 
-  handleModalImageFile(event) {
+  async handleModalImageFile(event) {
     const file = event.target.files && event.target.files[0];
     if (!file) return;
+
+    const urlInput = document.getElementById('formImageUrl');
+    const previewBox = document.getElementById('formImagePreviewBox');
+    const prodId = this.activeEditingProductId || 'nuevo_producto';
+
+    // Previsualización local inmediata
     const reader = new FileReader();
     reader.onload = (e) => {
-      const dataUrl = e.target.result;
-      const urlInput = document.getElementById('formImageUrl');
-      const previewBox = document.getElementById('formImagePreviewBox');
-      if (urlInput) urlInput.value = dataUrl;
+      const localDataUrl = e.target.result;
       if (previewBox) {
-        previewBox.innerHTML = `<img src="${dataUrl}" style="width: 100%; height: 100%; object-fit: contain;">`;
-      }
-      if (typeof Toast !== 'undefined') {
-        Toast.show(`✓ Imagen "${file.name}" cargada con éxito.`, 'success');
+        previewBox.innerHTML = `<img src="${localDataUrl}" style="width: 100%; height: 100%; object-fit: contain;">`;
       }
     };
     reader.readAsDataURL(file);
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show(`Subiendo imagen "${file.name}" a Supabase Storage...`, 'info');
+    }
+
+    try {
+      if (typeof DBService !== 'undefined' && typeof DBService.uploadImageToStorage === 'function') {
+        const uploadRes = await DBService.uploadImageToStorage(file, 'products', prodId);
+        if (urlInput) urlInput.value = uploadRes.url;
+        if (previewBox) {
+          previewBox.innerHTML = `<img src="${uploadRes.url}" style="width: 100%; height: 100%; object-fit: contain;">`;
+        }
+        if (typeof Toast !== 'undefined') {
+          Toast.show(`✓ Imagen subida con éxito a Supabase Storage.`, 'success');
+        }
+      }
+    } catch (uploadErr) {
+      console.warn('[AdminService] Error al subir imagen a Supabase Storage, manteniendo preview:', uploadErr);
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`Aviso: ${uploadErr.message}`, 'error');
+      }
+    }
   },
 
   renderProductList() {

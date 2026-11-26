@@ -295,3 +295,123 @@
   box-shadow: 0 8px 24px rgba(147, 51, 234, 0.65);
   transform: scale(1.05);
 }
+
+/* ==========================================================================
+   RESPONSIVE MÓVIL PARA CATÁLOGO Y TARJETAS RETAIL
+   ========================================================================== */
+
+/* Barra de categorías con scroll táctil suave sin barras toscas */
+.category-pills {
+  display: flex !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  scrollbar-width: none !important;
+  flex-wrap: nowrap !important;
+  padding: 4px 2px 10px 2px !important;
+  gap: 8px !important;
+}
+
+.category-pills::-webkit-scrollbar {
+  display: none !important;
+}
+
+.category-pills .cat-pill-btn {
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+@media (max-width: 768px) {
+  .store-top-header.retail-header,
+  .catalog-toolbar .retail-main-head {
+    gap: 12px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .store-top-title {
+    font-size: 1.45rem !important;
+  }
+
+  .store-top-search {
+    max-width: 100% !important;
+    min-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .mode-retail .product-card,
+  #retailStoreView .product-card {
+    padding: 12px 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .mode-retail .card-image-wrapper,
+  #retailStoreView .card-image-wrapper {
+    height: 140px !important;
+    padding: 4px !important;
+  }
+
+  .mode-retail .card-image-wrapper img,
+  #retailStoreView .card-image-wrapper img {
+    max-height: 125px !important;
+  }
+
+  .card-promo-duo-badge {
+    top: 8px !important;
+    right: 8px !important;
+    font-size: 0.62rem !important;
+    padding: 3px 6px !important;
+  }
+
+  .mode-retail .card-title,
+  #retailStoreView .card-title {
+    font-size: 0.88rem !important;
+    min-height: 2.2em !important;
+    margin: 6px 0 4px 0 !important;
+    line-height: 1.2 !important;
+  }
+
+  .mode-retail .card-price-cop {
+    font-size: 1.05rem !important;
+  }
+
+  .mode-retail .card-retail-actions-row {
+    gap: 6px !important;
+    padding-top: 8px !important;
+  }
+
+  .mode-retail .card-qty-pill {
+    padding: 2px 4px !important;
+    gap: 4px !important;
+  }
+
+  .mode-retail .card-qty-pill span {
+    font-size: 0.82rem !important;
+    min-width: 14px !important;
+  }
+
+  .mode-retail .btn-add-retail-cart {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .mode-retail .product-card,
+  #retailStoreView .product-card {
+    padding: 10px 8px !important;
+  }
+
+  .mode-retail .card-image-wrapper,
+  #retailStoreView .card-image-wrapper {
+    height: 120px !important;
+  }
+
+  .mode-retail .card-image-wrapper img,
+  #retailStoreView .card-image-wrapper img {
+    max-height: 105px !important;
+  }
+
+  .mode-retail .card-price-cop {
+    font-size: 0.98rem !important;
+  }
+}

@@ -71,42 +71,101 @@
 
   <!-- ==========================================================================
        PANTALLA DE CARGA INICIAL (PRELOADER) — CAPITAL VAPE OFICIAL
-       Elegante, rápida, con tiempo de expiración seguro (máx 900ms)
+       Logo Oficial Centrado + Barra de Carga de Neón Púrpura y Oro
        ========================================================================== -->
   <div id="cvAppPreloader" class="cv-app-preloader" role="status" aria-live="polite" aria-label="Cargando Capital Vape">
-    <div class="cv-preloader-backdrop" aria-hidden="true">
-      <div class="cv-preloader-glow-ruby"></div>
-      <div class="cv-preloader-glow-gold"></div>
-    </div>
-    <div class="cv-preloader-card">
-      <div class="cv-preloader-logo-ring">
-        <div class="cv-preloader-ring-glow"></div>
-        <img src="assets/logo/logo.png" alt="Capital Vape" class="cv-preloader-logo-img">
-        <span class="cv-preloader-sparkle s1">✨</span>
-        <span class="cv-preloader-sparkle s2">⭐</span>
-        <span class="cv-preloader-sparkle s3">⚡</span>
+    <div class="cv-preloader-glow-orb purple-orb" aria-hidden="true"></div>
+    <div class="cv-preloader-glow-orb gold-orb" aria-hidden="true"></div>
+    
+    <div class="cv-preloader-content">
+      <!-- Logo Oficial con Halo Neón Pulsante -->
+      <div class="cv-preloader-logo-wrap">
+        <div class="cv-preloader-halo"></div>
+        <img src="assets/logo/logo.png" alt="Capital Vape" class="cv-preloader-logo">
       </div>
+
+      <!-- Título de Marca -->
       <div class="cv-preloader-brand">
-        <span class="brand-title">CAPITAL<span class="gold-text">VAPE</span></span>
-        <span class="edition-tag">VAPES PREMIUM & DISTRIBUCIÓN</span>
+        <h1 class="cv-preloader-title">CAPITAL <span>VAPE</span></h1>
+        <span class="cv-preloader-subtitle">DISTRIBUCIÓN &amp; DETAL OFICIAL</span>
       </div>
-      <div class="cv-preloader-progress-track">
-        <div class="cv-preloader-progress-bar"></div>
+
+      <!-- Barra de Carga High-Tech -->
+      <div class="cv-preloader-progress-box">
+        <div class="cv-preloader-progress-track">
+          <div class="cv-preloader-progress-fill" id="cvPreloaderBar"></div>
+        </div>
+        <div class="cv-preloader-meta">
+          <span class="cv-preloader-status" id="cvPreloaderStatus">Iniciando plataforma...</span>
+          <span class="cv-preloader-percent" id="cvPreloaderPercent">0%</span>
+        </div>
       </div>
-      <span class="cv-preloader-status-text">Cargando catálogo oficial...</span>
     </div>
   </div>
   <script>
     (function() {
-      function dismissPreloader() {
-        var p = document.getElementById('cvAppPreloader');
-        if (p && !p.classList.contains('is-hidden')) {
-          p.classList.add('is-hidden');
-          setTimeout(function() { try { p.remove(); } catch(e){} }, 550);
-        }
+      var bar = document.getElementById('cvPreloaderBar');
+      var percentEl = document.getElementById('cvPreloaderPercent');
+      var statusEl = document.getElementById('cvPreloaderStatus');
+      var preloader = document.getElementById('cvAppPreloader');
+      var progress = 0;
+      var dismissed = false;
+
+      function updateProgress(val, status) {
+        if (!bar) return;
+        progress = Math.min(100, Math.max(progress, val));
+        bar.style.width = progress + '%';
+        if (percentEl) percentEl.textContent = Math.round(progress) + '%';
+        if (status && statusEl) statusEl.textContent = status;
       }
-      window.addEventListener('load', function() { setTimeout(dismissPreloader, 300); });
-      setTimeout(dismissPreloader, 900);
+
+      function dismiss() {
+        if (dismissed) return;
+        dismissed = true;
+        updateProgress(100, '¡Bienvenido!');
+        setTimeout(function() {
+          if (preloader) {
+            preloader.classList.add('is-dismissed');
+            setTimeout(function() {
+              try { preloader.remove(); } catch(e) {}
+            }, 500);
+          }
+        }, 220);
+      }
+
+      var startTime = Date.now();
+      var duration = 900;
+      var interval = setInterval(function() {
+        var elapsed = Date.now() - startTime;
+        var p = Math.min(95, (elapsed / duration) * 95);
+
+        if (p < 35) {
+          updateProgress(p, 'Cargando catálogo oficial...');
+        } else if (p < 75) {
+          updateProgress(p, 'Sincronizando productos y tarifas...');
+        } else {
+          updateProgress(p, 'Preparando experiencia...');
+        }
+
+        if (elapsed >= duration) {
+          clearInterval(interval);
+          if (document.readyState === 'complete') {
+            dismiss();
+          } else {
+            window.addEventListener('load', dismiss);
+            setTimeout(dismiss, 400);
+          }
+        }
+      }, 25);
+
+      window.addEventListener('load', function() {
+        if (Date.now() - startTime >= duration) {
+          dismiss();
+        }
+      });
+
+      // Timeout de seguridad: nunca bloquear la pantalla
+      setTimeout(dismiss, 1800);
     })();
   </script>
 

@@ -678,7 +678,7 @@ const CatalogController = {
     }
 
     if (typeof Toast !== 'undefined') {
-      Toast.show('🎁 Mostrando las mejores ofertas dúo de Navidad', 'info');
+      Toast.show('✨ Mostrando las mejores promociones en combos y referencias dúo', 'info');
     }
   },
 

@@ -13,25 +13,26 @@
 :root, [data-theme="dark"] {
   --theme-mode: 'dark';
 
-  /* Midnight Dark Purple */
-  --bg-dark: #0B0410;
-  --bg-surface: #140821;
-  --bg-card: #1A0B2C;
-  --bg-card-hover: #240E3E;
-  --bg-input: #12061C;
+  /* Obsidian & Deep Surfaces */
+  --bg-dark: #050509;
+  --bg-surface: #0B0B12;
+  --bg-card: #100C18;
+  --bg-card-hover: #191224;
+  --bg-input: #0E0916;
 
   --text-primary: #FFFFFF;
-  --text-secondary: #CBB4D0;
-  --text-muted: #8F7697;
+  --text-secondary: #D1D5DB;
+  --text-muted: #9CA3AF;
 
-  /* Logo Palette */
-  --accent-purple: #D81BB7;
-  --accent-purple-deep: #8E0E78;
-  --accent-purple-glow: rgba(216, 27, 183, 0.4);
+  /* Official High-Tech Palette */
+  --accent-purple: #7928CA;
+  --accent-purple-bright: #9333EA;
+  --accent-purple-deep: #5B1E96;
+  --accent-purple-glow: rgba(147, 51, 234, 0.45);
   
-  --accent-gold: #E5B700;
-  --accent-gold-hover: #FAD02C;
-  --accent-gold-glow: rgba(229, 183, 0, 0.4);
+  --accent-gold: #D4AF37;
+  --accent-gold-hover: #FACC15;
+  --accent-gold-glow: rgba(212, 175, 55, 0.42);
   
   --accent-yellow: #FFE600;
   --accent-yellow-glow: rgba(255, 230, 0, 0.4);
@@ -39,19 +40,19 @@
   --accent-green: #10B981;
   --accent-red: #EF4444;
 
-  --border-color: rgba(216, 27, 183, 0.24);
-  --border-hover: rgba(229, 183, 0, 0.55);
-  --border-active: rgba(229, 183, 0, 0.75);
+  --border-color: rgba(147, 51, 234, 0.28);
+  --border-hover: rgba(212, 175, 55, 0.55);
+  --border-active: rgba(212, 175, 55, 0.8);
 
-  --nav-bg: rgba(11, 4, 16, 0.92);
-  --hero-gradient: radial-gradient(circle at 75% 30%, rgba(216, 27, 183, 0.28) 0%, rgba(229, 183, 0, 0.14) 45%, transparent 70%);
-  --hero-card-glow: 0 0 50px rgba(216, 27, 183, 0.35), 0 0 25px rgba(229, 183, 0, 0.3);
-  --shadow-card: 0 12px 36px rgba(0, 0, 0, 0.65);
+  --nav-bg: rgba(5, 5, 9, 0.94);
+  --hero-gradient: radial-gradient(circle at 75% 30%, rgba(147, 51, 234, 0.24) 0%, rgba(212, 175, 55, 0.12) 45%, transparent 70%);
+  --hero-card-glow: 0 0 50px rgba(147, 51, 234, 0.32), 0 0 25px rgba(212, 175, 55, 0.25);
+  --shadow-card: 0 16px 40px rgba(0, 0, 0, 0.8);
   --shadow-glow: 0 0 25px var(--accent-gold-glow);
 
-  --badge-bg: rgba(216, 27, 183, 0.18);
-  --badge-border: rgba(216, 27, 183, 0.45);
-  --badge-text: #FAD02C;
+  --badge-bg: rgba(147, 51, 234, 0.16);
+  --badge-border: rgba(147, 51, 234, 0.45);
+  --badge-text: #D4AF37;
 
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Plus Jakarta Sans', sans-serif;

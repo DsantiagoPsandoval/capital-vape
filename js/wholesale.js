@@ -403,7 +403,21 @@ const WholesaleService = {
   },
 
   isUnlocked() {
+    if (typeof DBService !== 'undefined' && typeof DBService.isWholesaleAuthenticated === 'function') {
+      return DBService.isWholesaleAuthenticated();
+    }
     return localStorage.getItem("cv_wholesale_auth") === "true" || localStorage.getItem("wholesaleAuthenticated") === "true";
+  },
+
+  async verifyCodeAsync(inputCode) {
+    if (typeof DBService !== 'undefined' && typeof DBService.verifyWholesalePassword === 'function') {
+      const res = await DBService.verifyWholesalePassword(inputCode);
+      return {
+        success: res.ok,
+        message: res.ok ? res.message : res.error
+      };
+    }
+    return this.verifyCode(inputCode);
   },
 
   verifyCode(inputCode) {
@@ -415,9 +429,12 @@ const WholesaleService = {
       };
     }
 
-    if (clean.toUpperCase() === WHOLESALE_PASSWORD) {
+    if (clean.toUpperCase() === WHOLESALE_PASSWORD.toUpperCase()) {
+      const exp = Date.now() + 24 * 3600 * 1000;
       localStorage.setItem("cv_wholesale_auth", "true");
       localStorage.setItem("wholesaleAuthenticated", "true");
+      localStorage.setItem("cv_wholesale_auth_session", "cv_ws_session_" + Date.now());
+      localStorage.setItem("cv_wholesale_auth_exp", String(exp));
       return {
         success: true,
         message: "✓ ¡Acceso mayorista concedido con éxito!"
@@ -431,9 +448,17 @@ const WholesaleService = {
   },
 
   logout() {
-    localStorage.removeItem("cv_wholesale_auth");
-    localStorage.removeItem("wholesaleAuthenticated");
-    localStorage.removeItem("cv_wholesale_auth_session");
+    if (typeof DBService !== 'undefined' && typeof DBService.wholesaleLogout === 'function') {
+      DBService.wholesaleLogout();
+    } else {
+      localStorage.removeItem("cv_wholesale_auth");
+      localStorage.removeItem("wholesaleAuthenticated");
+      localStorage.removeItem("cv_wholesale_auth_session");
+      localStorage.removeItem("cv_wholesale_auth_exp");
+    }
+    if (typeof StoreMode !== 'undefined' && typeof StoreMode.onWholesaleLogout === 'function') {
+      StoreMode.onWholesaleLogout();
+    }
   },
 
   formatCOP(val) {

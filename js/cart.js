@@ -98,10 +98,20 @@ const Cart = {
   },
 
   saveToStorage() {
-    localStorage.setItem('cv_cart_unified', JSON.stringify(this.items));
-    localStorage.setItem('cv_cart_items', JSON.stringify(this.items));
-    localStorage.setItem('capital_vape_cart', JSON.stringify(this.items));
-    localStorage.setItem('cv_shipping_dest', this.destination);
+    // Carritos independientes con persistencia dedicada
+    const detalItems = this.getDetalItems();
+    const wsItems = this.getWholesaleItems();
+
+    try {
+      localStorage.setItem('cv_cart_retail_v3', JSON.stringify(detalItems));
+      localStorage.setItem('cv_cart_wholesale_v3', JSON.stringify(wsItems));
+      localStorage.setItem('cv_cart_unified', JSON.stringify(this.items));
+      localStorage.setItem('cv_cart_items', JSON.stringify(this.items));
+      localStorage.setItem('capital_vape_cart', JSON.stringify(this.items));
+      localStorage.setItem('cv_shipping_dest', this.destination);
+    } catch (e) {
+      console.warn('[Cart] Error al guardar en localStorage:', e);
+    }
   },
 
   setDestination(dest) {
@@ -643,12 +653,19 @@ const Cart = {
   },
 
   getSubtotal() {
+    const isRetail = (typeof StoreMode !== 'undefined') ? StoreMode.getMode() === 'retail' : true;
+    if (typeof StoreMode !== 'undefined') {
+      return isRetail ? this.getDetalSubtotal() : this.getWholesaleSubtotal();
+    }
     return this.getDetalSubtotal() + this.getWholesaleSubtotal();
   },
 
   getTotalCount() {
     const detalCount = this.getDetalItems().reduce((sum, item) => sum + (Number(item.qty) || 0), 0);
     const wsCount = this.getWholesaleTotalQty();
+    if (typeof StoreMode !== 'undefined') {
+      return StoreMode.getMode() === 'retail' ? detalCount : wsCount;
+    }
     return detalCount + wsCount;
   },
 
@@ -831,20 +848,41 @@ const Cart = {
       }
     }
 
-    // Items list (Strictly Separated DETAL and MAYORISTA)
+    // Items list (Independent Carts for Retail and Wholesale)
+    const currentMode = (typeof StoreMode !== 'undefined') ? StoreMode.getMode() : 'retail';
+    const isRetailMode = (currentMode === 'retail');
+
+    // Actualizar título del drawer según modalidad
+    const drawerTitleEl = document.getElementById('cartDrawerTitle');
+    if (drawerTitleEl) {
+      drawerTitleEl.innerHTML = isRetailMode
+        ? '<span style="color:#C084FC;">🛒</span> Mi Carrito — Tienda Retail'
+        : '<span style="color:#FACC15;">📦</span> Mi Pedido — Catálogo Mayorista';
+    }
+
     if (itemsContainer) {
-      if (this.items.length === 0) {
-        itemsContainer.innerHTML = `
+      const activeItems = isRetailMode ? detalItems : wsItems;
+
+      if (activeItems.length === 0) {
+        itemsContainer.innerHTML = isRetailMode ? `
           <div class="cart-empty-state">
             <img src="assets/icons/carrito.png" class="empty-cart-img" alt="Carrito Vacío">
-            <h3>Tu carrito está vacío</h3>
-            <p>Explora nuestro catálogo al detal o ingresa a la sección mayorista para armar tu pedido.</p>
+            <h3>Tu carrito retail está vacío</h3>
+            <p>Explora nuestro catálogo al detal con las mejores referencias importadas.</p>
             <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
               <button type="button" class="btn btn-primary btn-sm" onclick="Cart.closeDrawer(); window.location.hash = '#catalogo';">
-                Ver Catálogo Detal
+                Ver Catálogo Retail
               </button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="Cart.closeDrawer(); window.location.hash = '#mayoristas';">
-                Ver Mayoristas
+            </div>
+          </div>
+        ` : `
+          <div class="cart-empty-state">
+            <span style="font-size: 3rem;">📦</span>
+            <h3>Tu pedido mayorista está vacío</h3>
+            <p>Selecciona referencias por paquetes (+5, +10, +20, +50, +100 uds) para armar tu pedido.</p>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="Cart.closeDrawer(); window.location.hash = '#mayoristas';">
+                Ver Catálogo Mayorista
               </button>
             </div>
           </div>
@@ -852,8 +890,8 @@ const Cart = {
       } else {
         let html = '';
 
-        // SECTION 1: DETAL ITEMS
-        if (detalItems.length > 0) {
+        // SECCIÓN RETAIL (Solo cuando está en modo Retail)
+        if (isRetailMode && detalItems.length > 0) {
           html += `
             <div class="cart-section-block detal-block">
               <div class="cart-section-header">
@@ -954,7 +992,7 @@ const Cart = {
         }
 
         // SECTION 2: MAYORISTA ITEMS (AGRUPADOS POR REFERENCIA CON DETALLE DE SABORES)
-        if (wsItems.length > 0) {
+        if (!isRetailMode && wsItems.length > 0) {
           // Agrupar items por referencia de producto (productId)
           const wsGroups = {};
           wsItems.forEach(item => {
@@ -978,7 +1016,7 @@ const Cart = {
             <div class="cart-section-block wholesale-block">
               <div class="cart-section-header wholesale-header">
                 <div class="ws-header-tag-wrap">
-                  <span class="cart-sec-tag wholesale-tag">📦 MAYORISTA</span>
+                  <span class="cart-sec-tag wholesale-tag">📦 PEDIDO MAYORISTA</span>
                   <span class="ws-header-tier-pill">${totalWsQty} uds totales</span>
                 </div>
                 <span class="cart-sec-subtotal">Subtotal: ${this.formatCOP(wsSubtotal)}</span>
@@ -1099,15 +1137,14 @@ const Cart = {
 
     // Drawer Footer
     if (footerContainer) {
-      if (this.items.length === 0) {
+      const activeItems = isRetailMode ? detalItems : wsItems;
+      if (activeItems.length === 0) {
         footerContainer.innerHTML = '';
-      } else {
+      } else if (isRetailMode) {
         const destName = shipping.isSoacha ? 'Soacha' : (shipping.isBogota ? 'Bogotá' : 'Nacional');
         let shippingLineContent = '';
         if (shipping.isSoacha) {
           shippingLineContent = `${this.formatCOP(shipping.cost)}`;
-        } else if (shipping.isWholesaleOnly) {
-          shippingLineContent = `<span style="color: #F59E0B; font-size: 0.82rem;">WhatsApp 3133572726 (A coordinar)</span>`;
         } else if (shipping.isFree) {
           shippingLineContent = `<strong class="text-green">GRATIS</strong>`;
         } else {
@@ -1117,55 +1154,79 @@ const Cart = {
         const promoDetails = this.getPromotionDetails();
         const detalNormalSubtotal = this.getDetalNormalSubtotal();
         const detalFinalSubtotal = this.getDetalSubtotal();
+        const retailTotal = detalFinalSubtotal + (shipping.cost || 0);
 
         footerContainer.innerHTML = `
           <div class="cart-summary-box">
-            ${detalItems.length > 0 ? `
-              <div class="summary-line">
-                <span>Subtotal Normal Detal (${detalItems.reduce((s,i)=>s+i.qty, 0)} uds):</span>
-                <span>${this.formatCOP(detalNormalSubtotal)}</span>
+            <div class="summary-line">
+              <span>Subtotal Normal Detal (${detalItems.reduce((s,i)=>s+i.qty, 0)} uds):</span>
+              <span>${this.formatCOP(detalNormalSubtotal)}</span>
+            </div>
+            ${promoDetails.hasPromo ? `
+              <div class="summary-line promo-discount-line" style="color: #10B981; font-weight: 600;">
+                <span>🔥 PROMOCIÓN COMBINADA:</span>
+                <span>-${this.formatCOP(promoDetails.discount)}</span>
               </div>
-              ${promoDetails.hasPromo ? `
-                <div class="summary-line promo-discount-line" style="color: #10B981; font-weight: 600;">
-                  <span>🔥 PROMOCIÓN COMBINADA:</span>
-                  <span>-${this.formatCOP(promoDetails.discount)}</span>
+              <div class="promo-discount-card-mini" style="background: rgba(16, 185, 129, 0.08); border: 1px dashed rgba(16, 185, 129, 0.35); border-radius: 8px; padding: 8px 10px; margin: 4px 0 8px 0; font-size: 0.8rem; color: #E2E8F0;">
+                <div style="color: #34D399; font-weight: 600; margin-bottom: 2px;">
+                  ✨ Ahorro aplicado: ${this.formatCOP(promoDetails.discount)}
                 </div>
-                <div class="promo-discount-card-mini" style="background: rgba(16, 185, 129, 0.08); border: 1px dashed rgba(16, 185, 129, 0.35); border-radius: 8px; padding: 8px 10px; margin: 4px 0 8px 0; font-size: 0.8rem; color: #E2E8F0;">
-                  <div style="color: #34D399; font-weight: 600; margin-bottom: 2px;">
-                    ✨ Ahorro aplicado: ${this.formatCOP(promoDetails.discount)}
-                  </div>
-                  <div style="font-size: 0.76rem; color: #94A3B8;">
-                    Menor ahorro entre tus referencias elegibles: <strong>${promoDetails.selectedRef.nombre}</strong> (${this.formatCOP(promoDetails.discount)}).
-                  </div>
+                <div style="font-size: 0.76rem; color: #94A3B8;">
+                  Menor ahorro entre tus referencias elegibles: <strong>${promoDetails.selectedRef.nombre}</strong> (${this.formatCOP(promoDetails.discount)}).
                 </div>
-                <div class="summary-line" style="font-weight: 600;">
-                  <span>Subtotal Detal (con Ahorro):</span>
-                  <span>${this.formatCOP(detalFinalSubtotal)}</span>
-                </div>
-              ` : (promoDetails.totalEligibleQty === 1 ? `
-                <div class="promo-hint-notice" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 6px 10px; margin: 4px 0 8px 0; font-size: 0.78rem; color: #FBBF24;">
-                  💡 Agrega 1 vape más en promo para activar el <strong>descuento global combinado</strong>.
-                </div>
-              ` : '')}
-            ` : ''}
-            ${wsItems.length > 0 ? `
-              <div class="summary-line ws-summary-line">
-                <span>Subtotal Mayorista (${totalWsQty} uds):</span>
-                <span>${this.formatCOP(wsSubtotal)}</span>
               </div>
-            ` : ''}
+              <div class="summary-line" style="font-weight: 600;">
+                <span>Subtotal Detal (con Ahorro):</span>
+                <span>${this.formatCOP(detalFinalSubtotal)}</span>
+              </div>
+            ` : (promoDetails.totalEligibleQty === 1 ? `
+              <div class="promo-hint-notice" style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 8px; padding: 6px 10px; margin: 4px 0 8px 0; font-size: 0.78rem; color: #FBBF24;">
+                💡 Agrega 1 vape más en promo para activar el <strong>descuento global combinado</strong>.
+              </div>
+            ` : '')}
             <div class="summary-line">
               <span>Envío (${destName}):</span>
               <span>${shippingLineContent}</span>
             </div>
             <div class="summary-line total-line">
               <span>Total Final a Pagar:</span>
-              <span class="total-amount">${this.formatCOP(totalGeneral)}</span>
+              <span class="total-amount">${this.formatCOP(retailTotal)}</span>
             </div>
           </div>
           <div class="cart-footer-btns">
             <button type="button" class="btn btn-primary btn-block btn-checkout" onclick="CheckoutController.openModal()">
-              <span>Proceder al Checkout ➔</span>
+              <span>Proceder al Checkout (Retail) ➔</span>
+            </button>
+            <div class="cart-secondary-actions">
+              <button type="button" class="btn-link" onclick="Cart.closeDrawer()">Continuar Comprando</button>
+              <button type="button" class="btn-link text-muted" onclick="Cart.clearCart()">Vaciar Carrito</button>
+            </div>
+          </div>
+        `;
+      } else {
+        // Modalidad MAYORISTA
+        footerContainer.innerHTML = `
+          <div class="cart-summary-box">
+            <div class="summary-line ws-summary-line" style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 8px;">
+              <span>Total Unidades Mayoristas:</span>
+              <strong style="color: #FACC15;">${totalWsQty} Uds</strong>
+            </div>
+            <div class="summary-line ws-summary-line">
+              <span>Subtotal Pedido Mayorista:</span>
+              <span style="font-weight: 700; color: #FACC15;">${this.formatCOP(wsSubtotal)}</span>
+            </div>
+            <div class="summary-line">
+              <span>Despacho Logístico:</span>
+              <span style="color: #F59E0B; font-size: 0.82rem;">A coordinar vía WhatsApp</span>
+            </div>
+            <div class="summary-line total-line" style="border-top: 1px solid rgba(212, 175, 55, 0.35); padding-top: 10px; margin-top: 6px;">
+              <span>Total Mayorista:</span>
+              <span class="total-amount" style="color: #FACC15;">${this.formatCOP(wsSubtotal)}</span>
+            </div>
+          </div>
+          <div class="cart-footer-btns">
+            <button type="button" class="btn btn-primary btn-block btn-checkout" style="background: linear-gradient(135deg, #FACC15 0%, #D4AF37 100%); color: #07040A; font-weight: 800;" onclick="CheckoutController.openModal()">
+              <span>Confirmar Pedido Mayorista ➔</span>
             </button>
             <div class="cart-secondary-actions">
               <button type="button" class="btn-link" onclick="Cart.closeDrawer()">Continuar Comprando</button>

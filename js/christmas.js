@@ -1817,16 +1817,23 @@
   `;
 
   function applyFestiveSnowCapsToCards() {
+    // Detalles navideños sutiles y discretos EXCLUSIVAMENTE en la sección Mayorista
     if (window.innerWidth && window.innerWidth < 768) return;
-    const cards = document.querySelectorAll('.product-card');
-    if (!cards || cards.length === 0) return;
+    const wsGrid = document.getElementById('wholesaleCatalogGrid') || document.querySelector('.wholesale-section');
+    if (!wsGrid) return;
 
-    cards.forEach((card, index) => {
+    // Limpiar en cualquier tarjeta fuera de mayoristas para garantizar pureza en retail
+    document.querySelectorAll('#catalogGrid .xmas-card-snow-cap').forEach(el => el.remove());
+
+    const wsCards = wsGrid.querySelectorAll('.product-card');
+    if (!wsCards || wsCards.length === 0) return;
+
+    wsCards.forEach((card, index) => {
       const existing = card.querySelector('.xmas-card-snow-cap');
       if (existing) existing.remove();
 
-      // Aplicar nieve acumulada en las 3 primeras referencias nuevas y en 1 de cada 4 tarjetas
-      if (index < 3 || index % 4 === 0) {
+      // Detalles discretos de temporada en tarjetas mayoristas destacadas
+      if (index === 0 || index === 2) {
         const cap = document.createElement('div');
         cap.className = 'xmas-card-snow-cap';
         cap.setAttribute('aria-hidden', 'true');
@@ -1845,7 +1852,9 @@
     }
 
     let instance = null;
-    if (isWebGLSupported() && typeof THREE !== 'undefined') {
+    const canvas = document.getElementById('christmasCanvas');
+    // Solo inicializar Three.js si el canvas existe explícitamente en el DOM
+    if (canvas && isWebGLSupported() && typeof THREE !== 'undefined') {
       try {
         instance = new ChristmasExperienceController();
         document.body.classList.remove('no-webgl');
@@ -1859,15 +1868,15 @@
 
     applyFestiveSnowCapsToCards();
 
-    // Observar cambios en la grilla del catálogo para mantener los detalles de nieve
-    const grids = document.querySelectorAll('.products-grid');
-    if (grids.length > 0 && window.MutationObserver) {
+    // Observar cambios en la grilla mayorista para mantener los detalles discretos
+    const wsGrid = document.getElementById('wholesaleCatalogGrid');
+    if (wsGrid && window.MutationObserver) {
       let debounce = null;
       const obs = new MutationObserver(() => {
         clearTimeout(debounce);
         debounce = setTimeout(applyFestiveSnowCapsToCards, 120);
       });
-      grids.forEach((g) => obs.observe(g, { childList: true }));
+      obs.observe(wsGrid, { childList: true });
     }
 
     window.ChristmasExperience = {

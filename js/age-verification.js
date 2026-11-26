@@ -175,8 +175,13 @@ const AgeVerification = (function() {
         unlockScroll();
         stopAmbientCanvas();
 
+        // Paso inmediato a PANTALLA 2: SELECCIÓN DE TIENDA
+        if (typeof StoreMode !== 'undefined') {
+          StoreMode.showSelector();
+        }
+
         // Si el usuario intentó acceder a una sección con hash (#catalogo, #mayoristas, etc.)
-        if (window.location.hash) {
+        if (window.location.hash && window.location.hash !== '#inicio') {
           try {
             const target = document.querySelector(window.location.hash);
             if (target) {
@@ -195,6 +200,9 @@ const AgeVerification = (function() {
       }, 400);
     } else {
       unlockScroll();
+      if (typeof StoreMode !== 'undefined') {
+        StoreMode.showSelector();
+      }
     }
   }
 

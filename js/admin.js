@@ -12,10 +12,12 @@ const AdminService = {
 
   currentCategory: 'all',
   currentStatusFilter: 'all', // 'all' | 'disponible' | 'agotado' | 'descontinuado' | 'oculto'
+  currentTab: 'productos', // 'dashboard' | 'productos' | 'imagenes' | 'precios-retail' | 'precios-mayoristas' | 'inventario' | 'pedidos' | 'configuracion'
   searchQuery: '',
   openAccordions: new Set(),
   activeHistoryProductId: null,
   activeEditingProductId: null,
+  uploadedImages: [],
   draftOverrides: {
     products: {},
     wholesale: {}
@@ -197,11 +199,94 @@ const AdminService = {
     this.renderProductList();
   },
 
+  setTab(tabId) {
+    this.currentTab = tabId;
+    this.renderCurrentTab();
+    document.querySelectorAll('.admin-nav-tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-tab') === tabId);
+    });
+  },
+
   renderDashboard() {
     const body = document.getElementById('adminDashboardBody');
     if (!body) return;
 
     body.innerHTML = `
+      <!-- 8 PESTAÑAS DE ADMINISTRACIÓN ORGANIZADAS -->
+      <div class="admin-main-nav-tabs">
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'dashboard' ? 'active' : ''}" data-tab="dashboard" onclick="AdminService.setTab('dashboard')">
+          📊 Dashboard
+        </button>
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'productos' ? 'active' : ''}" data-tab="productos" onclick="AdminService.setTab('productos')">
+          📦 Gestión de Productos
+        </button>
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'imagenes' ? 'active' : ''}" data-tab="imagenes" onclick="AdminService.setTab('imagenes')">
+          🖼️ Gestión de Imágenes
+        </button>
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'precios-retail' ? 'active' : ''}" data-tab="precios-retail" onclick="AdminService.setTab('precios-retail')">
+          🏷️ Precios Retail
+        </button>
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'precios-mayoristas' ? 'active' : ''}" data-tab="precios-mayoristas" onclick="AdminService.setTab('precios-mayoristas')">
+          💼 Precios Mayoristas
+        </button>
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'inventario' ? 'active' : ''}" data-tab="inventario" onclick="AdminService.setTab('inventario')">
+          📋 Inventario
+        </button>
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'pedidos' ? 'active' : ''}" data-tab="pedidos" onclick="AdminService.setTab('pedidos')">
+          🛒 Pedidos y Ventas
+        </button>
+        <button type="button" class="admin-nav-tab-btn ${this.currentTab === 'configuracion' ? 'active' : ''}" data-tab="configuracion" onclick="AdminService.setTab('configuracion')">
+          ⚙️ Configuración
+        </button>
+      </div>
+
+      <div id="adminTabContent" class="admin-tab-content">
+        <!-- Rendered by renderCurrentTab() -->
+      </div>
+    `;
+
+    this.renderCurrentTab();
+  },
+
+  renderCurrentTab() {
+    const container = document.getElementById('adminTabContent');
+    if (!container) return;
+
+    switch (this.currentTab) {
+      case 'dashboard':
+        this.renderDashboardHome(container);
+        break;
+      case 'productos':
+        this.renderProductsTab(container);
+        break;
+      case 'imagenes':
+        this.renderImagesTab(container);
+        break;
+      case 'precios-retail':
+        this.renderRetailPricesTab(container);
+        break;
+      case 'precios-mayoristas':
+        this.renderWholesalePricesTab(container);
+        break;
+      case 'inventario':
+        this.renderInventoryTab(container);
+        break;
+      case 'pedidos':
+        this.renderOrdersTab(container);
+        break;
+      case 'configuracion':
+        this.renderConfigTab(container);
+        break;
+      default:
+        this.renderProductsTab(container);
+    }
+  },
+
+  renderProductsTab(container) {
+    if (!container) container = document.getElementById('adminTabContent');
+    if (!container) return;
+
+    container.innerHTML = `
       <div class="admin-toolbar">
         <div style="display: flex; gap: 10px; width: 100%; flex-wrap: wrap; align-items: center; justify-content: space-between;">
           <div class="admin-search-box" style="flex: 1; min-width: 250px;">
@@ -247,6 +332,926 @@ const AdminService = {
     `;
 
     this.renderProductList();
+  },
+
+  // =========================================================================
+  // TAB 1: DASHBOARD EJECUTIVO
+  // =========================================================================
+  renderDashboardHome(container) {
+    let prods = [];
+    if (typeof DBService !== 'undefined' && DBService.products) {
+      prods = DBService.products;
+    } else if (typeof PRODUCTS_DATA !== 'undefined') {
+      prods = PRODUCTS_DATA;
+    }
+
+    const totalProds = prods.length;
+    const availableProds = prods.filter(p => !p.agotado && p.status !== 'agotado' && p.status !== 'descontinuado').length;
+    const outStockProds = prods.filter(p => p.agotado || p.status === 'agotado').length;
+    const totalUnits = prods.reduce((sum, p) => sum + (Number(p.stock) || 50), 0);
+    const totalRetailVal = prods.reduce((sum, p) => sum + ((Number(p.price) || Number(p.precio) || 40000) * (Number(p.stock) || 50)), 0);
+    const avgRetailPrice = totalProds > 0 ? Math.round(totalRetailVal / Math.max(1, totalUnits)) : 0;
+
+    let recentHistory = [];
+    if (typeof DBService !== 'undefined' && DBService.price_history) {
+      recentHistory = [...DBService.price_history].reverse().slice(0, 5);
+    }
+
+    container.innerHTML = `
+      <div class="admin-dash-home-wrapper">
+        <!-- Tarjetas de Métricas Ejecutivas -->
+        <div class="admin-kpi-grid">
+          <div class="admin-kpi-card">
+            <div class="kpi-icon">📦</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Total Referencias</span>
+              <strong class="kpi-value">${totalProds}</strong>
+              <small class="kpi-sub">${availableProds} activas en tienda</small>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="kpi-icon">🟢</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Disponibles</span>
+              <strong class="kpi-value text-green">${availableProds}</strong>
+              <small class="kpi-sub">${outStockProds} agotadas</small>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="kpi-icon">📊</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Stock Total Unidades</span>
+              <strong class="kpi-value text-gold">${totalUnits.toLocaleString('es-CO')} uds</strong>
+              <small class="kpi-sub">En inventario consolidado</small>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="kpi-icon">💰</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Valor Estimado Inventario</span>
+              <strong class="kpi-value text-purple">$${totalRetailVal.toLocaleString('es-CO')}</strong>
+              <small class="kpi-sub">Precio promedio: $${avgRetailPrice.toLocaleString('es-CO')}</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Accesos Rápidos de Administración -->
+        <div class="admin-quick-actions-box">
+          <h4 class="admin-section-heading">⚡ Accesos Directos de Gestión</h4>
+          <div class="admin-quick-grid">
+            <button type="button" class="admin-quick-btn" onclick="AdminService.openProductModal()">
+              <span>➕</span>
+              <div>
+                <strong>Nuevo Producto</strong>
+                <small>Crear referencia con precios y sabores</small>
+              </div>
+            </button>
+            <button type="button" class="admin-quick-btn" onclick="AdminService.setTab('imagenes')">
+              <span>🖼️</span>
+              <div>
+                <strong>Gestor de Imágenes</strong>
+                <small>Subir fotos locales y vista previa</small>
+              </div>
+            </button>
+            <button type="button" class="admin-quick-btn" onclick="AdminService.setTab('precios-retail')">
+              <span>🏷️</span>
+              <div>
+                <strong>Precios Retail</strong>
+                <small>Edición rápida de precios al detal y dúo</small>
+              </div>
+            </button>
+            <button type="button" class="admin-quick-btn" onclick="AdminService.setTab('precios-mayoristas')">
+              <span>💼</span>
+              <div>
+                <strong>Precios Mayoristas</strong>
+                <small>Edición de escalas de 5 a 100+ uds</small>
+              </div>
+            </button>
+            <button type="button" class="admin-quick-btn" onclick="AdminService.setTab('inventario')">
+              <span>📋</span>
+              <div>
+                <strong>Control de Stock</strong>
+                <small>Alertas de unidades bajas y estados</small>
+              </div>
+            </button>
+            <button type="button" class="admin-quick-btn" onclick="AdminService.setTab('pedidos')">
+              <span>🛒</span>
+              <div>
+                <strong>Canales de Pedidos</strong>
+                <small>WhatsApp oficial y exportaciones</small>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Historial Reciente de Auditoría -->
+        <div class="admin-recent-audit-box">
+          <div class="admin-section-header-row">
+            <h4 class="admin-section-heading">📜 Cambios Recientes de Precios e Inventario</h4>
+            <button type="button" class="btn-admin-action" onclick="AdminService.setTab('productos')">Ver Catálogo Completo ➔</button>
+          </div>
+          ${recentHistory.length === 0 ? `
+            <p style="color: var(--text-muted); font-size: 0.85rem;">No se registran cambios recientes de auditoría.</p>
+          ` : `
+            <div class="admin-mini-history-table">
+              ${recentHistory.map(h => `
+                <div class="mini-hist-row">
+                  <span class="mini-hist-time">${h.fullDateTime || h.created_at || 'Reciente'}</span>
+                  <strong class="mini-hist-prod">${h.product_id}</strong>
+                  <span class="mini-hist-change">${h.change_type || 'Ajuste'}</span>
+                  <span class="mini-hist-price">${h.diffPriceFormatted || '-'}</span>
+                  <span class="mini-hist-user">👤 ${h.admin_user || 'Admin'}</span>
+                </div>
+              `).join('')}
+            </div>
+          `}
+        </div>
+      </div>
+    `;
+  },
+
+  // =========================================================================
+  // TAB 3: GESTIÓN DE IMÁGENES (SUBIDA DESDE DISPOSITIVO Y VISTA PREVIA)
+  // =========================================================================
+  renderImagesTab(container) {
+    let prods = [];
+    if (typeof DBService !== 'undefined' && DBService.products) {
+      prods = DBService.products;
+    } else if (typeof PRODUCTS_DATA !== 'undefined') {
+      prods = PRODUCTS_DATA;
+    }
+
+    container.innerHTML = `
+      <div class="admin-images-tab-wrapper">
+        <div class="admin-section-header-box">
+          <div>
+            <h3 class="admin-tab-title">🖼️ Gestión y Carga de Imágenes</h3>
+            <p class="admin-tab-subtitle">Sube fotografías directamente desde tu computador o celular, con vista previa en vivo y asignación a productos o sabores.</p>
+          </div>
+        </div>
+
+        <!-- ZONA DE CARGA DE ARCHIVO LOCAL -->
+        <div class="admin-image-upload-card">
+          <div class="admin-upload-dropzone" onclick="document.getElementById('adminImageUploaderInput').click()">
+            <input type="file" id="adminImageUploaderInput" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="AdminService.handleImageFileUpload(event)">
+            <div class="upload-dropzone-icon">📁</div>
+            <h4 class="upload-dropzone-title">Haz clic aquí para seleccionar una imagen desde tu dispositivo</h4>
+            <p class="upload-dropzone-subtitle">Archivos permitidos: PNG, JPG, JPEG, WEBP. Vista previa instantánea sin recargar la página.</p>
+          </div>
+
+          <!-- Vista Previa y Asignación de Imagen -->
+          <div id="adminImageUploadPreviewArea" class="admin-upload-preview-area" style="display: none;">
+            <div class="preview-box-col">
+              <div class="preview-img-container">
+                <img id="adminImagePreviewImg" src="" alt="Vista previa">
+              </div>
+              <div id="adminImageFileInfo" class="preview-file-info"></div>
+            </div>
+
+            <div class="preview-assign-col">
+              <h4 style="color: var(--accent-gold); margin: 0 0 10px;">Asignar Imagen al Catálogo:</h4>
+              <div class="admin-form-group">
+                <label for="adminImageTargetProd">Selecciona el Producto de Destino *:</label>
+                <select id="adminImageTargetProd" class="admin-input-text">
+                  ${prods.map(p => `<option value="${p.id || p.nombre}">${p.name || p.nombre} (${p.brand || 'Vape'})</option>`).join('')}
+                </select>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="adminImageFlavorName">Nombre de Sabor / Variante (Opcional):</label>
+                <input type="text" id="adminImageFlavorName" class="admin-input-text" placeholder="Ej: Miami Mint, Blue Razz Ice...">
+              </div>
+
+              <div class="preview-actions-row">
+                <button type="button" class="btn-admin-create-prod" onclick="AdminService.saveUploadedImageToProduct(false)">
+                  📸 Asignar como Foto Principal
+                </button>
+                <button type="button" class="btn-admin-action" onclick="AdminService.saveUploadedImageToProduct(true)">
+                  🍓 Asignar a Sabor Específico
+                </button>
+                <button type="button" class="btn-admin-secondary" onclick="document.getElementById('adminImageUploadPreviewArea').style.display = 'none';">
+                  ✕ Cancelar
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- GALERÍA DE IMÁGENES DEL CATÁLOGO -->
+        <div class="admin-catalog-gallery-box">
+          <div class="gallery-header-row">
+            <h4>📦 Galería de Referencias Existentes (${prods.length} productos)</h4>
+            <div class="gallery-search-box">
+              <input type="text" class="admin-input-search" placeholder="🔍 Filtrar fotos por referencia..." oninput="AdminService.filterGallery(this.value)">
+            </div>
+          </div>
+
+          <div class="admin-gallery-grid" id="adminCatalogGalleryGrid">
+            ${prods.map(p => {
+              const imgSrc = p.image_url || p.imagen || 'assets/logo/logo.png';
+              const name = p.name || p.nombre;
+              const safeId = p.id;
+              return `
+                <div class="admin-gallery-card" data-gallery-name="${name.toLowerCase()}">
+                  <div class="gallery-card-img-wrap">
+                    <img src="${imgSrc}" alt="${name}" loading="lazy" onerror="this.src='assets/logo/logo.png'">
+                  </div>
+                  <div class="gallery-card-info">
+                    <strong class="gallery-card-name">${name}</strong>
+                    <span class="gallery-card-path" title="${imgSrc}">${imgSrc.length > 30 ? '...' + imgSrc.slice(-28) : imgSrc}</span>
+                  </div>
+                  <div class="gallery-card-actions">
+                    <button type="button" class="btn-admin-action btn-sm" onclick="AdminService.openProductModal('${safeId}')" title="Editar producto">✏️ Editar</button>
+                    <button type="button" class="btn-admin-action btn-sm" onclick="AdminService.promptImageChange('${safeId}')" title="Cambiar foto de este producto">📷 Cambiar</button>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  handleImageFileUpload(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const previewArea = document.getElementById('adminImageUploadPreviewArea');
+      const previewImg = document.getElementById('adminImagePreviewImg');
+      const fileInfo = document.getElementById('adminImageFileInfo');
+
+      if (previewImg) previewImg.src = dataUrl;
+      if (fileInfo) {
+        const sizeKb = Math.round(file.size / 1024);
+        fileInfo.innerHTML = `<strong>${file.name}</strong> • ${sizeKb} KB • ${file.type}`;
+      }
+      if (previewArea) {
+        previewArea.style.display = 'grid';
+        previewArea.setAttribute('data-current-dataurl', dataUrl);
+      }
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`✓ Imagen "${file.name}" cargada. Elige a qué producto asignarla.`, 'info');
+      }
+    };
+    reader.readAsDataURL(file);
+  },
+
+  saveUploadedImageToProduct(isFlavor = false) {
+    const previewArea = document.getElementById('adminImageUploadPreviewArea');
+    const targetSelect = document.getElementById('adminImageTargetProd');
+    const flavorInput = document.getElementById('adminImageFlavorName');
+
+    if (!previewArea) return;
+    const dataUrl = previewArea.getAttribute('data-current-dataurl');
+    const prodId = targetSelect ? targetSelect.value : null;
+    const flavorName = flavorInput ? flavorInput.value.trim() : '';
+
+    if (!dataUrl || !prodId) {
+      if (typeof Toast !== 'undefined') Toast.show('Por favor selecciona una imagen y un producto.', 'error');
+      return;
+    }
+
+    if (typeof DBService !== 'undefined') {
+      const prod = DBService.getProductById(prodId);
+      if (prod) {
+        if (isFlavor && flavorName) {
+          if (!prod.sabores) prod.sabores = [];
+          const existingFlavor = prod.sabores.find(s => (typeof s === 'string' ? s : s.nombre).toLowerCase() === flavorName.toLowerCase());
+          if (existingFlavor && typeof existingFlavor === 'object') {
+            existingFlavor.imagen = dataUrl;
+          } else {
+            prod.sabores.push({ nombre: flavorName, imagen: dataUrl, visible: true, agotado: false });
+          }
+        } else {
+          prod.image_url = dataUrl;
+          prod.imagen = dataUrl;
+        }
+        prod.updated_at = new Date().toISOString();
+        DBService.saveToCache();
+      }
+    }
+
+    if (typeof PRODUCTS_DATA !== 'undefined') {
+      const pData = PRODUCTS_DATA.find(p => p.id === prodId);
+      if (pData) {
+        if (isFlavor && flavorName) {
+          if (!pData.sabores) pData.sabores = [];
+          const sf = pData.sabores.find(s => (typeof s === 'string' ? s : s.nombre).toLowerCase() === flavorName.toLowerCase());
+          if (sf && typeof sf === 'object') {
+            sf.imagen = dataUrl;
+          } else {
+            pData.sabores.push({ nombre: flavorName, imagen: dataUrl, visible: true, agotado: false });
+          }
+        } else {
+          pData.imagen = dataUrl;
+        }
+      }
+    }
+
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCache();
+    }
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show(`✓ Imagen asignada exitosamente a ${prodId}.`, 'success');
+    }
+
+    previewArea.style.display = 'none';
+    this.renderImagesTab(document.getElementById('adminTabContent'));
+  },
+
+  filterGallery(query) {
+    const q = query.toLowerCase().trim();
+    document.querySelectorAll('.admin-gallery-card').forEach(card => {
+      const name = card.getAttribute('data-gallery-name') || '';
+      card.style.display = name.includes(q) ? 'flex' : 'none';
+    });
+  },
+
+  promptImageChange(prodId) {
+    const input = document.getElementById('adminImageUploaderInput');
+    const targetSelect = document.getElementById('adminImageTargetProd');
+    if (targetSelect) targetSelect.value = prodId;
+    if (input) input.click();
+  },
+
+  // =========================================================================
+  // TAB 4: PRECIOS RETAIL (EDICIÓN RÁPIDA MASIVA)
+  // =========================================================================
+  renderRetailPricesTab(container) {
+    let prods = [];
+    if (typeof DBService !== 'undefined' && DBService.products) {
+      prods = DBService.products;
+    } else if (typeof PRODUCTS_DATA !== 'undefined') {
+      prods = PRODUCTS_DATA;
+    }
+
+    container.innerHTML = `
+      <div class="admin-mass-edit-wrapper">
+        <div class="admin-section-header-row">
+          <div>
+            <h3 class="admin-tab-title">🏷️ Edición Rápida de Precios Retail</h3>
+            <p class="admin-tab-subtitle">Modifica los precios individuales de venta y las ofertas dúo (2x) para todos los productos desde una sola tabla.</p>
+          </div>
+          <button type="button" class="btn-admin-save-cloud" onclick="AdminService.saveAllRetailPrices()">
+            💾 GUARDAR TODOS LOS PRECIOS RETAIL
+          </button>
+        </div>
+
+        <div class="admin-table-responsive-box">
+          <table class="admin-mass-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">Foto</th>
+                <th>Producto</th>
+                <th>Categoría</th>
+                <th>Precio Detal ($ COP)</th>
+                <th>Precio Promo 2x ($ COP)</th>
+                <th>Estado</th>
+                <th style="width: 90px;">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${prods.map(p => {
+                const id = p.id;
+                const name = p.name || p.nombre;
+                const cat = p.category || p.categoria || 'desechables';
+                const price = p.price || p.precio || 40000;
+                const priceTwo = p.price_two_units || p.precio_promo_2 || '';
+                const img = p.image_url || p.imagen || 'assets/logo/logo.png';
+                const isOut = p.agotado || p.status === 'agotado';
+
+                return `
+                  <tr>
+                    <td>
+                      <img src="${img}" alt="${name}" class="mass-table-thumb" onerror="this.src='assets/logo/logo.png'">
+                    </td>
+                    <td>
+                      <strong>${name}</strong>
+                    </td>
+                    <td>
+                      <span class="mass-table-badge">${cat}</span>
+                    </td>
+                    <td>
+                      <input type="number" class="admin-input-num mass-input" data-retail-id="${id}" value="${price}" min="0">
+                    </td>
+                    <td>
+                      <input type="number" class="admin-input-num mass-input" data-promo-id="${id}" value="${priceTwo}" placeholder="Opcional" min="0">
+                    </td>
+                    <td>
+                      <span class="${isOut ? 'text-red' : 'text-green'}">
+                        ${isOut ? '🔴 Agotado' : '🟢 Disponible'}
+                      </span>
+                    </td>
+                    <td>
+                      <button type="button" class="btn-admin-action btn-sm" onclick="AdminService.saveSingleRetailPrice('${id}')">
+                        💾 Guardar
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  saveSingleRetailPrice(productId) {
+    const retailIn = document.querySelector(`input[data-retail-id="${productId}"]`);
+    const promoIn = document.querySelector(`input[data-promo-id="${productId}"]`);
+    if (!retailIn) return;
+
+    const newRetail = Number(retailIn.value) || 0;
+    const newPromo = promoIn && promoIn.value ? Number(promoIn.value) : null;
+
+    if (typeof DBService !== 'undefined') {
+      DBService.updateProduct(productId, {
+        price: newRetail,
+        price_two_units: newPromo
+      }, 'Edición rápida de precios retail');
+    }
+
+    if (typeof PRODUCTS_DATA !== 'undefined') {
+      const p = PRODUCTS_DATA.find(x => x.id === productId);
+      if (p) {
+        p.precio = newRetail;
+        p.precio_promo_2 = newPromo;
+      }
+    }
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show(`✓ Precios actualizados para ${productId}.`, 'success');
+    }
+  },
+
+  saveAllRetailPrices() {
+    document.querySelectorAll('input[data-retail-id]').forEach(input => {
+      const id = input.getAttribute('data-retail-id');
+      const promoIn = document.querySelector(`input[data-promo-id="${id}"]`);
+      const newRetail = Number(input.value) || 0;
+      const newPromo = promoIn && promoIn.value ? Number(promoIn.value) : null;
+
+      if (typeof DBService !== 'undefined') {
+        DBService.updateProduct(id, {
+          price: newRetail,
+          price_two_units: newPromo
+        }, 'Ajuste masivo precios retail');
+      }
+
+      if (typeof PRODUCTS_DATA !== 'undefined') {
+        const p = PRODUCTS_DATA.find(x => x.id === id);
+        if (p) {
+          p.precio = newRetail;
+          p.precio_promo_2 = newPromo;
+        }
+      }
+    });
+
+    if (typeof DBService !== 'undefined') {
+      DBService.saveToCache();
+    }
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCache();
+    }
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show('✓ Todos los precios retail fueron guardados y sincronizados.', 'success');
+    }
+  },
+
+  // =========================================================================
+  // TAB 5: PRECIOS MAYORISTAS (EDICIÓN RÁPIDA MASIVA)
+  // =========================================================================
+  renderWholesalePricesTab(container) {
+    let prods = [];
+    if (typeof DBService !== 'undefined' && DBService.products) {
+      prods = DBService.products;
+    } else if (typeof PRODUCTS_DATA !== 'undefined') {
+      prods = PRODUCTS_DATA;
+    }
+
+    container.innerHTML = `
+      <div class="admin-mass-edit-wrapper">
+        <div class="admin-section-header-row">
+          <div>
+            <h3 class="admin-tab-title">💼 Edición Rápida de Tarifas Mayoristas</h3>
+            <p class="admin-tab-subtitle">Ajusta los precios por volumen (+5, +10, +20, +50, +100 unidades) para cada referencia comercial.</p>
+          </div>
+          <button type="button" class="btn-admin-save-cloud" onclick="AdminService.saveAllWholesalePrices()">
+            💾 GUARDAR TODAS LAS TARIFAS MAYORISTAS
+          </button>
+        </div>
+
+        <div class="admin-table-responsive-box">
+          <table class="admin-mass-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">Foto</th>
+                <th>Producto</th>
+                <th>+5 uds ($)</th>
+                <th>+10 uds ($)</th>
+                <th>+20 uds ($)</th>
+                <th>+50 uds ($)</th>
+                <th>+100 uds ($)</th>
+                <th style="width: 90px;">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${prods.map(p => {
+                const id = p.id;
+                const name = p.name || p.nombre;
+                const img = p.image_url || p.imagen || 'assets/logo/logo.png';
+                const wp = p.wholesale_prices || {};
+
+                return `
+                  <tr>
+                    <td>
+                      <img src="${img}" alt="${name}" class="mass-table-thumb" onerror="this.src='assets/logo/logo.png'">
+                    </td>
+                    <td>
+                      <strong>${name}</strong>
+                    </td>
+                    <td><input type="number" class="admin-input-num mass-input" data-ws5-id="${id}" value="${wp['5'] || ''}" min="0"></td>
+                    <td><input type="number" class="admin-input-num mass-input" data-ws10-id="${id}" value="${wp['10'] || ''}" min="0"></td>
+                    <td><input type="number" class="admin-input-num mass-input" data-ws20-id="${id}" value="${wp['20'] || ''}" min="0"></td>
+                    <td><input type="number" class="admin-input-num mass-input" data-ws50-id="${id}" value="${wp['50'] || ''}" min="0"></td>
+                    <td><input type="number" class="admin-input-num mass-input" data-ws100-id="${id}" value="${wp['100'] || ''}" min="0"></td>
+                    <td>
+                      <button type="button" class="btn-admin-action btn-sm" onclick="AdminService.saveSingleWholesalePrice('${id}')">
+                        💾 Guardar
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  saveSingleWholesalePrice(productId) {
+    const ws5 = Number(document.querySelector(`input[data-ws5-id="${productId}"]`)?.value) || 0;
+    const ws10 = Number(document.querySelector(`input[data-ws10-id="${productId}"]`)?.value) || 0;
+    const ws20 = Number(document.querySelector(`input[data-ws20-id="${productId}"]`)?.value) || 0;
+    const ws50 = Number(document.querySelector(`input[data-ws50-id="${productId}"]`)?.value) || 0;
+    const ws100 = Number(document.querySelector(`input[data-ws100-id="${productId}"]`)?.value) || 0;
+
+    const newWp = { "5": ws5, "10": ws10, "20": ws20, "50": ws50, "100": ws100 };
+
+    if (typeof DBService !== 'undefined') {
+      DBService.updateProduct(productId, { wholesale_prices: newWp }, 'Ajuste de tarifas mayoristas');
+      DBService.saveToCache();
+    }
+    if (typeof Toast !== 'undefined') {
+      Toast.show(`✓ Tarifas mayoristas actualizadas para ${productId}.`, 'success');
+    }
+  },
+
+  saveAllWholesalePrices() {
+    document.querySelectorAll('input[data-ws5-id]').forEach(input => {
+      const id = input.getAttribute('data-ws5-id');
+      const ws5 = Number(input.value) || 0;
+      const ws10 = Number(document.querySelector(`input[data-ws10-id="${id}"]`)?.value) || 0;
+      const ws20 = Number(document.querySelector(`input[data-ws20-id="${id}"]`)?.value) || 0;
+      const ws50 = Number(document.querySelector(`input[data-ws50-id="${id}"]`)?.value) || 0;
+      const ws100 = Number(document.querySelector(`input[data-ws100-id="${id}"]`)?.value) || 0;
+
+      const newWp = { "5": ws5, "10": ws10, "20": ws20, "50": ws50, "100": ws100 };
+
+      if (typeof DBService !== 'undefined') {
+        DBService.updateProduct(id, { wholesale_prices: newWp }, 'Ajuste masivo de tarifas mayoristas');
+      }
+    });
+
+    if (typeof DBService !== 'undefined') {
+      DBService.saveToCache();
+    }
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCache();
+    }
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show('✓ Todas las tarifas mayoristas fueron guardadas con éxito.', 'success');
+    }
+  },
+
+  // =========================================================================
+  // TAB 6: INVENTARIO (CONTROL DE STOCK Y ALERTAS)
+  // =========================================================================
+  renderInventoryTab(container) {
+    let prods = [];
+    if (typeof DBService !== 'undefined' && DBService.products) {
+      prods = DBService.products;
+    } else if (typeof PRODUCTS_DATA !== 'undefined') {
+      prods = PRODUCTS_DATA;
+    }
+
+    container.innerHTML = `
+      <div class="admin-mass-edit-wrapper">
+        <div class="admin-section-header-row">
+          <div>
+            <h3 class="admin-tab-title">📋 Control de Inventario y Stock</h3>
+            <p class="admin-tab-subtitle">Revisa el nivel de existencias, recibe alertas automáticas de unidades bajas y ajusta el stock disponible.</p>
+          </div>
+          <button type="button" class="btn-admin-save-cloud" onclick="AdminService.saveAllInventory()">
+            💾 GUARDAR INVENTARIO
+          </button>
+        </div>
+
+        <div class="admin-table-responsive-box">
+          <table class="admin-mass-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">Foto</th>
+                <th>Producto</th>
+                <th>Stock Actual (uds)</th>
+                <th>Nivel de Existencias</th>
+                <th>Estado Comercial</th>
+                <th style="width: 90px;">Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${prods.map(p => {
+                const id = p.id;
+                const name = p.name || p.nombre;
+                const img = p.image_url || p.imagen || 'assets/logo/logo.png';
+                const stock = Number(p.stock) !== undefined && p.stock !== null ? Number(p.stock) : 50;
+                const status = p.status || (p.agotado ? 'agotado' : 'disponible');
+
+                let badgeHtml = '';
+                if (stock === 0 || status === 'agotado') {
+                  badgeHtml = '<span class="admin-alert-pill pill-danger">🔴 Agotado (0 uds)</span>';
+                } else if (stock <= 10) {
+                  badgeHtml = `<span class="admin-alert-pill pill-warning">⚠️ Stock Bajo (${stock} uds)</span>`;
+                } else {
+                  badgeHtml = `<span class="admin-alert-pill pill-success">🟢 Óptimo (${stock} uds)</span>`;
+                }
+
+                return `
+                  <tr>
+                    <td>
+                      <img src="${img}" alt="${name}" class="mass-table-thumb" onerror="this.src='assets/logo/logo.png'">
+                    </td>
+                    <td>
+                      <strong>${name}</strong>
+                    </td>
+                    <td>
+                      <input type="number" class="admin-input-num mass-input" data-stock-id="${id}" value="${stock}" min="0">
+                    </td>
+                    <td>
+                      ${badgeHtml}
+                    </td>
+                    <td>
+                      <select class="admin-input-text mass-select" data-status-id="${id}">
+                        <option value="disponible" ${status === 'disponible' ? 'selected' : ''}>🟢 Disponible</option>
+                        <option value="agotado" ${status === 'agotado' ? 'selected' : ''}>🔴 Agotado</option>
+                        <option value="descontinuado" ${status === 'descontinuado' ? 'selected' : ''}>⚪ Descontinuado</option>
+                        <option value="oculto_temporalmente" ${status === 'oculto_temporalmente' ? 'selected' : ''}>👁️ Oculto</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button type="button" class="btn-admin-action btn-sm" onclick="AdminService.saveSingleInventory('${id}')">
+                        💾 Guardar
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              }).join('')}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  },
+
+  saveSingleInventory(productId) {
+    const stockIn = document.querySelector(`input[data-stock-id="${productId}"]`);
+    const statusIn = document.querySelector(`select[data-status-id="${productId}"]`);
+    if (!stockIn) return;
+
+    const newStock = Number(stockIn.value) || 0;
+    const newStatus = statusIn ? statusIn.value : 'disponible';
+
+    if (typeof DBService !== 'undefined') {
+      DBService.updateProduct(productId, {
+        stock: newStock,
+        status: newStatus
+      }, 'Ajuste de inventario y estado');
+      DBService.saveToCache();
+    }
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show(`✓ Inventario actualizado para ${productId}.`, 'success');
+    }
+  },
+
+  saveAllInventory() {
+    document.querySelectorAll('input[data-stock-id]').forEach(input => {
+      const id = input.getAttribute('data-stock-id');
+      const statusIn = document.querySelector(`select[data-status-id="${id}"]`);
+      const newStock = Number(input.value) || 0;
+      const newStatus = statusIn ? statusIn.value : 'disponible';
+
+      if (typeof DBService !== 'undefined') {
+        DBService.updateProduct(id, {
+          stock: newStock,
+          status: newStatus
+        }, 'Ajuste masivo de inventario');
+      }
+    });
+
+    if (typeof DBService !== 'undefined') {
+      DBService.saveToCache();
+    }
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCache();
+    }
+
+    if (typeof Toast !== 'undefined') {
+      Toast.show('✓ Todo el inventario fue actualizado con éxito.', 'success');
+    }
+    this.renderInventoryTab(document.getElementById('adminTabContent'));
+  },
+
+  // =========================================================================
+  // TAB 7: PEDIDOS Y VENTAS (CANALES DE ATENCIÓN Y REGISTROS)
+  // =========================================================================
+  renderOrdersTab(container) {
+    container.innerHTML = `
+      <div class="admin-orders-tab-wrapper">
+        <h3 class="admin-tab-title">🛒 Canales de Pedidos & WhatsApp Oficial</h3>
+        <p class="admin-tab-subtitle">Supervisa las líneas de atención a clientes y distribuidores, y descarga copias de respaldo.</p>
+
+        <div class="admin-kpi-grid" style="margin-top: 16px;">
+          <div class="admin-kpi-card">
+            <div class="kpi-icon">📲</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Línea Oficial 1 (Mayorista & Detal)</span>
+              <strong class="kpi-value">+57 313 357 2726</strong>
+              <small class="kpi-sub">
+                <a href="https://api.whatsapp.com/send?phone=573133572726&text=Prueba%20de%20conexion%20Capital%20Vape" target="_blank" style="color: var(--accent-gold);">Probar Enlace WhatsApp ➔</a>
+              </small>
+            </div>
+          </div>
+          <div class="admin-kpi-card">
+            <div class="kpi-icon">💬</div>
+            <div class="kpi-info">
+              <span class="kpi-label">Línea Oficial 2 (Ventas Detal)</span>
+              <strong class="kpi-value">+57 324 801 2914</strong>
+              <small class="kpi-sub">
+                <a href="https://api.whatsapp.com/send?phone=573248012914&text=Prueba%20de%20conexion%20Capital%20Vape" target="_blank" style="color: var(--accent-gold);">Probar Enlace WhatsApp ➔</a>
+              </small>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-section-header-box" style="margin-top: 24px;">
+          <h4 style="color: var(--accent-gold); margin: 0 0 8px;">📋 Exportación y Respaldo de Datos:</h4>
+          <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0 0 14px;">Descarga la información comercial completa en formatos estándar para análisis en Excel o respaldo local.</p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button type="button" class="btn-admin-action" onclick="AdminService.exportJSON()">
+              📋 Descargar Respaldo JSON Completo
+            </button>
+            <button type="button" class="btn-admin-action" onclick="AdminService.exportCSV()">
+              📊 Descargar Catálogo en CSV (Excel)
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  exportCSV() {
+    let prods = [];
+    if (typeof DBService !== 'undefined' && DBService.products) {
+      prods = DBService.products;
+    } else if (typeof PRODUCTS_DATA !== 'undefined') {
+      prods = PRODUCTS_DATA;
+    }
+
+    let csv = 'ID,Nombre,Marca,Categoria,Precio_Detal,Precio_Promo2x,Stock,Estado,Mayorista_5,Mayorista_10,Mayorista_20,Mayorista_50,Mayorista_100\n';
+    prods.forEach(p => {
+      const wp = p.wholesale_prices || {};
+      csv += `"${p.id}","${p.name || p.nombre}","${p.brand || ''}","${p.category || p.categoria || ''}",${p.price || p.precio || 0},${p.price_two_units || p.precio_promo_2 || 0},${p.stock || 50},"${p.status || 'disponible'}",${wp['5'] || 0},${wp['10'] || 0},${wp['20'] || 0},${wp['50'] || 0},${wp['100'] || 0}\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `capital_vape_catalogo_${Date.now()}.csv`;
+    link.click();
+    if (typeof Toast !== 'undefined') {
+      Toast.show('✓ Catálogo exportado en CSV correctamente.', 'success');
+    }
+  },
+
+  // =========================================================================
+  // TAB 8: CONFIGURACIÓN
+  // =========================================================================
+  renderConfigTab(container) {
+    container.innerHTML = `
+      <div class="admin-config-tab-wrapper">
+        <h3 class="admin-tab-title">⚙️ Configuración del Negocio</h3>
+        <p class="admin-tab-subtitle">Parámetros operativos de Capital Vape, credenciales y seguridad.</p>
+
+        <div class="admin-config-card-grid">
+          <div class="admin-form-group">
+            <label>Nombre de la Plataforma:</label>
+            <input type="text" class="admin-input-text" value="CAPITAL VAPE" readonly>
+          </div>
+          <div class="admin-form-group">
+            <label>Clave de Acceso al Catálogo Mayorista:</label>
+            <input type="text" class="admin-input-text" value="CV-MAYORISTA-2026" readonly>
+            <small style="color: var(--text-muted); font-size: 0.78rem;">Validada de forma segura por el servidor backend Edge Function con HMAC.</small>
+          </div>
+          <div class="admin-form-group">
+            <label>Línea Oficial 1 WhatsApp:</label>
+            <input type="text" class="admin-input-text" value="+57 313 357 2726" readonly>
+          </div>
+          <div class="admin-form-group">
+            <label>Línea Oficial 2 WhatsApp:</label>
+            <input type="text" class="admin-input-text" value="+57 324 801 2914" readonly>
+          </div>
+          <div class="admin-form-group">
+            <label>Aviso de Mayoría de Edad (+18):</label>
+            <input type="text" class="admin-input-text" value="Ley 124/1994, Ley 1335/2009 y Ley 2354/2024 (Colombia)" readonly>
+          </div>
+          <div class="admin-form-group">
+            <label>Estado Sincronización en la Nube:</label>
+            <input type="text" class="admin-input-text" value="🟢 Supabase Edge Functions + PostgreSQL DB" readonly>
+          </div>
+        </div>
+      </div>
+    `;
+  },
+
+  // =========================================================================
+  // DUPLICAR PRODUCTO
+  // =========================================================================
+  duplicateProduct(productId) {
+    if (typeof DBService === 'undefined') return;
+    const prod = DBService.getProductById(productId);
+    if (!prod) {
+      if (typeof Toast !== 'undefined') Toast.show('No se encontró el producto a duplicar.', 'error');
+      return;
+    }
+    const newId = `${prod.id}-copia-${Date.now().toString().slice(-4)}`;
+    const cloned = JSON.parse(JSON.stringify(prod));
+    cloned.id = newId;
+    cloned.name = `${prod.name} (Copia)`;
+    cloned.status = 'disponible';
+    cloned.is_available = true;
+    cloned.is_deleted = false;
+    cloned.created_at = new Date().toISOString();
+    cloned.updated_at = new Date().toISOString();
+
+    DBService.products.push(cloned);
+    if (typeof PRODUCTS_DATA !== 'undefined') {
+      PRODUCTS_DATA.push({
+        ...cloned,
+        nombre: cloned.name,
+        precio: cloned.price,
+        precio_promo_2: cloned.price_two_units,
+        categoria: cloned.category,
+        imagen: cloned.image_url,
+        agotado: false
+      });
+    }
+    DBService.saveToCache();
+    if (typeof CloudSyncService !== 'undefined') {
+      CloudSyncService.saveToCache();
+    }
+    this.renderCurrentTab();
+    if (typeof Toast !== 'undefined') {
+      Toast.show(`✓ Referencia duplicada: "${cloned.name}".`, 'success');
+    }
+  },
+
+  handleModalImageFile(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target.result;
+      const urlInput = document.getElementById('formImageUrl');
+      const previewBox = document.getElementById('formImagePreviewBox');
+      if (urlInput) urlInput.value = dataUrl;
+      if (previewBox) {
+        previewBox.innerHTML = `<img src="${dataUrl}" style="width: 100%; height: 100%; object-fit: contain;">`;
+      }
+      if (typeof Toast !== 'undefined') {
+        Toast.show(`✓ Imagen "${file.name}" cargada con éxito.`, 'success');
+      }
+    };
+    reader.readAsDataURL(file);
   },
 
   renderProductList() {
@@ -469,6 +1474,9 @@ const AdminService = {
             </button>
             <button type="button" class="btn-admin-action" onclick="AdminService.openProductModal('${safeId}')" title="Editar detalles completos del producto">
               ✏️ Editar Producto
+            </button>
+            <button type="button" class="btn-admin-action" onclick="AdminService.duplicateProduct('${safeId}')" title="Duplicar referencia y configuración">
+              📑 Duplicar
             </button>
             ${isDeleted ? `
               <button type="button" class="btn-admin-action btn-restore" onclick="AdminService.restoreProduct('${safeId}')" title="Reactivar producto en la tienda">
@@ -1015,8 +2023,20 @@ const AdminService = {
         </div>
 
         <div class="admin-form-group">
-          <label>URL o Ruta de la Imagen Principal:</label>
-          <input type="text" id="formImageUrl" class="admin-input-text" value="${imageUrl}" placeholder="ej: REIGN BAR PALETTE/b-4.webp o https://...">
+          <label>Imagen Principal del Producto:</label>
+          <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 8px;">
+            <div id="formImagePreviewBox" style="width: 64px; height: 64px; border-radius: 8px; border: 1.5px solid var(--accent-gold); background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0;">
+              ${imageUrl ? `<img src="${imageUrl}" style="width: 100%; height: 100%; object-fit: contain;">` : '<span style="font-size: 1.6rem;">📷</span>'}
+            </div>
+            <div style="flex: 1;">
+              <input type="file" id="formImageFileInput" accept="image/png, image/jpeg, image/jpg, image/webp" style="display: none;" onchange="AdminService.handleModalImageFile(event)">
+              <button type="button" class="btn-admin-action" onclick="document.getElementById('formImageFileInput').click()" style="margin-bottom: 6px;">
+                📁 Subir foto desde el dispositivo
+              </button>
+              <div style="font-size: 0.75rem; color: var(--text-muted);">PNG, JPG, WEBP. Vista previa instantánea.</div>
+            </div>
+          </div>
+          <input type="text" id="formImageUrl" class="admin-input-text" value="${imageUrl}" placeholder="O ingresa URL o ruta: ej: REIGN BAR PALETTE/b-4.webp">
         </div>
 
         <div class="admin-form-group">

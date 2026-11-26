@@ -9,17 +9,17 @@
    ========================================================================== */
 
 :root {
-  --cv-age-bg: #050505;
-  --cv-age-surface: #101010;
-  --cv-age-card: rgba(16, 16, 16, 0.92);
-  --cv-age-magenta: #FF007F;
-  --cv-age-magenta-glow: rgba(255, 0, 127, 0.55);
-  --cv-age-magenta-soft: rgba(255, 0, 127, 0.15);
+  --cv-age-bg: #07030A;
+  --cv-age-surface: #110A1A;
+  --cv-age-card: rgba(17, 10, 26, 0.94);
+  --cv-age-magenta: #9333EA;
+  --cv-age-magenta-glow: rgba(147, 51, 234, 0.55);
+  --cv-age-magenta-soft: rgba(147, 51, 234, 0.16);
   --cv-age-gold: #D4AF37;
-  --cv-age-gold-glow: rgba(212, 175, 55, 0.4);
+  --cv-age-gold-glow: rgba(212, 175, 55, 0.45);
   --cv-age-white: #FFFFFF;
-  --cv-age-text-muted: #9CA3AF;
-  --cv-age-border: rgba(255, 0, 127, 0.28);
+  --cv-age-text-muted: #A1A1AA;
+  --cv-age-border: rgba(147, 51, 234, 0.38);
 }
 
 /* Bloqueo total de scroll mientras no se verifique */

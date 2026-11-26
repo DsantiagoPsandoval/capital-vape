@@ -1,8 +1,39 @@
 /* ==========================================================================
-   CAPITAL VAPE — EXPERIENCIA NAVIDEÑA 3D (THREE.JS + WEBGL + CSS3D)
-   Identidad visual coherente: Morado Medianoche, Dorado Metálico, Rojo Carmesí,
-   Verde Pino Esmeralda y Blanco Nieve Cristalina.
+   CAPITAL VAPE — DETALLES NAVIDEÑOS DISCRETOS (EXCLUSIVOS EN SECCIÓN MAYORISTA)
+   Detalles dorados sutiles, iluminación ambiental y toques de temporada
+   que no recargan la interfaz comercial.
    ========================================================================== */
+
+.ws-holiday-touch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(225, 29, 72, 0.12));
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #FACC15;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 12px;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.2);
+}
+
+.wholesale-section {
+  position: relative;
+}
+
+.wholesale-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, transparent 80%);
+  pointer-events: none;
+}
 
 :root {
   --xmas-crimson: #E11D48;

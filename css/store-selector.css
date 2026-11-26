@@ -1,0 +1,714 @@
+/* ==========================================================================
+   CAPITAL VAPE — SELECTOR DE TIENDAS, ACCESO MAYORISTA & MENÚ LATERAL
+   Paleta Oficial:
+   - Morado Neón / Amatista: #9333EA / #7928CA
+   - Oro Champagne / Metálico: #D4AF37 / #FACC15
+   - Fondo Obsidiana: #07040A / #0D0714
+   - Tarjetas Superficie: rgba(18, 11, 26, 0.88)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   PANTALLA 2: OVERLAY SELECTOR DE TIENDAS ("ELIGE TU TIENDA")
+   -------------------------------------------------------------------------- */
+.store-selector-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: 
+    radial-gradient(110% 80% at 50% 0%, rgba(147, 51, 234, 0.22) 0%, transparent 60%),
+    radial-gradient(90% 70% at 80% 100%, rgba(212, 175, 55, 0.16) 0%, transparent 65%),
+    linear-gradient(180deg, #09050E 0%, #050208 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.store-selector-overlay.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body.store-selector-open {
+  overflow: hidden !important;
+}
+
+.store-selector-container {
+  width: 100%;
+  max-width: 980px;
+  margin: auto;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  animation: selectorEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes selectorEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ENCABEZADO */
+.selector-header {
+  margin-bottom: 36px;
+}
+
+.selector-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  padding: 6px 18px;
+  border-radius: 999px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+}
+
+.selector-logo-mini {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.selector-brand-title {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #FFFFFF;
+}
+
+.selector-brand-title span {
+  color: #D4AF37;
+}
+
+.selector-kicker {
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #D4AF37;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.selector-title {
+  font-size: clamp(1.8rem, 4vw, 2.7rem);
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 20px rgba(147, 51, 234, 0.4);
+}
+
+.selector-desc {
+  font-size: clamp(0.95rem, 1.8vw, 1.12rem);
+  color: #A1A1AA;
+  margin: 0 auto;
+  max-width: 540px;
+  line-height: 1.5;
+}
+
+/* TARJETAS RETAIL Y MAYORISTA */
+.selector-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 28px;
+  margin-top: 10px;
+}
+
+.store-card {
+  position: relative;
+  background: linear-gradient(165deg, rgba(24, 15, 34, 0.95) 0%, rgba(12, 7, 18, 0.98) 100%);
+  border-radius: 24px;
+  padding: 38px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), 
+              border-color 0.35s ease, 
+              box-shadow 0.35s ease;
+  overflow: hidden;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.65);
+}
+
+.store-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  opacity: 0.85;
+  transition: height 0.3s ease, opacity 0.3s ease;
+}
+
+/* TARJETA RETAIL (MORADO) */
+.store-card-retail {
+  border: 1px solid rgba(147, 51, 234, 0.35);
+}
+
+.store-card-retail::before {
+  background: linear-gradient(90deg, #7928CA, #A855F7, #EC4899);
+}
+
+.store-card-retail:hover {
+  transform: translateY(-8px);
+  border-color: rgba(168, 85, 247, 0.7);
+  box-shadow: 0 20px 50px rgba(147, 51, 234, 0.28), 0 0 30px rgba(147, 51, 234, 0.15);
+}
+
+.store-card-retail .store-card-icon-wrap {
+  background: radial-gradient(circle, rgba(147, 51, 234, 0.22) 0%, rgba(147, 51, 234, 0.05) 70%);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #C084FC;
+  box-shadow: 0 0 25px rgba(147, 51, 234, 0.3);
+}
+
+.store-card-retail .store-card-btn {
+  background: linear-gradient(135deg, #9333EA 0%, #7928CA 100%);
+  color: #FFFFFF;
+  box-shadow: 0 6px 20px rgba(147, 51, 234, 0.45);
+}
+
+.store-card-retail .store-card-btn:hover {
+  background: linear-gradient(135deg, #A855F7 0%, #9333EA 100%);
+  box-shadow: 0 8px 28px rgba(147, 51, 234, 0.65);
+}
+
+/* TARJETA MAYORISTA (DORADO) */
+.store-card-wholesale {
+  border: 1px solid rgba(212, 175, 55, 0.38);
+}
+
+.store-card-wholesale::before {
+  background: linear-gradient(90deg, #B8923A, #FACC15, #E5B700);
+}
+
+.store-card-wholesale:hover {
+  transform: translateY(-8px);
+  border-color: rgba(250, 204, 21, 0.75);
+  box-shadow: 0 20px 50px rgba(212, 175, 55, 0.3), 0 0 30px rgba(212, 175, 55, 0.18);
+}
+
+.store-card-wholesale .store-card-icon-wrap {
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(212, 175, 55, 0.05) 70%);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  color: #FACC15;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.3);
+}
+
+.store-card-wholesale .store-card-btn {
+  background: linear-gradient(135deg, #E5B700 0%, #B8923A 100%);
+  color: #07040A;
+  font-weight: 800;
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+}
+
+.store-card-wholesale .store-card-btn:hover {
+  background: linear-gradient(135deg, #FACC15 0%, #E5B700 100%);
+  box-shadow: 0 8px 28px rgba(212, 175, 55, 0.65);
+}
+
+/* DETALLES DE LAS TARJETAS */
+.store-card-icon-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.1rem;
+  margin-bottom: 22px;
+  transition: transform 0.3s ease;
+}
+
+.store-card:hover .store-card-icon-wrap {
+  transform: scale(1.08);
+}
+
+.store-card-badge {
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.store-card-retail .store-card-badge {
+  background: rgba(147, 51, 234, 0.18);
+  color: #D8B4FE;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.store-card-wholesale .store-card-badge {
+  background: rgba(212, 175, 55, 0.18);
+  color: #FDE047;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+}
+
+.store-card-title {
+  font-size: 1.55rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.02em;
+}
+
+.store-card-desc {
+  font-size: 0.96rem;
+  color: #A1A1AA;
+  line-height: 1.5;
+  margin: 0 0 18px 0;
+  min-height: 44px;
+}
+
+.store-card-condition {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 8px 16px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #E4E4E7;
+  margin-bottom: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.store-card-btn {
+  width: 100%;
+  padding: 14px 24px;
+  border-radius: 14px;
+  border: none;
+  font-size: 0.98rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.store-card-btn:active {
+  transform: scale(0.97);
+}
+
+/* --------------------------------------------------------------------------
+   PANTALLA 3: MODAL DE ACCESO MAYORISTA MEDIANTE CONTRASEÑA
+   -------------------------------------------------------------------------- */
+.wholesale-access-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000001;
+  background: rgba(5, 2, 8, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.wholesale-access-modal.is-hidden {
+  display: none !important;
+}
+
+.wholesale-pass-card {
+  width: 100%;
+  max-width: 440px;
+  background: linear-gradient(165deg, rgba(24, 15, 34, 0.98) 0%, rgba(12, 6, 18, 0.99) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 24px;
+  padding: 34px 28px 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(212, 175, 55, 0.18);
+  text-align: center;
+  animation: selectorEntrance 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+}
+
+.wholesale-pass-icon-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, transparent 70%);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 16px auto;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+}
+
+.wholesale-pass-title {
+  font-size: 1.45rem;
+  font-weight: 900;
+  color: #FFFFFF;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.04em;
+}
+
+.wholesale-pass-sub {
+  font-size: 0.92rem;
+  color: #A1A1AA;
+  margin: 0 0 22px 0;
+  line-height: 1.45;
+}
+
+.wholesale-pass-input-box {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.wholesale-pass-input {
+  width: 100%;
+  padding: 14px 48px 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 12px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.05em;
+}
+
+.wholesale-pass-input:focus {
+  outline: none;
+  border-color: #FACC15;
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.35);
+}
+
+.btn-toggle-eye {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.15rem;
+  cursor: pointer;
+  padding: 4px;
+  color: #A1A1AA;
+  transition: opacity 0.2s;
+}
+
+.btn-toggle-eye:hover {
+  opacity: 0.8;
+}
+
+.wholesale-pass-alert {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #FCA5A5;
+  font-size: 0.86rem;
+  margin-bottom: 16px;
+  text-align: left;
+  line-height: 1.4;
+}
+
+.wholesale-pass-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-submit-wholesale-pass {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #FACC15 0%, #D4AF37 100%);
+  color: #07040A;
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-submit-wholesale-pass:hover {
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.45);
+}
+
+.btn-back-to-selector {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #A1A1AA;
+  padding: 11px;
+  border-radius: 12px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-back-to-selector:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  color: #FFFFFF;
+}
+
+.wholesale-pass-footer-help {
+  margin-top: 18px;
+  font-size: 0.84rem;
+  color: #71717A;
+}
+
+.wholesale-pass-wa-link {
+  color: #FACC15;
+  text-decoration: underline;
+  font-weight: 700;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   MENÚ LATERAL IZQUIERDO (DESKTOP SIDEBAR + MOBILE DRAWER)
+   -------------------------------------------------------------------------- */
+.cv-sidebar-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 270px;
+  height: 100vh;
+  background: linear-gradient(180deg, #0C0712 0%, #07030A 100%);
+  border-right: 1px solid rgba(147, 51, 234, 0.18);
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 24px 18px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 16px;
+}
+
+.sidebar-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.sidebar-brand-name {
+  font-size: 1.15rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: #FFFFFF;
+}
+
+.sidebar-brand-name span {
+  color: #D4AF37;
+}
+
+/* Badges de modalidad comercial */
+.sidebar-store-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin-top: 8px;
+  text-transform: uppercase;
+}
+
+.pill-retail {
+  background: rgba(147, 51, 234, 0.18);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #D8B4FE;
+  box-shadow: 0 0 12px rgba(147, 51, 234, 0.25);
+}
+
+.pill-wholesale {
+  background: rgba(212, 175, 55, 0.18);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  color: #FDE047;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
+}
+
+/* Botón Cambiar Tienda */
+.btn-switch-store {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #E4E4E7;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 10px;
+  width: 100%;
+  transition: all 0.25s ease;
+}
+
+.btn-switch-store:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(212, 175, 55, 0.4);
+  color: #FACC15;
+}
+
+/* Enlaces del Menú Lateral */
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #A1A1AA;
+  text-decoration: none;
+  font-size: 0.94rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+.sidebar-nav-item:hover,
+.sidebar-nav-item.active {
+  color: #FFFFFF;
+  background: rgba(147, 51, 234, 0.12);
+  border-color: rgba(147, 51, 234, 0.25);
+}
+
+body.mode-wholesale .sidebar-nav-item:hover,
+body.mode-wholesale .sidebar-nav-item.active {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.sidebar-nav-icon {
+  font-size: 1.15rem;
+  width: 22px;
+  text-align: center;
+}
+
+.sidebar-cart-badge {
+  margin-left: auto;
+  background: linear-gradient(135deg, #EC4899, #9333EA);
+  color: #FFFFFF;
+  font-size: 0.74rem;
+  font-weight: 900;
+  padding: 2px 7px;
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+}
+
+body.mode-wholesale .sidebar-cart-badge {
+  background: linear-gradient(135deg, #FACC15, #D4AF37);
+  color: #07040A;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+}
+
+/* Pie del Menú Lateral: Redes Sociales Oficiales */
+.sidebar-footer {
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sidebar-socials-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.sidebar-social-link {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.sidebar-social-link img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.sidebar-social-link:hover {
+  background: rgba(212, 175, 55, 0.15);
+  border-color: #D4AF37;
+  transform: translateY(-2px);
+}
+
+.sidebar-age-notice {
+  font-size: 0.72rem;
+  color: #71717A;
+  text-align: center;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   ADAPTACIÓN RESPONSIVE DEL CONTENEDOR PRINCIPAL
+   -------------------------------------------------------------------------- */
+@media (min-width: 1025px) {
+  body {
+    padding-left: 270px;
+  }
+  .cv-navbar {
+    display: none !important; /* En desktop el menú lateral reemplaza la navbar tradicional */
+  }
+}
+
+@media (max-width: 1024px) {
+  .cv-sidebar-nav {
+    display: none; /* En móviles y tablets se utiliza la barra superior y drawer hamburguesa */
+  }
+  body {
+    padding-left: 0;
+  }
+  .cv-navbar {
+    display: block !important;
+  }
+}

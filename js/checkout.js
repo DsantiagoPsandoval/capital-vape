@@ -191,12 +191,13 @@ const CheckoutController = {
     const summaryContainer = document.getElementById('checkoutTotals');
     if (!container || !summaryContainer) return;
 
-    const detalItems = Cart.getDetalItems();
-    const wsItems = Cart.getWholesaleItems();
+    const isRetailMode = (typeof StoreMode !== 'undefined') ? StoreMode.getMode() === 'retail' : true;
+    const detalItems = isRetailMode ? Cart.getDetalItems() : [];
+    const wsItems = !isRetailMode ? Cart.getWholesaleItems() : [];
     const detalSubtotal = Cart.getDetalSubtotal();
     const wsSubtotal = Cart.getWholesaleSubtotal();
     const shipping = Cart.getShippingInfo();
-    const total = Cart.getTotal();
+    const total = isRetailMode ? (detalSubtotal + (shipping.cost || 0)) : wsSubtotal;
 
     let itemsHtml = '';
 
@@ -212,7 +213,7 @@ const CheckoutController = {
       const flavorText = f2 ? `${f1} + ${f2}` : f1;
       const lineTotal = prod ? (qty === 2 && prod.precio_promo_2 ? prod.precio_promo_2 : prod.precio * qty) : 0;
 
-      if (prod) {
+      if (prod && isRetailMode) {
         itemsHtml = `
           <div class="checkout-sec-divider">⚡ VAPE SELECCIONADO EN EL FORMULARIO</div>
           <div class="checkout-item-card">
@@ -372,10 +373,17 @@ const CheckoutController = {
           <span>${Cart.formatCOP(wsSubtotal)}</span>
         </div>
       ` : ''}
-      <div class="summary-line">
-        <span>Envío (${destName}):</span>
-        ${shippingLineHtml}
-      </div>
+      ${isRetailMode ? `
+        <div class="summary-line">
+          <span>Envío (${destName}):</span>
+          ${shippingLineHtml}
+        </div>
+      ` : `
+        <div class="summary-line">
+          <span>Despacho Mayorista:</span>
+          <span style="color: #F59E0B; font-size: 0.82rem;">A coordinar según transportadora</span>
+        </div>
+      `}
       <div class="summary-line total-line">
         <span>Total Final:</span>
         <span class="total-amount">${Cart.formatCOP(total)}</span>

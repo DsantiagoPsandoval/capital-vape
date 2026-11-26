@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
   try { if (window.CatalogController) CatalogController.init(); } catch (e) { console.error(e); }
   try { if (window.CheckoutController) CheckoutController.init(); } catch (e) { console.error(e); }
 
+  // 2.1 Inicializar Selector de Tiendas (Retail vs Mayorista)
+  try { if (window.StoreMode) StoreMode.init(); } catch (e) { console.error(e); }
+
   // 3. Inicializar Portal Mayorista con sesión persistente
   try { initWholesaleSection(); } catch (e) { console.error(e); }
 
@@ -202,6 +205,7 @@ const HERO_PRODUCTS_CONFIG = {
     img: "BANG LEADER/Red Bull - Blueberry.png",
     specs: ["⚡ 32.000 Puffs", "🎨 5 Sabores", "🔋 Recargable C"],
     retailPrice: "$45.000",
+    promoPrice: "$80.000",
     wholesalePrice: "$23.000",
     productId: "bang-leader"
   },
@@ -211,6 +215,7 @@ const HERO_PRODUCTS_CONFIG = {
     img: "HUMO AZUL/DORADO (Bananno helado, toronja limon, menta, sandia, arandano).png",
     specs: ["⚡ 15.000 Puffs", "🎨 4 Colores", "🌬️ 23 Sabores"],
     retailPrice: "$50.000",
+    promoPrice: "$90.000",
     wholesalePrice: "$23.000",
     productId: "humo-azul"
   },
@@ -220,6 +225,7 @@ const HERO_PRODUCTS_CONFIG = {
     img: "DONUT/248.png",
     specs: ["⚡ 50.000 Puffs", "🖥️ Pantalla Digital", "🔋 650 mAh"],
     retailPrice: "$40.000",
+    promoPrice: "$70.000",
     wholesalePrice: "$18.000",
     productId: "donut"
   }
@@ -244,11 +250,13 @@ function switchHeroProduct(prodId) {
   const imgEl = document.getElementById('heroProductImg');
   const metaEl = document.getElementById('heroProductMeta');
   const retailEl = document.getElementById('heroRetailPrice');
+  const promoEl = document.getElementById('heroPromoPrice');
   const wsEl = document.getElementById('heroWholesalePrice');
 
   if (badgeEl) badgeEl.textContent = cfg.badge;
   if (titleEl) titleEl.textContent = cfg.title;
   if (retailEl) retailEl.textContent = cfg.retailPrice;
+  if (promoEl) promoEl.textContent = cfg.promoPrice;
   if (wsEl) wsEl.textContent = cfg.wholesalePrice;
 
   if (metaEl) {

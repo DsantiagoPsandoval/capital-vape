@@ -596,6 +596,86 @@
     },
 
     /**
+     * Valida de manera segura la clave de acceso al catálogo mayorista
+     */
+    async verifyWholesalePassword(password) {
+      const clean = (password || '').trim();
+      if (!clean) {
+        return { ok: false, error: 'Por favor ingresa la clave mayorista.' };
+      }
+
+      // 1. Intentar validación mediante Supabase Edge Function si está disponible
+      if (this.isSupabaseConfigured() && CONFIG.SUPABASE && CONFIG.SUPABASE.FUNCTIONS_URL) {
+        try {
+          const resp = await fetch(CONFIG.SUPABASE.FUNCTIONS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'verify_wholesale_password', password: clean })
+          });
+          const data = await resp.json();
+          if (data && data.ok) {
+            const exp = data.expires_at || (Date.now() + 24 * 3600 * 1000);
+            localStorage.setItem('cv_wholesale_auth_session', data.token || ('cv_ws_token_' + Date.now()));
+            localStorage.setItem('cv_wholesale_auth_exp', String(exp));
+            localStorage.setItem('cv_wholesale_auth', 'true');
+            localStorage.setItem('wholesaleAuthenticated', 'true');
+            return { ok: true, message: '✓ Acceso mayorista concedido con éxito.' };
+          } else if (data && data.error && !resp.ok) {
+            return { ok: false, error: data.error };
+          }
+        } catch (_err) {
+          console.warn('[DBService] Edge Function offline, recurriendo a verificación local segura.');
+        }
+      }
+
+      // 2. Validación estándar contra la clave oficial configurada (CV-MAYORISTA-2026)
+      const officialPass = (typeof WHOLESALE_PASSWORD !== 'undefined') ? WHOLESALE_PASSWORD : 'CV-MAYORISTA-2026';
+      if (clean.toUpperCase() === officialPass.toUpperCase()) {
+        const exp = Date.now() + 24 * 3600 * 1000;
+        localStorage.setItem('cv_wholesale_auth_session', 'cv_ws_session_' + Date.now());
+        localStorage.setItem('cv_wholesale_auth_exp', String(exp));
+        localStorage.setItem('cv_wholesale_auth', 'true');
+        localStorage.setItem('wholesaleAuthenticated', 'true');
+        return { ok: true, message: '✓ Acceso mayorista concedido con éxito.' };
+      }
+
+      return {
+        ok: false,
+        error: '❌ Clave incorrecta. Por favor verifica o solicítala vía WhatsApp oficial.'
+      };
+    },
+
+    /**
+     * Verifica si el usuario tiene sesión activa en el catálogo mayorista
+     */
+    isWholesaleAuthenticated() {
+      const token = localStorage.getItem('cv_wholesale_auth_session');
+      const isAuthFlag = localStorage.getItem('cv_wholesale_auth') === 'true' || localStorage.getItem('wholesaleAuthenticated') === 'true';
+      const expStr = localStorage.getItem('cv_wholesale_auth_exp');
+
+      if (!isAuthFlag && !token) return false;
+
+      if (expStr) {
+        const exp = Number(expStr);
+        if (Date.now() > exp) {
+          this.wholesaleLogout();
+          return false;
+        }
+      }
+      return true;
+    },
+
+    /**
+     * Cierra la sesión mayorista
+     */
+    wholesaleLogout() {
+      localStorage.removeItem('cv_wholesale_auth_session');
+      localStorage.removeItem('cv_wholesale_auth_exp');
+      localStorage.removeItem('cv_wholesale_auth');
+      localStorage.removeItem('wholesaleAuthenticated');
+    },
+
+    /**
      * Ejecuta una acción administrativa sincronizando directamente con Supabase PostgreSQL
      */
     async executeAdminAction(action, payload = {}) {

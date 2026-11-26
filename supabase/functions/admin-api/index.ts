@@ -127,6 +127,45 @@ serve(async (req) => {
     const action = body.action || url.searchParams.get("action");
 
     // =========================================================================
+    // ENDPOINT: VALIDACIÓN DE ACCESO MAYORISTA MEDIANTE CONTRASEÑA
+    // =========================================================================
+    if (action === "verify_wholesale_password") {
+      const inputPass = (body.password || "").trim();
+      const configuredWholesalePass = Deno.env.get("WHOLESALE_PASSWORD") || "CV-MAYORISTA-2026";
+
+      if (inputPass.toUpperCase() === configuredWholesalePass.toUpperCase()) {
+        const sessionHours = 24;
+        const expiresAt = Date.now() + sessionHours * 60 * 60 * 1000;
+        const payload = {
+          role: "wholesale_distributor",
+          sub: "capital_vape_wholesale",
+          iat: Date.now(),
+          exp: expiresAt,
+        };
+        const tokenSecret = secretKey || configuredWholesalePass;
+        const wholesaleToken = await signSessionToken(payload, tokenSecret);
+
+        return new Response(
+          JSON.stringify({
+            ok: true,
+            token: wholesaleToken,
+            expires_at: expiresAt,
+            message: "Acceso mayorista concedido con éxito.",
+          }),
+          { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      } else {
+        return new Response(
+          JSON.stringify({
+            ok: false,
+            error: "Contraseña mayorista incorrecta. Solicítala vía WhatsApp oficial.",
+          }),
+          { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
+      }
+    }
+
+    // =========================================================================
     // ENDPOINT: LOGIN ADMINISTRATIVO (Valida contraseña única y emite sesión)
     // =========================================================================
     if (action === "login") {

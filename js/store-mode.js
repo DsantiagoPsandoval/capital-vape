@@ -93,7 +93,7 @@ const StoreMode = (function() {
       if (switchSubDesktop) switchSubDesktop.textContent = 'PRECIOS POR MAYOR ➔';
       if (switchTitleDrawer) switchTitleDrawer.textContent = 'IR A MAYORISTA';
       if (switchSubDrawer) switchSubDrawer.textContent = 'PRECIOS POR MAYOR ➔';
-      if (navSwitchLabel) navSwitchLabel.textContent = 'Ir a Mayorista';
+      if (navSwitchLabel) navSwitchLabel.textContent = 'Mayorista';
 
       // Desencadenar render de retail
       if (typeof CatalogController !== 'undefined') {
@@ -125,7 +125,7 @@ const StoreMode = (function() {
       if (switchSubDesktop) switchSubDesktop.textContent = 'COMPRA AL DETAL ➔';
       if (switchTitleDrawer) switchTitleDrawer.textContent = 'IR A RETAIL';
       if (switchSubDrawer) switchSubDrawer.textContent = 'COMPRA AL DETAL ➔';
-      if (navSwitchLabel) navSwitchLabel.textContent = 'Ir a Retail';
+      if (navSwitchLabel) navSwitchLabel.textContent = 'Retail';
 
       // Asegurar vista desbloqueada en mayoristas
       const wsLocked = document.getElementById('wholesaleLockedView');

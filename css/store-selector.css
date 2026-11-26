@@ -783,12 +783,12 @@ body.mode-wholesale .lux-switch-store-btn .switch-store-chevron {
 .nav-switch-store-btn.lux-nav-switch-store {
   display: inline-flex !important;
   align-items: center;
-  gap: 7px;
-  padding: 7px 13px !important;
+  gap: 6px;
+  padding: 6px 11px !important;
   border-radius: 999px !important;
-  font-size: 0.78rem !important;
+  font-size: 0.76rem !important;
   font-weight: 800 !important;
-  letter-spacing: 0.05em !important;
+  letter-spacing: 0.04em !important;
   background: rgba(18, 14, 28, 0.9) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
@@ -799,6 +799,10 @@ body.mode-wholesale .lux-switch-store-btn .switch-store-chevron {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
   position: relative;
   overflow: hidden;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+  height: 34px !important;
+  box-sizing: border-box !important;
 }
 
 .lux-nav-switch-store .nav-switch-pulse-dot {
@@ -868,7 +872,58 @@ body.mode-wholesale .lux-nav-switch-store:hover {
 /* ==========================================================================
    ADAPTACIONES RESPONSIVAS PARA CABECERA MÓVIL Y SELECTOR DE TIENDAS
    ========================================================================== */
+#mobileHeaderStoreBadge,
+.header-store-pill {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .nav-container {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
+    padding: 0 10px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+  }
+
+  .brand-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+    min-width: 0 !important;
+    text-decoration: none !important;
+  }
+
+  .brand-logo-img {
+    width: 30px !important;
+    height: 30px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .brand-name {
+    font-size: 0.98rem !important;
+    font-weight: 900 !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.04em !important;
+    color: #FFFFFF !important;
+  }
+
+  .nav-actions {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-shrink: 0 !important;
+  }
+}
+
 @media (max-width: 600px) {
+  .nav-actions {
+    gap: 6px !important;
+  }
+
   .nav-switch-store-btn.lux-nav-switch-store {
     padding: 6px 10px !important;
     font-size: 0.74rem !important;
@@ -883,27 +938,15 @@ body.mode-wholesale .lux-nav-switch-store:hover {
 
   .nav-switch-store-btn.lux-nav-switch-store {
     padding: 5px 8px !important;
-    font-size: 0.68rem !important;
+    font-size: 0.72rem !important;
   }
 
   .nav-switch-store-btn.lux-nav-switch-store .nav-switch-label {
-    max-width: 62px !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
     white-space: nowrap !important;
-  }
-
-  .header-store-pill {
-    font-size: 0.65rem !important;
-    padding: 2px 6px !important;
   }
 }
 
-@media (max-width: 380px) {
-  #mobileHeaderStoreBadge {
-    display: none !important;
-  }
-
+@media (max-width: 360px) {
   .nav-switch-store-btn.lux-nav-switch-store .nav-switch-label {
     display: none !important;
   }

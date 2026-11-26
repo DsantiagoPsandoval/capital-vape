@@ -856,8 +856,8 @@ const Cart = {
     const drawerTitleEl = document.getElementById('cartDrawerTitle');
     if (drawerTitleEl) {
       drawerTitleEl.innerHTML = isRetailMode
-        ? '<span style="color:#C084FC;">🛒</span> Mi Carrito — Tienda Retail'
-        : '<span style="color:#FACC15;">📦</span> Mi Pedido — Catálogo Mayorista';
+        ? '<img src="assets/icons/carrito.png" class="cart-header-icon" alt="Carrito"> <span>MI CARRITO</span> <span class="ref-cart-mode-tag" style="background: rgba(147,51,234,0.22); border: 1px solid rgba(168,85,247,0.5); color: #D8B4FE; font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; font-weight: 800; letter-spacing: 0.08em; margin-left: 6px;">RETAIL</span>'
+        : '<img src="assets/icons/carrito.png" class="cart-header-icon" alt="Carrito"> <span>MI CARRITO</span> <span class="ref-cart-mode-tag" style="background: rgba(212,175,55,0.22); border: 1px solid rgba(212,175,55,0.5); color: #FDE047; font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; font-weight: 800; letter-spacing: 0.08em; margin-left: 6px;">MAYORISTA</span>';
     }
 
     if (itemsContainer) {
@@ -1152,9 +1152,17 @@ const Cart = {
     // Drawer Footer
     if (footerContainer) {
       const activeItems = isRetailMode ? detalItems : wsItems;
+      const gridLayout = document.getElementById('cartModalGridLayout');
       if (activeItems.length === 0) {
         footerContainer.innerHTML = '';
-      } else if (isRetailMode) {
+        footerContainer.style.display = 'none';
+        if (gridLayout) gridLayout.classList.add('is-empty');
+      } else {
+        footerContainer.style.display = '';
+        if (gridLayout) gridLayout.classList.remove('is-empty');
+      }
+
+      if (activeItems.length > 0 && isRetailMode) {
         const destName = shipping.isSoacha ? 'Soacha' : (shipping.isBogota ? 'Bogotá' : 'Nacional');
         let shippingLineContent = '';
         if (shipping.isSoacha) {

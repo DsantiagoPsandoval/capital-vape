@@ -1336,16 +1336,23 @@
     </div>
   </footer>
 
-  <!-- RETAIL CART DRAWER -->
+  <!-- ==========================================================================
+       PANTALLA 6: CARRITO DE COMPRAS INDEPENDIENTE (PANTALLA APARTE / MODAL CENTRADO EN PC)
+       ========================================================================== -->
   <div class="cv-cart-overlay" id="cartOverlay"></div>
-  <aside class="cv-cart-drawer" id="cartDrawer">
+  <aside class="cv-cart-drawer ref-cart-modal-mode" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Pantalla de Carrito de Compras">
     <div class="cv-cart-header">
-      <div class="cv-cart-title"><img src="assets/icons/carrito.png" class="cart-header-icon" alt="Carrito"> Tu Pedido al Detal</div>
-      <button type="button" class="cv-cart-close-btn" id="closeCartBtn">&times;</button>
+      <div class="cv-cart-title" id="cartDrawerTitle">
+        <img src="assets/icons/carrito.png" class="cart-header-icon" alt="Carrito">
+        <span id="cartDrawerTitleText">MI CARRITO — RETAIL</span>
+      </div>
+      <button type="button" class="cv-cart-close-btn" id="closeCartBtn" aria-label="Cerrar Carrito">&times;</button>
     </div>
     <div id="cartShippingMeter"></div>
-    <div class="cv-cart-body" id="cartDrawerItems"></div>
-    <div class="cv-cart-footer" id="cartDrawerFooter"></div>
+    <div class="cart-modal-grid-layout" id="cartModalGridLayout">
+      <div class="cv-cart-body" id="cartDrawerItems"></div>
+      <div class="cv-cart-footer" id="cartDrawerFooter"></div>
+    </div>
   </aside>
 
   

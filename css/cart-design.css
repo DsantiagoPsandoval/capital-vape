@@ -1,64 +1,193 @@
 /* ==========================================================================
    CAPITAL VAPE — DISEÑO 6: CARRITOS INDEPENDIENTES (RETAIL & MAYORISTA)
+   PANTALLA APARTE / MODAL CENTRADO EN ESCRITORIO (NO LATERAL DERECHO)
    Diseño de tabla tabular + bloque resumen con WhatsApp oficial (Screens 5 & 6)
    ========================================================================== */
 
-/* Contenedor Modal Amplio para Carrito en Escritorio */
+/* Overlay de Fondo con Difuminado Profundo */
+.cv-cart-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(4, 3, 9, 0.82) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  z-index: 2150 !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.cv-cart-overlay.open {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+/* En PC / Escritorio: El carrito es una PANTALLA APARTE centrada (NO a la derecha) */
 @media (min-width: 860px) {
+  .cv-cart-drawer,
   .cv-cart-drawer.ref-cart-modal-mode {
-    max-width: 960px !important;
-    width: 92% !important;
-    height: auto !important;
-    max-height: 88vh !important;
+    position: fixed !important;
     top: 50% !important;
     left: 50% !important;
     right: auto !important;
-    transform: translate(-50%, -46%) scale(0.96) !important;
-    border-radius: 22px !important;
-    border: 1.5px solid rgba(255, 255, 255, 0.12) !important;
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.95), 0 0 40px rgba(147, 51, 234, 0.25) !important;
-    opacity: 0;
-    pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+    bottom: auto !important;
+    transform: translate(-50%, -46%) scale(0.95) !important;
+    width: 94% !important;
+    max-width: 1080px !important;
+    height: auto !important;
+    max-height: 88vh !important;
+    background: radial-gradient(circle at 10% 12%, rgba(147, 51, 234, 0.16) 0%, rgba(10, 8, 17, 0.98) 75%) !important;
+    border-radius: 24px !important;
+    border: 1.5px solid rgba(168, 85, 247, 0.45) !important;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95), 0 0 50px rgba(147, 51, 234, 0.3) !important;
+    backdrop-filter: blur(24px) !important;
+    -webkit-backdrop-filter: blur(24px) !important;
+    z-index: 2200 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, visibility 0.25s ease !important;
+    overflow: hidden !important;
   }
 
+  .cv-cart-drawer.open,
   .cv-cart-drawer.ref-cart-modal-mode.open {
     transform: translate(-50%, -50%) scale(1) !important;
     opacity: 1 !important;
+    visibility: visible !important;
     pointer-events: auto !important;
+  }
+
+  /* Modo Mayorista en PC: Resplandor Dorado */
+  body.mode-wholesale .cv-cart-drawer,
+  body.mode-wholesale .cv-cart-drawer.ref-cart-modal-mode {
+    background: radial-gradient(circle at 90% 12%, rgba(212, 175, 55, 0.18) 0%, rgba(10, 8, 17, 0.98) 75%) !important;
+    border-color: rgba(212, 175, 55, 0.5) !important;
+    box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95), 0 0 50px rgba(212, 175, 55, 0.28) !important;
   }
 }
 
-/* Encabezado del Carrito */
+/* Encabezado de la Pantalla de Carrito */
 .cv-cart-header {
-  padding: 20px 24px !important;
-  background: rgba(12, 8, 18, 0.95) !important;
+  padding: 18px 26px !important;
+  background: rgba(12, 9, 20, 0.96) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
 }
 
 .cv-cart-title {
   font-family: 'Outfit', sans-serif !important;
-  font-size: 1.35rem !important;
+  font-size: 1.3rem !important;
   font-weight: 900 !important;
   letter-spacing: 0.06em !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  color: #FFFFFF !important;
+  text-transform: uppercase;
 }
 
-/* Disposición de 2 Columnas (Tabla de Productos a la Izquierda / Resumen a la Derecha) */
+.cv-cart-title .cart-header-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+
+.cv-cart-close-btn {
+  width: 36px !important;
+  height: 36px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  color: #FFFFFF !important;
+  font-size: 1.4rem !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.cv-cart-close-btn:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  color: #EF4444 !important;
+  transform: rotate(90deg);
+}
+
+/* ==========================================================================
+   DISPOSICIÓN DE 2 COLUMNAS (TABLA A LA IZQUIERDA / RESUMEN A LA DERECHA)
+   ========================================================================== */
 .cart-modal-grid-layout {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: 1fr 360px;
   gap: 24px;
-  padding: 20px 24px 28px;
-  overflow-y: auto;
-  max-height: calc(88vh - 80px);
+  padding: 20px 24px 26px;
+  overflow: hidden;
+  max-height: calc(88vh - 75px);
+  box-sizing: border-box;
 }
 
-@media (max-width: 860px) {
+@media (min-width: 860px) {
+  .cart-modal-grid-layout .cv-cart-body {
+    overflow-y: auto;
+    max-height: calc(88vh - 120px);
+    padding-right: 12px;
+  }
+
+  .cart-modal-grid-layout .cv-cart-body::-webkit-scrollbar {
+    width: 6px;
+  }
+  .cart-modal-grid-layout .cv-cart-body::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 999px;
+  }
+  .cart-modal-grid-layout .cv-cart-body::-webkit-scrollbar-thumb {
+    background: rgba(147, 51, 234, 0.4);
+    border-radius: 999px;
+  }
+  body.mode-wholesale .cart-modal-grid-layout .cv-cart-body::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.4);
+  }
+
+  .cart-modal-grid-layout .cv-cart-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 0;
+    border: none;
+    background: transparent;
+    overflow-y: auto;
+    max-height: calc(88vh - 120px);
+  }
+
+  .cart-modal-grid-layout.is-empty {
+    grid-template-columns: 1fr !important;
+  }
+
+  .cart-modal-grid-layout.is-empty .cv-cart-body {
+    grid-column: 1 / -1 !important;
+    max-height: none !important;
+    padding-right: 0 !important;
+  }
+}
+
+@media (max-width: 859px) {
   .cart-modal-grid-layout {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 16px;
-    padding: 14px 14px 40px;
+    padding: 14px 14px 34px;
     max-height: none;
+    overflow-y: auto;
   }
 }
 

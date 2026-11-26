@@ -54,6 +54,7 @@
   <link rel="stylesheet" href="css/luxury-menu.css?v=20261125_2">
   <link rel="stylesheet" href="css/age-verification.css?v=20261125_2">
   <link rel="stylesheet" href="css/store-selector.css?v=20261125_2">
+  <link rel="stylesheet" href="css/times-square-city.css?v=20261125_1">
 
   <!-- Anti-FOUC para Verificación de Mayoría de Edad (+18) -->
   <script>
@@ -114,11 +115,13 @@
        Cumplimiento Ley 124/1994, Ley 1335/2009 y Código de Infancia y Adolescencia
        ========================================================================== -->
   <div id="ageVerificationOverlay" class="age-gate-overlay" role="dialog" aria-modal="true" aria-labelledby="ageGateTitle">
-    <!-- Fondo con iluminación neón, degradados sutiles y partículas -->
-    <div class="age-gate-bg" aria-hidden="true">
-      <div class="age-gate-glow-magenta"></div>
-      <div class="age-gate-glow-gold"></div>
-      <canvas id="ageGateCanvas" class="age-gate-canvas"></canvas>
+    <!-- Escenario Futurista Urbano Times Square (Pantallas LED, Letreros Neón y Reflejos en Pavimento) -->
+    <div class="ts-city-backdrop" aria-hidden="true">
+      <canvas id="tsAgeGateCityCanvas" class="ts-city-canvas"></canvas>
+      <div class="ts-city-atmosphere"></div>
+      <div class="ts-wet-pavement-reflection"></div>
+      <div class="ts-digital-scanlines"></div>
+      <div class="ts-cinema-vignette"></div>
     </div>
 
     <div class="age-gate-wrapper">
@@ -224,6 +227,15 @@
        PANTALLA 2: SELECCIÓN DE TIENDA ("ELIGE TU TIENDA")
        ========================================================================== -->
   <div id="storeSelectorOverlay" class="store-selector-overlay is-hidden" role="dialog" aria-modal="true" aria-labelledby="storeSelectorTitle">
+    <!-- Escenario Futurista Urbano Times Square (Selector de Modalidad) -->
+    <div class="ts-city-backdrop" aria-hidden="true">
+      <canvas id="tsStoreSelectorCityCanvas" class="ts-city-canvas"></canvas>
+      <div class="ts-city-atmosphere"></div>
+      <div class="ts-wet-pavement-reflection"></div>
+      <div class="ts-digital-scanlines"></div>
+      <div class="ts-cinema-vignette"></div>
+    </div>
+
     <div class="store-selector-container">
       <div class="selector-header">
         <div class="selector-brand-badge">
@@ -1555,6 +1567,7 @@
   <script src="js/checkout.js?v=20261125_clean" charset="UTF-8"></script>
   <script src="js/catalog.js?v=20261125_clean" charset="UTF-8"></script>
   <script src="js/age-verification.js?v=20261125_clean" charset="UTF-8"></script>
+  <script src="js/times-square-city.js?v=20261125_1" charset="UTF-8"></script>
   <script src="js/store-mode.js?v=20261125_clean" charset="UTF-8"></script>
   <script src="js/main.js?v=20261125_clean" charset="UTF-8"></script>
 </body>
